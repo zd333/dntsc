@@ -1,0 +1,7 @@
+
+{
+  "rules": [
+    { "pathname": "/api/**", "dest": "api-trrkpltuat.now.sh" },
+    { "dest": "react-client-rgjmkmxskj.now.sh" }
+  ]
+}
