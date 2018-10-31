@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 import { App } from './App';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
+import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createBrowserHistory } from 'history';
 import { sessionReducer, SessionState } from './reducers/session.reducer';
@@ -17,10 +18,16 @@ const history = createBrowserHistory();
 const rootReducer = combineReducers({
   session: sessionReducer,
 });
+const rootEpic = combineEpics();
+const epicMiddleware = createEpicMiddleware();
 const store = createStore(
   connectRouter(history)(rootReducer),
-  composeWithDevTools(applyMiddleware(routerMiddleware(history))),
+  composeWithDevTools(
+    applyMiddleware(routerMiddleware(history), epicMiddleware),
+  ),
 );
+
+epicMiddleware.run(rootEpic);
 
 ReactDOM.render(
   <App history={history} store={store} />,

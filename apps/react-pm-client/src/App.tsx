@@ -15,7 +15,7 @@ export const App = ({ history, store }: AppProps) => (
   </Provider>
 );
 
-// TODO: type store
+// TODO: type store?
 interface AppProps {
   history: History;
   store: Store;
