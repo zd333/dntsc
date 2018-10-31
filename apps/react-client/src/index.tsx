@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
-import { App } from './App';
+import { App } from './components/App';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -19,6 +19,7 @@ const rootReducer = combineReducers({
   session: sessionReducer,
 });
 const rootEpic = combineEpics();
+// TODO: inject connectors here
 const epicMiddleware = createEpicMiddleware();
 const store = createStore(
   connectRouter(history)(rootReducer),

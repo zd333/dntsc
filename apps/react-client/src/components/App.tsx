@@ -1,16 +1,23 @@
 import * as React from 'react';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
+import { LoginPage } from './LoginPage';
+import { PatientsManagementPage } from '../sub-features/patients-management/components/PatientsManagementPage';
 import { Provider } from 'react-redux';
-import { RootContainer } from './containers/RootContainer';
+import { Route, Switch } from 'react-router';
 import { Store } from 'redux';
 
-// TODO: define routes https://github.com/supasate/connected-react-router/blob/master/examples/typescript/src/routes/index.tsx
+const appRootRoutes = (
+  <Switch>
+    <Route exact={true} path="/" component={PatientsManagementPage} />
+    <Route path="/login" component={LoginPage} />
+  </Switch>
+);
 
 export const App = ({ history, store }: AppProps) => (
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <RootContainer />
+      <div>{appRootRoutes}</div>
     </ConnectedRouter>
   </Provider>
 );
