@@ -5,7 +5,9 @@ import { App } from './components/App';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { ConnectedRouter } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
+import { Provider } from 'react-redux';
 import { sessionReducer, SessionState } from './reducers/session.reducer';
 import './index.css';
 import {
@@ -31,7 +33,11 @@ const store = createStore(
 epicMiddleware.run(rootEpic);
 
 ReactDOM.render(
-  <App history={history} store={store} />,
+  <Provider store={store}>
+    <ConnectedRouter history={history}>
+      <App />
+    </ConnectedRouter>
+  </Provider>,
   document.getElementById('root') as HTMLElement,
 );
 registerServiceWorker();
