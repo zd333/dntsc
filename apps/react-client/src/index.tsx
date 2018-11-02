@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 import { App } from './components/App';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
+import { appRootEpics } from './epics';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { ConnectedRouter } from 'connected-react-router';
@@ -20,8 +21,7 @@ const history = createBrowserHistory();
 const rootReducer = combineReducers({
   session: sessionReducer,
 });
-const rootEpic = combineEpics();
-// TODO: inject connectors here
+const rootEpic = combineEpics(...appRootEpics);
 const epicMiddleware = createEpicMiddleware();
 const store = createStore(
   connectRouter(history)(rootReducer),
