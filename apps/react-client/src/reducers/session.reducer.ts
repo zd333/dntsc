@@ -1,13 +1,10 @@
-export interface SessionState {
-  readonly isLoggedIn: boolean;
-}
+import { AllSessionActions } from 'src/actions/session.actions';
+import { sessionInitialState } from './session-initial-state';
+import { SessionState } from './session-state.interface';
 
-export const sessionInitialState: SessionState = { isLoggedIn: false };
-
-// TODO: typings
 export function sessionReducer(
   state: SessionState = sessionInitialState,
-  action: any,
+  action: AllSessionActions,
 ): SessionState {
   switch (action.type) {
     default:

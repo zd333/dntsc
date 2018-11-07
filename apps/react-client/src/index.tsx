@@ -8,9 +8,16 @@ import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { ConnectedRouter } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
+import { green, purple } from '@material-ui/core/colors';
 import { Provider } from 'react-redux';
-import { sessionReducer, SessionState } from './reducers/session.reducer';
+import { sessionReducer } from './reducers/session.reducer';
+import { SessionState } from './reducers/session-state.interface';
 import './index.css';
+import {
+  createMuiTheme,
+  MuiThemeProvider,
+  CssBaseline,
+} from '@material-ui/core';
 import {
   RouterState,
   connectRouter,
@@ -29,20 +36,35 @@ const store = createStore(
     applyMiddleware(routerMiddleware(history), epicMiddleware),
   ),
 );
+const theme = createMuiTheme({
+  palette: {
+    primary: purple,
+    secondary: green,
+  },
+  typography: {
+    useNextVariants: true,
+  },
+});
 
 epicMiddleware.run(rootEpic);
 
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <App />
+      <MuiThemeProvider theme={theme}>
+        <CssBaseline />
+        <App />
+      </MuiThemeProvider>
     </ConnectedRouter>
   </Provider>,
   document.getElementById('root') as HTMLElement,
 );
 registerServiceWorker();
 
-export interface AppState {
+/**
+ * State of the App.
+ */
+export interface RootState {
   readonly session: SessionState;
   readonly router: RouterState;
 }

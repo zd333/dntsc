@@ -17,7 +17,10 @@ import {
  * * user is not logged in
  * * navigation is not to login page
  */
-export const redirectUnauthenticatedEpic: Epic = (action$, state$) => {
+export const redirectUnauthenticatedToLoginPageEpic: Epic = (
+  action$,
+  state$,
+) => {
   const userIsLoggedIn$ = state$.pipe(map(selectUserIsLoggedIn));
 
   return action$.pipe(
