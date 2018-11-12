@@ -1,4 +1,7 @@
-import { RootState } from 'src';
+import { createSelector } from 'reselect';
+import { selectSessionState } from './session-state.selector';
 
-export const selectUserIsLoggedIn = (state: RootState) =>
-  !!state && !!state.session && !!state.session.isLoggedIn;
+export const selectUserIsLoggedIn = createSelector(
+  [selectSessionState],
+  sessionState => !!sessionState && !!sessionState.isLoggedIn,
+);

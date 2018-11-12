@@ -1,12 +1,11 @@
 import { createSelector } from 'reselect';
-import { selectRootState } from './root-state.selector';
+import { selectSessionState } from './session-state.selector';
 import { selectUserIsLoggedIn } from './user-is-logged-in.selector';
 
 export const selectLoginPageIsDisabled = createSelector(
-  [selectUserIsLoggedIn, selectRootState],
-  (userIsLoggedIn, rootState) =>
+  [selectUserIsLoggedIn, selectSessionState],
+  (userIsLoggedIn, sessionState) =>
     userIsLoggedIn ||
-    !rootState ||
-    !rootState.session ||
-    rootState.session.authApiCommunicationIsInProgress,
+    !sessionState ||
+    sessionState.authApiCommunicationIsInProgress,
 );

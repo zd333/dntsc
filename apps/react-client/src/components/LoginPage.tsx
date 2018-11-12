@@ -13,8 +13,12 @@ import {
 
 export interface LoginPageProps {
   isDisabled: boolean;
-  // TODO: typings?
-  onEmailLogin: () => any;
+  onEmailLogin: (
+    params: {
+      readonly email: string;
+      readonly password: string;
+    },
+  ) => void;
 }
 type StyledLoginPageProps = LoginPageProps & WithStyles<typeof loginPageStyles>;
 
@@ -30,14 +34,13 @@ const StyledLoginPage: React.SFC<StyledLoginPageProps> = props => {
         <form className={classes.form}>
           <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="email">Email</InputLabel>
-            <Input id="email" name="email" autoComplete="email" autoFocus />
+            <Input name="email" autoComplete="email" autoFocus />
           </FormControl>
           <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="password">Пароль</InputLabel>
             <Input
               name="password"
               type="password"
-              id="password"
               autoComplete="current-password"
             />
           </FormControl>
