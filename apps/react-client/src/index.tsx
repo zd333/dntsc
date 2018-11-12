@@ -9,6 +9,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { ConnectedRouter } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 import { green, purple } from '@material-ui/core/colors';
+import { IntlProviderContainer } from './containers/IntlProviderContainer';
 import { Provider } from 'react-redux';
 import { sessionReducer } from './reducers/session.reducer';
 import { SessionState } from './reducers/session-state.interface';
@@ -51,10 +52,12 @@ epicMiddleware.run(rootEpic);
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <MuiThemeProvider theme={theme}>
-        <CssBaseline />
-        <App />
-      </MuiThemeProvider>
+      <IntlProviderContainer>
+        <MuiThemeProvider theme={theme}>
+          <CssBaseline />
+          <App />
+        </MuiThemeProvider>
+      </IntlProviderContainer>
     </ConnectedRouter>
   </Provider>,
   document.getElementById('root') as HTMLElement,
