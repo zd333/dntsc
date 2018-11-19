@@ -65,7 +65,7 @@ ReactDOM.render(
 registerServiceWorker();
 
 /**
- * State of the App.
+ * State of the whole App.
  */
 export interface RootState {
   readonly session: SessionState;

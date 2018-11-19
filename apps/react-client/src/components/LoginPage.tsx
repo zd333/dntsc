@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
 import { loginPageStyles } from './LoginPage.styles';
 import {
   Paper,
@@ -29,15 +30,19 @@ const StyledLoginPage: React.SFC<StyledLoginPageProps> = props => {
     <main className={classes.layout}>
       <Paper className={classes.paper}>
         <Typography component="h1" variant="h5">
-          Вход
+          <FormattedMessage id="loginPage.loginForm.title" />
         </Typography>
         <form className={classes.form}>
           <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="email">Email</InputLabel>
+            <InputLabel htmlFor="email">
+              <FormattedMessage id="loginPage.loginForm.emailInput.label" />
+            </InputLabel>
             <Input name="email" autoComplete="email" autoFocus />
           </FormControl>
           <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="password">Пароль</InputLabel>
+            <InputLabel htmlFor="password">
+              <FormattedMessage id="loginPage.loginForm.passwordInput.label" />
+            </InputLabel>
             <Input
               name="password"
               type="password"
@@ -51,7 +56,7 @@ const StyledLoginPage: React.SFC<StyledLoginPageProps> = props => {
             color="primary"
             className={classes.submit}
           >
-            Войти
+            <FormattedMessage id="loginPage.loginForm.submitButton.text" />
           </Button>
         </form>
       </Paper>
