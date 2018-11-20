@@ -8,6 +8,8 @@ import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { ConnectedRouter } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
+import { errorModalReducer } from './reducers/error-modal.reducer';
+import { ErrorModalState } from './reducers/error-modal-state.interface';
 import { green, purple } from '@material-ui/core/colors';
 import { IntlProviderContainer } from './containers/IntlProviderContainer';
 import { Provider } from 'react-redux';
@@ -28,6 +30,7 @@ import {
 const history = createBrowserHistory();
 const rootReducer = combineReducers({
   session: sessionReducer,
+  errorModal: errorModalReducer,
 });
 const rootEpic = combineEpics(...appRootEpics);
 const epicMiddleware = createEpicMiddleware();
@@ -70,4 +73,5 @@ registerServiceWorker();
 export interface RootState {
   readonly session: SessionState;
   readonly router: RouterState;
+  readonly errorModal: ErrorModalState;
 }
