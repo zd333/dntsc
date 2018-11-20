@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ErrorModalContainer } from 'src/containers/ErrorModalContainer';
 import { LoginPageContainer } from 'src/containers/LoginPageContainer';
 import { PatientsManagementPage } from '../sub-features/patients-management/components/PatientsManagementPage';
 import { Route, Switch } from 'react-router';
@@ -10,4 +11,9 @@ const appRootRoutes = (
   </Switch>
 );
 
-export const App = () => <React.Fragment>{appRootRoutes}</React.Fragment>;
+export const App = () => (
+  <React.Fragment>
+    <ErrorModalContainer />
+    {appRootRoutes}
+  </React.Fragment>
+);

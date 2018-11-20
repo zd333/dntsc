@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { loginPageStyles } from './LoginPage.styles';
 import {
   Paper,
   Typography,
@@ -10,6 +9,8 @@ import {
   Button,
   withStyles,
   WithStyles,
+  createStyles,
+  Theme,
 } from '@material-ui/core';
 
 export interface LoginPageProps {
@@ -21,7 +22,6 @@ export interface LoginPageProps {
     },
   ) => void;
 }
-type StyledLoginPageProps = LoginPageProps & WithStyles<typeof loginPageStyles>;
 
 const StyledLoginPage: React.SFC<StyledLoginPageProps> = props => {
   const { classes } = props;
@@ -63,5 +63,41 @@ const StyledLoginPage: React.SFC<StyledLoginPageProps> = props => {
     </main>
   );
 };
+
+const loginPageStyles = ({ palette, spacing, breakpoints }: Theme) =>
+  createStyles({
+    layout: {
+      width: 'auto',
+      display: 'block',
+      marginLeft: spacing.unit * 3,
+      marginRight: spacing.unit * 3,
+      [breakpoints.up(400 + spacing.unit * 3 * 2)]: {
+        width: 400,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+      },
+    },
+    paper: {
+      marginTop: spacing.unit * 8,
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      padding: `${spacing.unit * 2}px ${spacing.unit * 3}px ${spacing.unit *
+        3}px`,
+    },
+    avatar: {
+      margin: spacing.unit,
+      backgroundColor: palette.secondary.main,
+    },
+    form: {
+      width: '100%',
+      marginTop: spacing.unit,
+    },
+    submit: {
+      marginTop: spacing.unit * 3,
+    },
+  });
+
+type StyledLoginPageProps = LoginPageProps & WithStyles<typeof loginPageStyles>;
 
 export const LoginPage = withStyles(loginPageStyles)(StyledLoginPage);

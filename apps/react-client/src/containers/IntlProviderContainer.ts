@@ -4,7 +4,7 @@ import { addLocaleData, IntlProvider } from 'react-intl';
 import { connect } from 'react-redux';
 import { enTranslationMessages } from 'src/shared/translations/en-translation-messages';
 import { RootState } from 'src';
-import { ruTranslationMessages } from 'src/shared/translations/ua-translation-messages.1';
+import { ruTranslationMessages } from 'src/shared/translations/ru-translation-messages';
 import { selectCurrentLanguage } from 'src/selectors/current-language.selector';
 import { StateMapper } from 'src/shared/interfaces/container-state-mapper.interface';
 import { uaTranslationMessages } from 'src/shared/translations/ua-translation-messages';

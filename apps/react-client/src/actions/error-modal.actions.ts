@@ -1,7 +1,8 @@
 import { createAction } from '@martin_hotell/rex-tils';
 
 /**
- * Definition of this state slice does not follow convention due to it is very specific
+ * Definition of this state slice is not standard
+ * (does not follow convention due to it is very specific)
  * (designed to catch common error actions from all other state slices).
  * ! Do not copy-paste this code to define actions for new state slices!
  */
