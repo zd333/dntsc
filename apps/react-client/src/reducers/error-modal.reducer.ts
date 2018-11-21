@@ -6,7 +6,6 @@ import {
   isCommonErrorAction,
 } from 'src/actions/error-modal.actions';
 
-// TODO: implement action handlers
 export function errorModalReducer(
   state: ErrorModalState = errorModalInitialState,
   action: AllErrorModalActions,

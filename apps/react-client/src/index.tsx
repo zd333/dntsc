@@ -34,6 +34,7 @@ const rootReducer = combineReducers({
 });
 const rootEpic = combineEpics(...appRootEpics);
 const epicMiddleware = createEpicMiddleware();
+// Take care of sanitization or disabling dev tools on prod
 const store = createStore(
   connectRouter(history)(rootReducer),
   composeWithDevTools(

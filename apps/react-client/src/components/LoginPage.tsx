@@ -11,7 +11,23 @@ import {
   WithStyles,
   createStyles,
   Theme,
+  FormHelperText,
+  CircularProgress,
 } from '@material-ui/core';
+
+/**
+ * Value should be ids from translation files.
+ */
+enum emailValidationErrors {
+  EMPTY = 'loginPage.loginForm.emailInput.validationErrorMessages.empty',
+  INVALID = 'loginPage.loginForm.emailInput.validationErrorMessages.invalid',
+}
+/**
+ * Values should be ids from translation files.
+ */
+enum passwordValidationErrors {
+  EMPTY = 'loginPage.loginForm.passwordInput.validationErrorMessages.empty',
+}
 
 export interface LoginPageProps {
   isDisabled: boolean;
@@ -23,46 +39,191 @@ export interface LoginPageProps {
   ) => void;
 }
 
-const StyledLoginPage: React.SFC<StyledLoginPageProps> = props => {
-  const { classes } = props;
+interface LoginPageState {
+  email: string;
+  password: string;
+  emailIsDirty: boolean;
+  passwordIsDirty: boolean;
+  emailIsFocused: boolean;
+  passwordIsFocused: boolean;
+}
 
-  return (
-    <main className={classes.layout}>
-      <Paper className={classes.paper}>
-        <Typography component="h1" variant="h5">
-          <FormattedMessage id="loginPage.loginForm.title" />
-        </Typography>
-        <form className={classes.form}>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="email">
-              <FormattedMessage id="loginPage.loginForm.emailInput.label" />
-            </InputLabel>
-            <Input name="email" autoComplete="email" autoFocus />
-          </FormControl>
-          <FormControl margin="normal" required fullWidth>
-            <InputLabel htmlFor="password">
-              <FormattedMessage id="loginPage.loginForm.passwordInput.label" />
-            </InputLabel>
-            <Input
-              name="password"
-              type="password"
-              autoComplete="current-password"
-            />
-          </FormControl>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
+class StyledLoginPage extends React.Component<
+  StyledLoginPageProps,
+  LoginPageState
+> {
+  public state = {
+    email: '',
+    password: '',
+    emailIsDirty: false,
+    passwordIsDirty: false,
+    emailIsFocused: false,
+    passwordIsFocused: false,
+  };
+
+  // TODO: move input handling with error and validation into shared component
+  public handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      email: event.target.value,
+      emailIsDirty: true,
+    });
+  };
+
+  public handleEmailFocus = () => {
+    this.setState({
+      emailIsFocused: true,
+    });
+  };
+
+  public handleEmailBlur = () => {
+    this.setState({
+      emailIsFocused: false,
+    });
+  };
+
+  public getEmailValidationError = () => {
+    if (!this.state.email) {
+      return emailValidationErrors.EMPTY;
+    }
+    const emailValidationRegexp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    return emailValidationRegexp.test(String(this.state.email).toLowerCase())
+      ? ''
+      : emailValidationErrors.INVALID;
+  };
+
+  public showEmailValidationError = () =>
+    (this.state.emailIsDirty || !!this.state.email) &&
+    !this.state.emailIsFocused &&
+    !!this.getEmailValidationError();
+
+  public handlePasswordChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    this.setState({
+      password: event.target.value,
+      passwordIsDirty: true,
+    });
+  };
+
+  public handlePasswordFocus = () => {
+    this.setState({
+      passwordIsFocused: true,
+    });
+  };
+
+  public handlePasswordBlur = () => {
+    this.setState({
+      passwordIsFocused: false,
+    });
+  };
+
+  public getPasswordValidationError = () =>
+    this.state.password ? '' : passwordValidationErrors.EMPTY;
+
+  public showPasswordValidationError = () =>
+    (this.state.passwordIsDirty || !!this.state.password) &&
+    !this.state.passwordIsFocused &&
+    !!this.getPasswordValidationError();
+
+  public getFormCanBeSubmitted = () =>
+    !this.props.isDisabled &&
+    !this.getEmailValidationError() &&
+    !this.getPasswordValidationError();
+
+  public handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!this.getFormCanBeSubmitted()) {
+      return;
+    }
+
+    const { email, password } = this.state;
+
+    this.props.onEmailLogin({ email, password });
+  };
+
+  public render() {
+    return (
+      <main className={this.props.classes.layout}>
+        <Paper className={this.props.classes.paper}>
+          <Typography component="h1" variant="h5">
+            <FormattedMessage id="loginPage.loginForm.title" />
+          </Typography>
+          <form
+            className={this.props.classes.form}
+            onSubmit={this.handleSubmit}
           >
-            <FormattedMessage id="loginPage.loginForm.submitButton.text" />
-          </Button>
-        </form>
-      </Paper>
-    </main>
-  );
-};
+            <FormControl
+              error={this.showEmailValidationError()}
+              margin="normal"
+              required
+              fullWidth
+            >
+              <InputLabel htmlFor="email">
+                <FormattedMessage id="loginPage.loginForm.emailInput.label" />
+              </InputLabel>
+              <Input
+                value={this.state.email}
+                disabled={this.props.isDisabled}
+                onChange={this.handleEmailChange}
+                onFocus={this.handleEmailFocus}
+                onBlur={this.handleEmailBlur}
+                required
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              {this.showEmailValidationError() && (
+                <FormHelperText>
+                  <FormattedMessage id={this.getEmailValidationError()} />
+                </FormHelperText>
+              )}
+            </FormControl>
+            <FormControl
+              error={this.showPasswordValidationError()}
+              margin="normal"
+              required
+              fullWidth
+            >
+              <InputLabel htmlFor="password">
+                <FormattedMessage id="loginPage.loginForm.passwordInput.label" />
+              </InputLabel>
+              <Input
+                value={this.state.password}
+                disabled={this.props.isDisabled}
+                onChange={this.handlePasswordChange}
+                onFocus={this.handlePasswordFocus}
+                onBlur={this.handlePasswordBlur}
+                required
+                name="password"
+                type="password"
+                autoComplete="current-password"
+              />
+              {this.showPasswordValidationError() && (
+                <FormHelperText>
+                  <FormattedMessage id={this.getPasswordValidationError()} />
+                </FormHelperText>
+              )}
+            </FormControl>
+            <Button
+              disabled={!this.getFormCanBeSubmitted()}
+              className={this.props.classes.submit}
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+            >
+              <FormattedMessage id="loginPage.loginForm.submitButton.text" />
+            </Button>
+          </form>
+          {this.props.isDisabled && (
+            <CircularProgress className={this.props.classes.spinner} />
+          )}
+        </Paper>
+      </main>
+    );
+  }
+}
 
 const loginPageStyles = ({ palette, spacing, breakpoints }: Theme) =>
   createStyles({
@@ -95,6 +256,12 @@ const loginPageStyles = ({ palette, spacing, breakpoints }: Theme) =>
     },
     submit: {
       marginTop: spacing.unit * 3,
+    },
+    spinner: {
+      position: 'fixed',
+      top: '50%',
+      marginLeft: 'auto',
+      marginRight: 'auto',
     },
   });
 
