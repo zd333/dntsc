@@ -1,0 +1,9 @@
+{
+  "watch": ["src"],
+  "ext": "ts",
+  "ignore": ["src/**/*.spec.ts"],
+  "exec": "node --inspect-brk -r dotenv/config -r ts-node/register -r tsconfig-paths/register src/main.ts",
+  "events": {
+    "restart": "node kill-server-app.js"
+  }
+}
