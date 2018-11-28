@@ -1,6 +1,6 @@
 {
   "rules": [
-    { "pathname": "/api/**", "dest": "api-odbdnhxhjq.now.sh" },
-    { "dest": "react-client-ggynycgajw.now.sh" }
+    { "pathname": "/api/**", "dest": "api-muqlduirek.now.sh" },
+    { "dest": "react-client-wsxuokjupr.now.sh" }
   ]
 }
