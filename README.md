@@ -1,16 +1,18 @@
 # dntsc
 
-Set of apps coupled with [zeit.co](https://zeit.co).
+Nothing interesting. Pet project for friends.
+Set of apps (NestJS and React) coupled with [zeit.co](https://zeit.co).
 
-## Installation
+## Prerequisites
 
-Install Node and Yarn.
+Install Node, Yarn, Docker.
 
 ## Running locally (in dev mode)
 
-1. prepare `.env` file with development configuration values; this file is gitignored, use `.env-example` as example
-2. run `yarn --cwd ./apps/react-client run start`
-3. (in another terminal) run `yarn --cwd ./apps/api run start:dev`
+1. run `sudo docker run -d --mount type=bind,source=$PWD/data/bin,destination=/data/bin mongo` - this will download and start Docker container with MongoDB (used in dev mode only); Mongo will be available under port 27017 on localhost
+2. prepare `.env` file with development configuration values; this file is gitignored and thus is missing after you pulled the repo, use `.env-example` as example
+3. run `yarn --cwd ./apps/react-client run start`
+4. (in another terminal) run `yarn --cwd ./apps/api run start:dev`
 
 API will be available under [localhost:4000](localhost:4000).
 React client will be available under [localhost:3000](localhost:3000).
