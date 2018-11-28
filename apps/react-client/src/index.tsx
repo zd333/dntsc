@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import registerServiceWorker from './registerServiceWorker';
 import { App } from './components/App';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { appRootEpics } from './epics';
@@ -16,6 +15,7 @@ import { Provider } from 'react-redux';
 import { sessionReducer } from './reducers/session.reducer';
 import { SessionState } from './reducers/session-state.interface';
 import './index.css';
+// import registerServiceWorker from './registerServiceWorker';
 import {
   createMuiTheme,
   MuiThemeProvider,
@@ -66,7 +66,8 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root') as HTMLElement,
 );
-registerServiceWorker();
+// TODO: revert after checked and clarified if API requests work fine
+// registerServiceWorker();
 
 /**
  * State of the whole App.
