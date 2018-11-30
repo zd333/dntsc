@@ -1,10 +1,14 @@
-import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from './config/config.module';
+import { EmployeesModule } from './employees/employees.module';
+import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-  imports: [ConfigModule],
+  imports: [
+    MongooseModule.forRoot(process.env.MONGO_CONNECTION_STRING),
+    EmployeesModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
