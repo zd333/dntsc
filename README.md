@@ -9,10 +9,15 @@ Install Node, Yarn, Docker.
 
 ## Running locally (in dev mode)
 
-1. run `sudo docker run -d --mount type=bind,source=$PWD/data/bin,destination=/data/bin mongo` - this will download and start Docker container with MongoDB (used in dev mode only); Mongo will be available under port 27017 on localhost
-2. prepare `.env` file with development configuration values; this file is gitignored and thus is missing after you pulled the repo, use `.env-example` as example
-3. run `yarn --cwd ./apps/react-client run start`
-4. (in another terminal) run `yarn --cwd ./apps/api run start:dev`
+### On-time needed actions
+
+1. prepare `.env` file with development configuration values; this file is git-ignored and thus is missing after you pulled the repo, use `.env-example` as reference (most example values are for dev mode)
+
+### Launching project in dev mode
+
+1. run `sudo docker run -d --mount type=bind,source=$PWD/data/bin,destination=/data/bin mongo` - this will start (and download before first run) Docker container with MongoDB (used in dev mode only); Mongo will be available under port 27017 on localhost
+1. run `yarn --cwd ./apps/react-client run start`
+1. (in another terminal) run `yarn --cwd ./apps/api run start:dev`
 
 API will be available under [localhost:4000](localhost:4000).
 React client will be available under [localhost:3000](localhost:3000).
