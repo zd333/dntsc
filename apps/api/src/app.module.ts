@@ -6,7 +6,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.MONGO_CONNECTION_STRING),
+    MongooseModule.forRoot(process.env.MONGO_CONNECTION_STRING, {
+      useNewUrlParser: true,
+    }),
     EmployeesModule,
   ],
   controllers: [AppController],
