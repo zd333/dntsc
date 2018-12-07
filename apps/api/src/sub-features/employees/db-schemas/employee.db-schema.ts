@@ -1,4 +1,4 @@
-import { CLINIC_SCHEMA_NAME } from '../../clinics/db-entities/clinic.db-entity';
+import { CLINIC_SCHEMA_NAME } from '../../clinics/db-schemas/clinic.db-schema';
 import { Schema, SchemaDefinition } from 'mongoose';
 
 // TODO: add missing fields

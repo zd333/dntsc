@@ -1,4 +1,4 @@
-import { CLINIC_SCHEMA_NAME } from '../db-entities/clinic.db-entity';
+import { CLINIC_SCHEMA_NAME } from '../db-schemas/clinic.db-schema';
 import { CreateClinicInDto } from '../dto/create-clinic.in-dto';
 import { Document, Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';

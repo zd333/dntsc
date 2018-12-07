@@ -18,7 +18,7 @@ Install Node, Yarn, Docker.
 ### Launching project in dev mode
 
 1. run `yarn --cwd ./apps/react-client run start`
-1. (in another terminal)run `yarn --cwd ./apps/api run start:dev`
+1. (in another terminal) run `yarn --cwd ./apps/api run start:dev`
 
 React client will be available under [localhost:3000](localhost:3000).
 With default `.env` values (copied from `.env-example`) API will be available under [localhost:4000](localhost:4000).

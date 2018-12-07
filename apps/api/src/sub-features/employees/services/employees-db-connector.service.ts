@@ -1,6 +1,6 @@
 import { CreateEmployeeInDto } from '../dto/create-employee.in-dto';
 import { Document, Model, Types } from 'mongoose';
-import { EMPLOYEE_SCHEMA_NAME } from '../db-entities/employee.db-entity';
+import { EMPLOYEE_SCHEMA_NAME } from '../db-schemas/employee.db-schema';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 

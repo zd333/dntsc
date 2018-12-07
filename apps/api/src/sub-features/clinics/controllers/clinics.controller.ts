@@ -3,13 +3,13 @@ import { ClinicsDbConnectorService } from '../services/clinics-db-connector.serv
 import { convertDocumentToOutDto } from 'src/shared/helpers/convert-document-to-out-dto.helper';
 import { CreateClinicInDto } from '../dto/create-clinic.in-dto';
 import { CreatedClinicOutDto } from '../dto/created-clinic.out-dto';
+import { TenantsDbConnectorService } from 'src/sub-features/tenants/services/tenants-db-connector.service';
 
 @Controller('clinics')
 export class ClinicsController {
   constructor(private readonly clinicsDbConnector: ClinicsDbConnectorService) {}
 
   // TODO: protect with `platform_owner` ACL
-  // TODO: check tenant id exists and throw error if not
   @Post()
   async create(@Body() dto: CreateClinicInDto): Promise<CreatedClinicOutDto> {
     const dbDoc = await this.clinicsDbConnector.create(dto);

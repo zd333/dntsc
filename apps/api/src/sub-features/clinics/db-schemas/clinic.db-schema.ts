@@ -1,5 +1,5 @@
 import { Schema, SchemaDefinition } from 'mongoose';
-import { TENANT_SCHEMA_NAME } from '../../tenants/db-entities/tenant.db-entity';
+import { TENANT_SCHEMA_NAME } from '../../tenants/db-schemas/tenant.db-schema';
 
 const schemaDefinition: SchemaDefinition = {
   name: { type: String, required: true },
