@@ -11,7 +11,6 @@ export class EmployeesDbConnectorService {
     private readonly EmployeeModel: Model<Document>,
   ) {}
 
-  // TODO: login must be unique for clinic, check that none of passed clinics do not have target login yet
   public async create(dto: CreateEmployeeInDto): Promise<Document> {
     const doc = new this.EmployeeModel({
       ...dto,

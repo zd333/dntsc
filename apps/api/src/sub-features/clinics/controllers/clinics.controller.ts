@@ -9,7 +9,7 @@ export class ClinicsController {
   constructor(private readonly clinicsDbConnector: ClinicsDbConnectorService) {}
 
   // TODO: protect with `platform_owner` ACL
-  // TODO: add Mongo error verification and conversion to class-validation format
+  // TODO: check tenant id exists and throw error if not
   @Post()
   async create(@Body() dto: CreateClinicInDto): Promise<CreatedClinicOutDto> {
     const dbDoc = await this.clinicsDbConnector.create(dto);

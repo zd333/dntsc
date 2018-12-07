@@ -1,3 +1,4 @@
+import { EmployeesController } from './controllers/employees.controller';
 import { EmployeesDbConnectorService } from './services/employees-db-connector.service';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -14,7 +15,8 @@ const schemasMap = [
 ];
 
 @Module({
-  providers: [EmployeesDbConnectorService],
   imports: [MongooseModule.forFeature(schemasMap)],
+  providers: [EmployeesDbConnectorService],
+  controllers: [EmployeesController],
 })
 export class EmployeesModule {}
