@@ -5,7 +5,7 @@ import { TenantsDbConnectorService } from './services/tenants-db-connector.servi
 import {
   TENANT_SCHEMA_NAME,
   TenantSchema,
-} from './db-entities/tenant.db-entity';
+} from './db-schemas/tenant.db-schema';
 
 const schemasMap = [
   {
@@ -18,5 +18,6 @@ const schemasMap = [
   imports: [MongooseModule.forFeature(schemasMap)],
   providers: [TenantsDbConnectorService],
   controllers: [TenantsController],
+  exports: [TenantsDbConnectorService],
 })
 export class TenantsModule {}

@@ -1,24 +1,23 @@
 import { Types } from 'mongoose';
 import {
-  IsNotEmpty,
   IsString,
   MinLength,
   ArrayNotEmpty,
   ArrayUnique,
+  IsMongoId,
 } from 'class-validator';
 
 // TODO: add missing fields (acls, specialities ..)
 export class CreateEmployeeInDto {
-  @IsNotEmpty()
+  @MinLength(3)
   @IsString()
   readonly login: string;
 
-  @IsNotEmpty()
   @IsString()
   @MinLength(4)
   readonly password: string;
 
-  @IsNotEmpty()
+  @MinLength(3)
   @IsString()
   readonly name: string;
 
@@ -27,7 +26,9 @@ export class CreateEmployeeInDto {
    */
   @ArrayNotEmpty()
   @ArrayUnique()
-  @IsNotEmpty({ each: true })
-  @IsString({ each: true })
+  // TODO: replace with IsIdOfExisting entity
+  @IsMongoId({
+    each: true,
+  })
   readonly clinics: Array<Types.ObjectId>;
 }
