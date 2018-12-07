@@ -1,7 +1,11 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { TENANT_SCHEMA_NAME, TenantSchema } from './models/tenant.model';
-import { TenantsService } from './services/tenants.service';
+import { TenantsController } from './controllers/tenants.controller';
+import { TenantsDbConnectorService } from './services/tenants-db-connector.service';
+import {
+  TENANT_SCHEMA_NAME,
+  TenantSchema,
+} from './db-entities/tenant.db-entity';
 
 const schemasMap = [
   {
@@ -11,7 +15,8 @@ const schemasMap = [
 ];
 
 @Module({
-  providers: [TenantsService],
   imports: [MongooseModule.forFeature(schemasMap)],
+  providers: [TenantsDbConnectorService],
+  controllers: [TenantsController],
 })
 export class TenantsModule {}
