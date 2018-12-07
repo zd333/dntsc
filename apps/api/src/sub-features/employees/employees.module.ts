@@ -1,7 +1,10 @@
-import { EMPLOYEE_SCHEMA_NAME, EmployeeSchema } from './models/employee.model';
-import { EmployeesService } from './services/employees.service';
+import { EmployeesDbConnectorService } from './services/employees-db-connector.service';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import {
+  EMPLOYEE_SCHEMA_NAME,
+  EmployeeSchema,
+} from './db-entities/employee.db-entity';
 
 const schemasMap = [
   {
@@ -11,7 +14,7 @@ const schemasMap = [
 ];
 
 @Module({
-  providers: [EmployeesService],
+  providers: [EmployeesDbConnectorService],
   imports: [MongooseModule.forFeature(schemasMap)],
 })
 export class EmployeesModule {}

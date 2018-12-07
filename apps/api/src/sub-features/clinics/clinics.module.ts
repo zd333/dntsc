@@ -1,7 +1,11 @@
-import { CLINIC_SCHEMA_NAME, ClinicSchema } from './models/clinic.model';
-import { ClinicsService } from './services/clinics.service';
+import { ClinicsController } from './controllers/clinics.controller';
+import { ClinicsDbConnectorService } from './services/clinics-db-connector.service';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import {
+  CLINIC_SCHEMA_NAME,
+  ClinicSchema,
+} from './db-entities/clinic.db-entity';
 
 const schemasMap = [
   {
@@ -11,7 +15,8 @@ const schemasMap = [
 ];
 
 @Module({
-  providers: [ClinicsService],
   imports: [MongooseModule.forFeature(schemasMap)],
+  providers: [ClinicsDbConnectorService],
+  controllers: [ClinicsController],
 })
 export class ClinicsModule {}

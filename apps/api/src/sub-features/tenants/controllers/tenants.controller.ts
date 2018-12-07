@@ -1,14 +1,19 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { CreateTenantDto } from '../dto/create-tenant.dto';
-import { TenantsService } from '../services/tenants.service';
+import { convertDocumentToOutDto } from 'src/shared/helpers/convert-document-to-out-dto.helper';
+import { CreatedTenantOutDto } from '../dto/created-tenant.out-dto';
+import { CreateTenantInDto } from '../dto/create-tenant.in-dto';
+import { TenantsDbConnectorService } from '../services/tenants-db-connector.service';
 
 @Controller('tenants')
 export class TenantsController {
-  constructor(private readonly tenantsService: TenantsService) {}
+  constructor(private readonly tenantsDbConnector: TenantsDbConnectorService) {}
 
   // TODO: protect with `platform_owner` ACL
+  // TODO: add Mongo error verification and conversion to class-validation format
   @Post()
-  create(@Body() createTenantDto: CreateTenantDto) {
-    return this.tenantsService.create(createTenantDto);
+  async create(@Body() dto: CreateTenantInDto): Promise<CreatedTenantOutDto> {
+    const dbDoc = await this.tenantsDbConnector.create(dto);
+
+    return convertDocumentToOutDto(CreatedTenantOutDto, dbDoc);
   }
 }
