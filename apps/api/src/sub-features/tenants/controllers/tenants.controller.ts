@@ -9,7 +9,6 @@ export class TenantsController {
   constructor(private readonly tenantsDbConnector: TenantsDbConnectorService) {}
 
   // TODO: protect with `platform_owner` ACL
-  // TODO: add Mongo error verification and conversion to class-validation format
   @Post()
   async create(@Body() dto: CreateTenantInDto): Promise<CreatedTenantOutDto> {
     const dbDoc = await this.tenantsDbConnector.create(dto);

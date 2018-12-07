@@ -20,7 +20,11 @@ export class EmployeesController {
   ) {}
 
   // TODO: protect with `platform_owner` ACL
-  // TODO: add Mongo error verification and conversion to class-validation format
+  // TODO: wraps db connector calls in try-catch,
+  // TODO: Add Mongo error verification and conversion to class-validation format,
+  // TODO: check unique mongo error, object id cast mongo error, ...
+  // TODO: check clinic id exist
+  // TODO: check that none of passed clinics do not have target login yet (login must be unique for clinic)
   @Post()
   async create(
     @Body() dto: CreateEmployeeInDto,
