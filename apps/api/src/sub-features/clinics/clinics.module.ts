@@ -2,7 +2,6 @@ import { ClinicsController } from './controllers/clinics.controller';
 import { ClinicsDbConnectorService } from './services/clinics-db-connector.service';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { SharedModule } from 'src/shared/shared.module';
 import {
   CLINIC_SCHEMA_NAME,
   ClinicSchema,
@@ -16,7 +15,7 @@ const schemasMap = [
 ];
 
 @Module({
-  imports: [MongooseModule.forFeature(schemasMap), SharedModule],
+  imports: [MongooseModule.forFeature(schemasMap)],
   providers: [ClinicsDbConnectorService],
   controllers: [ClinicsController],
 })

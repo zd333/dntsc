@@ -1,7 +1,6 @@
 import { CLINIC_SCHEMA_NAME } from '../../clinics/db-schemas/clinic.db-schema';
 import { Schema, SchemaDefinition } from 'mongoose';
 
-// TODO: add missing fields
 const schemaDefinition: SchemaDefinition = {
   name: { type: String, required: true },
   isActive: { type: Boolean, required: true },

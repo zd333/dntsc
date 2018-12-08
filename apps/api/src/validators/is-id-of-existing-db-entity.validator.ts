@@ -1,7 +1,11 @@
 import { Connection, Types } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/mongoose';
-import { ValidationArguments, ValidatorConstraint } from 'class-validator';
+import {
+  ValidationArguments,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+} from 'class-validator';
 
 /**
  * Pass id and schema name and validator will check that entity with given id exists in db.
@@ -10,7 +14,7 @@ import { ValidationArguments, ValidatorConstraint } from 'class-validator';
  */
 @ValidatorConstraint({ name: 'isIdOfExistingEntity', async: true })
 @Injectable()
-export class IsIdOfExistingDbEntity {
+export class IsIdOfExistingDbEntity implements ValidatorConstraintInterface {
   constructor(
     @InjectConnection()
     private readonly mongoConnection: Connection,
@@ -24,7 +28,6 @@ export class IsIdOfExistingDbEntity {
     if (!Types.ObjectId.isValid(_id)) {
       return false;
     }
-
     // Check schema name (constraint)
     const schemaName = validationArguments.constraints[0];
 
