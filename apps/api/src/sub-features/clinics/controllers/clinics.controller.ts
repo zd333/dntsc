@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ClinicsDbConnectorService } from '../services/clinics-db-connector.service';
-import { convertDocumentToOutDto } from 'src/shared/helpers/convert-document-to-out-dto.helper';
+import { convertDocumentToOutDto } from 'src/helpers/convert-document-to-out-dto.helper';
 import { CreateClinicInDto } from '../dto/create-clinic.in-dto';
 import { CreatedClinicOutDto } from '../dto/created-clinic.out-dto';
 import { TenantsDbConnectorService } from 'src/sub-features/tenants/services/tenants-db-connector.service';

@@ -1,13 +1,14 @@
+import { CLINIC_SCHEMA_NAME } from 'src/sub-features/clinics/db-schemas/clinic.db-schema';
+import { IsIdOfExistingDbEntity } from 'src/validators/is-id-of-existing-db-entity.validator';
 import { Types } from 'mongoose';
 import {
   IsString,
   MinLength,
   ArrayNotEmpty,
   ArrayUnique,
-  IsMongoId,
+  Validate,
 } from 'class-validator';
 
-// TODO: add missing fields (acls, specialities ..)
 export class CreateEmployeeInDto {
   @MinLength(3)
   @IsString()
@@ -26,9 +27,7 @@ export class CreateEmployeeInDto {
    */
   @ArrayNotEmpty()
   @ArrayUnique()
-  // TODO: replace with IsIdOfExisting entity
-  @IsMongoId({
-    each: true,
-  })
+  // TODO: looks like currently this does not support each validation, fix in github?
+  @Validate(IsIdOfExistingDbEntity, [CLINIC_SCHEMA_NAME], { each: true })
   readonly clinics: Array<Types.ObjectId>;
 }
