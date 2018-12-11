@@ -21,9 +21,8 @@ export class EmployeesController {
   ) {}
 
   // TODO: protect with `platform_owner` ACL
-  // TODO: check that none of passed clinics do not have target login yet (login must be unique for clinic)
   @Post()
-  async create(
+  public async create(
     @Body() dto: CreateEmployeeInDto,
   ): Promise<CreatedEmployeeOutDto> {
     const dbDoc = await this.employeesDbConnector.create(dto);
@@ -32,7 +31,7 @@ export class EmployeesController {
   }
 
   @Get(':id')
-  async getById(@Param() { id }: GetByMongoIdParams) {
+  public async getById(@Param() { id }: GetByMongoIdParams) {
     const dbDoc = await this.employeesDbConnector.getById(id);
 
     if (!dbDoc) {

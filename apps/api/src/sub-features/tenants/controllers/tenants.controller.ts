@@ -10,7 +10,9 @@ export class TenantsController {
 
   // TODO: protect with `platform_owner` ACL
   @Post()
-  async create(@Body() dto: CreateTenantInDto): Promise<CreatedTenantOutDto> {
+  public async create(
+    @Body() dto: CreateTenantInDto,
+  ): Promise<CreatedTenantOutDto> {
     const dbDoc = await this.tenantsDbConnector.create(dto);
 
     return convertDocumentToOutDto(CreatedTenantOutDto, dbDoc);

@@ -14,13 +14,14 @@ import {
  */
 @ValidatorConstraint({ name: 'isIdOfExistingEntity', async: true })
 @Injectable()
-export class IsIdOfExistingDbEntity implements ValidatorConstraintInterface {
+export class IsIdOfExistingDbEntityValidator
+  implements ValidatorConstraintInterface {
   constructor(
     @InjectConnection()
     private readonly mongoConnection: Connection,
   ) {}
 
-  async validate(
+  public async validate(
     _id: Types.ObjectId,
     validationArguments: ValidationArguments,
   ): Promise<boolean> {

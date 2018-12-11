@@ -20,4 +20,10 @@ export class TenantsDbConnectorService {
   public async getById(id: Types.ObjectId): Promise<Document | null> {
     return await this.TenantModel.findById(id).exec();
   }
+
+  public async checkTenantWithGivenNameExists(name: string): Promise<boolean> {
+    const found = await this.TenantModel.find({ name }, { limit: 1 }).exec();
+
+    return !!found && !!found.length;
+  }
 }

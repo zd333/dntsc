@@ -1,4 +1,4 @@
-import { IsIdOfExistingDbEntity } from 'src/validators/is-id-of-existing-db-entity.validator';
+import { IsIdOfExistingDbEntityValidator } from 'src/validators/is-id-of-existing-db-entity.validator';
 import {
   IsNotEmpty,
   IsString,
@@ -17,6 +17,6 @@ export class CreateClinicInDto {
    * Tenant id.
    */
   @IsNotEmpty()
-  @Validate(IsIdOfExistingDbEntity, [TENANT_SCHEMA_NAME])
+  @Validate(IsIdOfExistingDbEntityValidator, [TENANT_SCHEMA_NAME])
   readonly tenant: Types.ObjectId;
 }
