@@ -11,7 +11,9 @@ export class ClinicsController {
 
   // TODO: protect with `platform_owner` ACL
   @Post()
-  async create(@Body() dto: CreateClinicInDto): Promise<CreatedClinicOutDto> {
+  public async create(
+    @Body() dto: CreateClinicInDto,
+  ): Promise<CreatedClinicOutDto> {
     const dbDoc = await this.clinicsDbConnector.create(dto);
 
     return convertDocumentToOutDto(CreatedClinicOutDto, dbDoc);

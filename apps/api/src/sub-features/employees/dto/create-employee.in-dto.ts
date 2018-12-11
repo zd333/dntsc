@@ -1,5 +1,6 @@
 import { CLINIC_SCHEMA_NAME } from 'src/sub-features/clinics/db-schemas/clinic.db-schema';
-import { IsIdOfExistingDbEntity } from 'src/validators/is-id-of-existing-db-entity.validator';
+import { IsIdOfExistingDbEntityValidator } from 'src/validators/is-id-of-existing-db-entity.validator';
+import { IsUniqueEmployeeNameForGivenClinics } from '../validators/is-unique-employee-name-for-given-clinics.validator';
 import { Types } from 'mongoose';
 import {
   IsString,
@@ -20,6 +21,7 @@ export class CreateEmployeeInDto {
 
   @MinLength(3)
   @IsString()
+  @Validate(IsUniqueEmployeeNameForGivenClinics)
   readonly name: string;
 
   /**
@@ -27,7 +29,11 @@ export class CreateEmployeeInDto {
    */
   @ArrayNotEmpty()
   @ArrayUnique()
-  // TODO: looks like currently this does not support each validation, fix in github?
-  @Validate(IsIdOfExistingDbEntity, [CLINIC_SCHEMA_NAME], { each: true })
+  // TODO: currently does not work, update class-validator after this PR is merged
+  // https://github.com/typestack/class-validator/pull/295
+  // or refactor to validate whole array if not merged
+  // @Validate(IsIdOfExistingDbEntityValidator, [CLINIC_SCHEMA_NAME], {
+  //   each: true,
+  // })
   readonly clinics: Array<Types.ObjectId>;
 }

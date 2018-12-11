@@ -1,3 +1,4 @@
+import { IsUniqueTenantNameValidator } from './validators/is-unique-tenant-name.validator';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { TenantsController } from './controllers/tenants.controller';
@@ -16,7 +17,7 @@ const schemasMap = [
 
 @Module({
   imports: [MongooseModule.forFeature(schemasMap)],
-  providers: [TenantsDbConnectorService],
+  providers: [TenantsDbConnectorService, IsUniqueTenantNameValidator],
   controllers: [TenantsController],
   exports: [TenantsDbConnectorService],
 })

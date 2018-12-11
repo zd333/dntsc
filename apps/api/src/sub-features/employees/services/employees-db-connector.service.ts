@@ -24,4 +24,28 @@ export class EmployeesDbConnectorService {
   public async getById(id: Types.ObjectId): Promise<Document | null> {
     return await this.EmployeeModel.findById(id).exec();
   }
+
+  public async checkEmployeeWithGivenNameExistsInSomeOfTheClinicsList(params: {
+    readonly employeeName: string;
+    readonly clinics: Array<Types.ObjectId>;
+  }): Promise<boolean> {
+    // Check params
+    if (
+      !params ||
+      !params.employeeName ||
+      !Array.isArray(params.clinics) ||
+      !params.clinics.length
+    ) {
+      return await false;
+    }
+
+    const { employeeName, clinics } = params;
+    // At least one of the clinics (from passed clinics array) is in employees' (with target name) clinics array
+    const found = await this.EmployeeModel.find({
+      name: employeeName,
+      clinics: { $in: clinics },
+    });
+
+    return !!found && !!found.length;
+  }
 }
