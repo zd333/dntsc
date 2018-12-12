@@ -1,4 +1,4 @@
-import { convertDocumentToOutDto } from 'src/helpers/convert-document-to-out-dto.helper';
+import { convertDocumentToOutDto } from 'src/helpers/convert-document-to-out-dto';
 import { CreatedEmployeeOutDto } from '../dto/created-employee.out-dto';
 import { CreatedTenantOutDto } from 'src/sub-features/tenants/dto/created-tenant.out-dto';
 import { CreateEmployeeInDto } from '../dto/create-employee.in-dto';
