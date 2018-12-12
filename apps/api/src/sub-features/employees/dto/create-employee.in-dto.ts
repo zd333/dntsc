@@ -1,5 +1,6 @@
 import { CLINIC_SCHEMA_NAME } from 'src/sub-features/clinics/db-schemas/clinic.db-schema';
 import { IsIdOfExistingDbEntityValidator } from 'src/validators/is-id-of-existing-db-entity.validator';
+import { IsUniqueEmployeeLoginForGivenClinics } from '../validators/is-unique-employee-login-for-given-clinics.validator';
 import { IsUniqueEmployeeNameForGivenClinics } from '../validators/is-unique-employee-name-for-given-clinics.validator';
 import { Types } from 'mongoose';
 import {
@@ -13,6 +14,7 @@ import {
 export class CreateEmployeeInDto {
   @MinLength(3)
   @IsString()
+  @Validate(IsUniqueEmployeeLoginForGivenClinics)
   readonly login: string;
 
   @IsString()

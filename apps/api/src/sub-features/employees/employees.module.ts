@@ -1,5 +1,6 @@
 import { EmployeesController } from './controllers/employees.controller';
 import { EmployeesDbConnectorService } from './services/employees-db-connector.service';
+import { IsUniqueEmployeeLoginForGivenClinics } from './validators/is-unique-employee-login-for-given-clinics.validator';
 import { IsUniqueEmployeeNameForGivenClinics } from './validators/is-unique-employee-name-for-given-clinics.validator';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -17,7 +18,12 @@ const schemasMap = [
 
 @Module({
   imports: [MongooseModule.forFeature(schemasMap)],
-  providers: [EmployeesDbConnectorService, IsUniqueEmployeeNameForGivenClinics],
+  providers: [
+    EmployeesDbConnectorService,
+    IsUniqueEmployeeNameForGivenClinics,
+    IsUniqueEmployeeLoginForGivenClinics,
+  ],
   controllers: [EmployeesController],
+  exports: [EmployeesDbConnectorService],
 })
 export class EmployeesModule {}
