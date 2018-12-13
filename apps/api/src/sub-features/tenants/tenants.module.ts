@@ -1,6 +1,7 @@
 import { IsUniqueTenantNameValidator } from './validators/is-unique-tenant-name.validator';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { PassportModule } from '@nestjs/passport';
 import { TenantsController } from './controllers/tenants.controller';
 import { TenantsDbConnectorService } from './services/tenants-db-connector.service';
 import {
@@ -16,7 +17,10 @@ const schemasMap = [
 ];
 
 @Module({
-  imports: [MongooseModule.forFeature(schemasMap)],
+  imports: [
+    MongooseModule.forFeature(schemasMap),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+  ],
   providers: [TenantsDbConnectorService, IsUniqueTenantNameValidator],
   controllers: [TenantsController],
   exports: [TenantsDbConnectorService],

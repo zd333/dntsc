@@ -4,6 +4,7 @@ import { IsUniqueEmployeeLoginForGivenClinics } from './validators/is-unique-emp
 import { IsUniqueEmployeeNameForGivenClinics } from './validators/is-unique-employee-name-for-given-clinics.validator';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { PassportModule } from '@nestjs/passport';
 import {
   EMPLOYEE_SCHEMA_NAME,
   EmployeeSchema,
@@ -17,7 +18,10 @@ const schemasMap = [
 ];
 
 @Module({
-  imports: [MongooseModule.forFeature(schemasMap)],
+  imports: [
+    MongooseModule.forFeature(schemasMap),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+  ],
   providers: [
     EmployeesDbConnectorService,
     IsUniqueEmployeeNameForGivenClinics,

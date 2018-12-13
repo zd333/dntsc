@@ -1,3 +1,4 @@
+import { AuthGuard } from '@nestjs/passport';
 import { convertDocumentToOutDto } from 'src/helpers/convert-document-to-out-dto';
 import { CreatedEmployeeOutDto } from '../dto/created-employee.out-dto';
 import { CreatedTenantOutDto } from 'src/sub-features/tenants/dto/created-tenant.out-dto';
@@ -12,6 +13,7 @@ import {
   Param,
   Post,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 
 @Controller('employees')
@@ -20,8 +22,9 @@ export class EmployeesController {
     private readonly employeesDbConnector: EmployeesDbConnectorService,
   ) {}
 
-  // TODO: protect with `platform_owner` ACL
+  // TODO: protect with `hr` ACL
   @Post()
+  @UseGuards(AuthGuard())
   public async create(
     @Body() dto: CreateEmployeeInDto,
   ): Promise<CreatedEmployeeOutDto> {
@@ -31,6 +34,7 @@ export class EmployeesController {
   }
 
   @Get(':id')
+  @UseGuards(AuthGuard())
   public async getById(@Param() { id }: GetByMongoIdParams) {
     const dbDoc = await this.employeesDbConnector.getById(id);
 
