@@ -1,3 +1,4 @@
+import { compare } from 'bcrypt';
 import { Document } from 'mongoose';
 
 export async function isMongooseDocumentPasswordHashValid<
@@ -6,6 +7,5 @@ export async function isMongooseDocumentPasswordHashValid<
   readonly document: T;
   readonly passwordCandidate: string;
 }): Promise<boolean> {
-  // TODO: implement
-  return await false;
+  return await compare(params.passwordCandidate, params.document.password);
 }

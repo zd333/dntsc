@@ -2,6 +2,7 @@ import { ClinicsController } from './controllers/clinics.controller';
 import { ClinicsDbConnectorService } from './services/clinics-db-connector.service';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { PassportModule } from '@nestjs/passport';
 import {
   CLINIC_SCHEMA_NAME,
   ClinicSchema,
@@ -15,7 +16,10 @@ const schemasMap = [
 ];
 
 @Module({
-  imports: [MongooseModule.forFeature(schemasMap)],
+  imports: [
+    MongooseModule.forFeature(schemasMap),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+  ],
   providers: [ClinicsDbConnectorService],
   controllers: [ClinicsController],
 })

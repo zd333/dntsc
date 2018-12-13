@@ -1,4 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import {
+  Body,
+  Controller,
+  Post,
+  UseGuards
+  } from '@nestjs/common';
 import { convertDocumentToOutDto } from 'src/helpers/convert-document-to-out-dto';
 import { CreatedTenantOutDto } from '../dto/created-tenant.out-dto';
 import { CreateTenantInDto } from '../dto/create-tenant.in-dto';
@@ -10,6 +16,7 @@ export class TenantsController {
 
   // TODO: protect with `platform_owner` ACL
   @Post()
+  @UseGuards(AuthGuard())
   public async create(
     @Body() dto: CreateTenantInDto,
   ): Promise<CreatedTenantOutDto> {
