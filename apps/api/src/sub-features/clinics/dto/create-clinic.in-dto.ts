@@ -1,12 +1,18 @@
 import { IsIdOfExistingDbEntityValidator } from 'src/validators/is-id-of-existing-db-entity.validator';
+import { NotUsedClinicHostNames } from '../validators/not-used-clinic-host-names.validator';
+import { TENANT_SCHEMA_NAME } from 'src/sub-features/tenants/db-schemas/tenant.db-schema';
+import { Types } from 'mongoose';
 import {
   IsNotEmpty,
   IsString,
   MinLength,
-  Validate
-  } from 'class-validator';
-import { TENANT_SCHEMA_NAME } from 'src/sub-features/tenants/db-schemas/tenant.db-schema';
-import { Types } from 'mongoose';
+  Validate,
+  ArrayNotEmpty,
+  ArrayUnique,
+  IsUrl,
+  IsLowercase,
+  NotContains,
+} from 'class-validator';
 
 export class CreateClinicInDto {
   @IsString()
@@ -19,4 +25,24 @@ export class CreateClinicInDto {
   @IsNotEmpty()
   @Validate(IsIdOfExistingDbEntityValidator, [TENANT_SCHEMA_NAME])
   readonly tenant: Types.ObjectId;
+
+  @ArrayNotEmpty()
+  @ArrayUnique()
+  @IsLowercase({ each: true })
+  // TODO: replace this multiple validators with single regex that matches host name without protocol and www. prefix
+  @IsUrl(
+    {
+      require_tld: true,
+      allow_trailing_dot: false,
+    },
+    { each: true },
+  )
+  @NotContains('www.', { each: true })
+  @NotContains('http:', { each: true })
+  @NotContains('https:', { each: true })
+  @NotContains('/', { each: true })
+  @NotContains('?', { each: true })
+  @NotContains('&', { each: true })
+  @Validate(NotUsedClinicHostNames)
+  readonly hostNames: Array<string>;
 }

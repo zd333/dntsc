@@ -9,6 +9,7 @@ const schemaDefinition: SchemaDefinition = {
     index: true,
     required: true,
   },
+  hostNames: { type: [String], required: true },
 };
 export const ClinicSchema = new Schema(schemaDefinition);
 export const CLINIC_SCHEMA_NAME = 'Clinic';

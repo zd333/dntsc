@@ -42,10 +42,13 @@ export class EmployeesDbConnectorService {
     }
 
     // Checks if there is an employee with given property value and this employee has at least on clinic from passed clinics array
-    const found = await this.EmployeeModel.find({
-      [employeePropertyName]: employeePropertyValue,
-      clinics: { $in: clinics },
-    });
+    const found = await this.EmployeeModel.find(
+      {
+        [employeePropertyName]: employeePropertyValue,
+        clinics: { $in: clinics },
+      },
+      { limit: 1 },
+    );
 
     return !!found && !!found.length;
   }
@@ -62,13 +65,11 @@ export class EmployeesDbConnectorService {
     // const found = await this.EmployeeModel.find({ login, clinics: clinicId }).exec();
     const { login, password } = params;
     const found = await this.EmployeeModel.find({ login }).exec();
-
     if (!found || !found.length) {
       return null;
     }
 
     const employee = found[0];
-
     // Check password matches
     const passwordIsValid = await isMongooseDocumentPasswordHashValid({
       document: employee,

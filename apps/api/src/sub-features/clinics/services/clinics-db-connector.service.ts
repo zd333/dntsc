@@ -16,4 +16,15 @@ export class ClinicsDbConnectorService {
 
     return await doc.save();
   }
+
+  public async checkHostNamesAreUsedInSomeClinics(
+    hostNamesToCheck: Array<string>,
+  ): Promise<boolean> {
+    const found = await this.ClinicModel.find(
+      { hostNames: { $in: hostNamesToCheck } },
+      { limit: 1 },
+    );
+
+    return !!found && !!found.length;
+  }
 }
