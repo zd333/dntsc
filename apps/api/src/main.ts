@@ -1,4 +1,3 @@
-import * as csurf from 'csurf';
 import * as helmet from 'helmet';
 import * as rateLimit from 'express-rate-limit';
 import { AppModule } from './app.module';
@@ -11,8 +10,6 @@ async function bootstrap() {
 
   // Some security things
   app.use(helmet());
-  // TODO: configure and enable
-  // app.use(csurf());
   app.use(
     rateLimit({
       windowMs: 15 * 60 * 1000, // 15 minutes
