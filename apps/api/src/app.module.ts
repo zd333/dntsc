@@ -1,11 +1,21 @@
+import { AuthenticationModule } from './sub-features/authentication/authentication.module';
+import { ClinicsModule } from './sub-features/clinics/clinics.module';
+import { EmployeesModule } from './sub-features/employees/employees.module';
+import { IsIdOfExistingDbEntityValidator } from './validators/is-id-of-existing-db-entity.validator';
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { ConfigModule } from './config/config.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { TenantsModule } from './sub-features/tenants/tenants.module';
 
 @Module({
-  imports: [ConfigModule],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    MongooseModule.forRoot(process.env.MONGO_CONNECTION_STRING, {
+      useNewUrlParser: true,
+    }),
+    EmployeesModule,
+    AuthenticationModule,
+    ClinicsModule,
+    TenantsModule,
+  ],
+  providers: [IsIdOfExistingDbEntityValidator],
 })
 export class AppModule {}
