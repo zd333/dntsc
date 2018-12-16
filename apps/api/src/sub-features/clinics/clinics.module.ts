@@ -23,5 +23,6 @@ const schemasMap = [
   ],
   providers: [ClinicsDbConnectorService, NotUsedClinicHostNames],
   controllers: [ClinicsController],
+  exports: [ClinicsDbConnectorService],
 })
 export class ClinicsModule {}

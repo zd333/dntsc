@@ -1,7 +1,7 @@
 import { CreateEmployeeInDto } from '../dto/create-employee.in-dto';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { isMongooseDocumentPasswordHashValid } from 'src/helpers/is-mongoose-document-password-hash-valid';
+import { isMongooseDocumentPasswordHashValid } from 'src/sub-features/shared/helpers/is-mongoose-document-password-hash-valid';
 import { Model, Types } from 'mongoose';
 import {
   EMPLOYEE_SCHEMA_NAME,
@@ -56,15 +56,13 @@ export class EmployeesDbConnectorService {
   public async getByCredentials(params: {
     readonly login: string;
     readonly password: string;
-    // TODO: after clinic id is handled in request add clinic id
-    // so that it will work for the cases when there is more than one clinic with the same employee login:
-    // readonly clinicId: Types.ObjectId;
+    readonly clinicId: Types.ObjectId;
   }): Promise<EmployeeDocument | null> {
-    // TODO: replace with commented when clinic id is added ^^^
-    // const { login, password, clinicId } = params;
-    // const found = await this.EmployeeModel.find({ login, clinics: clinicId }).exec();
-    const { login, password } = params;
-    const found = await this.EmployeeModel.find({ login }).exec();
+    const { login, password, clinicId } = params;
+    const found = await this.EmployeeModel.find({
+      login,
+      clinics: clinicId,
+    }).exec();
     if (!found || !found.length) {
       return null;
     }

@@ -36,3 +36,5 @@ async function bootstrap() {
 }
 
 bootstrap();
+
+// TODO: add DB script for dev mode that creates initial partner, clinic (with localhost:4000 host name), employee with admin permissions.

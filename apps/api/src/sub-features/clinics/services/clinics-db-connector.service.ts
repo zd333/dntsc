@@ -1,6 +1,6 @@
 import { CLINIC_SCHEMA_NAME } from '../db-schemas/clinic.db-schema';
 import { CreateClinicInDto } from '../dto/create-clinic.in-dto';
-import { Document, Model } from 'mongoose';
+import { Document, Model, Types } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
@@ -26,5 +26,18 @@ export class ClinicsDbConnectorService {
     );
 
     return !!found && !!found.length;
+  }
+
+  public async getClinicIdByHostName(params: {
+    hostName: string;
+  }): Promise<Types.ObjectId | undefined> {
+    const { hostName } = params;
+    const found = await this.ClinicModel.find(
+      { hostNames: hostName },
+      // Expected to be unique, thus get only one
+      { limit: 1 },
+    );
+
+    return found && found.length ? found[0]._id : undefined;
   }
 }
