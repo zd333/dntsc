@@ -5,7 +5,7 @@ import {
   SchemaDefinition,
   Types
   } from 'mongoose';
-import { passwordHashingHook } from 'src/helpers/password-hashing-mongoose-schema-hook';
+import { passwordHashingHook } from 'src/sub-features/shared/helpers/password-hashing-mongoose-schema-hook';
 
 const schemaDefinition: SchemaDefinition = {
   name: { type: String, required: true },

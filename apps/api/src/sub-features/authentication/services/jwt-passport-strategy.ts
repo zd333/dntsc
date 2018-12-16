@@ -1,7 +1,11 @@
-import { AuthenticationService, JwtPayload } from './authentication.service';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
+import {
+  AuthenticationService,
+  JwtPayload,
+  AuthenticatedUser,
+} from './authentication.service';
 
 @Injectable()
 export class JwtPassportStrategy extends PassportStrategy(Strategy) {
@@ -12,7 +16,10 @@ export class JwtPassportStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: JwtPayload) {
+  /**
+   * Passport uses this method validate user and add it to request object.
+   */
+  async validate(payload: JwtPayload): Promise<AuthenticatedUser> {
     const user = await this.authenticationService.validateUserByJwtPayload(
       payload,
     );
