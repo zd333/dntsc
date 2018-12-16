@@ -1,5 +1,5 @@
 import { AuthGuard } from '@nestjs/passport';
-import { convertDocumentToOutDto } from 'src/helpers/convert-document-to-out-dto';
+import { convertDocumentToOutDto } from 'src/sub-features/shared/helpers/convert-document-to-out-dto';
 import { CreatedEmployeeOutDto } from '../dto/created-employee.out-dto';
 import { CreatedTenantOutDto } from 'src/sub-features/tenants/dto/created-tenant.out-dto';
 import { CreateEmployeeInDto } from '../dto/create-employee.in-dto';
@@ -24,7 +24,7 @@ export class EmployeesController {
 
   // TODO: protect with `hr` ACL
   @Post()
-  @UseGuards(AuthGuard())
+  // @UseGuards(AuthGuard())
   public async create(
     @Body() dto: CreateEmployeeInDto,
   ): Promise<CreatedEmployeeOutDto> {

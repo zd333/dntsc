@@ -29,8 +29,10 @@ export class AuthenticationService {
    */
   public async signInEmployee(
     dto: SignInEmployeeInDto,
+    clinicId: Types.ObjectId,
   ): Promise<SignedInEmployeeOutDto> {
     const employee = await this.employeesDbConnector.getByCredentials({
+      clinicId,
       login: dto.login,
       password: dto.password,
     });
@@ -77,8 +79,9 @@ export interface JwtPayload {
 }
 
 /**
- * This will be added to each authenticated request.
- * TODO: add everything is needed for convenient processing, e.g. permissions, etc.
+ * Property `user` with value that follows this interface is added to each authenticated
+ * (signed with auth credentials) request.
+ * TODO: add permissions.
  */
 export interface AuthenticatedUser {
   readonly isEmployee: boolean;

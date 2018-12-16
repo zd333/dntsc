@@ -29,14 +29,8 @@ export class CreateClinicInDto {
   @ArrayNotEmpty()
   @ArrayUnique()
   @IsLowercase({ each: true })
-  // TODO: replace this multiple validators with single regex that matches host name without protocol and www. prefix
-  @IsUrl(
-    {
-      require_tld: true,
-      allow_trailing_dot: false,
-    },
-    { each: true },
-  )
+  // TODO: replace this bull shit with single regex that matches host name without protocol and www. prefix
+  @IsString({ each: true })
   @NotContains('www.', { each: true })
   @NotContains('http:', { each: true })
   @NotContains('https:', { each: true })
