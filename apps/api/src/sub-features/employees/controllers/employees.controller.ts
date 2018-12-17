@@ -1,3 +1,4 @@
+import { ACGuard, UseRoles } from 'nest-access-control';
 import { AuthGuard } from '@nestjs/passport';
 import { convertDocumentToOutDto } from 'src/sub-features/shared/helpers/convert-document-to-out-dto';
 import { CreatedEmployeeOutDto } from '../dto/created-employee.out-dto';
@@ -6,6 +7,7 @@ import { CreateEmployeeInDto } from '../dto/create-employee.in-dto';
 import { EmployeeDetailsOutDto } from '../dto/employee-details.out-dto';
 import { EmployeesDbConnectorService } from '../services/employees-db-connector.service';
 import { GetByMongoIdParams } from 'src/validators/get-by-mongo-id-params.validated-class';
+import { IsEmployeeGuard } from 'src/sub-features/shared/guards/is-employee.guard';
 import {
   Body,
   Controller,
@@ -22,9 +24,14 @@ export class EmployeesController {
     private readonly employeesDbConnector: EmployeesDbConnectorService,
   ) {}
 
-  // TODO: protect with `hr` ACL
+  // TODO: only platform owners should be able to add platform owner and clinic owner roles
+  @UseGuards(AuthGuard(), ACGuard)
+  @UseRoles({
+    resource: 'employee',
+    action: 'create',
+    possession: 'any',
+  })
   @Post()
-  // @UseGuards(AuthGuard())
   public async create(
     @Body() dto: CreateEmployeeInDto,
   ): Promise<CreatedEmployeeOutDto> {
@@ -34,7 +41,8 @@ export class EmployeesController {
   }
 
   @Get(':id')
-  @UseGuards(AuthGuard())
+  // Not sure if only employees are allowed to see details of employees, remove `IsEmployeeGuard` guard if so
+  @UseGuards(AuthGuard(), IsEmployeeGuard)
   public async getById(@Param() { id }: GetByMongoIdParams) {
     const dbDoc = await this.employeesDbConnector.getById(id);
 

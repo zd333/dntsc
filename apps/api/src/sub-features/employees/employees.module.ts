@@ -6,13 +6,14 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
 import {
-  EMPLOYEE_SCHEMA_NAME,
+  EMPLOYEE_SCHEMA_COLLECTION_NAME,
   EmployeeSchema,
 } from './db-schemas/employee.db-schema';
 
 const schemasMap = [
   {
-    name: EMPLOYEE_SCHEMA_NAME,
+    name: EMPLOYEE_SCHEMA_COLLECTION_NAME,
+    collection: EMPLOYEE_SCHEMA_COLLECTION_NAME,
     schema: EmployeeSchema,
   },
 ];
