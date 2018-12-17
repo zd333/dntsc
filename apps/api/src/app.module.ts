@@ -1,3 +1,5 @@
+import { AccessControlModule } from 'nest-access-control';
+import { appRoles } from './app-access-roles';
 import { AuthenticatedUser } from './sub-features/authentication/services/authentication.service';
 import { AuthenticationModule } from './sub-features/authentication/authentication.module';
 import { ClinicsModule } from './sub-features/clinics/clinics.module';
@@ -15,6 +17,7 @@ import { Types } from 'mongoose';
     MongooseModule.forRoot(process.env.MONGO_CONNECTION_STRING, {
       useNewUrlParser: true,
     }),
+    AccessControlModule.forRoles(appRoles),
     EmployeesModule,
     AuthenticationModule,
     ClinicsModule,

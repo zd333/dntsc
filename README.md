@@ -48,3 +48,14 @@ This requires updates (changing and deploying) of gateway (router) config, follo
 1. go to `/routing-rules.json`
 1. change `dest` value of target app/apps to remembered deployment URL (see steps above), save updates
 1. run `now alias dntsc.now.sh -r routing-rules.json` - this will bring target deployments to prod env (domain name)
+
+## Creating very first platform owner (employee) and clinic
+
+First platform owner must be created manually, after that he can create other, platform owners.
+You have to do this steps only once when you setting up new environment with empty DB.
+
+1. run `node ./apps/api/generate-password-hash.js <desired password>` passing desired platform owner password as argument; this will print password hash - copy and save it somewhere to use in next steps
+1. for dev env - run `yarn --cwd ./apps/api run start:dev` for prod env - make sure API app is built and launched (at this point DB with schemas will be created)
+1. connect to mogo directly (for dev mode run `docker ps` and remember ID of mongo container, then run `docker exec -it <ID of mongo container> bash` (now you are in mongo container terminal), then run `mongo`)
+1. run `use <app DB name>` (use your own DB name that is specified in .env file, default dev DB name is `dntsc-v1`)
+1. run `db.Employee.insert({name: '<desired name>', isActive: true, login: '<desired login>', roles: ['_PLATFORM_OWNER'], password: '<remembered password hash>'})` (pass your own name, login and remembered password hash)

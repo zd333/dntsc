@@ -1,3 +1,4 @@
+import { ACGuard, UseRoles } from 'nest-access-control';
 import { AuthGuard } from '@nestjs/passport';
 import {
   Body,
@@ -14,9 +15,13 @@ import { TenantsDbConnectorService } from '../services/tenants-db-connector.serv
 export class TenantsController {
   constructor(private readonly tenantsDbConnector: TenantsDbConnectorService) {}
 
-  // TODO: protect with `platform_owner` ACL
+  @UseGuards(AuthGuard(), ACGuard)
+  @UseRoles({
+    resource: 'tenant',
+    action: 'create',
+    possession: 'any',
+  })
   @Post()
-  @UseGuards(AuthGuard())
   public async create(
     @Body() dto: CreateTenantInDto,
   ): Promise<CreatedTenantOutDto> {

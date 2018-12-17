@@ -5,13 +5,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { NotUsedClinicHostNames } from './validators/not-used-clinic-host-names.validator';
 import { PassportModule } from '@nestjs/passport';
 import {
-  CLINIC_SCHEMA_NAME,
+  CLINIC_SCHEMA_COLLECTION_NAME,
   ClinicSchema,
 } from './db-schemas/clinic.db-schema';
 
 const schemasMap = [
   {
-    name: CLINIC_SCHEMA_NAME,
+    name: CLINIC_SCHEMA_COLLECTION_NAME,
+    collection: CLINIC_SCHEMA_COLLECTION_NAME,
     schema: ClinicSchema,
   },
 ];

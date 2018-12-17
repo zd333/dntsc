@@ -1,6 +1,6 @@
 import { IsIdOfExistingDbEntityValidator } from 'src/validators/is-id-of-existing-db-entity.validator';
 import { NotUsedClinicHostNames } from '../validators/not-used-clinic-host-names.validator';
-import { TENANT_SCHEMA_NAME } from 'src/sub-features/tenants/db-schemas/tenant.db-schema';
+import { TENANT_SCHEMA_COLLECTION_NAME } from 'src/sub-features/tenants/db-schemas/tenant.db-schema';
 import { Types } from 'mongoose';
 import {
   IsNotEmpty,
@@ -23,7 +23,7 @@ export class CreateClinicInDto {
    * Tenant id.
    */
   @IsNotEmpty()
-  @Validate(IsIdOfExistingDbEntityValidator, [TENANT_SCHEMA_NAME])
+  @Validate(IsIdOfExistingDbEntityValidator, [TENANT_SCHEMA_COLLECTION_NAME])
   readonly tenant: Types.ObjectId;
 
   @ArrayNotEmpty()
