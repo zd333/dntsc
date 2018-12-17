@@ -1,3 +1,4 @@
+import { AppAccessRoles } from 'src/app-access-roles';
 import { EmployeeDocument } from 'src/sub-features/employees/db-schemas/employee.db-schema';
 import { EmployeesDbConnectorService } from 'src/sub-features/employees/services/employees-db-connector.service';
 import { JwtService } from '@nestjs/jwt';
@@ -53,6 +54,36 @@ export class AuthenticationService {
   }
 
   /**
+   * Almost same as `signInEmployee` but requires no clinic id
+   * (platform owners can sign in without clinic context).
+   */
+  public async signInPlatformOwner(
+    dto: SignInEmployeeInDto,
+  ): Promise<SignedInEmployeeOutDto> {
+    const employee = await this.employeesDbConnector.getByCredentials({
+      login: dto.login,
+      password: dto.password,
+    });
+    if (!employee) {
+      // Credentials do not match
+      throw new UnauthorizedException();
+    }
+
+    const thisIsActivePlatformOwner =
+      employee.isActive &&
+      Array.isArray(employee.roles) &&
+      employee.roles.some(role => role === AppAccessRoles._PLATFORM_OWNER);
+    if (!thisIsActivePlatformOwner) {
+      throw new ForbiddenException();
+    }
+
+    const payload: JwtPayload = { employeeId: employee._id };
+    const authToken = this.jwt.sign(payload);
+
+    return { authToken };
+  }
+
+  /**
    * This is used by Passport, see `JwtPassportStrategy`.
    * Currently supports only employee users.
    */
@@ -81,19 +112,24 @@ export interface JwtPayload {
 /**
  * Property `user` with value that follows this interface is added to each authenticated
  * (signed with auth credentials) request.
- * TODO: add permissions.
  */
 export interface AuthenticatedUser {
   readonly isEmployee: boolean;
+  readonly roles?: Array<AppAccessRoles>;
 }
 
 /**
  * This a stub now, will be refactored while `AuthenticatedUser` gets more properties.
  */
 function convertEmployeeDocumentToAuthenticatedUser(
-  document: EmployeeDocument,
+  employeeDocument: EmployeeDocument,
 ): AuthenticatedUser {
+  const roles =
+    employeeDocument.roles && employeeDocument.roles.length
+      ? employeeDocument.roles
+      : [AppAccessRoles._BASIC_PERMISSIONS];
   return {
+    roles,
     isEmployee: true,
   };
 }

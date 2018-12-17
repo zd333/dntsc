@@ -5,13 +5,14 @@ import { PassportModule } from '@nestjs/passport';
 import { TenantsController } from './controllers/tenants.controller';
 import { TenantsDbConnectorService } from './services/tenants-db-connector.service';
 import {
-  TENANT_SCHEMA_NAME,
+  TENANT_SCHEMA_COLLECTION_NAME,
   TenantSchema,
 } from './db-schemas/tenant.db-schema';
 
 const schemasMap = [
   {
-    name: TENANT_SCHEMA_NAME,
+    name: TENANT_SCHEMA_COLLECTION_NAME,
+    collection: TENANT_SCHEMA_COLLECTION_NAME,
     schema: TenantSchema,
   },
 ];

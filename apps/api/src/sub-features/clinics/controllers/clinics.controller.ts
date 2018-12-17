@@ -1,3 +1,4 @@
+import { ACGuard, UseRoles } from 'nest-access-control';
 import { AuthGuard } from '@nestjs/passport';
 import {
   Body,
@@ -14,9 +15,13 @@ import { CreatedClinicOutDto } from '../dto/created-clinic.out-dto';
 export class ClinicsController {
   constructor(private readonly clinicsDbConnector: ClinicsDbConnectorService) {}
 
-  // TODO: protect with `platform_owner` ACL
+  @UseGuards(AuthGuard(), ACGuard)
+  @UseRoles({
+    resource: 'clinic',
+    action: 'create',
+    possession: 'any',
+  })
   @Post()
-  @UseGuards(AuthGuard())
   public async create(
     @Body() dto: CreateClinicInDto,
   ): Promise<CreatedClinicOutDto> {
