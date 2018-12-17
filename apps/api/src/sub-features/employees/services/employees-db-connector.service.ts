@@ -4,14 +4,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { isMongooseDocumentPasswordHashValid } from 'src/sub-features/shared/helpers/is-mongoose-document-password-hash-valid';
 import { Model, Types } from 'mongoose';
 import {
-  EMPLOYEE_SCHEMA_NAME,
+  EMPLOYEE_SCHEMA_COLLECTION_NAME,
   EmployeeDocument,
 } from '../db-schemas/employee.db-schema';
 
 @Injectable()
 export class EmployeesDbConnectorService {
   constructor(
-    @InjectModel(EMPLOYEE_SCHEMA_NAME)
+    @InjectModel(EMPLOYEE_SCHEMA_COLLECTION_NAME)
     private readonly EmployeeModel: Model<EmployeeDocument>,
   ) {}
 
@@ -56,13 +56,15 @@ export class EmployeesDbConnectorService {
   public async getByCredentials(params: {
     readonly login: string;
     readonly password: string;
-    readonly clinicId: Types.ObjectId;
+    readonly clinicId?: Types.ObjectId;
   }): Promise<EmployeeDocument | null> {
     const { login, password, clinicId } = params;
-    const found = await this.EmployeeModel.find({
-      login,
-      clinics: clinicId,
-    }).exec();
+    const findParams = clinicId ? { login, clinics: clinicId } : { login };
+    // const found = await this.EmployeeModel.find(findParams).exec();
+    const found = await this.EmployeeModel.find().exec();
+
+    console.log('**********777');
+    console.log(found);
     if (!found || !found.length) {
       return null;
     }

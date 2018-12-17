@@ -1,4 +1,5 @@
-import { CLINIC_SCHEMA_NAME } from '../../clinics/db-schemas/clinic.db-schema';
+import { AppAccessRoles } from 'src/app-access-roles';
+import { CLINIC_SCHEMA_COLLECTION_NAME } from '../../clinics/db-schemas/clinic.db-schema';
 import {
   Document,
   Schema,
@@ -18,7 +19,7 @@ const schemaDefinition: SchemaDefinition = {
   password: String,
   hasToChangePassword: { type: Boolean, required: false },
   clinics: {
-    type: [{ type: Schema.Types.ObjectId, ref: CLINIC_SCHEMA_NAME }],
+    type: [{ type: Schema.Types.ObjectId, ref: CLINIC_SCHEMA_COLLECTION_NAME }],
     required: true,
     validate: {
       validator(value) {
@@ -27,6 +28,7 @@ const schemaDefinition: SchemaDefinition = {
       message: 'At least one clinic is required',
     },
   },
+  roles: { type: [String], required: false },
 };
 
 const schema = new Schema(schemaDefinition);
@@ -38,10 +40,10 @@ export type EmployeeDocument = Readonly<Document> & {
   login: string;
   password: string;
   hasToChangePassword?: boolean;
-  // TODO: should be or type with array of clinic documents (when using populate)?
   clinics: Array<Types.ObjectId>;
+  roles: Array<AppAccessRoles>;
 };
 
 export const EmployeeSchema = schema;
 
-export const EMPLOYEE_SCHEMA_NAME = 'Employee';
+export const EMPLOYEE_SCHEMA_COLLECTION_NAME = 'Employee';
