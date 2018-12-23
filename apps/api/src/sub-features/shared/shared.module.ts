@@ -1,8 +1,11 @@
-import { IsEmployeeGuard } from './guards/is-employee.guard';
-import { IsInClinicContextGuard } from './guards/is-in-clinic-context.guard';
 import { Module } from '@nestjs/common';
+import { RequesterIsEmployeeOfTargetClinicGuard } from './guards/requester-is-employee-of-target-clinic.guard';
+import { RequestIsInClinicContextGuard } from './guards/request-is-in-clinic-context.guard';
 
-const guards = [IsInClinicContextGuard, IsEmployeeGuard];
+const guards = [
+  RequestIsInClinicContextGuard,
+  RequesterIsEmployeeOfTargetClinicGuard,
+];
 
 /**
  * Contains shared stuff which is used across multiple app modules.

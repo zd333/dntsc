@@ -1,6 +1,6 @@
 import { AppRequest } from 'src/app.module';
 import { AuthenticationService } from '../services/authentication.service';
-import { IsInClinicContextGuard } from 'src/sub-features/shared/guards/is-in-clinic-context.guard';
+import { RequestIsInClinicContextGuard } from 'src/sub-features/shared/guards/request-is-in-clinic-context.guard';
 import { SignedInEmployeeOutDto } from '../dto/signed-in-employee.out-dto';
 import { SignInEmployeeInDto } from '../dto/sign-in-employee.in-dto';
 import {
@@ -20,7 +20,7 @@ export class AuthenticationController {
    * Endpoint to sign in employee with login and password.
    */
   @Post('sign-in-employee')
-  @UseGuards(IsInClinicContextGuard)
+  @UseGuards(RequestIsInClinicContextGuard)
   public async signInEmployee(
     @Body() dto: SignInEmployeeInDto,
     @Request() req: AppRequest,

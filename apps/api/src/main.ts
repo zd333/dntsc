@@ -8,7 +8,7 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Some security things
+  // Helmet adds some good for security headers
   app.use(helmet());
   app.use(
     rateLimit({

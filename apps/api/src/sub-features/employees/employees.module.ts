@@ -5,6 +5,7 @@ import { IsUniqueEmployeeNameForGivenClinics } from './validators/is-unique-empl
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
+import { RequesterIsPlatformOwnerIfCreatesClinicOwnerGuard } from './guards/requester-is-platform-owner-if-creates-clinic-owner.guard';
 import {
   EMPLOYEE_SCHEMA_COLLECTION_NAME,
   EmployeeSchema,
@@ -24,6 +25,7 @@ const schemasMap = [
     PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
   providers: [
+    RequesterIsPlatformOwnerIfCreatesClinicOwnerGuard,
     EmployeesDbConnectorService,
     IsUniqueEmployeeNameForGivenClinics,
     IsUniqueEmployeeLoginForGivenClinics,

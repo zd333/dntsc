@@ -12,7 +12,7 @@ import {
  * See `DetermineClinicByHostNameMiddleware`.
  */
 @Injectable()
-export class IsInClinicContextGuard implements CanActivate {
+export class RequestIsInClinicContextGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const req: AppRequest = context.switchToHttp().getRequest();
 
