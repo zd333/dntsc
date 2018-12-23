@@ -60,11 +60,8 @@ export class EmployeesDbConnectorService {
   }): Promise<EmployeeDocument | null> {
     const { login, password, clinicId } = params;
     const findParams = clinicId ? { login, clinics: clinicId } : { login };
-    // const found = await this.EmployeeModel.find(findParams).exec();
-    const found = await this.EmployeeModel.find().exec();
+    const found = await this.EmployeeModel.find(findParams).exec();
 
-    console.log('**********777');
-    console.log(found);
     if (!found || !found.length) {
       return null;
     }

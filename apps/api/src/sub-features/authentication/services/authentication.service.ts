@@ -1,6 +1,7 @@
 import { AppAccessRoles } from 'src/app-access-roles';
 import { EmployeeDocument } from 'src/sub-features/employees/db-schemas/employee.db-schema';
 import { EmployeesDbConnectorService } from 'src/sub-features/employees/services/employees-db-connector.service';
+import { hasRoles } from 'src/sub-features/shared/helpers/has-roles';
 import { JwtService } from '@nestjs/jwt';
 import { SignedInEmployeeOutDto } from '../dto/signed-in-employee.out-dto';
 import { SignInEmployeeInDto } from '../dto/sign-in-employee.in-dto';
@@ -69,11 +70,10 @@ export class AuthenticationService {
       throw new UnauthorizedException();
     }
 
-    const thisIsActivePlatformOwner =
+    const isActivePlatformOwner =
       employee.isActive &&
-      Array.isArray(employee.roles) &&
-      employee.roles.some(role => role === AppAccessRoles._PLATFORM_OWNER);
-    if (!thisIsActivePlatformOwner) {
+      hasRoles({ target: employee, roles: [AppAccessRoles._PLATFORM_OWNER] });
+    if (!isActivePlatformOwner) {
       throw new ForbiddenException();
     }
 
@@ -97,7 +97,7 @@ export class AuthenticationService {
     const employee = await this.employeesDbConnector.getById(
       payload.employeeId,
     );
-    if (!employee) {
+    if (!employee || !employee.isActive) {
       return;
     }
 
@@ -116,6 +116,7 @@ export interface JwtPayload {
 export interface AuthenticatedUser {
   readonly isEmployee: boolean;
   readonly roles?: Array<AppAccessRoles>;
+  readonly clinics?: Array<Types.ObjectId>;
 }
 
 /**
@@ -128,8 +129,15 @@ function convertEmployeeDocumentToAuthenticatedUser(
     employeeDocument.roles && employeeDocument.roles.length
       ? employeeDocument.roles
       : [AppAccessRoles._BASIC_PERMISSIONS];
+  const isPlatformOwner = hasRoles({
+    target: employeeDocument,
+    roles: [AppAccessRoles._PLATFORM_OWNER],
+  });
+  const clinics = employeeDocument.clinics || [];
   return {
     roles,
     isEmployee: true,
+    // Do not add clinics to platform owner, he has access to all clinics
+    ...(isPlatformOwner ? {} : { clinics }),
   };
 }

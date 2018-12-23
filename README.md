@@ -14,6 +14,7 @@ Install Node, Yarn, Docker.
 1. add your user to `docker` group by running `sudo usermod -a -G docker $USER` (this gives ability to access docker engine without `sudo`)
 1. completely log out of your account and log back in (if in doubt, reboot!)
 1. prepare `.env` file with development configuration values; this file is git-ignored and thus is missing after you pulled the repo, use `.env-example` as reference (most example values are for dev mode)
+1. Create very platform owner - follow steps [Creating platform owner](#creating-platform-owner)
 
 ### Launching project in dev mode
 
@@ -23,8 +24,9 @@ Install Node, Yarn, Docker.
 React client will be available under [localhost:3000](localhost:3000).
 With default `.env` values (copied from `.env-example`) API will be available under [localhost:4000](localhost:4000).
 If you set custom value for `API_SERVING_PORT` (other than `4000`), then you also have to make corresponding change to `proxy` field of `/apps/react-client/package.json`.
-Development MongoDB will be available under port 27017 on localhost.
 Apps will refresh/reload automatically after you make changes to source code.
+Development MongoDB will be available under port 27017 on localhost.
+MongoDB files will be stored in `~/dntsc_dev_mongo_db_data` folder.
 
 ## Building and deploying
 
@@ -49,13 +51,12 @@ This requires updates (changing and deploying) of gateway (router) config, follo
 1. change `dest` value of target app/apps to remembered deployment URL (see steps above), save updates
 1. run `now alias dntsc.now.sh -r routing-rules.json` - this will bring target deployments to prod env (domain name)
 
-## Creating very first platform owner (employee) and clinic
+## Creating platform owner
 
-First platform owner must be created manually, after that he can create other, platform owners.
-You have to do this steps only once when you setting up new environment with empty DB.
+For now platform owners are to be created manually.
 
 1. run `node ./apps/api/generate-password-hash.js <desired password>` passing desired platform owner password as argument; this will print password hash - copy and save it somewhere to use in next steps
-1. for dev env - run `yarn --cwd ./apps/api run start:dev` for prod env - make sure API app is built and launched (at this point DB with schemas will be created)
-1. connect to mogo directly (for dev mode run `docker ps` and remember ID of mongo container, then run `docker exec -it <ID of mongo container> bash` (now you are in mongo container terminal), then run `mongo`)
-1. run `use <app DB name>` (use your own DB name that is specified in .env file, default dev DB name is `dntsc-v1`)
-1. run `db.Employee.insert({name: '<desired name>', isActive: true, login: '<desired login>', roles: ['_PLATFORM_OWNER'], password: '<remembered password hash>'})` (pass your own name, login and remembered password hash)
+2. make sure API app was at least once successfully built and launched on target env (DB with schemas are created automatically after app first launch, we need those to exist when creating platform owner)
+3. connect to mongo directly (for dev env run `docker ps`, remember ID of mongo container, then run `docker exec -it <ID of mongo container> bash`, now you are in mongo container terminal, finally run `mongo`)
+4. run `use <app DB name>` (use your own DB name that is specified in .env file, default dev DB name is `dntsc-v1`)
+5. run `db.Employee.insert({name: '<desired name>', isActive: true, login: '<desired login>', roles: ['_PLATFORM_OWNER'], password: '<remembered password hash>'})` (pass your own name, login and remembered password hash)

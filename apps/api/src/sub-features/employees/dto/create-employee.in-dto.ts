@@ -12,6 +12,8 @@ import {
   Validate,
   IsOptional,
   IsEnum,
+  ValidateIf,
+  NotEquals,
 } from 'class-validator';
 
 export class CreateEmployeeInDto {
@@ -44,9 +46,12 @@ export class CreateEmployeeInDto {
 
   /**
    * Access (permissions) roles list.
+   * Do not allow creating platform owners via API requests
+   * (suppose this is done manually via direct DB access).
    */
   @IsOptional()
   @ArrayUnique()
   @IsEnum(AppAccessRoles, { each: true })
+  @NotEquals(AppAccessRoles._PLATFORM_OWNER, { each: true })
   readonly roles?: Array<AppAccessRoles>;
 }

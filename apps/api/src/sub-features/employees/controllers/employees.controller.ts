@@ -7,7 +7,8 @@ import { CreateEmployeeInDto } from '../dto/create-employee.in-dto';
 import { EmployeeDetailsOutDto } from '../dto/employee-details.out-dto';
 import { EmployeesDbConnectorService } from '../services/employees-db-connector.service';
 import { GetByMongoIdParams } from 'src/validators/get-by-mongo-id-params.validated-class';
-import { IsEmployeeGuard } from 'src/sub-features/shared/guards/is-employee.guard';
+import { RequesterIsEmployeeOfTargetClinicGuard } from 'src/sub-features/shared/guards/requester-is-employee-of-target-clinic.guard';
+import { RequesterIsPlatformOwnerIfCreatesClinicOwnerGuard } from '../guards/requester-is-platform-owner-if-creates-clinic-owner.guard';
 import {
   Body,
   Controller,
@@ -24,8 +25,12 @@ export class EmployeesController {
     private readonly employeesDbConnector: EmployeesDbConnectorService,
   ) {}
 
-  // TODO: only platform owners should be able to add platform owner and clinic owner roles
-  @UseGuards(AuthGuard(), ACGuard)
+  @UseGuards(
+    AuthGuard(),
+    ACGuard,
+    RequesterIsEmployeeOfTargetClinicGuard,
+    RequesterIsPlatformOwnerIfCreatesClinicOwnerGuard,
+  )
   @UseRoles({
     resource: 'employee',
     action: 'create',
@@ -42,7 +47,7 @@ export class EmployeesController {
 
   @Get(':id')
   // Not sure if only employees are allowed to see details of employees, remove `IsEmployeeGuard` guard if so
-  @UseGuards(AuthGuard(), IsEmployeeGuard)
+  @UseGuards(AuthGuard(), RequesterIsEmployeeOfTargetClinicGuard)
   public async getById(@Param() { id }: GetByMongoIdParams) {
     const dbDoc = await this.employeesDbConnector.getById(id);
 
