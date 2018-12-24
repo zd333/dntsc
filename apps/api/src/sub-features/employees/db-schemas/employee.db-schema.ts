@@ -8,6 +8,8 @@ import {
   } from 'mongoose';
 import { passwordHashingHook } from 'src/sub-features/shared/helpers/password-hashing-mongoose-schema-hook';
 
+export const EMPLOYEE_SCHEMA_COLLECTION_NAME = 'Employee';
+
 const schemaDefinition: SchemaDefinition = {
   name: { type: String, required: true },
   isActive: { type: Boolean, required: true },
@@ -45,5 +47,3 @@ export type EmployeeDocument = Readonly<Document> & {
 };
 
 export const EmployeeSchema = schema;
-
-export const EMPLOYEE_SCHEMA_COLLECTION_NAME = 'Employee';

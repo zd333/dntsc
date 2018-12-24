@@ -1,7 +1,10 @@
 import { Schema, SchemaDefinition } from 'mongoose';
 
+export const TENANT_SCHEMA_COLLECTION_NAME = 'Tenant';
+
 const schemaDefinition: SchemaDefinition = {
-  name: { type: String, index: true, required: true },
+  name: { type: String, required: true },
 };
 export const TenantSchema = new Schema(schemaDefinition);
-export const TENANT_SCHEMA_COLLECTION_NAME = 'Tenant';
+
+// TODO: add inventory feature is enabled or not info prop
