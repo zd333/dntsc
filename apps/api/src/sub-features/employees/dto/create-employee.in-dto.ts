@@ -12,7 +12,6 @@ import {
   Validate,
   IsOptional,
   IsEnum,
-  ValidateIf,
   NotEquals,
 } from 'class-validator';
 

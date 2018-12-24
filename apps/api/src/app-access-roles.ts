@@ -22,6 +22,14 @@ export enum AppAccessRoles {
    */
   _HR = '_HR',
   /**
+   * Allows work with inventory balance data.
+   */
+  _INVENTORY_BALANCE_KEEPER = '_INVENTORY_KEEPER',
+  /**
+   * Allows any actions to inventory.
+   */
+  _INVENTORY_MASTER = '_INVENTORY_KEEPER',
+  /**
    * This role contains basic permissions which are granted to users all users (even with no roles).
    */
   _BASIC_PERMISSIONS = '_BASIC_PERMISSIONS',
@@ -36,7 +44,17 @@ appRoles
   .createAny('employee')
   .updateAny('employee');
 
-appRoles.grant(AppAccessRoles._CLINIC_OWNER).extend([AppAccessRoles._HR]);
+appRoles.grant(AppAccessRoles._INVENTORY_BALANCE_KEEPER);
+
+appRoles
+  .grant(AppAccessRoles._INVENTORY_MASTER)
+  .extend(AppAccessRoles._INVENTORY_BALANCE_KEEPER)
+  .createAny('inventory-item')
+  .updateAny('inventory-item');
+
+appRoles
+  .grant(AppAccessRoles._CLINIC_OWNER)
+  .extend([AppAccessRoles._HR, AppAccessRoles._INVENTORY_MASTER]);
 
 appRoles
   .grant(AppAccessRoles._PLATFORM_OWNER)
