@@ -1,6 +1,7 @@
+import { CLINIC_SCHEMA_COLLECTION_NAME } from 'src/sub-features/clinics/db-schemas/clinic.db-schema';
 import { Schema, SchemaDefinition } from 'mongoose';
 
-export const INVENTORY_ITEM_SCHEMA_COLLECTION_NAME = 'InventoryItem';
+export const INVENTORY_ITEM_SCHEMA_COLLECTION_NAME = 'InventoryItems';
 export enum InventoryItemUnits {
   pcs = 'PCS',
 
@@ -18,6 +19,10 @@ const unitValues: Array<InventoryItemUnits> = Object.keys(
 const schemaDefinition: SchemaDefinition = {
   name: { type: String, required: true },
   unit: { type: String, enum: unitValues, required: true },
+  clinics: {
+    type: [{ type: Schema.Types.ObjectId, ref: CLINIC_SCHEMA_COLLECTION_NAME }],
+    required: true,
+  },
   alternates: {
     type: [Schema.Types.ObjectId],
     ref: INVENTORY_ITEM_SCHEMA_COLLECTION_NAME,

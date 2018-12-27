@@ -25,8 +25,11 @@ export class TenantsController {
   public async create(
     @Body() dto: CreateTenantInDto,
   ): Promise<CreatedTenantOutDto> {
-    const dbDoc = await this.tenantsDbConnector.create(dto);
+    const document = await this.tenantsDbConnector.create(dto);
 
-    return convertDocumentToOutDto(CreatedTenantOutDto, dbDoc);
+    return convertDocumentToOutDto({
+      document,
+      dtoConstructor: CreatedTenantOutDto,
+    });
   }
 }

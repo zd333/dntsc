@@ -1,6 +1,6 @@
 import { Schema, SchemaDefinition } from 'mongoose';
 
-export const TENANT_SCHEMA_COLLECTION_NAME = 'Tenant';
+export const TENANT_SCHEMA_COLLECTION_NAME = 'Tenants';
 
 const schemaDefinition: SchemaDefinition = {
   name: { type: String, required: true },

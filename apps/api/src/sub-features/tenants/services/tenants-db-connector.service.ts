@@ -1,5 +1,5 @@
 import { CreateTenantInDto } from '../dto/create-tenant.in-dto';
-import { Document, Model, Types } from 'mongoose';
+import { Document, Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { TENANT_SCHEMA_COLLECTION_NAME } from '../db-schemas/tenant.db-schema';
@@ -17,7 +17,7 @@ export class TenantsDbConnectorService {
     return await doc.save();
   }
 
-  public async getById(id: Types.ObjectId): Promise<Document | null> {
+  public async getById(id: string): Promise<Document | null> {
     return await this.TenantModel.findById(id).exec();
   }
 

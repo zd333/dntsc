@@ -11,9 +11,9 @@ export class IsUniqueTenantNameValidator
   implements ValidatorConstraintInterface {
   constructor(private readonly tenantsDbConnector: TenantsDbConnectorService) {}
 
-  public async validate(name: string): Promise<boolean> {
+  public async validate(value: string): Promise<boolean> {
     const nameIsOccupied = await this.tenantsDbConnector.checkTenantWithGivenNameExists(
-      name,
+      value,
     );
 
     return !nameIsOccupied;

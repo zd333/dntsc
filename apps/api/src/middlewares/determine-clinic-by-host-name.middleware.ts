@@ -1,3 +1,4 @@
+import { AppRequest } from 'src/app.module';
 import { ClinicsDbConnectorService } from 'src/sub-features/clinics/services/clinics-db-connector.service';
 import { Injectable, MiddlewareFunction, NestMiddleware } from '@nestjs/common';
 
@@ -10,8 +11,8 @@ import { Injectable, MiddlewareFunction, NestMiddleware } from '@nestjs/common';
 export class DetermineClinicByHostNameMiddleware implements NestMiddleware {
   constructor(private readonly clinicsDbConnector: ClinicsDbConnectorService) {}
 
-  resolve(...args: any[]): MiddlewareFunction {
-    return async (req, res, next) => {
+  resolve(): MiddlewareFunction {
+    return async (req: AppRequest, res, next) => {
       const hostName = req.header('host');
       const clinicId = await this.clinicsDbConnector.getClinicIdByHostName({
         hostName,

@@ -6,12 +6,11 @@ import { ClinicsModule } from './sub-features/clinics/clinics.module';
 import { DetermineClinicByHostNameMiddleware } from './middlewares/determine-clinic-by-host-name.middleware';
 import { EmployeesModule } from './sub-features/employees/employees.module';
 import { InventoryModule } from './sub-features/inventory/inventory.module';
-import { IsIdOfExistingDbEntityValidator } from './validators/is-id-of-existing-db-entity.validator';
+import { IsIdOfExistingDbEntityValidator } from './sub-features/shared/validators/is-id-of-existing-db-entity.validator';
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Request } from 'express';
 import { TenantsModule } from './sub-features/tenants/tenants.module';
-import { Types } from 'mongoose';
 
 @Module({
   imports: [
@@ -50,5 +49,5 @@ export type AppRequest = Request & {
   /**
    * Id of clinic, depends on request host name. See `DetermineClinicByHostNameMiddleware`.
    */
-  clinicId?: Types.ObjectId;
+  clinicId?: string;
 };

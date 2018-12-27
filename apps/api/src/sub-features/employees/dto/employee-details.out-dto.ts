@@ -1,12 +1,11 @@
 import { Expose } from 'class-transformer';
-import { Types } from 'mongoose';
 
 /**
  * ! Be sure not to expose passwordHash!
  */
 export class EmployeeDetailsOutDto {
   @Expose()
-  readonly id: Types.ObjectId;
+  readonly id: string;
 
   @Expose()
   readonly login: string;

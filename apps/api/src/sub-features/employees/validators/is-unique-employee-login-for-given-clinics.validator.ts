@@ -19,7 +19,7 @@ export class IsUniqueEmployeeLoginForGivenClinics
   ) {}
 
   public async validate(
-    employeeLogin: string,
+    value: string,
     validationArguments: ValidationArguments,
   ): Promise<boolean> {
     const dtoObject = validationArguments.object as CreateEmployeeInDto;
@@ -28,7 +28,7 @@ export class IsUniqueEmployeeLoginForGivenClinics
       {
         clinics,
         employeePropertyName: 'login',
-        employeePropertyValue: employeeLogin,
+        employeePropertyValue: value,
       },
     );
 
