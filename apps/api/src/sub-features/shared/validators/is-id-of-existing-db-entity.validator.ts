@@ -22,11 +22,11 @@ export class IsIdOfExistingDbEntityValidator
   ) {}
 
   public async validate(
-    _id: Types.ObjectId,
+    value: string,
     validationArguments: ValidationArguments,
   ): Promise<boolean> {
     // Check id is valid Mongo ObjectId
-    if (!Types.ObjectId.isValid(_id)) {
+    if (!Types.ObjectId.isValid(value)) {
       return false;
     }
     // Check schema name (constraint)
@@ -48,7 +48,7 @@ export class IsIdOfExistingDbEntityValidator
     }
 
     const model = this.mongoConnection.model(schemaName);
-    const entity = await model.find({ _id }, { limit: 1 });
+    const entity = await model.find({ _id: value }, { limit: 1 }).exec();
     return !!entity && !!entity.length;
   }
 

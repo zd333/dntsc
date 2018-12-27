@@ -25,8 +25,11 @@ export class ClinicsController {
   public async create(
     @Body() dto: CreateClinicInDto,
   ): Promise<CreatedClinicOutDto> {
-    const dbDoc = await this.clinicsDbConnector.create(dto);
+    const document = await this.clinicsDbConnector.create(dto);
 
-    return convertDocumentToOutDto(CreatedClinicOutDto, dbDoc);
+    return convertDocumentToOutDto({
+      document,
+      dtoConstructor: CreatedClinicOutDto,
+    });
   }
 }

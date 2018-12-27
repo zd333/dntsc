@@ -59,4 +59,4 @@ For now platform owners are to be created manually.
 2. make sure API app was at least once successfully built and launched on target env (DB with schemas are created automatically after app first launch, we need those to exist when creating platform owner)
 3. connect to mongo directly (for dev env run `docker ps`, remember ID of mongo container, then run `docker exec -it <ID of mongo container> bash`, now you are in mongo container terminal, finally run `mongo`)
 4. run `use <app DB name>` (use your own DB name that is specified in .env file, default dev DB name is `dntsc-v1`)
-5. run `db.Employee.insert({name: '<desired name>', isActive: true, login: '<desired login>', roles: ['_PLATFORM_OWNER'], password: '<remembered password hash>'})` (pass your own name, login and remembered password hash)
+5. run `db.Employees.insert({name: '<desired name>', isActive: true, login: '<desired login>', roles: ['_PLATFORM_OWNER'], password: '<remembered password hash>'})` (pass your own name, login and remembered password hash)

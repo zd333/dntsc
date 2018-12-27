@@ -8,7 +8,7 @@ import {
   } from 'mongoose';
 import { passwordHashingHook } from 'src/sub-features/shared/helpers/password-hashing-mongoose-schema-hook';
 
-export const EMPLOYEE_SCHEMA_COLLECTION_NAME = 'Employee';
+export const EMPLOYEE_SCHEMA_COLLECTION_NAME = 'Employees';
 
 const schemaDefinition: SchemaDefinition = {
   name: { type: String, required: true },
@@ -23,12 +23,6 @@ const schemaDefinition: SchemaDefinition = {
   clinics: {
     type: [{ type: Schema.Types.ObjectId, ref: CLINIC_SCHEMA_COLLECTION_NAME }],
     required: true,
-    validate: {
-      validator(value) {
-        return !!value && !!value.length;
-      },
-      message: 'At least one clinic is required',
-    },
   },
   roles: { type: [String], required: false },
 };

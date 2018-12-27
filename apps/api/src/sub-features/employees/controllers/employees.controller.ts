@@ -6,7 +6,7 @@ import { CreatedTenantOutDto } from 'src/sub-features/tenants/dto/created-tenant
 import { CreateEmployeeInDto } from '../dto/create-employee.in-dto';
 import { EmployeeDetailsOutDto } from '../dto/employee-details.out-dto';
 import { EmployeesDbConnectorService } from '../services/employees-db-connector.service';
-import { GetByMongoIdParams } from 'src/validators/get-by-mongo-id-params.validated-class';
+import { EntityWithMongoIdInDto } from 'src/sub-features/shared/dto/entity-with-mongo-id.in-dto';
 import { RequesterIsEmployeeOfTargetClinicGuard } from 'src/sub-features/shared/guards/requester-is-employee-of-target-clinic.guard';
 import { RequesterIsPlatformOwnerIfCreatesClinicOwnerGuard } from '../guards/requester-is-platform-owner-if-creates-clinic-owner.guard';
 import {
@@ -40,21 +40,27 @@ export class EmployeesController {
   public async create(
     @Body() dto: CreateEmployeeInDto,
   ): Promise<CreatedEmployeeOutDto> {
-    const dbDoc = await this.employeesDbConnector.create(dto);
+    const document = await this.employeesDbConnector.create(dto);
 
-    return convertDocumentToOutDto(CreatedTenantOutDto, dbDoc);
+    return convertDocumentToOutDto({
+      document,
+      dtoConstructor: CreatedTenantOutDto,
+    });
   }
 
   @Get(':id')
   // Not sure if only employees are allowed to see details of employees, remove `IsEmployeeGuard` guard if so
   @UseGuards(AuthGuard(), RequesterIsEmployeeOfTargetClinicGuard)
-  public async getById(@Param() { id }: GetByMongoIdParams) {
-    const dbDoc = await this.employeesDbConnector.getById(id);
+  public async getById(@Param() { id }: EntityWithMongoIdInDto) {
+    const document = await this.employeesDbConnector.getById(id);
 
-    if (!dbDoc) {
+    if (!document) {
       throw new NotFoundException();
     }
 
-    return convertDocumentToOutDto(EmployeeDetailsOutDto, dbDoc);
+    return convertDocumentToOutDto({
+      document,
+      dtoConstructor: EmployeeDetailsOutDto,
+    });
   }
 }

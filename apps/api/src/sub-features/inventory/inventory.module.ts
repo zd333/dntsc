@@ -1,5 +1,5 @@
-import { InventoryController } from './controllers/inventory.controller';
 import { InventoryDbConnectorService } from './services/inventory-db-connector.service';
+import { InventoryItemsController } from './controllers/inventory-items.controller';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
@@ -22,6 +22,6 @@ const schemasMap = [
     PassportModule.register({ defaultStrategy: 'jwt' }),
   ],
   providers: [InventoryDbConnectorService],
-  controllers: [InventoryController],
+  controllers: [InventoryItemsController],
 })
 export class InventoryModule {}

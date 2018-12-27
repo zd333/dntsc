@@ -5,7 +5,6 @@ import { hasRoles } from 'src/sub-features/shared/helpers/has-roles';
 import { JwtService } from '@nestjs/jwt';
 import { SignedInEmployeeOutDto } from '../dto/signed-in-employee.out-dto';
 import { SignInEmployeeInDto } from '../dto/sign-in-employee.in-dto';
-import { Types } from 'mongoose';
 import {
   Injectable,
   UnauthorizedException,
@@ -31,13 +30,14 @@ export class AuthenticationService {
    */
   public async signInEmployee(
     dto: SignInEmployeeInDto,
-    clinicId: Types.ObjectId,
+    clinicId: string,
   ): Promise<SignedInEmployeeOutDto> {
     const employee = await this.employeesDbConnector.getByCredentials({
       clinicId,
       login: dto.login,
       password: dto.password,
     });
+
     if (!employee) {
       // Credentials do not match
       throw new UnauthorizedException();
@@ -106,7 +106,7 @@ export class AuthenticationService {
 }
 
 export interface JwtPayload {
-  readonly employeeId: Types.ObjectId;
+  readonly employeeId: string;
 }
 
 /**
@@ -116,7 +116,7 @@ export interface JwtPayload {
 export interface AuthenticatedUser {
   readonly isEmployee: boolean;
   readonly roles?: Array<AppAccessRoles>;
-  readonly clinics?: Array<Types.ObjectId>;
+  readonly clinics?: Array<string>;
 }
 
 /**
@@ -133,7 +133,7 @@ function convertEmployeeDocumentToAuthenticatedUser(
     target: employeeDocument,
     roles: [AppAccessRoles._PLATFORM_OWNER],
   });
-  const clinics = employeeDocument.clinics || [];
+  const clinics = employeeDocument.clinics.map(c => c.toHexString()) || [];
   return {
     roles,
     isEmployee: true,

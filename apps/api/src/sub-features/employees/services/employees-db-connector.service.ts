@@ -2,7 +2,7 @@ import { CreateEmployeeInDto } from '../dto/create-employee.in-dto';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { isMongooseDocumentPasswordHashValid } from 'src/sub-features/shared/helpers/is-mongoose-document-password-hash-valid';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import {
   EMPLOYEE_SCHEMA_COLLECTION_NAME,
   EmployeeDocument,
@@ -27,14 +27,14 @@ export class EmployeesDbConnectorService {
     return doc;
   }
 
-  public async getById(id: Types.ObjectId): Promise<EmployeeDocument | null> {
+  public async getById(id: string): Promise<EmployeeDocument | null> {
     return await this.EmployeeModel.findById(id).exec();
   }
 
   public async checkEmployeeWithGivenPropertyValueExistsInSomeOfTheClinicsList(params: {
     readonly employeePropertyName: string;
     readonly employeePropertyValue: string;
-    readonly clinics: Array<Types.ObjectId>;
+    readonly clinics: Array<string>;
   }): Promise<boolean> {
     const { employeePropertyName, employeePropertyValue, clinics } = params;
     if (!employeePropertyName) {
@@ -48,19 +48,22 @@ export class EmployeesDbConnectorService {
         clinics: { $in: clinics },
       },
       { limit: 1 },
-    );
+    ).exec();
 
     return !!found && !!found.length;
   }
 
+  /**f you pass clinic id - then it will return only employee from given clinic
+   * (so will not return employee even if credentials are valid but employee is not in the clinic).
+   */
   public async getByCredentials(params: {
     readonly login: string;
     readonly password: string;
-    readonly clinicId?: Types.ObjectId;
+    readonly clinicId?: string;
   }): Promise<EmployeeDocument | null> {
     const { login, password, clinicId } = params;
-    const findParams = clinicId ? { login, clinics: clinicId } : { login };
-    const found = await this.EmployeeModel.find(findParams).exec();
+    const findConditions = clinicId ? { login, clinics: clinicId } : { login };
+    const found = await this.EmployeeModel.find(findConditions).exec();
 
     if (!found || !found.length) {
       return null;

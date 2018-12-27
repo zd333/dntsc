@@ -1,5 +1,5 @@
-import { IsIdOfExistingDbEntityValidator } from 'src/validators/is-id-of-existing-db-entity.validator';
-import { Types } from 'mongoose';
+import { CLINIC_SCHEMA_COLLECTION_NAME } from 'src/sub-features/clinics/db-schemas/clinic.db-schema';
+import { IsIdOfExistingDbEntityValidator } from 'src/sub-features/shared/validators/is-id-of-existing-db-entity.validator';
 import {
   InventoryItemUnits,
   INVENTORY_ITEM_SCHEMA_COLLECTION_NAME,
@@ -14,6 +14,7 @@ import {
   Validate,
 } from 'class-validator';
 
+// TODO: add validator that checks if alternates have relevant units (kg-g-mg, l-ml, pcs, etc)
 export class CreateInventoryItemInDto {
   // TODO: add unique name validator
   @MinLength(3)
@@ -22,6 +23,19 @@ export class CreateInventoryItemInDto {
 
   @IsEnum(InventoryItemUnits)
   readonly unit: InventoryItemUnits;
+
+  /**
+   * Clinic ids.
+   */
+  @ArrayNotEmpty()
+  @ArrayUnique()
+  // TODO: currently does not work, update class-validator after this PR is merged
+  // https://github.com/typestack/class-validator/pull/295
+  // or refactor to validate whole array if not merged
+  // @Validate(IsIdOfExistingDbEntityValidator, [CLINIC_SCHEMA_COLLECTION_NAME], {
+  //   each: true,
+  // })
+  readonly clinics: Array<string>;
 
   /**
    * Array of ids of other inventory items that can be used as substitution.
@@ -39,5 +53,5 @@ export class CreateInventoryItemInDto {
   //     each: true,
   //   },
   // )
-  readonly alternates?: Array<Types.ObjectId>;
+  readonly alternates?: Array<string>;
 }

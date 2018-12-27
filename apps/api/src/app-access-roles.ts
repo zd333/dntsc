@@ -28,7 +28,7 @@ export enum AppAccessRoles {
   /**
    * Allows any actions to inventory.
    */
-  _INVENTORY_MASTER = '_INVENTORY_KEEPER',
+  _INVENTORY_MASTER = '_INVENTORY_MASTER',
   /**
    * This role contains basic permissions which are granted to users all users (even with no roles).
    */
