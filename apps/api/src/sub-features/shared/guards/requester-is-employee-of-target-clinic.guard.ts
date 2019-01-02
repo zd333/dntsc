@@ -25,7 +25,7 @@ export class RequesterIsEmployeeOfTargetClinicGuard implements CanActivate {
     const userIsEmployeeOfThisClinic =
       user.isEmployee &&
       Array.isArray(user.clinics) &&
-      user.clinics.some(userClinic => userClinic === req.clinicId);
+      user.clinics.some(userClinic => userClinic === req.targetClinicId);
     if (userIsEmployeeOfThisClinic) {
       return true;
     }

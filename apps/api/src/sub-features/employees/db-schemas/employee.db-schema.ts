@@ -22,7 +22,7 @@ const schemaDefinition: SchemaDefinition = {
   hasToChangePassword: { type: Boolean, required: false },
   clinics: {
     type: [{ type: Schema.Types.ObjectId, ref: CLINIC_SCHEMA_COLLECTION_NAME }],
-    required: true,
+    required: false,
   },
   roles: { type: [String], required: false },
 };

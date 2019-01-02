@@ -1,9 +1,9 @@
 import { AccessControlModule } from 'nest-access-control';
+import { AddClinicContextMiddleware } from './middlewares/add-clinic-context.middleware';
 import { appRoles } from './app-access-roles';
 import { AuthenticatedUser } from './sub-features/authentication/services/authentication.service';
 import { AuthenticationModule } from './sub-features/authentication/authentication.module';
 import { ClinicsModule } from './sub-features/clinics/clinics.module';
-import { DetermineClinicByHostNameMiddleware } from './middlewares/determine-clinic-by-host-name.middleware';
 import { EmployeesModule } from './sub-features/employees/employees.module';
 import { InventoryModule } from './sub-features/inventory/inventory.module';
 import { IsIdOfExistingDbEntityValidator } from './sub-features/shared/validators/is-id-of-existing-db-entity.validator';
@@ -24,14 +24,11 @@ import { TenantsModule } from './sub-features/tenants/tenants.module';
     TenantsModule,
     InventoryModule,
   ],
-  providers: [
-    IsIdOfExistingDbEntityValidator,
-    DetermineClinicByHostNameMiddleware,
-  ],
+  providers: [IsIdOfExistingDbEntityValidator, AddClinicContextMiddleware],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(DetermineClinicByHostNameMiddleware).forRoutes({
+    consumer.apply(AddClinicContextMiddleware).forRoutes({
       path: '*',
       method: RequestMethod.ALL,
     });
@@ -47,7 +44,7 @@ export type AppRequest = Request & {
    */
   user?: AuthenticatedUser;
   /**
-   * Id of clinic, depends on request host name. See `DetermineClinicByHostNameMiddleware`.
+   * Id of clinic, depends on request host name. See `AddClinicContextMiddleware`.
    */
-  clinicId?: string;
+  targetClinicId?: string;
 };

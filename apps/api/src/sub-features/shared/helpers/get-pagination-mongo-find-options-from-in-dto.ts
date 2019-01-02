@@ -1,5 +1,10 @@
 import { QueryParamsForPaginatedListInDto } from '../dto/query-params-for-paginated-list.in-dto';
 
+/**
+ * Takes generic DTO for paginated resource and returns object to use in Mongo find query.
+ * !Ignores `searchString` param of DTO, because it is entity-specific and can not be processes in generic way.
+ * !Search options must be handled on the consuming code side!
+ */
 export function getPaginationMongoFindOptionsFromDto(
   dto: QueryParamsForPaginatedListInDto,
 ): PaginationMongoFindOptions {
@@ -21,7 +26,7 @@ export function getPaginationMongoFindOptionsFromDto(
     };
   }
   if (dto.orderBy) {
-    const orderDirection = dto.orderDirection === 'DESC' ? -1 : 1;
+    const orderDirection = dto.orderDirection.toUpperCase() === 'DESC' ? -1 : 1;
     result = {
       ...result,
       sort: { [dto.orderBy]: orderDirection },

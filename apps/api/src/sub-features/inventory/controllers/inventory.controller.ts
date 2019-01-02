@@ -21,19 +21,24 @@ import {
   Req,
 } from '@nestjs/common';
 
-@Controller('inventory-items')
-export class InventoryItemsController {
+@Controller('inventory')
+export class InventoryController {
   constructor(
     private readonly inventoryDbConnector: InventoryDbConnectorService,
   ) {}
 
-  @UseGuards(AuthGuard(), ACGuard, RequesterIsEmployeeOfTargetClinicGuard)
+  @UseGuards(
+    AuthGuard(),
+    ACGuard,
+    RequestIsInClinicContextGuard,
+    RequesterIsEmployeeOfTargetClinicGuard,
+  )
   @UseRoles({
     resource: 'inventory-item',
     action: 'create',
     possession: 'any',
   })
-  @Post()
+  @Post('items')
   public async createItem(
     @Body() dto: CreateInventoryItemInDto,
   ): Promise<CreatedInventoryItemOutDto> {
@@ -47,17 +52,17 @@ export class InventoryItemsController {
 
   @UseGuards(
     AuthGuard(),
-    RequesterIsEmployeeOfTargetClinicGuard,
     RequestIsInClinicContextGuard,
+    RequesterIsEmployeeOfTargetClinicGuard,
   )
-  @Get()
+  @Get('items')
   public async getAll(
     @Req() req: AppRequest,
     @Query() dto: QueryParamsForPaginatedListInDto,
   ): Promise<PaginatedListOutDto<InventoryItemDetailsOutDto>> {
-    const { clinicId } = req;
+    const { targetClinicId } = req;
     const findResults = await this.inventoryDbConnector.getClinicItems({
-      clinicId,
+      clinicId: targetClinicId,
       paginationParams: dto,
     });
 

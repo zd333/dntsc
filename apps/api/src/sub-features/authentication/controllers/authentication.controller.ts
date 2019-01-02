@@ -3,6 +3,7 @@ import { AuthenticationService } from '../services/authentication.service';
 import { RequestIsInClinicContextGuard } from 'src/sub-features/shared/guards/request-is-in-clinic-context.guard';
 import { SignedInEmployeeOutDto } from '../dto/signed-in-employee.out-dto';
 import { SignInEmployeeInDto } from '../dto/sign-in-employee.in-dto';
+import { SignInPlatformOwnerInDto } from '../dto/sign-in-platform-owner.in-dto';
 import {
   Body,
   Controller,
@@ -30,9 +31,7 @@ export class AuthenticationController {
       throw new ForbiddenException();
     }
 
-    const { clinicId } = req;
-
-    return await this.authenticationService.signInEmployee(dto, clinicId);
+    return await this.authenticationService.signInEmployee(dto);
   }
 
   /**
@@ -40,7 +39,7 @@ export class AuthenticationController {
    */
   @Post('sign-in-platform-owner')
   public async signInPlatformOwner(
-    @Body() dto: SignInEmployeeInDto,
+    @Body() dto: SignInPlatformOwnerInDto,
   ): Promise<SignedInEmployeeOutDto> {
     return await this.authenticationService.signInPlatformOwner(dto);
   }

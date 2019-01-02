@@ -12,7 +12,7 @@ import {
   async: true,
 })
 @Injectable()
-export class IsUniqueEmployeeLoginForGivenClinics
+export class NewEmployeeLoginIsUniqueForClinics
   implements ValidatorConstraintInterface {
   constructor(
     private readonly employeesDbConnector: EmployeesDbConnectorService,
@@ -23,10 +23,10 @@ export class IsUniqueEmployeeLoginForGivenClinics
     validationArguments: ValidationArguments,
   ): Promise<boolean> {
     const dtoObject = validationArguments.object as CreateEmployeeInDto;
-    const { clinics } = dtoObject;
+    const { targetClinicId } = dtoObject;
     const nameIsOccupied = await this.employeesDbConnector.checkEmployeeWithGivenPropertyValueExistsInSomeOfTheClinicsList(
       {
-        clinics,
+        clinics: [targetClinicId],
         employeePropertyName: 'login',
         employeePropertyValue: value,
       },

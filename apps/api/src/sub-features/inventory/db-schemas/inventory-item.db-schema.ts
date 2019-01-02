@@ -17,7 +17,7 @@ const unitValues: Array<InventoryItemUnits> = Object.keys(
 ).map(key => InventoryItemUnits[key]);
 
 const schemaDefinition: SchemaDefinition = {
-  name: { type: String, required: true },
+  name: { type: String, required: true, text: true },
   unit: { type: String, enum: unitValues, required: true },
   clinics: {
     type: [{ type: Schema.Types.ObjectId, ref: CLINIC_SCHEMA_COLLECTION_NAME }],

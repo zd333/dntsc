@@ -1,12 +1,9 @@
 import { AppAccessRoles } from 'src/app-access-roles';
-import { CLINIC_SCHEMA_COLLECTION_NAME } from 'src/sub-features/clinics/db-schemas/clinic.db-schema';
-import { IsIdOfExistingDbEntityValidator } from 'src/sub-features/shared/validators/is-id-of-existing-db-entity.validator';
-import { IsUniqueEmployeeLoginForGivenClinics } from '../validators/is-unique-employee-login-for-given-clinics.validator';
-import { IsUniqueEmployeeNameForGivenClinics } from '../validators/is-unique-employee-name-for-given-clinics.validator';
+import { InDtoWithClinicContext } from 'src/middlewares/add-clinic-context.middleware';
+import { NewEmployeeLoginIsUniqueForClinics } from '../validators/new-employee-login-is-unique-for-clinics.validator';
 import {
   IsString,
   MinLength,
-  ArrayNotEmpty,
   ArrayUnique,
   Validate,
   IsOptional,
@@ -14,10 +11,10 @@ import {
   NotEquals,
 } from 'class-validator';
 
-export class CreateEmployeeInDto {
+export class CreateEmployeeInDto extends InDtoWithClinicContext {
   @MinLength(3)
   @IsString()
-  @Validate(IsUniqueEmployeeLoginForGivenClinics)
+  @Validate(NewEmployeeLoginIsUniqueForClinics)
   readonly login: string;
 
   @IsString()
@@ -26,21 +23,8 @@ export class CreateEmployeeInDto {
 
   @MinLength(3)
   @IsString()
-  @Validate(IsUniqueEmployeeNameForGivenClinics)
+  @Validate(NewEmployeeLoginIsUniqueForClinics)
   readonly name: string;
-
-  /**
-   * Clinic ids.
-   */
-  @ArrayNotEmpty()
-  @ArrayUnique()
-  // TODO: currently does not work, update class-validator after this PR is merged
-  // https://github.com/typestack/class-validator/pull/295
-  // or refactor to validate whole array if not merged
-  // @Validate(IsIdOfExistingDbEntityValidator, [CLINIC_SCHEMA_COLLECTION_NAME], {
-  //   each: true,
-  // })
-  readonly clinics: Array<string>;
 
   /**
    * Access (permissions) roles list.

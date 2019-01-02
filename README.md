@@ -12,9 +12,9 @@ Install Node, Yarn, Docker.
 ### On-time needed actions
 
 1. add your user to `docker` group by running `sudo usermod -a -G docker $USER` (this gives ability to access docker engine without `sudo`)
-1. completely log out of your account and log back in (if in doubt, reboot!)
+1. completely log out from your account and log back in (if in doubt, reboot!)
 1. prepare `.env` file with development configuration values; this file is git-ignored and thus is missing after you pulled the repo, use `.env-example` as reference (most example values are for dev mode)
-1. Create very platform owner - follow steps [Creating platform owner](#creating-platform-owner)
+1. Create platform owner - follow steps [Creating platform owner](#creating-platform-owner)
 
 ### Launching project in dev mode
 
@@ -39,7 +39,7 @@ MongoDB files will be stored in `~/dntsc_dev_mongo_db_data` folder.
 
 ### Building and deploying react client app
 
-1. go to `/apps/api`
+1. go to `/apps/react-client`
 1. run `now`
 1. remember app deployment URL (each deployment is unique and does not affect previous deployment of the same app)
 
