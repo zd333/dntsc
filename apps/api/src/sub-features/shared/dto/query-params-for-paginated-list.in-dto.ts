@@ -1,3 +1,4 @@
+import { InDtoWithClinicContext } from 'src/middlewares/add-clinic-context.middleware';
 import {
   IsNumberString,
   IsOptional,

@@ -3,8 +3,8 @@ import { RequesterIsEmployeeOfTargetClinicGuard } from './guards/requester-is-em
 import { RequestIsInClinicContextGuard } from './guards/request-is-in-clinic-context.guard';
 
 const guards = [
-  RequestIsInClinicContextGuard,
   RequesterIsEmployeeOfTargetClinicGuard,
+  RequestIsInClinicContextGuard,
 ];
 
 /**

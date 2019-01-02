@@ -8,11 +8,11 @@ import { InjectModel } from '@nestjs/mongoose';
 export class ClinicsDbConnectorService {
   constructor(
     @InjectModel(CLINIC_SCHEMA_COLLECTION_NAME)
-    private readonly ClinicModel: Model<Document>,
+    private readonly clinicModel: Model<Document>,
   ) {}
 
   public async create(dto: CreateClinicInDto): Promise<Document> {
-    const doc = new this.ClinicModel(dto);
+    const doc = new this.clinicModel(dto);
 
     return await doc.save();
   }
@@ -20,10 +20,9 @@ export class ClinicsDbConnectorService {
   public async checkHostNamesAreUsedInSomeClinics(
     hostNamesToCheck: Array<string>,
   ): Promise<boolean> {
-    const found = await this.ClinicModel.find(
-      { hostNames: { $in: hostNamesToCheck } },
-      { limit: 1 },
-    ).exec();
+    const found = await this.clinicModel
+      .find({ hostNames: { $in: hostNamesToCheck } }, { limit: 1 })
+      .exec();
 
     return !!found && !!found.length;
   }
@@ -32,11 +31,13 @@ export class ClinicsDbConnectorService {
     hostName: string;
   }): Promise<string | undefined> {
     const { hostName } = params;
-    const found = await this.ClinicModel.find(
-      { hostNames: hostName },
-      // Expected to be unique, thus get only one
-      { limit: 1 },
-    ).exec();
+    const found = await this.clinicModel
+      .find(
+        { hostNames: hostName },
+        // Expected to be unique, thus get only one
+        { limit: 1 },
+      )
+      .exec();
 
     return found && found.length ? found[0]._id.toHexString() : undefined;
   }

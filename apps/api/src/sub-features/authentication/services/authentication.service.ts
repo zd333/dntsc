@@ -5,6 +5,7 @@ import { hasRoles } from 'src/sub-features/shared/helpers/has-roles';
 import { JwtService } from '@nestjs/jwt';
 import { SignedInEmployeeOutDto } from '../dto/signed-in-employee.out-dto';
 import { SignInEmployeeInDto } from '../dto/sign-in-employee.in-dto';
+import { SignInPlatformOwnerInDto } from '../dto/sign-in-platform-owner.in-dto';
 import {
   Injectable,
   UnauthorizedException,
@@ -30,10 +31,9 @@ export class AuthenticationService {
    */
   public async signInEmployee(
     dto: SignInEmployeeInDto,
-    clinicId: string,
   ): Promise<SignedInEmployeeOutDto> {
     const employee = await this.employeesDbConnector.getByCredentials({
-      clinicId,
+      clinicId: dto.targetClinicId,
       login: dto.login,
       password: dto.password,
     });
@@ -59,7 +59,7 @@ export class AuthenticationService {
    * (platform owners can sign in without clinic context).
    */
   public async signInPlatformOwner(
-    dto: SignInEmployeeInDto,
+    dto: SignInPlatformOwnerInDto,
   ): Promise<SignedInEmployeeOutDto> {
     const employee = await this.employeesDbConnector.getByCredentials({
       login: dto.login,

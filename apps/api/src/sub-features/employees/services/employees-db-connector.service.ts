@@ -12,12 +12,14 @@ import {
 export class EmployeesDbConnectorService {
   constructor(
     @InjectModel(EMPLOYEE_SCHEMA_COLLECTION_NAME)
-    private readonly EmployeeModel: Model<EmployeeDocument>,
+    private readonly employeeModel: Model<EmployeeDocument>,
   ) {}
 
   public async create(dto: CreateEmployeeInDto): Promise<EmployeeDocument> {
-    const doc: EmployeeDocument = new this.EmployeeModel({
-      ...dto,
+    const { targetClinicId, ...data } = dto;
+    const doc: EmployeeDocument = new this.employeeModel({
+      ...data,
+      clinics: [targetClinicId],
       isActive: true,
       hasToChangePassword: true,
     });
@@ -28,7 +30,7 @@ export class EmployeesDbConnectorService {
   }
 
   public async getById(id: string): Promise<EmployeeDocument | null> {
-    return await this.EmployeeModel.findById(id).exec();
+    return await this.employeeModel.findById(id).exec();
   }
 
   public async checkEmployeeWithGivenPropertyValueExistsInSomeOfTheClinicsList(params: {
@@ -42,13 +44,15 @@ export class EmployeesDbConnectorService {
     }
 
     // Checks if there is an employee with given property value and this employee has at least on clinic from passed clinics array
-    const found = await this.EmployeeModel.find(
-      {
-        [employeePropertyName]: employeePropertyValue,
-        clinics: { $in: clinics },
-      },
-      { limit: 1 },
-    ).exec();
+    const found = await this.employeeModel
+      .find(
+        {
+          [employeePropertyName]: employeePropertyValue,
+          clinics: { $in: clinics },
+        },
+        { limit: 1 },
+      )
+      .exec();
 
     return !!found && !!found.length;
   }
@@ -63,7 +67,7 @@ export class EmployeesDbConnectorService {
   }): Promise<EmployeeDocument | null> {
     const { login, password, clinicId } = params;
     const findConditions = clinicId ? { login, clinics: clinicId } : { login };
-    const found = await this.EmployeeModel.find(findConditions).exec();
+    const found = await this.employeeModel.find(findConditions).exec();
 
     if (!found || !found.length) {
       return null;

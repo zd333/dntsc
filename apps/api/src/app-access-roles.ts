@@ -7,6 +7,11 @@ import { RolesBuilder } from 'nest-access-control';
  * Underscore at the role name beginning indicates
  * that it is system role (always available out of the box)
  * Later dynamic (user-defined) roles can be added.
+ *
+ * !For now restriction is applied not to all resources/resource actions, but only to several ones
+ * !(when functionality required restriction to that particular resources).
+ * !Thus resource decorators are not applied to most GET (read) controllers endpoints at all,
+ * !so that no role is needed to read such resources.
  */
 export enum AppAccessRoles {
   /**
