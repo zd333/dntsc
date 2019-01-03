@@ -37,7 +37,7 @@ export class AddClinicContextMiddleware implements NestMiddleware {
 
 /**
  * Use this class as base for all in-DTOs that need clinic context.
- * !Not this must be optional so that it never returns confusing validation errors.
+ * !Note this must be optional so that it never returns confusing validation errors.
  * !Thus you have to check if request id in clinic context manually (use `RequestIsInClinicContextGuard`).
  */
 export class InDtoWithClinicContext {

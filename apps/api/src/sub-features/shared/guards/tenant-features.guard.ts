@@ -40,8 +40,6 @@ export class TenantFeaturesGuard implements CanActivate {
         ? controllerMethodFeatures
         : []),
     ];
-    console.log(controllerClassFeatures);
-    console.log(controllerMethodFeatures);
     if (!features.length) {
       // No feature requirements for target controller
       return true;

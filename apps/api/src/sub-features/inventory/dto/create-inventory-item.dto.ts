@@ -1,5 +1,7 @@
 import { InDtoWithClinicContext } from 'src/middlewares/add-clinic-context.middleware';
+import { IsAlternateWithRelevantUnit } from '../validators/is-alternate-with-relevant-unit.validator';
 import { IsIdOfExistingDbEntityValidator } from 'src/sub-features/shared/validators/is-id-of-existing-db-entity.validator';
+import { IsUniqueInventoryItemNameForGivenClinic } from '../validators/is-unique-inventory-item-name-for-given-clinic.validator';
 import {
   InventoryItemUnits,
   INVENTORY_ITEM_SCHEMA_COLLECTION_NAME,
@@ -15,9 +17,9 @@ import {
 } from 'class-validator';
 
 export class CreateInventoryItemInDto extends InDtoWithClinicContext {
-  // TODO: add unique for clinic name validator
   @MinLength(3)
   @IsString()
+  @Validate(IsUniqueInventoryItemNameForGivenClinic)
   readonly name: string;
 
   @IsEnum(InventoryItemUnits)
@@ -29,7 +31,6 @@ export class CreateInventoryItemInDto extends InDtoWithClinicContext {
   @IsOptional()
   @ArrayNotEmpty()
   @ArrayUnique()
-  // TODO: add validator that checks if alternates have relevant units (kg-g-mg, l-ml, pcs, etc)
   // TODO: currently does not work, update class-validator after this PR is merged
   // https://github.com/typestack/class-validator/pull/295
   // or refactor to validate whole array if not merged
@@ -40,5 +41,8 @@ export class CreateInventoryItemInDto extends InDtoWithClinicContext {
   //     each: true,
   //   },
   // )
+  // @Validate(IsAlternateWithRelevantUnit, {
+  //   each: true,
+  // })
   readonly alternates?: Array<string>;
 }

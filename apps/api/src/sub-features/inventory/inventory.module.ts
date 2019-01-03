@@ -1,5 +1,7 @@
 import { InventoryController } from './controllers/inventory.controller';
 import { InventoryDbConnectorService } from './services/inventory-db-connector.service';
+import { IsAlternateWithRelevantUnit } from './validators/is-alternate-with-relevant-unit.validator';
+import { IsUniqueInventoryItemNameForGivenClinic } from './validators/is-unique-inventory-item-name-for-given-clinic.validator';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
@@ -32,7 +34,11 @@ const schemasMap = [
     PassportModule.register({ defaultStrategy: 'jwt' }),
     SharedModule,
   ],
-  providers: [InventoryDbConnectorService],
+  providers: [
+    InventoryDbConnectorService,
+    IsUniqueInventoryItemNameForGivenClinic,
+    IsAlternateWithRelevantUnit,
+  ],
   controllers: [InventoryController],
 })
 export class InventoryModule {}

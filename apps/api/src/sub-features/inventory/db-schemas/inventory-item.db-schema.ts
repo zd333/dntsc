@@ -1,5 +1,5 @@
 import { CLINIC_SCHEMA_COLLECTION_NAME } from 'src/sub-features/clinics/db-schemas/clinic.db-schema';
-import { Schema, SchemaDefinition } from 'mongoose';
+import { Document, Schema, SchemaDefinition } from 'mongoose';
 
 export const INVENTORY_ITEM_SCHEMA_COLLECTION_NAME = 'InventoryItems';
 export enum InventoryItemUnits {
@@ -29,4 +29,12 @@ const schemaDefinition: SchemaDefinition = {
     required: false,
   },
 };
+
+export type InventoryItemDocument = Readonly<Document> & {
+  readonly name: string;
+  readonly unit: InventoryItemUnits;
+  readonly clinics: Array<string>;
+  readonly alternates?: Array<string>;
+};
+
 export const InventoryItemSchema = new Schema(schemaDefinition);
