@@ -3,6 +3,7 @@ import { InventoryDbConnectorService } from './services/inventory-db-connector.s
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
+import { SharedModule } from '../shared/shared.module';
 import {
   INVENTORY_ITEM_SCHEMA_COLLECTION_NAME,
   InventoryItemSchema,
@@ -29,6 +30,7 @@ const schemasMap = [
   imports: [
     MongooseModule.forFeature(schemasMap),
     PassportModule.register({ defaultStrategy: 'jwt' }),
+    SharedModule,
   ],
   providers: [InventoryDbConnectorService],
   controllers: [InventoryController],

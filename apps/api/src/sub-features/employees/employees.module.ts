@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { NewEmployeeLoginIsUniqueForClinics } from './validators/new-employee-login-is-unique-for-clinics.validator';
 import { PassportModule } from '@nestjs/passport';
 import { RequesterIsPlatformOwnerIfCreatesClinicOwnerGuard } from './guards/requester-is-platform-owner-if-creates-clinic-owner.guard';
+import { SharedModule } from '../shared/shared.module';
 import {
   EMPLOYEE_SCHEMA_COLLECTION_NAME,
   EmployeeSchema,
@@ -22,6 +23,7 @@ const schemasMap = [
   imports: [
     MongooseModule.forFeature(schemasMap),
     PassportModule.register({ defaultStrategy: 'jwt' }),
+    SharedModule,
   ],
   providers: [
     RequesterIsPlatformOwnerIfCreatesClinicOwnerGuard,

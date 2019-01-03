@@ -1,23 +1,28 @@
 import { CreateTenantInDto } from '../dto/create-tenant.in-dto';
-import { Document, Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { TENANT_SCHEMA_COLLECTION_NAME } from '../db-schemas/tenant.db-schema';
+import { Model } from 'mongoose';
+import {
+  TENANT_SCHEMA_COLLECTION_NAME,
+  TenantDocument,
+} from '../db-schemas/tenant.db-schema';
 
 @Injectable()
 export class TenantsDbConnectorService {
   constructor(
     @InjectModel(TENANT_SCHEMA_COLLECTION_NAME)
-    private readonly tenantModel: Model<Document>,
+    private readonly tenantModel: Model<TenantDocument>,
   ) {}
 
-  public async create(dto: CreateTenantInDto): Promise<Document> {
+  public async create(dto: CreateTenantInDto): Promise<TenantDocument> {
     const doc = new this.tenantModel(dto);
 
-    return await doc.save();
+    await doc.save();
+
+    return doc;
   }
 
-  public async getById(id: string): Promise<Document | null> {
+  public async getById(id: string): Promise<TenantDocument | null> {
     return await this.tenantModel.findById(id).exec();
   }
 

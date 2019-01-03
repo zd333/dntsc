@@ -31,13 +31,13 @@ const schema = new Schema(schemaDefinition);
 schema.pre('save', passwordHashingHook);
 
 export type EmployeeDocument = Readonly<Document> & {
-  name: string;
-  isActive: boolean;
-  login: string;
-  password: string;
-  hasToChangePassword?: boolean;
-  clinics: Array<Types.ObjectId>;
-  roles: Array<AppAccessRoles>;
+  readonly name: string;
+  readonly isActive: boolean;
+  readonly login: string;
+  readonly password: string;
+  readonly hasToChangePassword?: boolean;
+  readonly clinics: Array<Types.ObjectId>;
+  readonly roles: Array<AppAccessRoles>;
 };
 
 export const EmployeeSchema = schema;

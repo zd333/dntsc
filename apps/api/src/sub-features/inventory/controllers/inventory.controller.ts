@@ -8,9 +8,14 @@ import { CreateInventoryItemInDto } from '../dto/create-inventory-item.dto';
 import { InventoryDbConnectorService } from '../services/inventory-db-connector.service';
 import { InventoryItemDetailsOutDto } from '../dto/inventory-item-details.out-dto';
 import { PaginatedListOutDto } from 'src/sub-features/shared/dto/paginated-list-out-dto.interface';
+import { PlatformFeatures } from 'src/sub-features/tenants/db-schemas/tenant.db-schema';
 import { QueryParamsForPaginatedListInDto } from 'src/sub-features/shared/dto/query-params-for-paginated-list.in-dto';
 import { RequesterIsEmployeeOfTargetClinicGuard } from 'src/sub-features/shared/guards/requester-is-employee-of-target-clinic.guard';
 import { RequestIsInClinicContextGuard } from 'src/sub-features/shared/guards/request-is-in-clinic-context.guard';
+import {
+  IsRelatedToFeatures,
+  TenantFeaturesGuard,
+} from 'src/sub-features/shared/guards/tenant-features.guard';
 import {
   Body,
   Controller,
@@ -21,6 +26,8 @@ import {
   Req,
 } from '@nestjs/common';
 
+@UseGuards(TenantFeaturesGuard)
+@IsRelatedToFeatures(PlatformFeatures.inventory)
 @Controller('inventory')
 export class InventoryController {
   constructor(

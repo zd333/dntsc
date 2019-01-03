@@ -16,7 +16,7 @@ import {
 @Injectable()
 export class RequesterIsPlatformOwnerIfCreatesClinicOwnerGuard
   implements CanActivate {
-  canActivate(context: ExecutionContext): boolean {
+  public canActivate(context: ExecutionContext): boolean {
     const req: AppRequest = context.switchToHttp().getRequest();
     const { body: dto, user: requestUser } = req;
 
