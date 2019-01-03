@@ -1,9 +1,10 @@
 import { ClinicsController } from './controllers/clinics.controller';
 import { ClinicsDbConnectorService } from './services/clinics-db-connector.service';
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { NotUsedClinicHostNames } from './validators/not-used-clinic-host-names.validator';
 import { PassportModule } from '@nestjs/passport';
+import { SharedModule } from '../shared/shared.module';
 import {
   CLINIC_SCHEMA_COLLECTION_NAME,
   ClinicSchema,
@@ -21,6 +22,7 @@ const schemasMap = [
   imports: [
     MongooseModule.forFeature(schemasMap),
     PassportModule.register({ defaultStrategy: 'jwt' }),
+    forwardRef(() => SharedModule),
   ],
   providers: [ClinicsDbConnectorService, NotUsedClinicHostNames],
   controllers: [ClinicsController],

@@ -13,7 +13,7 @@ import {
  */
 @Injectable()
 export class RequestIsInClinicContextGuard implements CanActivate {
-  canActivate(context: ExecutionContext): boolean {
+  public canActivate(context: ExecutionContext): boolean {
     const req: AppRequest = context.switchToHttp().getRequest();
 
     if (!req.targetClinicId) {

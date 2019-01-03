@@ -15,7 +15,7 @@ import {
  */
 @Injectable()
 export class RequesterIsEmployeeOfTargetClinicGuard implements CanActivate {
-  canActivate(context: ExecutionContext): boolean {
+  public canActivate(context: ExecutionContext): boolean {
     const req: AppRequest = context.switchToHttp().getRequest();
     const user: AuthenticatedUser = req.user;
     if (!user) {

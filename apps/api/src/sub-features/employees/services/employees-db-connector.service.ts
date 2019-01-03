@@ -17,7 +17,7 @@ export class EmployeesDbConnectorService {
 
   public async create(dto: CreateEmployeeInDto): Promise<EmployeeDocument> {
     const { targetClinicId, ...data } = dto;
-    const doc: EmployeeDocument = new this.employeeModel({
+    const doc = new this.employeeModel({
       ...data,
       clinics: [targetClinicId],
       isActive: true,
