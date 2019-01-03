@@ -1,6 +1,6 @@
 import { AppAccessRoles } from 'src/app-access-roles';
 import { InDtoWithClinicContext } from 'src/middlewares/add-clinic-context.middleware';
-import { NewEmployeeLoginIsUniqueForClinics } from '../validators/new-employee-login-is-unique-for-clinics.validator';
+import { IsUniqueEmployeeLoginForGivenClinic } from '../validators/is-unique-employee-login-for-given-clinic.validator';
 import {
   IsString,
   MinLength,
@@ -14,7 +14,7 @@ import {
 export class CreateEmployeeInDto extends InDtoWithClinicContext {
   @MinLength(3)
   @IsString()
-  @Validate(NewEmployeeLoginIsUniqueForClinics)
+  @Validate(IsUniqueEmployeeLoginForGivenClinic)
   readonly login: string;
 
   @IsString()
@@ -23,7 +23,6 @@ export class CreateEmployeeInDto extends InDtoWithClinicContext {
 
   @MinLength(3)
   @IsString()
-  @Validate(NewEmployeeLoginIsUniqueForClinics)
   readonly name: string;
 
   /**

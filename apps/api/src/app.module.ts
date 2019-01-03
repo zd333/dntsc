@@ -6,7 +6,6 @@ import { AuthenticationModule } from './sub-features/authentication/authenticati
 import { ClinicsModule } from './sub-features/clinics/clinics.module';
 import { EmployeesModule } from './sub-features/employees/employees.module';
 import { InventoryModule } from './sub-features/inventory/inventory.module';
-import { IsIdOfExistingDbEntityValidator } from './sub-features/shared/validators/is-id-of-existing-db-entity.validator';
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Request } from 'express';
@@ -24,7 +23,7 @@ import { TenantsModule } from './sub-features/tenants/tenants.module';
     TenantsModule,
     InventoryModule,
   ],
-  providers: [IsIdOfExistingDbEntityValidator, AddClinicContextMiddleware],
+  providers: [AddClinicContextMiddleware],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {

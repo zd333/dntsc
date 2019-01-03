@@ -8,7 +8,8 @@ import {
 } from 'class-validator';
 
 /**
- * Pass id and schema name and validator will check that entity with given id exists in db.
+ * Use this with DTO property that must have id value.
+ * Pass schema name and validator will check that entity with given id exists in db.
  * Uses Mongo directly (without connector services) - not good, but acceptable due to
  * validator is very generic.
  */

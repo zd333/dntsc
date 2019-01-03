@@ -12,7 +12,7 @@ import {
   async: true,
 })
 @Injectable()
-export class NewEmployeeLoginIsUniqueForClinics
+export class IsUniqueEmployeeLoginForGivenClinic
   implements ValidatorConstraintInterface {
   constructor(
     private readonly employeesDbConnector: EmployeesDbConnectorService,
@@ -36,6 +36,6 @@ export class NewEmployeeLoginIsUniqueForClinics
   }
 
   defaultMessage() {
-    return '$property must be unique for given clinics';
+    return '$property must be unique for given clinic';
   }
 }

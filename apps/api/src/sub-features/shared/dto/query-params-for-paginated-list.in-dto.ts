@@ -11,7 +11,7 @@ import {
 
 export class QueryParamsForPaginatedListInDto {
   @IsOptional()
-  // TODO: create custom decorator IsPositiveIntegerString
+  // TODO: create custom validator IsPositiveIntegerString
   @IsNumberString()
   @NotContains('-')
   @NotContains('.')
@@ -19,7 +19,7 @@ export class QueryParamsForPaginatedListInDto {
   readonly skip?: string;
 
   @IsOptional()
-  // TODO: create custom decorator IsPositiveIntegerString
+  // TODO: create custom validator IsPositiveIntegerString
   @IsNumberString()
   @NotContains('-')
   @NotContains('.')
