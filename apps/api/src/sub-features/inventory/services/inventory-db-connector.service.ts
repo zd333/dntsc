@@ -1,6 +1,6 @@
 import { CreateInventoryBalanceChangeInDto } from '../dto/create-inventory-balance-change.in-dto';
 import { CreateInventoryItemInDto } from '../dto/create-inventory-item.dto';
-import { Document, Model } from 'mongoose';
+import { Document, Model, Types } from 'mongoose';
 import { getMongoFindCondition } from 'src/sub-features/shared/helpers/get-mongo-find-condition';
 import { getPaginationMongoFindOptionsFromDto } from 'src/sub-features/shared/helpers/get-pagination-mongo-find-options-from-in-dto';
 import { Injectable } from '@nestjs/common';
@@ -19,7 +19,7 @@ export class InventoryDbConnectorService {
     @InjectModel(INVENTORY_ITEM_SCHEMA_COLLECTION_NAME)
     private readonly inventoryItemModel: Model<InventoryItemDocument>,
     @InjectModel(INVENTORY_BALANCE_CHANGE_SCHEMA_COLLECTION_NAME)
-    private readonly inventoryBalanceChange: Model<Document>,
+    private readonly inventoryBalanceChangeModel: Model<Document>,
   ) {}
 
   public async createItem(
@@ -36,7 +36,7 @@ export class InventoryDbConnectorService {
     return doc;
   }
 
-  public async getById(id: string): Promise<InventoryItemDocument | null> {
+  public async getItemById(id: string): Promise<InventoryItemDocument | null> {
     return await this.inventoryItemModel.findById(id).exec();
   }
 
@@ -95,11 +95,36 @@ export class InventoryDbConnectorService {
     dto: CreateInventoryBalanceChangeInDto,
   ): Promise<Document> {
     const { targetClinicId, ...data } = dto;
-    const doc = new this.inventoryBalanceChange({
+    const doc = new this.inventoryBalanceChangeModel({
       ...data,
       clinic: targetClinicId,
     });
 
     return await doc.save();
+  }
+
+  public async getItemBalance(id: string): Promise<number | undefined> {
+    // Automatic casting is not done in aggregation queries
+    const itemObjectId = Types.ObjectId(id);
+    const result = await this.inventoryBalanceChangeModel
+      .aggregate([
+        { $match: { item: itemObjectId } },
+        {
+          $group: {
+            _id: null,
+            total: {
+              $sum: '$amount',
+            },
+          },
+        },
+      ])
+      .exec();
+
+    return Array.isArray(result) &&
+      result.length === 1 &&
+      !!result[0] &&
+      typeof result[0].total === 'number'
+      ? result[0].total
+      : undefined;
   }
 }
