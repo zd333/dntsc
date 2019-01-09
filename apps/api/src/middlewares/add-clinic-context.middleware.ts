@@ -4,9 +4,9 @@ import { Injectable, MiddlewareFunction, NestMiddleware } from '@nestjs/common';
 import { IsOptional, IsString } from 'class-validator';
 
 /**
- * Helps to associate request and its body (if any) with particular clinic.
+ * Helps to associate request and its body (in DTO) with particular clinic.
  * Checks request host name and adds `clinicId` property with id
- * of corresponding clinic to request object.
+ * of corresponding clinic to request itself and request body (in DTO).
  */
 @Injectable()
 export class AddClinicContextMiddleware implements NestMiddleware {
@@ -37,7 +37,7 @@ export class AddClinicContextMiddleware implements NestMiddleware {
 
 /**
  * Use this class as base for all in-DTOs that need clinic context.
- * !Note this must be optional so that it never returns confusing validation errors.
+ * !Note property MUST be decorated with `IsOptional` decorator so that it never returns confusing validation errors.
  * !Thus you have to check if request id in clinic context manually (use `RequestIsInClinicContextGuard`).
  */
 export class InDtoWithClinicContext {

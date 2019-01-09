@@ -4,6 +4,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { convertDocumentsToPaginatedListOutDto } from 'src/sub-features/shared/helpers/convert-documents-to-paginated-list-out-dto';
 import { convertDocumentToOutDto } from 'src/sub-features/shared/helpers/convert-document-to-out-dto';
 import { CreatedInventoryItemOutDto } from '../dto/created-inventory-item.out-dto';
+import { CreateInventoryBalanceChangeInDto } from '../dto/create-inventory-balance-change.in-dto';
 import { CreateInventoryItemInDto } from '../dto/create-inventory-item.dto';
 import { InventoryDbConnectorService } from '../services/inventory-db-connector.service';
 import { InventoryItemDetailsOutDto } from '../dto/inventory-item-details.out-dto';
@@ -77,5 +78,23 @@ export class InventoryController {
       findResults,
       singleDtoItemConstructor: InventoryItemDetailsOutDto,
     });
+  }
+
+  @UseGuards(
+    AuthGuard(),
+    ACGuard,
+    RequestIsInClinicContextGuard,
+    RequesterIsEmployeeOfTargetClinicGuard,
+  )
+  @UseRoles({
+    resource: 'inventory-balance-change',
+    action: 'create',
+    possession: 'any',
+  })
+  @Post('balance-change')
+  public async createBalanceChange(
+    @Body() dto: CreateInventoryBalanceChangeInDto,
+  ): Promise<void> {
+    await this.inventoryDbConnector.createBalanceChange(dto);
   }
 }
