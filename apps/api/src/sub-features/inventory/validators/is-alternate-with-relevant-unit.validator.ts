@@ -27,7 +27,7 @@ export class IsAlternateWithRelevantUnit
     validationArguments: ValidationArguments,
   ): Promise<boolean> {
     const dtoObject = validationArguments.object as CreateInventoryItemInDto;
-    const alternateInventoryItem = await this.inventoryDbConnector.getById(
+    const alternateInventoryItem = await this.inventoryDbConnector.getItemById(
       value,
     );
     if (!dtoObject || !dtoObject.unit || !alternateInventoryItem) {

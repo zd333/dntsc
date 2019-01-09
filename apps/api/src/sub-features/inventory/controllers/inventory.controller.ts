@@ -7,12 +7,14 @@ import { CreatedInventoryItemOutDto } from '../dto/created-inventory-item.out-dt
 import { CreateInventoryBalanceChangeInDto } from '../dto/create-inventory-balance-change.in-dto';
 import { CreateInventoryItemInDto } from '../dto/create-inventory-item.dto';
 import { InventoryDbConnectorService } from '../services/inventory-db-connector.service';
+import { InventoryItemBalanceOutDto } from '../dto/inventory-item-balance.out-dto';
 import { InventoryItemDetailsOutDto } from '../dto/inventory-item-details.out-dto';
 import { PaginatedListOutDto } from 'src/sub-features/shared/dto/paginated-list-out-dto.interface';
 import { PlatformFeatures } from 'src/sub-features/tenants/db-schemas/tenant.db-schema';
 import { QueryParamsForPaginatedListInDto } from 'src/sub-features/shared/dto/query-params-for-paginated-list.in-dto';
 import { RequesterIsEmployeeOfTargetClinicGuard } from 'src/sub-features/shared/guards/requester-is-employee-of-target-clinic.guard';
 import { RequestIsInClinicContextGuard } from 'src/sub-features/shared/guards/request-is-in-clinic-context.guard';
+import { WithMongoIdInDto } from 'src/sub-features/shared/dto/with-mongo-id.in-dto';
 import {
   IsRelatedToFeatures,
   TenantFeaturesGuard,
@@ -25,6 +27,8 @@ import {
   Query,
   UseGuards,
   Req,
+  Param,
+  NotFoundException,
 } from '@nestjs/common';
 
 @UseGuards(TenantFeaturesGuard)
@@ -79,6 +83,43 @@ export class InventoryController {
       singleDtoItemConstructor: InventoryItemDetailsOutDto,
     });
   }
+
+  @UseGuards(
+    AuthGuard(),
+    RequestIsInClinicContextGuard,
+    RequesterIsEmployeeOfTargetClinicGuard,
+  )
+  @Get('items/:id')
+  public async getItem(@Param() { id }: WithMongoIdInDto): Promise<
+    InventoryItemDetailsOutDto
+  > {
+    const document = await this.inventoryDbConnector.getItemById(id);
+
+    if (!document) {
+      throw new NotFoundException();
+    }
+
+    return convertDocumentToOutDto({
+      document,
+      dtoConstructor: InventoryItemDetailsOutDto,
+    });
+  }
+
+  @UseGuards(
+    AuthGuard(),
+    RequestIsInClinicContextGuard,
+    RequesterIsEmployeeOfTargetClinicGuard,
+  )
+  @Get('items/:id/current-balance')
+  public async getItemBalance(@Param() { id }: WithMongoIdInDto): Promise<
+    InventoryItemBalanceOutDto
+  > {
+    const balance = await this.inventoryDbConnector.getItemBalance(id);
+
+    return { balance };
+  }
+
+  // TODO: next add `items/:id/balance-changes` endpoint
 
   @UseGuards(
     AuthGuard(),
