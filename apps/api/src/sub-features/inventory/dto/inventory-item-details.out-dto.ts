@@ -3,6 +3,9 @@ import { InventoryItemUnits } from '../db-schemas/inventory-item.db-schema';
 
 export class InventoryItemDetailsOutDto {
   @Expose()
+  readonly id: string;
+
+  @Expose()
   readonly name: string;
 
   @Expose()

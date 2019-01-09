@@ -49,7 +49,10 @@ appRoles
   .createAny('employee')
   .updateAny('employee');
 
-appRoles.grant(AppAccessRoles._INVENTORY_BALANCE_KEEPER);
+appRoles
+  .grant(AppAccessRoles._INVENTORY_BALANCE_KEEPER)
+  .createAny('inventory-balance-change')
+  .updateAny('inventory-balance-change');
 
 appRoles
   .grant(AppAccessRoles._INVENTORY_MASTER)

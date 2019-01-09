@@ -7,7 +7,7 @@ export const INVENTORY_BALANCE_CHANGE_SCHEMA_COLLECTION_NAME =
 
 // !Note schema also contains timestamps (see schema options below)
 const schemaDefinition: SchemaDefinition = {
-  inventoryItem: {
+  item: {
     type: Schema.Types.ObjectId,
     ref: INVENTORY_ITEM_SCHEMA_COLLECTION_NAME,
     required: true,
