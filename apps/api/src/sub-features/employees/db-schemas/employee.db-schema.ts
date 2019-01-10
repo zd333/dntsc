@@ -8,6 +8,8 @@ import {
   } from 'mongoose';
 import { passwordHashingHook } from 'src/sub-features/shared/helpers/password-hashing-mongoose-schema-hook';
 
+export const EMPLOYEE_SCHEMA_COLLECTION_NAME = 'Employees';
+
 const schemaDefinition: SchemaDefinition = {
   name: { type: String, required: true },
   isActive: { type: Boolean, required: true },
@@ -20,13 +22,7 @@ const schemaDefinition: SchemaDefinition = {
   hasToChangePassword: { type: Boolean, required: false },
   clinics: {
     type: [{ type: Schema.Types.ObjectId, ref: CLINIC_SCHEMA_COLLECTION_NAME }],
-    required: true,
-    validate: {
-      validator(value) {
-        return !!value && !!value.length;
-      },
-      message: 'At least one clinic is required',
-    },
+    required: false,
   },
   roles: { type: [String], required: false },
 };
@@ -35,15 +31,13 @@ const schema = new Schema(schemaDefinition);
 schema.pre('save', passwordHashingHook);
 
 export type EmployeeDocument = Readonly<Document> & {
-  name: string;
-  isActive: boolean;
-  login: string;
-  password: string;
-  hasToChangePassword?: boolean;
-  clinics: Array<Types.ObjectId>;
-  roles: Array<AppAccessRoles>;
+  readonly name: string;
+  readonly isActive: boolean;
+  readonly login: string;
+  readonly password: string;
+  readonly hasToChangePassword?: boolean;
+  readonly clinics: Array<Types.ObjectId>;
+  readonly roles: Array<AppAccessRoles>;
 };
 
 export const EmployeeSchema = schema;
-
-export const EMPLOYEE_SCHEMA_COLLECTION_NAME = 'Employee';

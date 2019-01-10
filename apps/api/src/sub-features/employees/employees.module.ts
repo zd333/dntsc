@@ -1,11 +1,11 @@
 import { EmployeesController } from './controllers/employees.controller';
 import { EmployeesDbConnectorService } from './services/employees-db-connector.service';
-import { IsUniqueEmployeeLoginForGivenClinics } from './validators/is-unique-employee-login-for-given-clinics.validator';
-import { IsUniqueEmployeeNameForGivenClinics } from './validators/is-unique-employee-name-for-given-clinics.validator';
+import { IsUniqueEmployeeLoginForGivenClinic } from './validators/is-unique-employee-login-for-given-clinic.validator';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
 import { RequesterIsPlatformOwnerIfCreatesClinicOwnerGuard } from './guards/requester-is-platform-owner-if-creates-clinic-owner.guard';
+import { SharedModule } from '../shared/shared.module';
 import {
   EMPLOYEE_SCHEMA_COLLECTION_NAME,
   EmployeeSchema,
@@ -23,12 +23,12 @@ const schemasMap = [
   imports: [
     MongooseModule.forFeature(schemasMap),
     PassportModule.register({ defaultStrategy: 'jwt' }),
+    SharedModule,
   ],
   providers: [
     RequesterIsPlatformOwnerIfCreatesClinicOwnerGuard,
     EmployeesDbConnectorService,
-    IsUniqueEmployeeNameForGivenClinics,
-    IsUniqueEmployeeLoginForGivenClinics,
+    IsUniqueEmployeeLoginForGivenClinic,
   ],
   controllers: [EmployeesController],
   exports: [EmployeesDbConnectorService],

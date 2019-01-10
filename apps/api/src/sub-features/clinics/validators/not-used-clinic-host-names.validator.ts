@@ -15,9 +15,9 @@ export class NotUsedClinicHostNames implements ValidatorConstraintInterface {
     private readonly clinicsDbConnectorService: ClinicsDbConnectorService,
   ) {}
 
-  public async validate(hostNames: Array<string>): Promise<boolean> {
+  public async validate(value: Array<string>): Promise<boolean> {
     const someHostNamesAreAlreadyUsed = await this.clinicsDbConnectorService.checkHostNamesAreUsedInSomeClinics(
-      hostNames,
+      value,
     );
 
     return !someHostNamesAreAlreadyUsed;
