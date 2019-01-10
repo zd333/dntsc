@@ -1,13 +1,17 @@
 import { CreateInventoryBalanceChangeInDto } from '../dto/create-inventory-balance-change.in-dto';
 import { CreateInventoryItemInDto } from '../dto/create-inventory-item.dto';
 import { Document, Model, Types } from 'mongoose';
-import { getMongoFindCondition } from 'src/sub-features/shared/helpers/get-mongo-find-condition';
+import { getMongoFindConditionForFieldSearch } from 'src/sub-features/shared/helpers/get-mongo-find-condition-for-field-search';
 import { getPaginationMongoFindOptionsFromDto } from 'src/sub-features/shared/helpers/get-pagination-mongo-find-options-from-in-dto';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { INVENTORY_BALANCE_CHANGE_SCHEMA_COLLECTION_NAME } from '../db-schemas/inventory-balance-change.db-schema';
 import { MongoFindResults } from 'src/sub-features/shared/helpers/convert-documents-to-paginated-list-out-dto';
-import { QueryParamsForPaginatedListInDto } from 'src/sub-features/shared/dto/query-params-for-paginated-list.in-dto';
+import { QueryParamsForSearchablePaginatedListInDto } from 'src/sub-features/shared/dto/query-params-for-paginated-list.in-dto';
+import { runMongoPaginatedQueryWithAutoLimit } from 'src/sub-features/shared/helpers/run-mongo-paginated-query-with-auto-limit';
+import {
+  INVENTORY_BALANCE_CHANGE_SCHEMA_COLLECTION_NAME,
+  InventoryBalanceChangeDocument,
+} from '../db-schemas/inventory-balance-change.db-schema';
 import {
   INVENTORY_ITEM_SCHEMA_COLLECTION_NAME,
   InventoryItemDocument,
@@ -19,7 +23,9 @@ export class InventoryDbConnectorService {
     @InjectModel(INVENTORY_ITEM_SCHEMA_COLLECTION_NAME)
     private readonly inventoryItemModel: Model<InventoryItemDocument>,
     @InjectModel(INVENTORY_BALANCE_CHANGE_SCHEMA_COLLECTION_NAME)
-    private readonly inventoryBalanceChangeModel: Model<Document>,
+    private readonly inventoryBalanceChangeModel: Model<
+      InventoryBalanceChangeDocument
+    >,
   ) {}
 
   public async createItem(
@@ -42,7 +48,7 @@ export class InventoryDbConnectorService {
 
   public async getClinicItems(params: {
     readonly clinicId: string;
-    readonly paginationParams?: QueryParamsForPaginatedListInDto;
+    readonly paginationParams?: QueryParamsForSearchablePaginatedListInDto;
   }): Promise<MongoFindResults<InventoryItemDocument>> {
     const { clinicId, paginationParams } = params;
     const findOptions = getPaginationMongoFindOptionsFromDto(paginationParams);
@@ -50,7 +56,7 @@ export class InventoryDbConnectorService {
     const findConditions = {
       clinics: clinicId,
       ...(paginationParams && paginationParams.searchString
-        ? getMongoFindCondition({
+        ? getMongoFindConditionForFieldSearch({
             fieldName: 'name',
             searchString: paginationParams.searchString,
           })
@@ -79,7 +85,7 @@ export class InventoryDbConnectorService {
     const { clinics, inventoryItemName } = params;
     const findConditions = {
       clinics: { $in: clinics },
-      ...getMongoFindCondition({
+      ...getMongoFindConditionForFieldSearch({
         fieldName: 'name',
         searchString: inventoryItemName,
       }),
@@ -103,7 +109,9 @@ export class InventoryDbConnectorService {
     return await doc.save();
   }
 
-  public async getItemBalance(id: string): Promise<number | undefined> {
+  public async getCurrentBalanceOfItem(
+    id: string,
+  ): Promise<number | undefined> {
     // Automatic casting is not done in aggregation queries
     const itemObjectId = Types.ObjectId(id);
     const result = await this.inventoryBalanceChangeModel
@@ -126,5 +134,22 @@ export class InventoryDbConnectorService {
       typeof result[0].total === 'number'
       ? result[0].total
       : undefined;
+  }
+
+  public async getBalanceChangesOfItem(params: {
+    readonly itemId: string;
+    readonly paginationParams?: QueryParamsForSearchablePaginatedListInDto;
+  }): Promise<MongoFindResults<InventoryBalanceChangeDocument>> {
+    const { itemId, paginationParams } = params;
+    const findOptions = getPaginationMongoFindOptionsFromDto(paginationParams);
+    const findConditions = {
+      item: itemId,
+    };
+
+    return await runMongoPaginatedQueryWithAutoLimit({
+      findConditions,
+      findOptions,
+      model: this.inventoryBalanceChangeModel,
+    });
   }
 }
