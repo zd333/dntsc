@@ -12,9 +12,9 @@ Install Node, Yarn, Docker.
 ### On-time needed actions
 
 1. add your user to `docker` group by running `sudo usermod -a -G docker $USER` (this gives ability to access docker engine without `sudo`)
-1. completely log out of your account and log back in (if in doubt, reboot!)
+1. completely log out from your account and log back in (if in doubt, reboot!)
 1. prepare `.env` file with development configuration values; this file is git-ignored and thus is missing after you pulled the repo, use `.env-example` as reference (most example values are for dev mode)
-1. Create very platform owner - follow steps [Creating platform owner](#creating-platform-owner)
+1. Create platform owner - follow steps [Creating platform owner](#creating-platform-owner)
 
 ### Launching project in dev mode
 
@@ -39,7 +39,7 @@ MongoDB files will be stored in `~/dntsc_dev_mongo_db_data` folder.
 
 ### Building and deploying react client app
 
-1. go to `/apps/api`
+1. go to `/apps/react-client`
 1. run `now`
 1. remember app deployment URL (each deployment is unique and does not affect previous deployment of the same app)
 
@@ -59,4 +59,4 @@ For now platform owners are to be created manually.
 2. make sure API app was at least once successfully built and launched on target env (DB with schemas are created automatically after app first launch, we need those to exist when creating platform owner)
 3. connect to mongo directly (for dev env run `docker ps`, remember ID of mongo container, then run `docker exec -it <ID of mongo container> bash`, now you are in mongo container terminal, finally run `mongo`)
 4. run `use <app DB name>` (use your own DB name that is specified in .env file, default dev DB name is `dntsc-v1`)
-5. run `db.Employee.insert({name: '<desired name>', isActive: true, login: '<desired login>', roles: ['_PLATFORM_OWNER'], password: '<remembered password hash>'})` (pass your own name, login and remembered password hash)
+5. run `db.Employees.insert({name: '<desired name>', isActive: true, login: '<desired login>', roles: ['_PLATFORM_OWNER'], password: '<remembered password hash>'})` (pass your own name, login and remembered password hash)

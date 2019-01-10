@@ -8,27 +8,27 @@ import {
 } from 'class-validator';
 
 @ValidatorConstraint({
-  name: 'isUniqueEmployeeNameForGivenClinics',
+  name: 'isUniqueEmployeeLoginForGivenClinics',
   async: true,
 })
 @Injectable()
-export class IsUniqueEmployeeNameForGivenClinics
+export class IsUniqueEmployeeLoginForGivenClinic
   implements ValidatorConstraintInterface {
   constructor(
     private readonly employeesDbConnector: EmployeesDbConnectorService,
   ) {}
 
   public async validate(
-    employeeName: string,
+    value: string,
     validationArguments: ValidationArguments,
   ): Promise<boolean> {
     const dtoObject = validationArguments.object as CreateEmployeeInDto;
-    const { clinics } = dtoObject;
+    const { targetClinicId } = dtoObject;
     const nameIsOccupied = await this.employeesDbConnector.checkEmployeeWithGivenPropertyValueExistsInSomeOfTheClinicsList(
       {
-        clinics,
-        employeePropertyName: 'name',
-        employeePropertyValue: employeeName,
+        clinics: [targetClinicId],
+        employeePropertyName: 'login',
+        employeePropertyValue: value,
       },
     );
 
@@ -36,6 +36,6 @@ export class IsUniqueEmployeeNameForGivenClinics
   }
 
   defaultMessage() {
-    return '$property must be unique for given clinics';
+    return '$property must be unique for given clinic';
   }
 }
