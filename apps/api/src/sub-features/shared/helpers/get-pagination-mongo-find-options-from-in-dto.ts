@@ -36,7 +36,7 @@ export function getPaginationMongoFindOptionsFromDto(
   return result;
 }
 
-interface PaginationMongoFindOptions {
+export interface PaginationMongoFindOptions {
   readonly limit?: number;
   readonly skip?: number;
   readonly sort?: {

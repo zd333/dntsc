@@ -1,9 +1,9 @@
 /**
  * Generates object that can be used as find condition Mongoose find query.
- * Query results will contain documents that have target fields that
- * include search string (case-insensitive).
+ * Query results will contain documents that have target field which
+ * includes search string (case-insensitive).
  */
-export function getMongoFindCondition(params: {
+export function getMongoFindConditionForFieldSearch(params: {
   readonly fieldName: string;
   readonly searchString: string;
 }): { [key: string]: any } {

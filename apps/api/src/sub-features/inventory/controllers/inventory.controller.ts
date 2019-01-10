@@ -6,15 +6,19 @@ import { convertDocumentToOutDto } from 'src/sub-features/shared/helpers/convert
 import { CreatedInventoryItemOutDto } from '../dto/created-inventory-item.out-dto';
 import { CreateInventoryBalanceChangeInDto } from '../dto/create-inventory-balance-change.in-dto';
 import { CreateInventoryItemInDto } from '../dto/create-inventory-item.dto';
+import { InventoryBalanceChangeDetailsOutDto } from '../dto/inventory-balance-change-details.out-dto';
 import { InventoryDbConnectorService } from '../services/inventory-db-connector.service';
 import { InventoryItemBalanceOutDto } from '../dto/inventory-item-balance.out-dto';
 import { InventoryItemDetailsOutDto } from '../dto/inventory-item-details.out-dto';
 import { PaginatedListOutDto } from 'src/sub-features/shared/dto/paginated-list-out-dto.interface';
 import { PlatformFeatures } from 'src/sub-features/tenants/db-schemas/tenant.db-schema';
-import { QueryParamsForPaginatedListInDto } from 'src/sub-features/shared/dto/query-params-for-paginated-list.in-dto';
 import { RequesterIsEmployeeOfTargetClinicGuard } from 'src/sub-features/shared/guards/requester-is-employee-of-target-clinic.guard';
 import { RequestIsInClinicContextGuard } from 'src/sub-features/shared/guards/request-is-in-clinic-context.guard';
 import { WithMongoIdInDto } from 'src/sub-features/shared/dto/with-mongo-id.in-dto';
+import {
+  QueryParamsForSearchablePaginatedListInDto,
+  QueryParamsForPaginatedListInDto,
+} from 'src/sub-features/shared/dto/query-params-for-paginated-list.in-dto';
 import {
   IsRelatedToFeatures,
   TenantFeaturesGuard,
@@ -68,9 +72,9 @@ export class InventoryController {
     RequesterIsEmployeeOfTargetClinicGuard,
   )
   @Get('items')
-  public async getAll(
+  public async getItems(
     @Req() req: AppRequest,
-    @Query() dto: QueryParamsForPaginatedListInDto,
+    @Query() dto: QueryParamsForSearchablePaginatedListInDto,
   ): Promise<PaginatedListOutDto<InventoryItemDetailsOutDto>> {
     const { targetClinicId } = req;
     const findResults = await this.inventoryDbConnector.getClinicItems({
@@ -114,12 +118,33 @@ export class InventoryController {
   public async getItemBalance(@Param() { id }: WithMongoIdInDto): Promise<
     InventoryItemBalanceOutDto
   > {
-    const balance = await this.inventoryDbConnector.getItemBalance(id);
+    const balance = await this.inventoryDbConnector.getCurrentBalanceOfItem(id);
 
     return { balance };
   }
 
-  // TODO: next add `items/:id/balance-changes` endpoint
+  @UseGuards(
+    AuthGuard(),
+    RequestIsInClinicContextGuard,
+    RequesterIsEmployeeOfTargetClinicGuard,
+  )
+  @Get('items/:id/balance-changes')
+  public async getItemBalanceChanges(
+    @Param() { id }: WithMongoIdInDto,
+    @Query() dto: QueryParamsForPaginatedListInDto,
+  ): Promise<PaginatedListOutDto<InventoryBalanceChangeDetailsOutDto>> {
+    const findResults = await this.inventoryDbConnector.getBalanceChangesOfItem(
+      {
+        itemId: id,
+        paginationParams: dto,
+      },
+    );
+
+    return convertDocumentsToPaginatedListOutDto({
+      findResults,
+      singleDtoItemConstructor: InventoryBalanceChangeDetailsOutDto,
+    });
+  }
 
   @UseGuards(
     AuthGuard(),
@@ -132,7 +157,7 @@ export class InventoryController {
     action: 'create',
     possession: 'any',
   })
-  @Post('balance-change')
+  @Post('balance-changes')
   public async createBalanceChange(
     @Body() dto: CreateInventoryBalanceChangeInDto,
   ): Promise<void> {

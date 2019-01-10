@@ -34,7 +34,9 @@ export class QueryParamsForPaginatedListInDto {
   @IsOptional()
   @IsIn(['ASC', 'DESC'])
   readonly orderDirection?: 'ASC' | 'DESC';
+}
 
+export class QueryParamsForSearchablePaginatedListInDto extends QueryParamsForPaginatedListInDto {
   @IsOptional()
   @IsString()
   @MinLength(3)
