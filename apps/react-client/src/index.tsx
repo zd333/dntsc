@@ -26,6 +26,7 @@ import {
   connectRouter,
   routerMiddleware,
 } from 'connected-react-router';
+import { rootApiConnectors } from './api-connectors';
 
 const history = createBrowserHistory();
 const rootReducer = combineReducers({
@@ -33,7 +34,8 @@ const rootReducer = combineReducers({
   errorModal: errorModalReducer,
 });
 const rootEpic = combineEpics(...appRootEpics);
-const epicMiddleware = createEpicMiddleware();
+const rootEpicMiddlewareDependencies = { ...rootApiConnectors };
+const epicMiddleware = createEpicMiddleware({ dependencies: rootEpicMiddlewareDependencies });
 // Take care of sanitization or disabling dev tools on prod
 const store = createStore(
   connectRouter(history)(rootReducer),
@@ -77,3 +79,4 @@ export interface RootState {
   readonly router: RouterState;
   readonly errorModal: ErrorModalState;
 }
+export type RootEpiMiddlewareDependencies = typeof rootEpicMiddlewareDependencies;

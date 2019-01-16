@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { convertDocumentToOutDto } from 'src/sub-features/shared/helpers/convert-document-to-out-dto';
 import { CreatedEmployeeOutDto } from '../dto/created-employee.out-dto';
 import { CreatedTenantOutDto } from 'src/sub-features/tenants/dto/created-tenant.out-dto';
-import { CreateEmployeeInDto } from '../dto/create-employee.in-dto';
+import { CreateEmployeeInDtoWithClinicContext } from '../dto/create-employee.in-dto';
 import { EmployeeDetailsOutDto } from '../dto/employee-details.out-dto';
 import { EmployeesDbConnectorService } from '../services/employees-db-connector.service';
 import { RequesterIsEmployeeOfTargetClinicGuard } from 'src/sub-features/shared/guards/requester-is-employee-of-target-clinic.guard';
@@ -40,7 +40,7 @@ export class EmployeesController {
   })
   @Post()
   public async create(
-    @Body() dto: CreateEmployeeInDto,
+    @Body() dto: CreateEmployeeInDtoWithClinicContext,
   ): Promise<CreatedEmployeeOutDto> {
     const document = await this.employeesDbConnector.create(dto);
 

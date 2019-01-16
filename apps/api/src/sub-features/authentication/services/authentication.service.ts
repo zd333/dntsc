@@ -4,7 +4,7 @@ import { EmployeesDbConnectorService } from 'src/sub-features/employees/services
 import { hasRoles } from 'src/sub-features/shared/helpers/has-roles';
 import { JwtService } from '@nestjs/jwt';
 import { SignedInEmployeeOutDto } from '../dto/signed-in-employee.out-dto';
-import { SignInEmployeeInDto } from '../dto/sign-in-employee.in-dto';
+import { SignInEmployeeInDtoWithClinicContext } from '../dto/sign-in-employee.in-dto';
 import { SignInPlatformOwnerInDto } from '../dto/sign-in-platform-owner.in-dto';
 import {
   Injectable,
@@ -30,7 +30,7 @@ export class AuthenticationService {
    * because it is most important functionality of this service.
    */
   public async signInEmployee(
-    dto: SignInEmployeeInDto,
+    dto: SignInEmployeeInDtoWithClinicContext,
   ): Promise<SignedInEmployeeOutDto> {
     const employee = await this.employeesDbConnector.getByCredentials({
       clinicId: dto.targetClinicId,

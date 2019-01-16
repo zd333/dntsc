@@ -1,16 +1,16 @@
-import { Epic, ofType } from 'redux-observable';
+import { Epic } from 'redux-observable';
 import {
   filter,
   map,
   mapTo,
   withLatestFrom
-  } from 'rxjs/operators';
+} from 'rxjs/operators';
 import { selectUserIsLoggedIn } from 'src/selectors/user-is-logged-in.selector';
 import {
   LOCATION_CHANGE,
-  LocationChangeAction,
   routerActions,
 } from 'connected-react-router';
+import { ofType } from '@martin_hotell/rex-tils';
 
 /**
  * Redirects user to login page on navigation attempt when:
@@ -25,7 +25,7 @@ export const redirectUnauthenticatedToLoginPageEpic: Epic = (
 
   return action$.pipe(
     // TODO: test if this catches router actions
-    ofType<LocationChangeAction>(LOCATION_CHANGE),
+    ofType(LOCATION_CHANGE),
     withLatestFrom(userIsLoggedIn$),
     filter(
       ([action, userIsLoggedIn]) =>

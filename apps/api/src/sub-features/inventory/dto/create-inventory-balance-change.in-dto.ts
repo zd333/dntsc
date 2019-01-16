@@ -9,7 +9,7 @@ import {
   Validate
   } from 'class-validator';
 
-export class CreateInventoryBalanceChangeInDto extends InDtoWithClinicContext {
+export class CreateInventoryBalanceChangeInDtoWithClinicContext extends InDtoWithClinicContext {
   /**
    * Inventory item id.
    */
@@ -29,3 +29,14 @@ export class CreateInventoryBalanceChangeInDto extends InDtoWithClinicContext {
   @IsString()
   readonly comment: string;
 }
+
+/**
+ * DTO type for clients.
+ */
+export type CreateInventoryBalanceChangeInDto = Pick<
+  CreateInventoryBalanceChangeInDtoWithClinicContext,
+  Exclude<
+    keyof CreateInventoryBalanceChangeInDtoWithClinicContext,
+    'targetClinicId'
+  >
+>;

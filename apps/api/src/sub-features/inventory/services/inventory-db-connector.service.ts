@@ -1,5 +1,5 @@
-import { CreateInventoryBalanceChangeInDto } from '../dto/create-inventory-balance-change.in-dto';
-import { CreateInventoryItemInDto } from '../dto/create-inventory-item.dto';
+import { CreateInventoryBalanceChangeInDtoWithClinicContext } from '../dto/create-inventory-balance-change.in-dto';
+import { CreateInventoryItemInDtoWithClinicContext } from '../dto/create-inventory-item.dto';
 import { Document, Model, Types } from 'mongoose';
 import { getMongoFindConditionForFieldSearch } from 'src/sub-features/shared/helpers/get-mongo-find-condition-for-field-search';
 import { getPaginationMongoFindOptionsFromDto } from 'src/sub-features/shared/helpers/get-pagination-mongo-find-options-from-in-dto';
@@ -29,7 +29,7 @@ export class InventoryDbConnectorService {
   ) {}
 
   public async createItem(
-    dto: CreateInventoryItemInDto,
+    dto: CreateInventoryItemInDtoWithClinicContext,
   ): Promise<InventoryItemDocument> {
     const { targetClinicId, ...data } = dto;
     const doc = new this.inventoryItemModel({
@@ -98,7 +98,7 @@ export class InventoryDbConnectorService {
   }
 
   public async createBalanceChange(
-    dto: CreateInventoryBalanceChangeInDto,
+    dto: CreateInventoryBalanceChangeInDtoWithClinicContext,
   ): Promise<Document> {
     const { targetClinicId, ...data } = dto;
     const doc = new this.inventoryBalanceChangeModel({

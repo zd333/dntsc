@@ -16,7 +16,7 @@ import {
   Validate,
 } from 'class-validator';
 
-export class CreateInventoryItemInDto extends InDtoWithClinicContext {
+export class CreateInventoryItemInDtoWithClinicContext extends InDtoWithClinicContext {
   @MinLength(3)
   @IsString()
   @Validate(IsUniqueInventoryItemNameForGivenClinic)
@@ -46,3 +46,11 @@ export class CreateInventoryItemInDto extends InDtoWithClinicContext {
   // })
   readonly alternates?: Array<string>;
 }
+
+/**
+ * DTO type for clients.
+ */
+export type CreateInventoryItemInDto = Pick<
+  CreateInventoryItemInDtoWithClinicContext,
+  Exclude<keyof CreateInventoryItemInDtoWithClinicContext, 'targetClinicId'>
+>;
