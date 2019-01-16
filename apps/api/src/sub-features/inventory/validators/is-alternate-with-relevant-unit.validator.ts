@@ -1,4 +1,4 @@
-import { CreateInventoryItemInDto } from '../dto/create-inventory-item.dto';
+import { CreateInventoryItemInDtoWithClinicContext } from '../dto/create-inventory-item.dto';
 import { Injectable } from '@nestjs/common';
 import { InventoryDbConnectorService } from '../services/inventory-db-connector.service';
 import { inventoryItemHasPcsUnit } from '../helpers/inventory-item-has-pcs-unit';
@@ -26,7 +26,7 @@ export class IsAlternateWithRelevantUnit
     value: string,
     validationArguments: ValidationArguments,
   ): Promise<boolean> {
-    const dtoObject = validationArguments.object as CreateInventoryItemInDto;
+    const dtoObject = validationArguments.object as CreateInventoryItemInDtoWithClinicContext;
     const alternateInventoryItem = await this.inventoryDbConnector.getItemById(
       value,
     );

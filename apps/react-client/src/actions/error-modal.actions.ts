@@ -1,5 +1,11 @@
 import { createAction } from '@martin_hotell/rex-tils';
 
+export interface ApiError {
+  readonly error?: string;
+  // TODO: add better typing
+  readonly message?: Array<any>;
+}
+
 /**
  * Definition of this state slice is not standard
  * (does not follow convention due to it is very specific)
@@ -25,8 +31,11 @@ export function createCommonErrorAction(
 }
 
 interface CommonErrorActionPayload {
-  isCommonErrorAction: true;
-  errorMessage?: string;
+  readonly isCommonErrorAction: true;
+  /**
+   * This can become type union if there are more than one type of error object
+   */
+  readonly error?: ApiError;
 }
 
 type CommonErrorAction = ReturnType<typeof createCommonErrorAction>;

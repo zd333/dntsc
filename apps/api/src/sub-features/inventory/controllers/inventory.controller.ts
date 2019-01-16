@@ -4,8 +4,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { convertDocumentsToPaginatedListOutDto } from 'src/sub-features/shared/helpers/convert-documents-to-paginated-list-out-dto';
 import { convertDocumentToOutDto } from 'src/sub-features/shared/helpers/convert-document-to-out-dto';
 import { CreatedInventoryItemOutDto } from '../dto/created-inventory-item.out-dto';
-import { CreateInventoryBalanceChangeInDto } from '../dto/create-inventory-balance-change.in-dto';
-import { CreateInventoryItemInDto } from '../dto/create-inventory-item.dto';
+import { CreateInventoryBalanceChangeInDtoWithClinicContext } from '../dto/create-inventory-balance-change.in-dto';
+import { CreateInventoryItemInDtoWithClinicContext } from '../dto/create-inventory-item.dto';
 import { InventoryBalanceChangeDetailsOutDto } from '../dto/inventory-balance-change-details.out-dto';
 import { InventoryDbConnectorService } from '../services/inventory-db-connector.service';
 import { InventoryItemBalanceOutDto } from '../dto/inventory-item-balance.out-dto';
@@ -56,7 +56,7 @@ export class InventoryController {
   })
   @Post('items')
   public async createItem(
-    @Body() dto: CreateInventoryItemInDto,
+    @Body() dto: CreateInventoryItemInDtoWithClinicContext,
   ): Promise<CreatedInventoryItemOutDto> {
     const document = await this.inventoryDbConnector.createItem(dto);
 
@@ -159,7 +159,7 @@ export class InventoryController {
   })
   @Post('balance-changes')
   public async createBalanceChange(
-    @Body() dto: CreateInventoryBalanceChangeInDto,
+    @Body() dto: CreateInventoryBalanceChangeInDtoWithClinicContext,
   ): Promise<void> {
     await this.inventoryDbConnector.createBalanceChange(dto);
   }

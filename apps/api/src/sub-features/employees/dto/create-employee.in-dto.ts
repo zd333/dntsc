@@ -11,7 +11,7 @@ import {
   NotEquals,
 } from 'class-validator';
 
-export class CreateEmployeeInDto extends InDtoWithClinicContext {
+export class CreateEmployeeInDtoWithClinicContext extends InDtoWithClinicContext {
   @MinLength(3)
   @IsString()
   @Validate(IsUniqueEmployeeLoginForGivenClinic)
@@ -36,3 +36,11 @@ export class CreateEmployeeInDto extends InDtoWithClinicContext {
   @NotEquals(AppAccessRoles._PLATFORM_OWNER, { each: true })
   readonly roles?: Array<AppAccessRoles>;
 }
+
+/**
+ * DTO type for clients.
+ */
+export type CreateEmployeeInDto = Pick<
+  CreateEmployeeInDtoWithClinicContext,
+  Exclude<keyof CreateEmployeeInDtoWithClinicContext, 'targetClinicId'>
+>;
