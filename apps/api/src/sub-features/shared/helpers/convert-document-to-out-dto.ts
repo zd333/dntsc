@@ -1,9 +1,10 @@
 import { classToPlain, plainToClass } from 'class-transformer';
 import { Document } from 'mongoose';
-import { PaginatedListOutDto } from '../dto/paginated-list-out-dto.interface';
 
 export interface DtoConstructor<T> {
-  new (...args: any[]): T;
+  // This is generic, so really any :)
+  /* tslint:disable-next-line:no-any */
+  new (...args: Array<any>): T;
 }
 
 /**
@@ -13,8 +14,8 @@ export interface DtoConstructor<T> {
  * Excludes all properties by default, thus all properties of DTO must be decorated with `Expose`.
  */
 export function convertDocumentToOutDto<T>(params: {
-  dtoConstructor: DtoConstructor<T>;
-  document: Document;
+  readonly dtoConstructor: DtoConstructor<T>;
+  readonly document: Document;
 }): T {
   const { dtoConstructor: OutDtoClassConstructor, document } = params;
   const dtoClass = plainToClass(OutDtoClassConstructor, document, {

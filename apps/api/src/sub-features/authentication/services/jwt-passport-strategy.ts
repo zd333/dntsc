@@ -19,7 +19,7 @@ export class JwtPassportStrategy extends PassportStrategy(Strategy) {
   /**
    * Passport uses this method validate user and add it to request object.
    */
-  async validate(payload: JwtPayload): Promise<AuthenticatedUser> {
+  public async validate(payload: JwtPayload): Promise<AuthenticatedUser> {
     const user = await this.authenticationService.validateUserByJwtPayload(
       payload,
     );

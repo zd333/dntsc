@@ -34,7 +34,7 @@ export class IsUniqueInventoryItemNameForGivenClinic
     return !nameIsOccupied;
   }
 
-  defaultMessage() {
+  public defaultMessage(): string {
     return '$property must be unique for given clinic';
   }
 }

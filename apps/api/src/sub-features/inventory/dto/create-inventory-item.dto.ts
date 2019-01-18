@@ -1,11 +1,6 @@
 import { InDtoWithClinicContext } from 'src/middlewares/add-clinic-context.middleware';
-import { IsAlternateWithRelevantUnit } from '../validators/is-alternate-with-relevant-unit.validator';
-import { IsIdOfExistingDbEntityValidator } from 'src/sub-features/shared/validators/is-id-of-existing-db-entity.validator';
+import { InventoryItemUnits } from '../db-schemas/inventory-item.db-schema';
 import { IsUniqueInventoryItemNameForGivenClinic } from '../validators/is-unique-inventory-item-name-for-given-clinic.validator';
-import {
-  InventoryItemUnits,
-  INVENTORY_ITEM_SCHEMA_COLLECTION_NAME,
-} from '../db-schemas/inventory-item.db-schema';
 import {
   IsEnum,
   IsString,
@@ -20,10 +15,10 @@ export class CreateInventoryItemInDtoWithClinicContext extends InDtoWithClinicCo
   @MinLength(3)
   @IsString()
   @Validate(IsUniqueInventoryItemNameForGivenClinic)
-  readonly name: string;
+  public readonly name: string;
 
   @IsEnum(InventoryItemUnits)
-  readonly unit: InventoryItemUnits;
+  public readonly unit: InventoryItemUnits;
 
   /**
    * Array of ids of other inventory items that can be used as substitution.
@@ -32,6 +27,7 @@ export class CreateInventoryItemInDtoWithClinicContext extends InDtoWithClinicCo
   @ArrayNotEmpty()
   @ArrayUnique()
   // TODO: currently does not work, update class-validator after this PR is merged
+  /* tslint:disable:comment-format */
   // https://github.com/typestack/class-validator/pull/295
   // or refactor to validate whole array if not merged
   // @Validate(
@@ -44,7 +40,7 @@ export class CreateInventoryItemInDtoWithClinicContext extends InDtoWithClinicCo
   // @Validate(IsAlternateWithRelevantUnit, {
   //   each: true,
   // })
-  readonly alternates?: Array<string>;
+  public readonly alternates?: Array<string>;
 }
 
 /**

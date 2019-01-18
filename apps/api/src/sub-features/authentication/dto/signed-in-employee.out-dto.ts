@@ -2,8 +2,8 @@ import { Expose } from 'class-transformer';
 
 export class SignedInEmployeeOutDto {
   @Expose()
-  readonly authToken: string;
+  public readonly authToken: string;
 
   @Expose()
-  readonly hasToChangePassword?: boolean;
+  public readonly hasToChangePassword?: boolean;
 }

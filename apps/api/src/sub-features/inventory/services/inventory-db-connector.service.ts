@@ -47,7 +47,7 @@ export class InventoryDbConnectorService {
   }
 
   public async getClinicItems(params: {
-    readonly clinicId: string;
+    readonly clinicId: string | undefined;
     readonly paginationParams?: QueryParamsForSearchablePaginatedListInDto;
   }): Promise<MongoFindResults<InventoryItemDocument>> {
     const { clinicId, paginationParams } = params;
@@ -109,9 +109,7 @@ export class InventoryDbConnectorService {
     return await doc.save();
   }
 
-  public async getCurrentBalanceOfItem(
-    id: string,
-  ): Promise<number | undefined> {
+  public async getCurrentBalanceOfItem(id: string): Promise<number> {
     // Automatic casting is not done in aggregation queries
     const itemObjectId = Types.ObjectId(id);
     const result = await this.inventoryBalanceChangeModel
@@ -133,7 +131,7 @@ export class InventoryDbConnectorService {
       !!result[0] &&
       typeof result[0].total === 'number'
       ? result[0].total
-      : undefined;
+      : 0;
   }
 
   public async getBalanceChangesOfItem(params: {

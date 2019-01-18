@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "removeComments": true,
+    "declaration": true,
+    "sourceMap": true,
+    "allowJs": false,
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "noUnusedLocals": true,
+    "baseUrl": "./"
+  },
+  "paths": {
+    "@api/*": ["api/src/*"],
+    "@react-client": ["react-client"]
+  },
+  "exclude": ["**/node_modules"]
+}

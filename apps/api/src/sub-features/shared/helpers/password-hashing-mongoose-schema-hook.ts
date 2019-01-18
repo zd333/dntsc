@@ -10,9 +10,12 @@ const BCRYPT_SALT_ROUNDS = 10;
  * ! This should be used only in context of Mongoose schema
  * because internally relies on `this` which is expected to be document!
  */
-export function passwordHashingHook(next: HookNextFunction): void {
-  const doc: Document & { password: string } = this;
-
+export function passwordHashingHook(
+  // Has to be mutable in this case
+  /* tslint:disable-next-line:readonly-keyword */
+  this: Document & { password: string },
+  next: HookNextFunction,
+): void {
   if (typeof next !== 'function') {
     // Something is really wrong here
     return;
@@ -20,18 +23,19 @@ export function passwordHashingHook(next: HookNextFunction): void {
 
   // Check we are having deal with doc (duck-type) and check password was modified
   if (
-    !doc ||
-    !doc.password ||
-    typeof doc.isModified !== 'function' ||
-    !doc.isModified('password')
+    !this ||
+    !this.password ||
+    typeof this.isModified !== 'function' ||
+    !this.isModified('password')
   ) {
     next();
+
     return;
   }
 
   // Salt is generated automatically by bcrypt
-  hash(doc.password, BCRYPT_SALT_ROUNDS).then(hashedPassword => {
-    doc.password = hashedPassword;
+  hash(this.password, BCRYPT_SALT_ROUNDS).then(hashedPassword => {
+    this.password = hashedPassword;
     next();
   });
 }

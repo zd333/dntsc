@@ -3,15 +3,15 @@ import { InventoryItemUnits } from '../db-schemas/inventory-item.db-schema';
 
 export class InventoryItemDetailsOutDto {
   @Expose()
-  readonly id: string;
+  public readonly id: string;
 
   @Expose()
-  readonly name: string;
+  public readonly name: string;
 
   @Expose()
-  readonly unit: InventoryItemUnits;
+  public readonly unit: InventoryItemUnits;
 
   @Expose()
   @Type(() => String)
-  readonly alternates?: Array<string>;
+  public readonly alternates?: Array<string>;
 }

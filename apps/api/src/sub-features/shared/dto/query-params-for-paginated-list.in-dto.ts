@@ -1,4 +1,3 @@
-import { InDtoWithClinicContext } from 'src/middlewares/add-clinic-context.middleware';
 import {
   IsNumberString,
   IsOptional,
@@ -16,7 +15,7 @@ export class QueryParamsForPaginatedListInDto {
   @NotContains('-')
   @NotContains('.')
   @NotContains(',')
-  readonly skip?: string;
+  public readonly skip?: string;
 
   @IsOptional()
   // TODO: create custom validator IsPositiveIntegerString
@@ -24,21 +23,21 @@ export class QueryParamsForPaginatedListInDto {
   @NotContains('-')
   @NotContains('.')
   @NotContains(',')
-  readonly limit?: string;
+  public readonly limit?: string;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  readonly orderBy?: string;
+  public readonly orderBy?: string;
 
   @IsOptional()
   @IsIn(['ASC', 'DESC'])
-  readonly orderDirection?: 'ASC' | 'DESC';
+  public readonly orderDirection?: 'ASC' | 'DESC';
 }
 
 export class QueryParamsForSearchablePaginatedListInDto extends QueryParamsForPaginatedListInDto {
   @IsOptional()
   @IsString()
   @MinLength(3)
-  readonly searchString?: string;
+  public readonly searchString?: string;
 }
