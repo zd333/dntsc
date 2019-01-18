@@ -53,7 +53,9 @@ export class EmployeesController {
   @Get(':id')
   // Not sure if only employees are allowed to see details of employees, remove `IsEmployeeGuard` guard if so
   @UseGuards(AuthGuard(), RequesterIsEmployeeOfTargetClinicGuard)
-  public async getById(@Param() { id }: WithMongoIdInDto) {
+  public async getById(@Param() { id }: WithMongoIdInDto): Promise<
+    EmployeeDetailsOutDto
+  > {
     const document = await this.employeesDbConnector.getById(id);
 
     if (!document) {

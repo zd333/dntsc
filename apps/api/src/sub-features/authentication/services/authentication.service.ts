@@ -91,14 +91,14 @@ export class AuthenticationService {
     payload: JwtPayload,
   ): Promise<AuthenticatedUser | undefined> {
     if (!payload || !payload.employeeId) {
-      return;
+      return undefined;
     }
 
     const employee = await this.employeesDbConnector.getById(
       payload.employeeId,
     );
     if (!employee || !employee.isActive) {
-      return;
+      return undefined;
     }
 
     return convertEmployeeDocumentToAuthenticatedUser(employee);
@@ -134,6 +134,7 @@ function convertEmployeeDocumentToAuthenticatedUser(
     roles: [AppAccessRoles._PLATFORM_OWNER],
   });
   const clinics = employeeDocument.clinics.map(c => c.toHexString()) || [];
+
   return {
     roles,
     isEmployee: true,

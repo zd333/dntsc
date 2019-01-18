@@ -37,9 +37,14 @@ export class ClinicsDbConnectorService {
   }
 
   public async getClinicIdByHostName(params: {
-    hostName: string;
+    readonly hostName: string;
   }): Promise<string | undefined> {
     const { hostName } = params;
+
+    if (!hostName) {
+      return undefined;
+    }
+
     const found = await this.clinicModel
       .find(
         { hostNames: hostName },

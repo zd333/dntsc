@@ -8,7 +8,6 @@ import {
   Validate,
   ArrayNotEmpty,
   ArrayUnique,
-  IsUrl,
   IsLowercase,
   NotContains,
 } from 'class-validator';
@@ -16,14 +15,14 @@ import {
 export class CreateClinicInDto {
   @IsString()
   @MinLength(3)
-  readonly name: string;
+  public readonly name: string;
 
   /**
    * Tenant id.
    */
   @IsNotEmpty()
   @Validate(IsIdOfExistingDbEntityValidator, [TENANT_SCHEMA_COLLECTION_NAME])
-  readonly tenant: string;
+  public readonly tenant: string;
 
   @ArrayNotEmpty()
   @ArrayUnique()
@@ -37,5 +36,5 @@ export class CreateClinicInDto {
   @NotContains('?', { each: true })
   @NotContains('&', { each: true })
   @Validate(NotUsedClinicHostNames)
-  readonly hostNames: Array<string>;
+  public readonly hostNames: Array<string>;
 }

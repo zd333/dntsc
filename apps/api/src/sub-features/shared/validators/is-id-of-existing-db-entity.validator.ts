@@ -50,10 +50,11 @@ export class IsIdOfExistingDbEntityValidator
 
     const model = this.mongoConnection.model(schemaName);
     const entity = await model.find({ _id: value }, { limit: 1 }).exec();
+
     return !!entity && !!entity.length;
   }
 
-  defaultMessage() {
+  public defaultMessage(): string {
     return '$property must be id of existing entity';
   }
 }

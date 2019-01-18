@@ -35,7 +35,7 @@ export class IsUniqueEmployeeLoginForGivenClinic
     return !nameIsOccupied;
   }
 
-  defaultMessage() {
+  public defaultMessage(): string {
     return '$property must be unique for given clinic';
   }
 }

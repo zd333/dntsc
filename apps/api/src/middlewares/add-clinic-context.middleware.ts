@@ -12,9 +12,9 @@ import { IsOptional, IsString } from 'class-validator';
 export class AddClinicContextMiddleware implements NestMiddleware {
   constructor(private readonly clinicsDbConnector: ClinicsDbConnectorService) {}
 
-  resolve(): MiddlewareFunction {
+  public resolve(): MiddlewareFunction {
     return async (req: AppRequest, res, next) => {
-      const hostName = req.header('host');
+      const hostName = req.header('host') || '';
       const targetClinicId = await this.clinicsDbConnector.getClinicIdByHostName(
         {
           hostName,
@@ -30,7 +30,9 @@ export class AddClinicContextMiddleware implements NestMiddleware {
         }
       }
 
-      next();
+      if (next) {
+        next();
+      }
     };
   }
 }
@@ -43,5 +45,5 @@ export class AddClinicContextMiddleware implements NestMiddleware {
 export class InDtoWithClinicContext {
   @IsOptional()
   @IsString()
-  readonly targetClinicId: string;
+  public readonly targetClinicId: string;
 }

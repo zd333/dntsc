@@ -13,10 +13,10 @@ export class CreateTenantInDto {
   @MinLength(3)
   @IsString()
   @Validate(IsUniqueTenantNameValidator)
-  readonly name: string;
+  public readonly name: string;
 
   @IsOptional()
   @IsArray()
   @IsEnum(PlatformFeatures, { each: true })
-  readonly features?: PlatformFeatures;
+  public readonly features?: PlatformFeatures;
 }

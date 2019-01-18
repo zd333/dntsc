@@ -6,7 +6,9 @@
 export function getMongoFindConditionForFieldSearch(params: {
   readonly fieldName: string;
   readonly searchString: string;
-}): { [key: string]: any } {
+  // No 3-rd typings and hard to type, thus any
+  /* tslint:disable-next-line:no-any */
+}): { readonly [key: string]: any } {
   const { fieldName, searchString } = params;
 
   return {

@@ -2,7 +2,7 @@ import { Expose, Transform } from 'class-transformer';
 
 export class InventoryBalanceChangeDetailsOutDto {
   @Expose()
-  readonly id: string;
+  public readonly id: string;
 
   @Expose()
   @Transform(value =>
@@ -10,14 +10,14 @@ export class InventoryBalanceChangeDetailsOutDto {
       ? value.toHexString()
       : String(value),
   )
-  readonly item: string;
+  public readonly item: string;
 
   @Expose()
-  readonly amount: number;
+  public readonly amount: number;
 
   @Expose()
-  readonly comment?: string;
+  public readonly comment?: string;
 
   @Expose()
-  readonly createdAt: Date;
+  public readonly createdAt: Date;
 }

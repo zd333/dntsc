@@ -7,5 +7,5 @@ import { IsMongoId } from 'class-validator';
  */
 export class WithMongoIdInDto {
   @IsMongoId({ message: 'URL path param must be valid id' })
-  readonly id: string;
+  public readonly id: string;
 }

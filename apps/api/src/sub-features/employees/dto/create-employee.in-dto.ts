@@ -15,15 +15,15 @@ export class CreateEmployeeInDtoWithClinicContext extends InDtoWithClinicContext
   @MinLength(3)
   @IsString()
   @Validate(IsUniqueEmployeeLoginForGivenClinic)
-  readonly login: string;
+  public readonly login: string;
 
   @IsString()
   @MinLength(4)
-  readonly password: string;
+  public readonly password: string;
 
   @MinLength(3)
   @IsString()
-  readonly name: string;
+  public readonly name: string;
 
   /**
    * Access (permissions) roles list.
@@ -34,7 +34,7 @@ export class CreateEmployeeInDtoWithClinicContext extends InDtoWithClinicContext
   @ArrayUnique()
   @IsEnum(AppAccessRoles, { each: true })
   @NotEquals(AppAccessRoles._PLATFORM_OWNER, { each: true })
-  readonly roles?: Array<AppAccessRoles>;
+  public readonly roles?: Array<AppAccessRoles>;
 }
 
 /**

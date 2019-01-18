@@ -62,12 +62,14 @@ export class TenantFeaturesGuard implements CanActivate {
     const tenantId = clinic.tenant;
     const tenant = await this.tenantsDbConnector.getById(tenantId);
 
-    return (
-      !!tenant &&
-      Array.isArray(tenant.features) &&
-      features.every(requiredFeature =>
-        tenant.features.some(feature => feature === requiredFeature),
-      )
+    if (!tenant || !Array.isArray(tenant.features)) {
+      return false;
+    }
+
+    const tenantFeatures = tenant.features;
+
+    return features.every(requiredFeature =>
+      tenantFeatures.some(feature => feature === requiredFeature),
     );
   }
 }
