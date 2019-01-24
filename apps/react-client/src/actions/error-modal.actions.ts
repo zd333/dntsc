@@ -1,8 +1,10 @@
+import { Action } from '@martin_hotell/rex-tils/types/redux/types';
 import { createAction } from '@martin_hotell/rex-tils';
 
 export interface ApiError {
   readonly error?: string;
   // TODO: add better typing
+  // tslint:disable-next-line:no-any
   readonly message?: Array<any>;
 }
 
@@ -26,11 +28,11 @@ export const closeErrorNotificationModalAction = () =>
 export function createCommonErrorAction(
   type: string,
   payload: CommonErrorActionPayload,
-) {
+): Action<string, CommonErrorActionPayload> {
   return createAction(type, payload);
 }
 
-interface CommonErrorActionPayload {
+export interface CommonErrorActionPayload {
   readonly isCommonErrorAction: true;
   /**
    * This can become type union if there are more than one type of error object

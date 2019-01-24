@@ -1,5 +1,5 @@
 import { ActionsUnion, createAction } from '@martin_hotell/rex-tils';
-import { createCommonErrorAction, ApiError } from './error-modal.actions';
+import { ApiError, createCommonErrorAction } from './error-modal.actions';
 import { SessionState } from 'src/reducers/session-state.interface';
 
 export enum SessionActionTypes {
@@ -16,10 +16,9 @@ export const SessionActions = {
     readonly password: string;
   }) => createAction(SessionActionTypes.EMAIL_LOGIN_START, payload),
   emailLoginSuccess: (payload: {
-    readonly emailAccessToken: string,
-    readonly hasToChangePassword?: boolean,
-  }) =>
-    createAction(SessionActionTypes.EMAIL_LOGIN_SUCCESS, payload),
+    readonly emailAccessToken: string;
+    readonly hasToChangePassword?: boolean;
+  }) => createAction(SessionActionTypes.EMAIL_LOGIN_SUCCESS, payload),
   emailLoginError: (payload: { readonly error?: ApiError }) =>
     createCommonErrorAction(SessionActionTypes.EMAIL_LOGIN_ERROR, {
       isCommonErrorAction: true,
