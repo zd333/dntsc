@@ -5,28 +5,30 @@ import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { appRootEpics } from './epics';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { ConnectedRouter } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 import { errorModalReducer } from './reducers/error-modal.reducer';
 import { ErrorModalState } from './reducers/error-modal-state.interface';
 import { green, purple } from '@material-ui/core/colors';
 import { IntlProviderContainer } from './containers/IntlProviderContainer';
 import { Provider } from 'react-redux';
+import { rootApiConnectors } from './api-connectors';
 import { sessionReducer } from './reducers/session.reducer';
 import { SessionState } from './reducers/session-state.interface';
 import './index.css';
-// import registerServiceWorker from './registerServiceWorker';
 import {
   createMuiTheme,
   MuiThemeProvider,
   CssBaseline,
 } from '@material-ui/core';
 import {
+  ConnectedRouter,
   RouterState,
   connectRouter,
   routerMiddleware,
 } from 'connected-react-router';
-import { rootApiConnectors } from './api-connectors';
+// TODO: un-comment or get rid of it
+/* tslint:disable-next-line */
+// import registerServiceWorker from './registerServiceWorker';
 
 const history = createBrowserHistory();
 const rootReducer = combineReducers({
@@ -35,7 +37,9 @@ const rootReducer = combineReducers({
 });
 const rootEpic = combineEpics(...appRootEpics);
 const rootEpicMiddlewareDependencies = { ...rootApiConnectors };
-const epicMiddleware = createEpicMiddleware({ dependencies: rootEpicMiddlewareDependencies });
+const epicMiddleware = createEpicMiddleware({
+  dependencies: rootEpicMiddlewareDependencies,
+});
 // Take care of sanitization or disabling dev tools on prod
 const store = createStore(
   connectRouter(history)(rootReducer),
@@ -68,7 +72,8 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root') as HTMLElement,
 );
-// TODO: revert after checked and clarified if API requests work fine
+// TODO: un-comment or get rid of it
+/* tslint:disable-next-line */
 // registerServiceWorker();
 
 /**

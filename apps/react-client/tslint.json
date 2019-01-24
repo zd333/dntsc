@@ -1,5 +1,5 @@
 {
-  "extends": ["tslint-react"],
+  "extends": ["../tslint-base.json", "tslint-react"],
   "linterOptions": {
     "exclude": [
       "config/**/*.js",
@@ -9,6 +9,7 @@
   },
   "rules": {
     "jsx-boolean-value": false,
-    "jsx-no-multiline-js": false
+    "jsx-no-multiline-js": false,
+    "quotemark": [true, "single", "jsx-double"]
   }
 }

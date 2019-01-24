@@ -1,8 +1,8 @@
-export const API_PREFIX = '/api/v1';
+const API_PREFIX = '/api/v1';
 
 /**
- * Adds prefix to API resource path.
- * Use this to get URL for every API request.
+ * Use this helper in API connectors to get full/complete URL path of the resource.
+ * It adds constant prefix part to API resource path.
  */
 export function getApiUrl(path: string): string {
   if (!path || !path.length) {

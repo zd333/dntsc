@@ -10,9 +10,9 @@ import {
 } from '@material-ui/core';
 
 export interface ErrorModalProps {
-  isOpened: boolean;
-  message?: string;
-  onClose: () => void;
+  readonly isOpened: boolean;
+  readonly message?: string;
+  readonly onClose: () => void;
 }
 
 const StyledErrorModal: React.SFC<StyledErrorModalProps> = props => {
