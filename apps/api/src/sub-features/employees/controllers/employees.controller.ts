@@ -1,15 +1,15 @@
 import { ACGuard, UseRoles } from 'nest-access-control';
 import { AuthGuard } from '@nestjs/passport';
-import { convertDocumentToOutDto } from 'src/sub-features/shared/helpers/convert-document-to-out-dto';
+import { convertDocumentToOutDto } from '../../../../src/sub-features/shared/helpers/convert-document-to-out-dto';
 import { CreatedEmployeeOutDto } from '../dto/created-employee.out-dto';
-import { CreatedTenantOutDto } from 'src/sub-features/tenants/dto/created-tenant.out-dto';
+import { CreatedTenantOutDto } from '../../../../src/sub-features/tenants/dto/created-tenant.out-dto';
 import { CreateEmployeeInDtoWithClinicContext } from '../dto/create-employee.in-dto';
 import { EmployeeDetailsOutDto } from '../dto/employee-details.out-dto';
 import { EmployeesDbConnectorService } from '../services/employees-db-connector.service';
-import { RequesterIsEmployeeOfTargetClinicGuard } from 'src/sub-features/shared/guards/requester-is-employee-of-target-clinic.guard';
+import { RequesterIsEmployeeOfTargetClinicGuard } from '../../../../src/sub-features/shared/guards/requester-is-employee-of-target-clinic.guard';
 import { RequesterIsPlatformOwnerIfCreatesClinicOwnerGuard } from '../guards/requester-is-platform-owner-if-creates-clinic-owner.guard';
-import { RequestIsInClinicContextGuard } from 'src/sub-features/shared/guards/request-is-in-clinic-context.guard';
-import { WithMongoIdInDto } from 'src/sub-features/shared/dto/with-mongo-id.in-dto';
+import { RequestIsInClinicContextGuard } from '../../../../src/sub-features/shared/guards/request-is-in-clinic-context.guard';
+import { WithMongoIdInDto } from '../../../../src/sub-features/shared/dto/with-mongo-id.in-dto';
 import {
   Body,
   Controller,

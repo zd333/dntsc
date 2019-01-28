@@ -1,5 +1,5 @@
-import { AppRequest } from 'src/app.module';
-import { ClinicsDbConnectorService } from 'src/sub-features/clinics/services/clinics-db-connector.service';
+import { AppRequest } from '../../src/app.module';
+import { ClinicsDbConnectorService } from '../../src/sub-features/clinics/services/clinics-db-connector.service';
 import { Injectable, MiddlewareFunction, NestMiddleware } from '@nestjs/common';
 import { IsOptional, IsString } from 'class-validator';
 

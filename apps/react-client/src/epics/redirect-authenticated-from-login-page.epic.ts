@@ -1,16 +1,8 @@
 import { Epic } from 'redux-observable';
-import {
-  filter,
-  map,
-  mapTo,
-  withLatestFrom
-} from 'rxjs/operators';
-import { selectUserIsLoggedIn } from 'src/selectors/user-is-logged-in.selector';
-import {
-  LOCATION_CHANGE,
-  routerActions,
-} from 'connected-react-router';
+import { filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
+import { LOCATION_CHANGE, routerActions } from 'connected-react-router';
 import { ofType } from '@martin_hotell/rex-tils';
+import { selectUserIsLoggedIn } from '../../src/selectors/user-is-logged-in.selector';
 
 /**
  * Redirects logged in user to home page on navigation attempt to login page.

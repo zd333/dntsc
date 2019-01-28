@@ -1,13 +1,13 @@
 import { CreateInventoryBalanceChangeInDtoWithClinicContext } from '../dto/create-inventory-balance-change.in-dto';
 import { CreateInventoryItemInDtoWithClinicContext } from '../dto/create-inventory-item.dto';
 import { Document, Model, Types } from 'mongoose';
-import { getMongoFindConditionForFieldSearch } from 'src/sub-features/shared/helpers/get-mongo-find-condition-for-field-search';
-import { getPaginationMongoFindOptionsFromDto } from 'src/sub-features/shared/helpers/get-pagination-mongo-find-options-from-in-dto';
+import { getMongoFindConditionForFieldSearch } from '../../../../src/sub-features/shared/helpers/get-mongo-find-condition-for-field-search';
+import { getPaginationMongoFindOptionsFromDto } from '../../../../src/sub-features/shared/helpers/get-pagination-mongo-find-options-from-in-dto';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { MongoFindResults } from 'src/sub-features/shared/helpers/convert-documents-to-paginated-list-out-dto';
-import { QueryParamsForSearchablePaginatedListInDto } from 'src/sub-features/shared/dto/query-params-for-paginated-list.in-dto';
-import { runMongoPaginatedQueryWithAutoLimit } from 'src/sub-features/shared/helpers/run-mongo-paginated-query-with-auto-limit';
+import { MongoFindResults } from '../../../../src/sub-features/shared/helpers/convert-documents-to-paginated-list-out-dto';
+import { QueryParamsForSearchablePaginatedListInDto } from '../../../../src/sub-features/shared/dto/query-params-for-paginated-list.in-dto';
+import { runMongoPaginatedQueryWithAutoLimit } from '../../../../src/sub-features/shared/helpers/run-mongo-paginated-query-with-auto-limit';
 import {
   INVENTORY_BALANCE_CHANGE_SCHEMA_COLLECTION_NAME,
   InventoryBalanceChangeDocument,

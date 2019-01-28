@@ -1,6 +1,6 @@
 import { ActionsUnion, createAction } from '@martin_hotell/rex-tils';
 import { ApiError, createCommonErrorAction } from './error-modal.actions';
-import { SessionState } from 'src/reducers/session-state.interface';
+import { SessionState } from '../../src/reducers/session-state.interface';
 
 export enum SessionActionTypes {
   EMAIL_LOGIN_START = '[Session actions] Email login start',

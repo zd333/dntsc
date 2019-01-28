@@ -14,11 +14,6 @@
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
-    "baseUrl": "./"
-  },
-  "paths": {
-    "@api/*": ["api/src/*"],
-    "@react-client": ["react-client"]
-  },
-  "exclude": ["**/node_modules"]
+    "skipLibCheck": true
+  }
 }

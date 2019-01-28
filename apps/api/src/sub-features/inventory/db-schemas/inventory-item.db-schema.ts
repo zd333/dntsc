@@ -1,4 +1,4 @@
-import { CLINIC_SCHEMA_COLLECTION_NAME } from 'src/sub-features/clinics/db-schemas/clinic.db-schema';
+import { CLINIC_SCHEMA_COLLECTION_NAME } from '../../../../src/sub-features/clinics/db-schemas/clinic.db-schema';
 import { Document, Schema, SchemaDefinition } from 'mongoose';
 
 export const INVENTORY_ITEM_SCHEMA_COLLECTION_NAME = 'InventoryItems';

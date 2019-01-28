@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
-import { LoginPage, LoginPageProps } from 'src/components/LoginPage';
-import { RootState } from 'src';
-import { selectLoginPageIsDisabled } from 'src/selectors/login-page-is-disabled.selector';
-import { SessionActions } from 'src/actions/session.actions';
+import { LoginPage, LoginPageProps } from '../../src/components/LoginPage';
+import { RootState } from '../../src';
+import { selectLoginPageIsDisabled } from '../../src/selectors/login-page-is-disabled.selector';
+import { SessionActions } from '../../src/actions/session.actions';
 import {
   StateMapper,
   DispatchMapper,
-} from 'src/shared/interfaces/container-state-mapper.interface';
+} from '../../src/shared/interfaces/container-state-mapper.interface';
 
 const mapStateToProps: StateMapper<LoginPageProps, RootState> = state => {
   return {

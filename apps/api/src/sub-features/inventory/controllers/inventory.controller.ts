@@ -1,8 +1,8 @@
 import { ACGuard, UseRoles } from 'nest-access-control';
-import { AppRequest } from 'src/app.module';
+import { AppRequest } from '../../../../src/app.module';
 import { AuthGuard } from '@nestjs/passport';
-import { convertDocumentsToPaginatedListOutDto } from 'src/sub-features/shared/helpers/convert-documents-to-paginated-list-out-dto';
-import { convertDocumentToOutDto } from 'src/sub-features/shared/helpers/convert-document-to-out-dto';
+import { convertDocumentsToPaginatedListOutDto } from '../../../../src/sub-features/shared/helpers/convert-documents-to-paginated-list-out-dto';
+import { convertDocumentToOutDto } from '../../../../src/sub-features/shared/helpers/convert-document-to-out-dto';
 import { CreatedInventoryItemOutDto } from '../dto/created-inventory-item.out-dto';
 import { CreateInventoryBalanceChangeInDtoWithClinicContext } from '../dto/create-inventory-balance-change.in-dto';
 import { CreateInventoryItemInDtoWithClinicContext } from '../dto/create-inventory-item.dto';
@@ -10,19 +10,19 @@ import { InventoryBalanceChangeDetailsOutDto } from '../dto/inventory-balance-ch
 import { InventoryDbConnectorService } from '../services/inventory-db-connector.service';
 import { InventoryItemBalanceOutDto } from '../dto/inventory-item-balance.out-dto';
 import { InventoryItemDetailsOutDto } from '../dto/inventory-item-details.out-dto';
-import { PaginatedListOutDto } from 'src/sub-features/shared/dto/paginated-list-out-dto.interface';
-import { PlatformFeatures } from 'src/sub-features/tenants/db-schemas/tenant.db-schema';
-import { RequesterIsEmployeeOfTargetClinicGuard } from 'src/sub-features/shared/guards/requester-is-employee-of-target-clinic.guard';
-import { RequestIsInClinicContextGuard } from 'src/sub-features/shared/guards/request-is-in-clinic-context.guard';
-import { WithMongoIdInDto } from 'src/sub-features/shared/dto/with-mongo-id.in-dto';
+import { PaginatedListOutDto } from '../../../../src/sub-features/shared/dto/paginated-list-out-dto.interface';
+import { PlatformFeatures } from '../../../../src/sub-features/tenants/db-schemas/tenant.db-schema';
+import { RequesterIsEmployeeOfTargetClinicGuard } from '../../../../src/sub-features/shared/guards/requester-is-employee-of-target-clinic.guard';
+import { RequestIsInClinicContextGuard } from '../../../../src/sub-features/shared/guards/request-is-in-clinic-context.guard';
+import { WithMongoIdInDto } from '../../../../src/sub-features/shared/dto/with-mongo-id.in-dto';
 import {
   QueryParamsForSearchablePaginatedListInDto,
   QueryParamsForPaginatedListInDto,
-} from 'src/sub-features/shared/dto/query-params-for-paginated-list.in-dto';
+} from '../../../../src/sub-features/shared/dto/query-params-for-paginated-list.in-dto';
 import {
   IsRelatedToFeatures,
   TenantFeaturesGuard,
-} from 'src/sub-features/shared/guards/tenant-features.guard';
+} from '../../../../src/sub-features/shared/guards/tenant-features.guard';
 import {
   Body,
   Controller,

@@ -1,4 +1,4 @@
-import { InDtoWithClinicContext } from 'src/middlewares/add-clinic-context.middleware';
+import { InDtoWithClinicContext } from '../../../../src/middlewares/add-clinic-context.middleware';
 import { InventoryItemUnits } from '../db-schemas/inventory-item.db-schema';
 import { IsUniqueInventoryItemNameForGivenClinic } from '../validators/is-unique-inventory-item-name-for-given-clinic.validator';
 import {

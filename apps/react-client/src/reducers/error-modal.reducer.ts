@@ -5,7 +5,7 @@ import {
   CLOSE_ERROR_NOTIFICATION_MODAL_ACTION_TYPE,
   isCommonErrorAction,
   ApiError,
-} from 'src/actions/error-modal.actions';
+} from '../../src/actions/error-modal.actions';
 
 export function errorModalReducer(
   state: ErrorModalState = errorModalInitialState,
@@ -31,5 +31,5 @@ export function errorModalReducer(
 }
 
 function extractErrorMessage(error?: ApiError): string | undefined {
-  return (!!error && typeof error.error === 'string') ? error.error : undefined;
+  return !!error && typeof error.error === 'string' ? error.error : undefined;
 }

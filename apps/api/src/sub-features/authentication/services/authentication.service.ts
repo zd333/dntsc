@@ -1,7 +1,7 @@
-import { AppAccessRoles } from 'src/app-access-roles';
-import { EmployeeDocument } from 'src/sub-features/employees/db-schemas/employee.db-schema';
-import { EmployeesDbConnectorService } from 'src/sub-features/employees/services/employees-db-connector.service';
-import { hasRoles } from 'src/sub-features/shared/helpers/has-roles';
+import { AppAccessRoles } from '../../../../src/app-access-roles';
+import { EmployeeDocument } from '../../../../src/sub-features/employees/db-schemas/employee.db-schema';
+import { EmployeesDbConnectorService } from '../../../../src/sub-features/employees/services/employees-db-connector.service';
+import { hasRoles } from '../../../../src/sub-features/shared/helpers/has-roles';
 import { JwtService } from '@nestjs/jwt';
 import { SignedInEmployeeOutDto } from '../dto/signed-in-employee.out-dto';
 import { SignInEmployeeInDtoWithClinicContext } from '../dto/sign-in-employee.in-dto';
