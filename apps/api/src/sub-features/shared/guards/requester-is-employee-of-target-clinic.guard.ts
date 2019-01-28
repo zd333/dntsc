@@ -1,6 +1,6 @@
-import { AppAccessRoles } from 'src/app-access-roles';
-import { AppRequest } from 'src/app.module';
-import { AuthenticatedUser } from 'src/sub-features/authentication/services/authentication.service';
+import { AppAccessRoles } from '../../../../src/app-access-roles';
+import { AppRequest } from '../../../../src/app.module';
+import { AuthenticatedUser } from '../../../../src/sub-features/authentication/services/authentication.service';
 import { hasRoles } from '../helpers/has-roles';
 import {
   CanActivate,

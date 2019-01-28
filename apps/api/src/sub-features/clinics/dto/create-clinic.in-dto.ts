@@ -1,6 +1,6 @@
-import { IsIdOfExistingDbEntityValidator } from 'src/sub-features/shared/validators/is-id-of-existing-db-entity.validator';
+import { IsIdOfExistingDbEntityValidator } from '../../../../src/sub-features/shared/validators/is-id-of-existing-db-entity.validator';
 import { NotUsedClinicHostNames } from '../validators/not-used-clinic-host-names.validator';
-import { TENANT_SCHEMA_COLLECTION_NAME } from 'src/sub-features/tenants/db-schemas/tenant.db-schema';
+import { TENANT_SCHEMA_COLLECTION_NAME } from '../../../../src/sub-features/tenants/db-schemas/tenant.db-schema';
 import {
   IsNotEmpty,
   IsString,

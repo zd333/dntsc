@@ -1,5 +1,5 @@
-import { AppAccessRoles } from 'src/app-access-roles';
-import { InDtoWithClinicContext } from 'src/middlewares/add-clinic-context.middleware';
+import { AppAccessRoles } from '../../../../src/app-access-roles';
+import { InDtoWithClinicContext } from '../../../../src/middlewares/add-clinic-context.middleware';
 import { IsUniqueEmployeeLoginForGivenClinic } from '../validators/is-unique-employee-login-for-given-clinic.validator';
 import {
   IsString,

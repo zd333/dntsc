@@ -1,6 +1,6 @@
-import { AppAccessRoles } from 'src/app-access-roles';
-import { AppRequest } from 'src/app.module';
-import { hasRoles } from 'src/sub-features/shared/helpers/has-roles';
+import { AppAccessRoles } from '../../../../src/app-access-roles';
+import { AppRequest } from '../../../../src/app.module';
+import { hasRoles } from '../../../../src/sub-features/shared/helpers/has-roles';
 import {
   CanActivate,
   ExecutionContext,

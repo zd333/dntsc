@@ -1,7 +1,7 @@
 import { ACGuard, UseRoles } from 'nest-access-control';
 import { AuthGuard } from '@nestjs/passport';
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
-import { convertDocumentToOutDto } from 'src/sub-features/shared/helpers/convert-document-to-out-dto';
+import { convertDocumentToOutDto } from '../../../../src/sub-features/shared/helpers/convert-document-to-out-dto';
 import { CreatedTenantOutDto } from '../dto/created-tenant.out-dto';
 import { CreateTenantInDto } from '../dto/create-tenant.in-dto';
 import { TenantsDbConnectorService } from '../services/tenants-db-connector.service';
