@@ -38,14 +38,16 @@ export class AppModule {
 
 /**
  * Request object + additional app-specific properties.
+ * Do not use original Express typing of request object due to it is not strict.
+ * Add only those fields which are used in the app (add more as we go).
  */
-export type AppRequest = Request & {
+export type AppRequest = Pick<Request, 'header' | 'body'> & {
   /**
    * User that performs request (if request is authenticated).
    */
   // Must be mutable because is assigned by custom middleware
   /* tslint:disable-next-line:readonly-keyword */
-  user?: AuthenticatedUser;
+  user: AuthenticatedUser;
   /**
    * Id of clinic, depends on request host name. See `AddClinicContextMiddleware`.
    */

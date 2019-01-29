@@ -10,7 +10,7 @@ import {
 
 /**
  * Checks that user is trying to create platform or clinic owner employee
- * and verifies if he is active platform owner if so.
+ * and verifies if he is platform owner if so.
  * Makes sense only for create employee endpoint.
  */
 @Injectable()
@@ -29,15 +29,12 @@ export class RequesterIsPlatformOwnerIfCreatesClinicOwnerGuard
       return true;
     }
 
-    const isActivePlatformOwner =
-      !!requestUser &&
-      !!requestUser.isActive &&
-      hasRoles({
-        target: requestUser,
-        roles: [AppAccessRoles._PLATFORM_OWNER],
-      });
+    const isPlatformOwner = hasRoles({
+      target: requestUser,
+      roles: [AppAccessRoles._PLATFORM_OWNER],
+    });
 
-    if (!isActivePlatformOwner) {
+    if (!isPlatformOwner) {
       throw new ForbiddenException();
     }
 
