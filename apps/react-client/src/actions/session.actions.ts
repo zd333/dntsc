@@ -6,6 +6,7 @@ export enum SessionActionTypes {
   EMAIL_LOGIN_START = '[Session actions] Email login start',
   EMAIL_LOGIN_SUCCESS = '[Session actions] Email login success',
   EMAIL_LOGIN_ERROR = '[Session actions] Email login error',
+  LOGOUT = '[Session actions] Logout',
 
   CHANGE_LANGUAGE = '[Session actions] change language',
 }
@@ -24,9 +25,10 @@ export const SessionActions = {
       isCommonErrorAction: true,
       error: payload.error,
     }),
+  logout: () => createAction(SessionActionTypes.LOGOUT),
   changeLanguage: (payload: {
     readonly language: SessionState['currentLanguage'];
-  }) => createAction(SessionActionTypes.EMAIL_LOGIN_SUCCESS, payload),
+  }) => createAction(SessionActionTypes.CHANGE_LANGUAGE, payload),
 };
 
 export type AllSessionActions = ActionsUnion<typeof SessionActions>;

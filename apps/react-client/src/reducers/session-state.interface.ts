@@ -1,6 +1,5 @@
 export interface SessionState {
-  // TODO: can this be calculated? if so then refactor after it is possible
-  readonly isLoggedIn: boolean;
+  readonly authToken: string | undefined;
   readonly authApiCommunicationIsInProgress: boolean;
   readonly currentLanguage: 'en' | 'ru' | 'ua';
 }

@@ -1,7 +1,7 @@
 import { SessionState } from './session-state.interface';
 
 export const sessionInitialState: SessionState = {
-  isLoggedIn: false,
+  authToken: undefined,
   authApiCommunicationIsInProgress: false,
   currentLanguage: 'en',
 };

@@ -1,19 +1,20 @@
-import { ActionsObservable, Epic } from 'redux-observable';
+import { AppEpicsDependencies, RootState } from '../../src';
 import { catchError, map, switchMap } from 'rxjs/operators';
+import { Epic } from 'redux-observable';
 import { of as observableOf } from 'rxjs';
 import { ofType } from '@martin_hotell/rex-tils';
-import { RootEpiMiddlewareDependencies } from '../../src';
 import {
   SessionActionTypes,
   AllSessionActions,
   SessionActions,
 } from '../../src/actions/session.actions';
 
-export const emailSignInApiCall: Epic = (
-  action$: ActionsObservable<AllSessionActions>,
-  $state,
-  { signInApiConnector }: RootEpiMiddlewareDependencies,
-) =>
+export const emailSignInApiCallEpic: Epic<
+  AllSessionActions,
+  AllSessionActions,
+  RootState,
+  AppEpicsDependencies
+> = (action$, state$, { signInApiConnector }) =>
   action$.pipe(
     ofType(SessionActionTypes.EMAIL_LOGIN_START),
     switchMap(action =>

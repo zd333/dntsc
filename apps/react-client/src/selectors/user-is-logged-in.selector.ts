@@ -3,5 +3,5 @@ import { selectSessionState } from './session-state.selector';
 
 export const selectUserIsLoggedIn = createSelector(
   [selectSessionState],
-  sessionState => !!sessionState && !!sessionState.isLoggedIn,
+  sessionState => !!sessionState && !!sessionState.authToken,
 );
