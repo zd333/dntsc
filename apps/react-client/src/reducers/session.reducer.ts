@@ -17,17 +17,24 @@ export function sessionReducer(
       };
     }
     case SessionActionTypes.EMAIL_LOGIN_SUCCESS: {
-      // TODO: process payload (token?)
+      const authToken = action.payload.emailAccessToken;
+
       return {
         ...state,
+        authToken,
         authApiCommunicationIsInProgress: false,
-        isLoggedIn: true,
       };
     }
     case SessionActionTypes.EMAIL_LOGIN_ERROR: {
       return {
         ...state,
         authApiCommunicationIsInProgress: false,
+      };
+    }
+    case SessionActionTypes.LOGOUT: {
+      return {
+        ...state,
+        authToken: undefined,
       };
     }
     default:

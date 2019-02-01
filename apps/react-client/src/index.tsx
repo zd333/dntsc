@@ -26,23 +26,26 @@ import {
   connectRouter,
   routerMiddleware,
 } from 'connected-react-router';
-// TODO: un-comment or get rid of it
-/* tslint:disable-next-line */
-// import registerServiceWorker from './registerServiceWorker';
 
 const history = createBrowserHistory();
+
 const rootReducer = combineReducers({
+  router: connectRouter(history),
   session: sessionReducer,
   errorModal: errorModalReducer,
 });
 const rootEpic = combineEpics(...appRootEpics);
-const rootEpicMiddlewareDependencies = { ...rootApiConnectors };
+const rootEpicMiddlewareDependencies = {
+  ...rootApiConnectors,
+  // DI local storage into epics to make testing easier (hope there will be tests someday :) )
+  localStorageService: window.localStorage,
+};
 const epicMiddleware = createEpicMiddleware({
   dependencies: rootEpicMiddlewareDependencies,
 });
 // Take care of sanitization or disabling dev tools on prod
 const store = createStore(
-  connectRouter(history)(rootReducer),
+  rootReducer,
   composeWithDevTools(
     applyMiddleware(routerMiddleware(history), epicMiddleware),
   ),
@@ -61,20 +64,17 @@ epicMiddleware.run(rootEpic);
 
 ReactDOM.render(
   <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <IntlProviderContainer>
+    <IntlProviderContainer>
+      <ConnectedRouter history={history}>
         <MuiThemeProvider theme={theme}>
           <CssBaseline />
           <App />
         </MuiThemeProvider>
-      </IntlProviderContainer>
-    </ConnectedRouter>
+      </ConnectedRouter>
+    </IntlProviderContainer>
   </Provider>,
   document.getElementById('root') as HTMLElement,
 );
-// TODO: un-comment or get rid of it
-/* tslint:disable-next-line */
-// registerServiceWorker();
 
 /**
  * State of the whole App.
@@ -84,4 +84,7 @@ export interface RootState {
   readonly router: RouterState;
   readonly errorModal: ErrorModalState;
 }
-export type RootEpiMiddlewareDependencies = typeof rootEpicMiddlewareDependencies;
+/**
+ * Type of object that collects all injected into epic middleware dependencies of the Appp.
+ */
+export type AppEpicsDependencies = typeof rootEpicMiddlewareDependencies;

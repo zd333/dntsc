@@ -25,10 +25,10 @@ export const closeErrorNotificationModalAction = () =>
  * This helper must be used to defined all global/common error actions
  * which require common error notification with modal
  */
-export function createCommonErrorAction(
-  type: string,
+export function createCommonErrorAction<T extends string>(
+  type: T,
   payload: CommonErrorActionPayload,
-): Action<string, CommonErrorActionPayload> {
+): Action<T, CommonErrorActionPayload> {
   return createAction(type, payload);
 }
 
