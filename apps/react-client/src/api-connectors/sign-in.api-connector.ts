@@ -13,6 +13,5 @@ export const signInApiConnector = (
   const url = getApiUrl(SIGN_IN_EMPLOYEE_PATH);
   const body = params;
 
-  // TODO: test this
   return ajax.post(url, body).pipe(map(response => response.response));
 };

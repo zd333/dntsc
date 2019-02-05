@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
-import { selectSessionState } from './session-state.selector';
+import { selectAuthToken } from './auth-token.selector';
 
 export const selectUserIsLoggedIn = createSelector(
-  [selectSessionState],
-  sessionState => !!sessionState && !!sessionState.authToken,
+  [selectAuthToken],
+  authToken => !!authToken,
 );

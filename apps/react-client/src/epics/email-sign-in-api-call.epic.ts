@@ -25,6 +25,8 @@ export const emailSignInApiCallEpic: Epic<
         map(dto =>
           SessionActions.emailLoginSuccess({
             emailAccessToken: dto.authToken,
+            userRoles: dto.roles,
+            userName: dto.name,
             hasToChangePassword: dto.hasToChangePassword,
           }),
         ),

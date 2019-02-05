@@ -13,7 +13,7 @@ export const deleteSavedSessionFromLocalStorageOnLogoutEpic: Epic<
 > = action$ =>
   action$.pipe(
     ofType(SessionActionTypes.LOGOUT),
-    tap(action => {
+    tap(() => {
       localStorage.removeItem(SAVED_SESSION_LOCAL_STORAGE_KEY);
     }),
     // Nothing to dispatch

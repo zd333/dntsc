@@ -17,11 +17,17 @@ export function sessionReducer(
       };
     }
     case SessionActionTypes.EMAIL_LOGIN_SUCCESS: {
-      const authToken = action.payload.emailAccessToken;
+      const {
+        userRoles,
+        userName,
+        emailAccessToken: authToken,
+      } = action.payload;
 
       return {
         ...state,
         authToken,
+        userRoles,
+        userName,
         authApiCommunicationIsInProgress: false,
       };
     }
@@ -31,12 +37,34 @@ export function sessionReducer(
         authApiCommunicationIsInProgress: false,
       };
     }
+
     case SessionActionTypes.LOGOUT: {
       return {
         ...state,
         authToken: undefined,
+        userRoles: [],
+        userName: undefined,
       };
     }
+
+    case SessionActionTypes.GET_FEATURES_SUCCESS: {
+      const { features } = action.payload;
+
+      return {
+        ...state,
+        availableFeatures: features,
+      };
+    }
+
+    case SessionActionTypes.CHANGE_LANGUAGE: {
+      const { language: currentLanguage } = action.payload;
+
+      return {
+        ...state,
+        currentLanguage,
+      };
+    }
+
     default:
       return state;
   }
