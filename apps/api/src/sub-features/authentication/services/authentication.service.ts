@@ -49,9 +49,9 @@ export class AuthenticationService {
 
     const payload: JwtPayload = { employeeId: employee._id };
     const authToken = this.jwt.sign(payload);
-    const { hasToChangePassword } = employee;
+    const { hasToChangePassword, roles, name } = employee;
 
-    return { authToken, hasToChangePassword };
+    return { authToken, hasToChangePassword, roles, name };
   }
 
   /**
@@ -79,8 +79,9 @@ export class AuthenticationService {
 
     const payload: JwtPayload = { employeeId: employee._id };
     const authToken = this.jwt.sign(payload);
+    const { roles, name } = employee;
 
-    return { authToken };
+    return { authToken, roles, name };
   }
 
   /**

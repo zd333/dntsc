@@ -5,6 +5,10 @@ import { passwordHashingHook } from '../../../../src/sub-features/shared/helpers
 
 export const EMPLOYEE_SCHEMA_COLLECTION_NAME = 'Employees';
 
+const appAccessRoleValuesValues: Array<AppAccessRoles> = Object.keys(
+  AppAccessRoles,
+).map(key => AppAccessRoles[key]);
+
 const schemaDefinition: SchemaDefinition = {
   name: { type: String, required: true },
   isActive: { type: Boolean, required: true },
@@ -19,7 +23,7 @@ const schemaDefinition: SchemaDefinition = {
     type: [{ type: Schema.Types.ObjectId, ref: CLINIC_SCHEMA_COLLECTION_NAME }],
     required: false,
   },
-  roles: { type: [String], required: false },
+  roles: [{ type: String, enum: appAccessRoleValuesValues, required: false }],
 };
 
 const schema = new Schema(schemaDefinition);

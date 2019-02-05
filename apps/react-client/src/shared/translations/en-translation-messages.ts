@@ -1,4 +1,7 @@
 export const enTranslationMessages = {
+  defaultPageTitle: 'Clinic Management',
+
+  'loginPage.title': 'Login',
   'loginPage.loginForm.title': 'Login',
   'loginPage.loginForm.emailInput.label': 'Email',
   'loginPage.loginForm.passwordInput.label': 'Password',
@@ -7,6 +10,11 @@ export const enTranslationMessages = {
   'loginPage.loginForm.emailInput.validationErrorMessages.invalid': 'not email',
   'loginPage.loginForm.passwordInput.validationErrorMessages.empty':
     'is required',
+
+  'dashboardPage.title': 'Dashboard',
+
+  'patientsManagementPage.title': 'Patients',
+
   'errorModal.title': 'Error',
   'errorModal.defaultErrorMessage':
     'Sorry, unexpected error happened. We can not finish your action.',

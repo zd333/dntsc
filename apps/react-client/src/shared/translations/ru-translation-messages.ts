@@ -1,6 +1,9 @@
 import { AppTranslationMessages } from './en-translation-messages';
 
 export const ruTranslationMessages: AppTranslationMessages = {
+  defaultPageTitle: 'Управление клиникой',
+
+  'loginPage.title': 'Вход',
   'loginPage.loginForm.title': 'Вход',
   'loginPage.loginForm.emailInput.label': 'Email',
   'loginPage.loginForm.passwordInput.label': 'Пароль',
@@ -10,7 +13,11 @@ export const ruTranslationMessages: AppTranslationMessages = {
   'loginPage.loginForm.emailInput.validationErrorMessages.invalid': 'не email',
   'loginPage.loginForm.passwordInput.validationErrorMessages.empty':
     'обязательное',
+
+  'dashboardPage.title': 'Главное меню',
+
+  'patientsManagementPage.title': 'Пациенты',
+
   'errorModal.title': 'Ошибка',
-  'errorModal.defaultErrorMessage':
-    'Не удалось выполнить действие, в процессе выполнения возникла непредвиденная ошибка.',
+  'errorModal.defaultErrorMessage': 'Извините, возникла ошибка.',
 };

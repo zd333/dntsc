@@ -71,3 +71,5 @@ appRoles
   .updateAny('tenant')
   .createAny('clinic')
   .updateAny('clinic');
+
+appRoles.lock();

@@ -11,7 +11,7 @@ export function errorModalReducer(
   state: ErrorModalState = errorModalInitialState,
   action: AllErrorModalActions,
 ): ErrorModalState {
-  // Close model action
+  // Close modal action
   if (action && action.type === CLOSE_ERROR_NOTIFICATION_MODAL_ACTION_TYPE) {
     return {
       ...state,

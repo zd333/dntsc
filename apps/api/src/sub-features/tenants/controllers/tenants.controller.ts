@@ -4,7 +4,6 @@ import { AuthGuard } from '@nestjs/passport';
 import { convertDocumentToOutDto } from '../../../../src/sub-features/shared/helpers/convert-document-to-out-dto';
 import { CreatedTenantOutDto } from '../dto/created-tenant.out-dto';
 import { CreateTenantInDto } from '../dto/create-tenant.in-dto';
-import { RequesterIsEmployeeOfTargetClinicGuard } from '../../shared/guards/requester-is-employee-of-target-clinic.guard';
 import { RequestIsInClinicContextGuard } from '../../shared/guards/request-is-in-clinic-context.guard';
 import { TenantDetailsOutDto } from '../dto/tenant-details.out-dto';
 import { TenantsDbConnectorService } from '../services/tenants-db-connector.service';
@@ -40,11 +39,7 @@ export class TenantsController {
     });
   }
 
-  @UseGuards(
-    AuthGuard(),
-    RequestIsInClinicContextGuard,
-    RequesterIsEmployeeOfTargetClinicGuard,
-  )
+  @UseGuards(RequestIsInClinicContextGuard)
   @Get('clinic_tenant')
   public async getItems(@Req() req: AppRequest): Promise<TenantDetailsOutDto> {
     const { targetClinicId } = req;

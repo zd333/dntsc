@@ -3,8 +3,11 @@ import { AppEpicsDependencies, RootState } from '..';
 import { EMPTY, fromEvent, Observable, of as observableOf } from 'rxjs';
 import { Epic } from 'redux-observable';
 import { map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
-import { SAVED_SESSION_LOCAL_STORAGE_KEY } from './save-session-to-localstorage-on-login.epic';
 import { selectUserIsLoggedIn } from '../selectors/user-is-logged-in.selector';
+import {
+  SAVED_SESSION_LOCAL_STORAGE_KEY,
+  SavedSession,
+} from './save-session-to-localstorage-on-login.epic';
 
 /**
  * Logs user in or out on saved in local storage session changes.
@@ -24,20 +27,43 @@ export const syncAppSessionWithSavedInLocalStorageSessionEpic: Epic<
     withLatestFrom(userIsLoggedIn$),
     switchMap(
       ([, userIsLoggedIn]): Observable<AllSessionActions> => {
-        const sessionDataFromLocalStorage = localStorageService.getItem(
+        const serializedSessionDataFromLocalStorage = localStorageService.getItem(
           SAVED_SESSION_LOCAL_STORAGE_KEY,
         );
-        const userIsLoggedInAccordingToSavedSessionData = !!sessionDataFromLocalStorage;
+        let sessionDataFromLocalStorage: SavedSession | null = null;
 
-        return userIsLoggedInAccordingToSavedSessionData === userIsLoggedIn
-          ? EMPTY
-          : userIsLoggedInAccordingToSavedSessionData
-          ? observableOf(
-              SessionActions.emailLoginSuccess({
-                emailAccessToken: sessionDataFromLocalStorage as string,
-              }),
-            )
-          : observableOf(SessionActions.logout());
+        try {
+          sessionDataFromLocalStorage = JSON.parse(
+            serializedSessionDataFromLocalStorage || '',
+          );
+        } catch (e) {}
+
+        const userIsLoggedInAccordingToSavedSessionData =
+          !!sessionDataFromLocalStorage &&
+          !!sessionDataFromLocalStorage.authToken &&
+          Array.isArray(sessionDataFromLocalStorage.userRoles);
+
+        if (userIsLoggedInAccordingToSavedSessionData === userIsLoggedIn) {
+          return EMPTY;
+        }
+        if (!userIsLoggedInAccordingToSavedSessionData) {
+          return observableOf(SessionActions.logout());
+        }
+
+        // Values are definitely typed (we checked it in `userIsLoggedInAccordingToSavedSessionData`)\
+        // Need to use cast because TypeScript can't understand it
+        const savedSession = sessionDataFromLocalStorage as SavedSession;
+        const emailAccessToken = savedSession.authToken as string;
+        const userRoles = savedSession.userRoles;
+        const userName = savedSession.userName || '';
+
+        return observableOf(
+          SessionActions.emailLoginSuccess({
+            emailAccessToken,
+            userRoles,
+            userName,
+          }),
+        );
       },
     ),
   );

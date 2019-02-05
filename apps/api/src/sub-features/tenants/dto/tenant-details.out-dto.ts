@@ -9,5 +9,5 @@ export class TenantDetailsOutDto {
   public readonly name: string;
 
   @Expose()
-  public readonly features: PlatformFeatures;
+  public readonly features: Array<PlatformFeatures>;
 }
