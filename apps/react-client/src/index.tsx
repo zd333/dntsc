@@ -6,6 +6,7 @@ import { appRootEpics } from './epics';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createBrowserHistory } from 'history';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 import { errorModalReducer } from './reducers/error-modal.reducer';
 import { ErrorModalState } from './reducers/error-modal-state.interface';
 import { green, purple } from '@material-ui/core/colors';
@@ -15,11 +16,6 @@ import { rootApiConnectors } from './api-connectors';
 import { sessionReducer } from './reducers/session.reducer';
 import { SessionState } from './reducers/session-state.interface';
 import './index.css';
-import {
-  createMuiTheme,
-  MuiThemeProvider,
-  CssBaseline,
-} from '@material-ui/core';
 import {
   ConnectedRouter,
   RouterState,
@@ -67,7 +63,6 @@ ReactDOM.render(
     <IntlProviderContainer>
       <ConnectedRouter history={history}>
         <MuiThemeProvider theme={theme}>
-          <CssBaseline />
           <App />
         </MuiThemeProvider>
       </ConnectedRouter>

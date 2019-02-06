@@ -1,3 +1,4 @@
+import { AppLanguages } from '../reducers/session-state.interface';
 import { createSelector } from 'reselect';
 import { ruTranslationMessages } from '../shared/translations/ru-translation-messages';
 import { selectCurrentLanguage } from './current-language.selector';
@@ -15,9 +16,9 @@ export const selectCurrentTranslationsDictionary = createSelector(
   [selectCurrentLanguage],
   currentLanguage => {
     const dictionary: AppTranslationMessages =
-      currentLanguage === 'ua'
+      currentLanguage === AppLanguages.ua
         ? uaTranslationMessages
-        : currentLanguage === 'ru'
+        : currentLanguage === AppLanguages.ru
         ? ruTranslationMessages
         : // English is default, make sure to update `sessionInitialState` if you change this
           enTranslationMessages;
