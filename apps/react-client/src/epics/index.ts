@@ -5,6 +5,7 @@ import { getFeaturesApiCallEpic } from './get-features-api-call.epic';
 import { getFeaturesOnStartupEpic } from './get-features-on-startup.epic';
 import { redirectAuthenticatedFromLoginPageEpic } from './redirect-authenticated-from-login-page.epic';
 import { redirectOnLoginEpic } from './redirect-on-login.epic';
+import { redirectOnLogoutEpic } from './redirect-on-logout.epic';
 import { redirectUnauthenticatedToLoginPageEpic } from './redirect-unauthenticated-to-login-page.epic';
 import { saveSessionToLocalStorageOnLoginEpic } from './save-session-to-localstorage-on-login.epic';
 import { syncAppSessionWithSavedInLocalStorageSessionEpic } from './sync-session-with-saved-in-local-storage-session.epic';
@@ -17,6 +18,7 @@ export const appRootEpics: Array<Epic> = [
   getFeaturesOnStartupEpic,
   redirectAuthenticatedFromLoginPageEpic,
   redirectOnLoginEpic,
+  redirectOnLogoutEpic,
   redirectUnauthenticatedToLoginPageEpic,
   saveSessionToLocalStorageOnLoginEpic,
   syncAppSessionWithSavedInLocalStorageSessionEpic,
