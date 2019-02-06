@@ -1,4 +1,4 @@
-import { SessionState } from './session-state.interface';
+import { AppLanguages, SessionState } from './session-state.interface';
 
 export const sessionInitialState: SessionState = {
   authToken: undefined,
@@ -6,6 +6,6 @@ export const sessionInitialState: SessionState = {
   userName: undefined,
   authApiCommunicationIsInProgress: false,
   // English is default, make sure to update `selectCurrentTranslationsDictionary` if you change this
-  currentLanguage: 'en',
+  currentLanguage: AppLanguages.en,
   availableFeatures: [],
 };

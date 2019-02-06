@@ -1,24 +1,30 @@
 import * as React from 'react';
-import { DashboardPage } from '../sub-features/dashboard/components/DashboardPage';
+import { appRootRoutes } from './app-root-routes';
 import { ErrorModalContainer } from '../../src/containers/ErrorModalContainer';
-import { LoginPageContainer } from '../../src/containers/LoginPageContainer';
-import { Redirect, Route, Switch } from 'react-router';
-import { Shell } from './Shell';
+import {
+  createStyles,
+  WithStyles,
+  withStyles,
+  CssBaseline,
+} from '@material-ui/core';
 
-const appRootRoutes = (
-  <Switch>
-    <Redirect from="/" exact={true} to="/dashboard" />
-    <Route path="/login" component={LoginPageContainer} />
-    <Route component={Shell}>
-      <Route path="/dashboard" component={DashboardPage} />
-      {/* <Route path="/patients" component={PatientsManagementPage} /> */}
-    </Route>
-  </Switch>
-);
-
-export const App = () => (
+const StyledApp: React.SFC<AppProps> = props => (
   <React.Fragment>
     <ErrorModalContainer />
-    {appRootRoutes}
+    <div className={props.classes.root}>
+      <CssBaseline />
+      {appRootRoutes}
+    </div>
   </React.Fragment>
 );
+
+const appStyles = () =>
+  createStyles({
+    root: {
+      display: 'flex',
+    },
+  });
+
+type AppProps = WithStyles<typeof appStyles>;
+
+export const App = withStyles(appStyles)(StyledApp);

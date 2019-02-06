@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { AppLanguages } from '../reducers/session-state.interface';
 import { ExitToApp, Menu } from '@material-ui/icons';
 import { LEFT_NAV_WIDTH } from './Shell';
 import {
@@ -12,44 +13,56 @@ import {
   IconButton,
 } from '@material-ui/core';
 
-// TODO: add language selection support
 export interface HeaderProps {
   readonly title: string;
-  readonly onLogout: () => void;
+  readonly languageOptions: Array<AppLanguages>;
+  readonly currentLanguage: AppLanguages;
   readonly onMenuClick: () => void;
+  readonly onLanguageChange: (params: {
+    readonly language: AppLanguages;
+  }) => void;
+  readonly onLogout: () => void;
 }
+// TODO: add language selection support
 
 const StyledHeader: React.SFC<StyledHeaderProps> = props => {
   const { classes, title, onLogout, onMenuClick } = props;
 
   return (
     <AppBar position="fixed" className={classes.appBar}>
-      <IconButton
-        color="inherit"
-        aria-label="Toggle menu"
-        onClick={onMenuClick}
-        className={classes.menuButton}
-      >
-        <Menu />
-      </IconButton>
       <Toolbar>
-        <Typography variant="h6" color="inherit" noWrap>
+        <IconButton
+          color="inherit"
+          aria-label="Open menu"
+          onClick={onMenuClick}
+          className={classes.menuButton}
+        >
+          <Menu />
+        </IconButton>
+        <Typography
+          component="h1"
+          variant="h6"
+          color="inherit"
+          noWrap
+          className={classes.title}
+        >
+          {' '}
           {title}
         </Typography>
+        <IconButton
+          color="inherit"
+          aria-label="Logout"
+          onClick={onLogout}
+          className={classes.logoutButton}
+        >
+          <ExitToApp />
+        </IconButton>
       </Toolbar>
-      <IconButton
-        color="inherit"
-        aria-label="Logout"
-        onClick={onLogout}
-        className={classes.logoutButton}
-      >
-        <ExitToApp />
-      </IconButton>
     </AppBar>
   );
 };
 
-// TODO: make mobile friendly
+// TODO: make mobile friendly?
 const headerStyles = ({ breakpoints }: Theme) =>
   createStyles({
     appBar: {
@@ -66,6 +79,9 @@ const headerStyles = ({ breakpoints }: Theme) =>
       [breakpoints.up('sm')]: {
         display: 'none',
       },
+    },
+    title: {
+      flexGrow: 1,
     },
   });
 
