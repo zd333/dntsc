@@ -1,4 +1,4 @@
-import { AppAccessRoles } from '../../../../src/app-access-roles';
+import { AllAppAccessRoles, AppAccessRoles } from '../../../app-access-roles';
 import { InDtoWithClinicContext } from '../../../../src/middlewares/add-clinic-context.middleware';
 import { IsUniqueEmployeeLoginForGivenClinic } from '../validators/is-unique-employee-login-for-given-clinic.validator';
 import {
@@ -7,8 +7,8 @@ import {
   ArrayUnique,
   Validate,
   IsOptional,
-  IsEnum,
   NotEquals,
+  IsIn,
 } from 'class-validator';
 
 export class CreateEmployeeInDtoWithClinicContext extends InDtoWithClinicContext {
@@ -32,8 +32,8 @@ export class CreateEmployeeInDtoWithClinicContext extends InDtoWithClinicContext
    */
   @IsOptional()
   @ArrayUnique()
-  @IsEnum(AppAccessRoles, { each: true })
-  @NotEquals(AppAccessRoles._PLATFORM_OWNER, { each: true })
+  @IsIn(AllAppAccessRoles)
+  @NotEquals('_PLATFORM_OWNER', { each: true })
   public readonly roles?: Array<AppAccessRoles>;
 }
 

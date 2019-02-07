@@ -1,6 +1,5 @@
-import { AppAccessRoles } from '../../../../src/app-access-roles';
-import { AppRequest } from '../../../../src/app.module';
-import { AuthenticatedUser } from '../../../../src/sub-features/authentication/services/authentication.service';
+import { AppRequest } from '../../../app.module';
+import { AuthenticatedUser } from '../../../sub-features/authentication/services/authentication.service';
 import { hasRoles } from '../helpers/has-roles';
 import {
   CanActivate,
@@ -32,7 +31,7 @@ export class RequesterIsEmployeeOfTargetClinicGuard implements CanActivate {
 
     const userIsPlatformOwner = hasRoles({
       target: user,
-      roles: [AppAccessRoles._PLATFORM_OWNER],
+      roles: ['_PLATFORM_OWNER'],
     });
 
     if (userIsPlatformOwner) {

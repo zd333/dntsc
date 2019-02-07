@@ -1,6 +1,5 @@
-import { AppAccessRoles } from '../../../../src/app-access-roles';
-import { AppRequest } from '../../../../src/app.module';
-import { hasRoles } from '../../../../src/sub-features/shared/helpers/has-roles';
+import { AppRequest } from '../../../app.module';
+import { hasRoles } from '../../../sub-features/shared/helpers/has-roles';
 import {
   CanActivate,
   ExecutionContext,
@@ -22,7 +21,7 @@ export class RequesterIsPlatformOwnerIfCreatesClinicOwnerGuard
 
     const isCreatingClinicOwner = hasRoles({
       target: dto,
-      roles: [AppAccessRoles._CLINIC_OWNER],
+      roles: ['_CLINIC_OWNER'],
     });
 
     if (!isCreatingClinicOwner) {
@@ -31,7 +30,7 @@ export class RequesterIsPlatformOwnerIfCreatesClinicOwnerGuard
 
     const isPlatformOwner = hasRoles({
       target: requestUser,
-      roles: [AppAccessRoles._PLATFORM_OWNER],
+      roles: ['_PLATFORM_OWNER'],
     });
 
     if (!isPlatformOwner) {

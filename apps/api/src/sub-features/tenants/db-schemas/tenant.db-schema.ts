@@ -2,6 +2,7 @@ import { Document, Schema, SchemaDefinition } from 'mongoose';
 
 export const TENANT_SCHEMA_COLLECTION_NAME = 'Tenants';
 
+// TODO: replace with tuple
 export enum PlatformFeatures {
   inventory = 'INVENTORY',
 }
