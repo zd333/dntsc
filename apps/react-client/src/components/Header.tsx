@@ -11,6 +11,9 @@ import {
   WithStyles,
   withStyles,
   IconButton,
+  FormControl,
+  Select,
+  MenuItem,
 } from '@material-ui/core';
 
 export interface HeaderProps {
@@ -23,10 +26,29 @@ export interface HeaderProps {
   }) => void;
   readonly onLogout: () => void;
 }
-// TODO: add language selection support
 
 const StyledHeader: React.SFC<StyledHeaderProps> = props => {
-  const { classes, title, onLogout, onMenuClick } = props;
+  const {
+    classes,
+    title,
+    languageOptions,
+    currentLanguage,
+    onMenuClick,
+    onLanguageChange,
+    onLogout,
+  } = props;
+  const languageOptionElements = (languageOptions || []).map(option => (
+    <MenuItem value={option} key={option}>
+      {option}
+    </MenuItem>
+  ));
+  const handleLanguageSelectChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    if (typeof onLanguageChange === 'function') {
+      onLanguageChange({ language: event.target.value as AppLanguages });
+    }
+  };
 
   return (
     <AppBar position="fixed" className={classes.appBar}>
@@ -39,6 +61,7 @@ const StyledHeader: React.SFC<StyledHeaderProps> = props => {
         >
           <Menu />
         </IconButton>
+
         <Typography
           component="h1"
           variant="h6"
@@ -46,9 +69,20 @@ const StyledHeader: React.SFC<StyledHeaderProps> = props => {
           noWrap
           className={classes.title}
         >
-          {' '}
           {title}
         </Typography>
+
+        <FormControl className={classes.formControl}>
+          <Select
+            value={currentLanguage}
+            onChange={handleLanguageSelectChange}
+            displayEmpty
+            name="language"
+          >
+            {languageOptionElements}
+          </Select>
+        </FormControl>
+
         <IconButton
           color="inherit"
           aria-label="Logout"
@@ -62,8 +96,7 @@ const StyledHeader: React.SFC<StyledHeaderProps> = props => {
   );
 };
 
-// TODO: make mobile friendly?
-const headerStyles = ({ breakpoints }: Theme) =>
+const headerStyles = ({ breakpoints, spacing }: Theme) =>
   createStyles({
     appBar: {
       marginLeft: LEFT_NAV_WIDTH,
@@ -82,6 +115,10 @@ const headerStyles = ({ breakpoints }: Theme) =>
     },
     title: {
       flexGrow: 1,
+    },
+    formControl: {
+      margin: spacing.unit,
+      minWidth: 50,
     },
   });
 

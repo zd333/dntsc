@@ -1,7 +1,36 @@
 import { RolesBuilder } from 'nest-access-control';
+import { tuple } from './sub-features/shared/helpers/tuple';
 
 // TODO: move this to dedicated sub feature module
-
+/**
+ * This is roles tuple to use for validation purposes.
+ */
+export const AllAppAccessRoles = tuple(
+  /**
+   * System God, can do everything.
+   */
+  '_PLATFORM_OWNER',
+  /**
+   * Can do everything in clinic.
+   */
+  '_CLINIC_OWNER',
+  /**
+   * Allows work with employee records.
+   */
+  '_HR',
+  /**
+   * Allows work with inventory balance data.
+   */
+  '_INVENTORY_BALANCE_KEEPER',
+  /**
+   * Allows any actions to inventory.
+   */
+  '_INVENTORY_MASTER',
+  /**
+   * This role contains basic permissions which are granted to users all users (even with no roles).
+   */
+  '_BASIC_PERMISSIONS',
+);
 /**
  * Each role contains effective set of permissions to a resource.
  * Underscore at the role name beginning indicates
@@ -13,60 +42,33 @@ import { RolesBuilder } from 'nest-access-control';
  * !Thus resource decorators are not applied to most GET (read) controllers endpoints at all,
  * !so that no role is needed to read such resources.
  */
-export enum AppAccessRoles {
-  /**
-   * System God, can do everything.
-   */
-  _PLATFORM_OWNER = '_PLATFORM_OWNER',
-  /**
-   * Can do everything in clinic.
-   */
-  _CLINIC_OWNER = '_CLINIC_OWNER',
-  /**
-   * Allows work with employee records.
-   */
-  _HR = '_HR',
-  /**
-   * Allows work with inventory balance data.
-   */
-  _INVENTORY_BALANCE_KEEPER = '_INVENTORY_KEEPER',
-  /**
-   * Allows any actions to inventory.
-   */
-  _INVENTORY_MASTER = '_INVENTORY_MASTER',
-  /**
-   * This role contains basic permissions which are granted to users all users (even with no roles).
-   */
-  _BASIC_PERMISSIONS = '_BASIC_PERMISSIONS',
-}
+export type AppAccessRoles = typeof AllAppAccessRoles[number];
 
 export const appRoles = new RolesBuilder();
 
-appRoles.grant(AppAccessRoles._BASIC_PERMISSIONS);
+appRoles.grant('_BASIC_PERMISSIONS');
 
 appRoles
-  .grant(AppAccessRoles._HR)
+  .grant('_HR')
   .createAny('employee')
   .updateAny('employee');
 
 appRoles
-  .grant(AppAccessRoles._INVENTORY_BALANCE_KEEPER)
+  .grant('_INVENTORY_BALANCE_KEEPER')
   .createAny('inventory-balance-change')
   .updateAny('inventory-balance-change');
 
 appRoles
-  .grant(AppAccessRoles._INVENTORY_MASTER)
-  .extend(AppAccessRoles._INVENTORY_BALANCE_KEEPER)
+  .grant('_INVENTORY_MASTER')
+  .extend('_INVENTORY_BALANCE_KEEPER')
   .createAny('inventory-item')
   .updateAny('inventory-item');
 
-appRoles
-  .grant(AppAccessRoles._CLINIC_OWNER)
-  .extend([AppAccessRoles._HR, AppAccessRoles._INVENTORY_MASTER]);
+appRoles.grant('_CLINIC_OWNER').extend(['_HR', '_INVENTORY_MASTER']);
 
 appRoles
-  .grant(AppAccessRoles._PLATFORM_OWNER)
-  .extend([AppAccessRoles._CLINIC_OWNER])
+  .grant('_PLATFORM_OWNER')
+  .extend(['_CLINIC_OWNER'])
   .createAny('tenant')
   .updateAny('tenant')
   .createAny('clinic')
