@@ -1,11 +1,10 @@
 import { RolesBuilder } from 'nest-access-control';
 import { tuple } from './sub-features/shared/helpers/tuple';
 
-// TODO: move this to dedicated sub feature module
 /**
  * This is roles tuple to use for validation purposes.
  */
-export const AllAppAccessRoles = tuple(
+export const allAppAccessRoles = tuple(
   /**
    * System God, can do everything.
    */
@@ -42,7 +41,7 @@ export const AllAppAccessRoles = tuple(
  * !Thus resource decorators are not applied to most GET (read) controllers endpoints at all,
  * !so that no role is needed to read such resources.
  */
-export type AppAccessRoles = typeof AllAppAccessRoles[number];
+export type AppAccessRoles = typeof allAppAccessRoles[number];
 
 export const appRoles = new RolesBuilder();
 

@@ -3,6 +3,9 @@ import { AppTranslationMessages } from './en-translation-messages';
 export const ruTranslationMessages: AppTranslationMessages = {
   defaultPageTitle: 'Управление клиникой',
 
+  'mainMenu.InventoryMenuItem.text': 'Склад',
+  'mainMenu.InventoryBalanceMenuItem.text': 'Балланс',
+
   'loginPage.title': 'Вход',
   'loginPage.loginForm.title': 'Вход',
   'loginPage.loginForm.emailInput.label': 'Email',

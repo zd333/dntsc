@@ -1,14 +1,17 @@
 import { InDtoWithClinicContext } from '../../../../src/middlewares/add-clinic-context.middleware';
-import { InventoryItemUnits } from '../db-schemas/inventory-item.db-schema';
 import { IsUniqueInventoryItemNameForGivenClinic } from '../validators/is-unique-inventory-item-name-for-given-clinic.validator';
 import {
-  IsEnum,
+  InventoryItemUnits,
+  allInventoryItemUnits,
+} from '../db-schemas/inventory-item.db-schema';
+import {
   IsString,
   MinLength,
   ArrayNotEmpty,
   IsOptional,
   ArrayUnique,
   Validate,
+  IsIn,
 } from 'class-validator';
 
 export class CreateInventoryItemInDtoWithClinicContext extends InDtoWithClinicContext {
@@ -17,7 +20,7 @@ export class CreateInventoryItemInDtoWithClinicContext extends InDtoWithClinicCo
   @Validate(IsUniqueInventoryItemNameForGivenClinic)
   public readonly name: string;
 
-  @IsEnum(InventoryItemUnits)
+  @IsIn(allInventoryItemUnits)
   public readonly unit: InventoryItemUnits;
 
   /**

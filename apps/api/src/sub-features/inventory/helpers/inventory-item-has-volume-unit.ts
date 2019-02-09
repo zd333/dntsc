@@ -6,8 +6,5 @@ import { InventoryItemUnits } from '../db-schemas/inventory-item.db-schema';
 export function inventoryItemHasVolumeUnit<
   T extends { readonly unit: InventoryItemUnits }
 >(item: T): boolean {
-  return (
-    !!item &&
-    (item.unit === InventoryItemUnits.lt || item.unit === InventoryItemUnits.ml)
-  );
+  return !!item && (item.unit === 'LT' || item.unit === 'ML');
 }
