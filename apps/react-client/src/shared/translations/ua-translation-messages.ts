@@ -3,6 +3,9 @@ import { AppTranslationMessages } from './en-translation-messages';
 export const uaTranslationMessages: AppTranslationMessages = {
   defaultPageTitle: 'Керування клінікою',
 
+  'mainMenu.InventoryMenuItem.text': 'Склад',
+  'mainMenu.InventoryBalanceMenuItem.text': 'Баланс',
+
   'loginPage.title': 'Вхід',
   'loginPage.loginForm.title': 'Вхід',
   'loginPage.loginForm.emailInput.label': 'Email',

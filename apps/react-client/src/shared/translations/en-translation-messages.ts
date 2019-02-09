@@ -1,6 +1,9 @@
 export const enTranslationMessages = {
   defaultPageTitle: 'Clinic Management',
 
+  'mainMenu.InventoryMenuItem.text': 'Inventory',
+  'mainMenu.InventoryBalanceMenuItem.text': 'Balance',
+
   'loginPage.title': 'Login',
   'loginPage.loginForm.title': 'Login',
   'loginPage.loginForm.emailInput.label': 'Email',

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { AppLanguages } from '../reducers/session-state.interface';
 import { ExitToApp, Menu } from '@material-ui/icons';
-import { LEFT_NAV_WIDTH } from './Shell';
+import { MAIN_MENU_WIDTH } from './Shell';
 import {
   AppBar,
   Toolbar,
@@ -99,9 +99,9 @@ const StyledHeader: React.SFC<StyledHeaderProps> = props => {
 const headerStyles = ({ breakpoints, spacing }: Theme) =>
   createStyles({
     appBar: {
-      marginLeft: LEFT_NAV_WIDTH,
+      marginLeft: MAIN_MENU_WIDTH,
       [breakpoints.up('sm')]: {
-        width: `calc(100% - ${LEFT_NAV_WIDTH}px)`,
+        width: `calc(100% - ${MAIN_MENU_WIDTH}px)`,
       },
     },
     logoutButton: {

@@ -1,12 +1,15 @@
 import { IsUniqueTenantNameValidator } from '../validators/is-unique-tenant-name.validator';
-import { PlatformFeatures } from '../db-schemas/tenant.db-schema';
+import {
+  PlatformFeatures,
+  allPlatformFeatures,
+} from '../db-schemas/tenant.db-schema';
 import {
   IsString,
   MinLength,
   Validate,
-  IsEnum,
   IsOptional,
   IsArray,
+  IsIn,
 } from 'class-validator';
 
 export class CreateTenantInDto {
@@ -17,6 +20,6 @@ export class CreateTenantInDto {
 
   @IsOptional()
   @IsArray()
-  @IsEnum(PlatformFeatures, { each: true })
-  public readonly features?: PlatformFeatures;
+  @IsIn(allPlatformFeatures, { each: true })
+  public readonly features?: Array<PlatformFeatures>;
 }
