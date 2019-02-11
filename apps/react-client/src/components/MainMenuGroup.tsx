@@ -1,63 +1,96 @@
 import * as React from 'react';
+import { createLinkComponent } from '../shared/helpers/create-link-component';
+import { ExpandLess, ExpandMore } from '@material-ui/icons';
 import { FormattedMessage } from 'react-intl';
-import { SvgIconProps } from '@material-ui/core/SvgIcon';
 import {
-  Typography,
   withStyles,
   WithStyles,
   createStyles,
   Theme,
-  Modal,
   ListItem,
+  ListItemIcon,
+  ListItemText,
+  Collapse,
+  List,
 } from '@material-ui/core';
 
 export interface MainMenuGroupProps {
   /**
    * Id (key) of main group item text in intl (translations) dictionary.
    */
-  readonly textId: boolean;
-  readonly icon?: React.ComponentType<SvgIconProps>;
+  readonly textId: string;
+  readonly icon?: JSX.Element;
+  readonly subItems: Array<{
+    readonly textId: string;
+    readonly linkPath: string;
+  }>;
 }
 
-interface MainMenuState {
-  isOpened: boolean;
+interface MainMenuGroupState {
+  readonly isOpened: boolean;
 }
 
 class StyledMainMenuGroup extends React.Component<
   StyledMainMenuGroupProps,
-  MainMenuState
+  MainMenuGroupState
 > {
   public state = {
     isOpened: false,
   };
 
+  public toggleMenu = () => {
+    this.setState((previousState: MainMenuGroupState) => ({
+      isOpened: !previousState.isOpened,
+    }));
+  };
+
   public render(): JSX.Element {
+    const { textId, classes, icon, subItems } = this.props;
+
+    if (!Array.isArray(subItems) || subItems.length === 0) {
+      // Just placeholder (null doesn't work for TS)
+      return <div />;
+    }
+
+    if (subItems.length === 1) {
+      // Makes no sense to render expandable group - render single menu item
+      return (
+        <ListItem button component={createLinkComponent(subItems[0].linkPath)}>
+          {!!icon && <ListItemIcon>{icon}</ListItemIcon>}
+          <ListItemText>
+            <FormattedMessage id={textId} />
+            -
+            <FormattedMessage id={subItems[0].textId} />
+          </ListItemText>
+        </ListItem>
+      );
+    }
+
+    const subitemElements = subItems.map(subItem => (
+      <ListItem
+        key={subItem.textId}
+        component={createLinkComponent(subItem.linkPath)}
+        className={classes.nested}
+        button
+      >
+        <ListItemText>
+          <FormattedMessage id={subItem.textId} />
+        </ListItemText>
+      </ListItem>
+    ));
+
     return (
       <React.Fragment>
-        <ListItem button>
-          <ListItemIcon>
-            <ShoppingCart />
-          </ListItemIcon>
+        <ListItem button onClick={this.toggleMenu}>
+          {!!icon && <ListItemIcon>{icon}</ListItemIcon>}
           <ListItemText>
-            <FormattedMessage id="mainMenu.InventoryMenuItem.text" />
+            <FormattedMessage id={textId} />
           </ListItemText>
-          {this.state.inventorySectionOpened ? <ExpandLess /> : <ExpandMore />}
+          {this.state.isOpened ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
-        <Collapse
-          in={this.state.inventorySectionOpened}
-          timeout="auto"
-          unmountOnExit
-        >
+        <Collapse in={this.state.isOpened} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            <ListItem
-              component={createLinkComponent('/inventory/balance')}
-              className={classes.nested}
-              button
-            >
-              <ListItemText>
-                <FormattedMessage id="mainMenu.InventoryBalanceMenuItem.text" />
-              </ListItemText>
-            </ListItem>
+            {subitemElements}
           </List>
         </Collapse>
       </React.Fragment>
@@ -67,15 +100,8 @@ class StyledMainMenuGroup extends React.Component<
 
 const mainMenuGroupStyles = ({ palette, spacing, shadows }: Theme) =>
   createStyles({
-    paper: {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%, -50%)',
-      width: spacing.unit * 50,
-      backgroundColor: palette.background.paper,
-      boxShadow: shadows[5],
-      padding: spacing.unit * 4,
+    nested: {
+      paddingLeft: spacing.unit * 4,
     },
   });
 
