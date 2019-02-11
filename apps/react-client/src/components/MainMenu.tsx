@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { ExpandLess, ExpandMore, ShoppingCart } from '@material-ui/icons';
+import { createLinkComponent } from '../shared/helpers/create-link-component';
+import { Dashboard, ShoppingCart } from '@material-ui/icons';
 import { FormattedMessage } from 'react-intl';
-import { Link, LinkProps } from 'react-router-dom';
 import { MAIN_MENU_WIDTH } from './Shell';
+import { MainMenuGroup } from './MainMenuGroup';
 import {
   createStyles,
   Theme,
@@ -11,11 +12,11 @@ import {
   Hidden,
   Drawer,
   Divider,
-  List,
+  // List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Collapse,
+  List,
 } from '@material-ui/core';
 
 export interface MainMenuProps {
@@ -24,98 +25,78 @@ export interface MainMenuProps {
   readonly onClose: () => void;
 }
 
-interface MainMenuState {
-  readonly inventorySectionOpened: boolean;
-}
+export const StyledMainMenu: React.SFC<StyledMainMenuProps> = props => {
+  const { mobileOpened, isInventoryEnabled, onClose, classes, theme } = props;
+  const dashboardMenuItem = (
+    <List>
+      <ListItem button component={createLinkComponent('/dashboard')}>
+        <ListItemIcon>
+          <Dashboard />
+        </ListItemIcon>
+        <ListItemText>
+          <FormattedMessage id="dashboardPage.title" />
+        </ListItemText>
+      </ListItem>
+    </List>
+  );
+  const drawer = (
+    <div>
+      <div className={classes.toolbar} />
+      <Divider />
 
-export class StyledMainMenu extends React.Component<
-  StyledMainMenuProps,
-  MainMenuState
-> {
-  public state = {
-    inventorySectionOpened: false,
-  };
+      {dashboardMenuItem}
 
-  public render(): JSX.Element {
-    const {
-      mobileOpened,
-      isInventoryEnabled,
-      onClose,
-      classes,
-      theme,
-    } = this.props;
-    const createLinkComponent = (to: string) => (linkProps: LinkProps) => (
-      <Link to={to} {...linkProps} />
-    );
-    const inventoryMenuItem = (
-      <React.Fragment>
-        <ListItem button>
-          <ListItemIcon>
-            <ShoppingCart />
-          </ListItemIcon>
-          <ListItemText>
-            <FormattedMessage id="mainMenu.InventoryMenuItem.text" />
-          </ListItemText>
-          {this.state.inventorySectionOpened ? <ExpandLess /> : <ExpandMore />}
-        </ListItem>
-        <Collapse
-          in={this.state.inventorySectionOpened}
-          timeout="auto"
-          unmountOnExit
+      <Divider />
+
+      {/* Inventory */}
+      <List>
+        {isInventoryEnabled && (
+          <MainMenuGroup
+            textId="mainMenu.InventoryMenuItem.text"
+            icon={<ShoppingCart />}
+            subItems={[
+              {
+                textId: 'mainMenu.InventoryBalanceMenuItem.text',
+                linkPath: '/inventory/balance',
+              },
+            ]}
+          />
+        )}
+      </List>
+
+      <Divider />
+    </div>
+  );
+
+  return (
+    <nav className={classes.drawer}>
+      <Hidden smUp implementation="css">
+        <Drawer
+          variant="temporary"
+          anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+          open={mobileOpened}
+          onClose={onClose}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
         >
-          <List component="div" disablePadding>
-            <ListItem
-              component={createLinkComponent('/inventory/balance')}
-              className={classes.nested}
-              button
-            >
-              <ListItemText>
-                <FormattedMessage id="mainMenu.InventoryBalanceMenuItem.text" />
-              </ListItemText>
-            </ListItem>
-          </List>
-        </Collapse>
-      </React.Fragment>
-    );
-    const drawer = (
-      <div>
-        <div className={classes.toolbar} />
-        <Divider />
-        <List>{isInventoryEnabled && inventoryMenuItem}</List>
-        <Divider />
-      </div>
-    );
-
-    return (
-      <nav className={classes.drawer}>
-        <Hidden smUp implementation="css">
-          <Drawer
-            variant="temporary"
-            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-            open={mobileOpened}
-            onClose={onClose}
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-        <Hidden xsDown implementation="css">
-          <Drawer
-            classes={{
-              paper: classes.drawerPaper,
-            }}
-            variant="permanent"
-            open
-          >
-            {drawer}
-          </Drawer>
-        </Hidden>
-      </nav>
-    );
-  }
-}
+          {drawer}
+        </Drawer>
+      </Hidden>
+      <Hidden xsDown implementation="css">
+        <Drawer
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          variant="permanent"
+          open
+        >
+          {drawer}
+        </Drawer>
+      </Hidden>
+    </nav>
+  );
+};
 
 const mainMenuStyles = ({ breakpoints, spacing, mixins }: Theme) =>
   createStyles({
@@ -128,9 +109,6 @@ const mainMenuStyles = ({ breakpoints, spacing, mixins }: Theme) =>
     },
     drawerPaper: {
       width: MAIN_MENU_WIDTH,
-    },
-    nested: {
-      paddingLeft: spacing.unit * 4,
     },
   });
 
