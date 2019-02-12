@@ -18,6 +18,8 @@ const mapStateToProps: StateMapper<ShellProps, RootState> = state => {
     currentLanguage: selectCurrentLanguage(state),
     isInventoryEnabled: selectIsInventoryFeatureEnabled(state),
     routePath: selectRoutePath(state),
+    // TODO: create something similar to `selectLoginPageIsDisabled` for each page and final `currentPageIsBusy` selector, then bind it
+    isBusy: true,
   };
 };
 

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { LoginPage, LoginPageProps } from '../../src/components/LoginPage';
 import { RootState } from '../../src';
-import { selectLoginPageIsDisabled } from '../../src/selectors/login-page-is-disabled.selector';
+import { selectLoginPageIsBusy } from '../selectors/login-page-is-busy.selector';
 import { SessionActions } from '../../src/actions/session.actions';
 import {
   StateMapper,
@@ -10,7 +10,7 @@ import {
 
 const mapStateToProps: StateMapper<LoginPageProps, RootState> = state => {
   return {
-    isDisabled: selectLoginPageIsDisabled(state),
+    isDisabled: selectLoginPageIsBusy(state),
   };
 };
 

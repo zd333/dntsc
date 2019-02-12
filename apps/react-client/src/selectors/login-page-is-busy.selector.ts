@@ -6,7 +6,7 @@ import { selectUserIsLoggedIn } from './user-is-logged-in.selector';
  * Disable (fade out and show spinner) login page if user is logged in
  * or authentication API communication is in progress.
  */
-export const selectLoginPageIsDisabled = createSelector(
+export const selectLoginPageIsBusy = createSelector(
   [selectUserIsLoggedIn, selectSessionState],
   (userIsLoggedIn, sessionState) =>
     userIsLoggedIn ||
