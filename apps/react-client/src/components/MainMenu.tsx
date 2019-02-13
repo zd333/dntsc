@@ -12,7 +12,6 @@ import {
   Hidden,
   Drawer,
   Divider,
-  // List,
   ListItem,
   ListItemIcon,
   ListItemText,
@@ -27,44 +26,49 @@ export interface MainMenuProps {
 
 export const StyledMainMenu: React.SFC<StyledMainMenuProps> = props => {
   const { mobileOpened, isInventoryEnabled, onClose, classes, theme } = props;
-  const dashboardMenuItem = (
-    <List>
-      <ListItem button component={createLinkComponent('/dashboard')}>
-        <ListItemIcon>
-          <Dashboard />
-        </ListItemIcon>
-        <ListItemText>
-          <FormattedMessage id="dashboardPage.title" />
-        </ListItemText>
-      </ListItem>
-    </List>
-  );
-  const drawer = (
-    <div>
-      <div className={classes.toolbar} />
-      <Divider />
-
-      {dashboardMenuItem}
-
-      <Divider />
-
-      {/* Inventory */}
+  const dashboardMenuContent = (
+    <React.Fragment>
       <List>
-        {isInventoryEnabled && (
-          <MainMenuGroup
-            textId="mainMenu.InventoryMenuItem.text"
-            icon={<ShoppingCart />}
-            subItems={[
-              {
-                textId: 'mainMenu.InventoryBalanceMenuItem.text',
-                linkPath: '/inventory/balance',
-              },
-            ]}
-          />
-        )}
+        <ListItem button component={createLinkComponent('/dashboard')}>
+          <ListItemIcon>
+            <Dashboard />
+          </ListItemIcon>
+          <ListItemText>
+            <FormattedMessage id="dashboardPage.title" />
+          </ListItemText>
+        </ListItem>
       </List>
 
       <Divider />
+    </React.Fragment>
+  );
+  const inventoryMenuContent = isInventoryEnabled && (
+    <React.Fragment>
+      <List>
+        <MainMenuGroup
+          textId="mainMenu.InventoryMenuItem.text"
+          icon={<ShoppingCart />}
+          subItems={[
+            {
+              textId: 'mainMenu.InventoryCatalogMenuItem.text',
+              linkPath: '/inventory',
+            },
+          ]}
+        />
+      </List>
+      <Divider />
+    </React.Fragment>
+  );
+
+  const drawer = (
+    <div>
+      <div className={classes.toolbar} />
+
+      <Divider />
+
+      {dashboardMenuContent}
+
+      {inventoryMenuContent}
     </div>
   );
 
