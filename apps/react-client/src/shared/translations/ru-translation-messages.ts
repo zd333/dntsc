@@ -4,7 +4,7 @@ export const ruTranslationMessages: AppTranslationMessages = {
   defaultPageTitle: 'Управление клиникой',
 
   'mainMenu.InventoryMenuItem.text': 'Склад',
-  'mainMenu.InventoryBalanceMenuItem.text': 'Балланс',
+  'mainMenu.InventoryCatalogMenuItem.text': 'Каталог',
 
   'loginPage.title': 'Вход',
   'loginPage.loginForm.title': 'Вход',

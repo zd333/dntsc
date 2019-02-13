@@ -111,7 +111,7 @@ export class StyledShell extends React.Component<StyledShellProps, ShellState> {
   }
 }
 
-const shellStyles = ({ spacing, mixins, palette }: Theme) =>
+const shellStyles = ({ spacing, mixins }: Theme) =>
   createStyles({
     root: {
       display: 'flex',

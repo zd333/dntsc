@@ -4,7 +4,7 @@ export const uaTranslationMessages: AppTranslationMessages = {
   defaultPageTitle: 'Керування клінікою',
 
   'mainMenu.InventoryMenuItem.text': 'Склад',
-  'mainMenu.InventoryBalanceMenuItem.text': 'Баланс',
+  'mainMenu.InventoryCatalogMenuItem.text': 'Каталог',
 
   'loginPage.title': 'Вхід',
   'loginPage.loginForm.title': 'Вхід',
