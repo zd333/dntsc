@@ -5,7 +5,7 @@
  * All endpoints that return list of items must implement this interface.
  */
 export interface PaginatedListOutDto<SingleDtoItem> {
-  readonly results: Array<SingleDtoItem>;
+  readonly items: Array<SingleDtoItem>;
 
   readonly skipped: number;
 

@@ -23,7 +23,7 @@ export function convertDocumentsToPaginatedListOutDto<
     singleDtoItemConstructor,
     findResults: { documents, skipped, totalCount },
   } = params;
-  const results = documents.map(document =>
+  const items = documents.map(document =>
     convertDocumentToOutDto({
       document,
       dtoConstructor: singleDtoItemConstructor,
@@ -31,7 +31,7 @@ export function convertDocumentsToPaginatedListOutDto<
   );
 
   return {
-    results,
+    items,
     skipped,
     totalCount,
   };
