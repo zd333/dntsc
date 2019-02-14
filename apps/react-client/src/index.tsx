@@ -11,6 +11,7 @@ import { errorModalReducer } from './reducers/error-modal.reducer';
 import { ErrorModalState } from './reducers/error-modal-state.interface';
 import { green, purple } from '@material-ui/core/colors';
 import { IntlProviderContainer } from './containers/IntlProviderContainer';
+import { inventoryReducer } from './sub-features/inventory/reducers/inventory.reducer';
 import { Provider } from 'react-redux';
 import { rootApiConnectors } from './api-connectors';
 import { sessionReducer } from './reducers/session.reducer';
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   router: connectRouter(history),
   session: sessionReducer,
   errorModal: errorModalReducer,
+  inventory: inventoryReducer,
 });
 const rootEpic = combineEpics(...appRootEpics);
 const rootEpicMiddlewareDependencies = {

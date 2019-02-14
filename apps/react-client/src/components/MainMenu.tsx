@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { AppRouePaths } from './app-routes';
 import { createLinkComponent } from '../shared/helpers/create-link-component';
 import { Dashboard, ShoppingCart } from '@material-ui/icons';
 import { FormattedMessage } from 'react-intl';
@@ -29,7 +30,10 @@ export const StyledMainMenu: React.SFC<StyledMainMenuProps> = props => {
   const dashboardMenuContent = (
     <React.Fragment>
       <List>
-        <ListItem button component={createLinkComponent('/dashboard')}>
+        <ListItem
+          button
+          component={createLinkComponent(AppRouePaths.dashboard)}
+        >
           <ListItemIcon>
             <Dashboard />
           </ListItemIcon>
@@ -51,7 +55,7 @@ export const StyledMainMenu: React.SFC<StyledMainMenuProps> = props => {
           subItems={[
             {
               textId: 'mainMenu.InventoryCatalogMenuItem.text',
-              linkPath: '/inventory',
+              linkPath: AppRouePaths.inventoryCatalog,
             },
           ]}
         />

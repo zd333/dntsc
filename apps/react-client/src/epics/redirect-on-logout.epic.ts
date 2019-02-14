@@ -1,3 +1,4 @@
+import { AppRouePaths } from '../components/app-routes';
 import { Epic } from 'redux-observable';
 import { mapTo } from 'rxjs/operators';
 import { ofType } from '@martin_hotell/rex-tils';
@@ -10,5 +11,5 @@ import { SessionActionTypes } from '../actions/session.actions';
 export const redirectOnLogoutEpic: Epic = action$ =>
   action$.pipe(
     ofType(SessionActionTypes.LOGOUT),
-    mapTo(routerActions.push('/login')),
+    mapTo(routerActions.push(AppRouePaths.login)),
   );

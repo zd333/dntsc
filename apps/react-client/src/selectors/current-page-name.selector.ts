@@ -1,3 +1,4 @@
+import { AppRouePaths } from '../components/app-routes';
 import { AppTranslationMessages } from '../shared/translations/en-translation-messages';
 import { createSelector } from 'reselect';
 import { selectCurrentTranslationsDictionary } from './current-translations-dictionary.selector';
@@ -11,11 +12,12 @@ export const selectCurrentPageName = createSelector(
   [selectRoutePath, selectCurrentTranslationsDictionary],
   (routePath, currentTranslationsDictionary) => {
     const translationsDictionaryKey: keyof AppTranslationMessages =
-      routePath === '/login'
+      routePath === AppRouePaths.login
         ? 'loginPage.title'
-        : routePath === '/dashboard'
+        : routePath === AppRouePaths.dashboard
         ? 'dashboardPage.title'
-        : routePath === '/patients'
+        : // TODO: add patients path
+        routePath === '/patients'
         ? 'patientsManagementPage.title'
         : 'defaultPageTitle';
 

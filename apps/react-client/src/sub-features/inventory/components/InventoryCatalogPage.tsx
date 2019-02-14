@@ -10,7 +10,7 @@ import {
 
 export interface InventoryCatalogPageProps {
   readonly itemsDictionary: {
-    readonly [key: string]: InventoryItemDetailsOutDto;
+    readonly [id: string]: InventoryItemDetailsOutDto;
   };
   readonly updateIsAllowed: boolean;
   readonly addIsAllowed: boolean;
@@ -43,7 +43,6 @@ export class StyledInventoryCatalogPage extends React.Component<
     // TODO: make it column on mobile (item details on top, items list below)
     return (
       <Grid container spacing={24}>
-        XXXXXXX
         <Grid item sm={12} md={6} />
         <Grid item sm={12} md={6} />
       </Grid>

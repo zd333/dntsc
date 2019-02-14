@@ -1,3 +1,4 @@
+import { AppRouePaths } from '../components/app-routes';
 import { Epic } from 'redux-observable';
 import { filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
 import { LOCATION_CHANGE, routerActions } from 'connected-react-router';
@@ -22,8 +23,8 @@ export const redirectUnauthenticatedToLoginPageEpic: Epic = (
     filter(
       ([action, userIsLoggedIn]) =>
         !userIsLoggedIn &&
-        !action.payload.location.pathname.startsWith('/login'),
+        !action.payload.location.pathname.startsWith(AppRouePaths.login),
     ),
-    mapTo(routerActions.push('/login')),
+    mapTo(routerActions.push(AppRouePaths.login)),
   );
 };
