@@ -7,5 +7,5 @@ import { signInApiConnector } from './sign-in.api-connector';
  */
 export const rootApiConnectors = {
   signInApiConnector,
-  getFeaturesApiConnector: getTenantOfCurrentClinicApiConnector,
+  getTenantOfCurrentClinicApiConnector,
 };

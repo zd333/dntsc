@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { InventoryItemDetailsOutDto } from '@api/sub-features/inventory/dto/inventory-item-details.out-dto';
+import { InventoryItemsList } from './InventoryItemsList';
 import {
   Grid,
   createStyles,
@@ -9,12 +10,10 @@ import {
 } from '@material-ui/core';
 
 export interface InventoryCatalogPageProps {
-  readonly itemsDictionary: {
-    readonly [id: string]: InventoryItemDetailsOutDto;
-  };
+  readonly items: Array<InventoryItemDetailsOutDto>;
   readonly updateIsAllowed: boolean;
-  readonly addIsAllowed: boolean;
-  readonly onAdd: (params: {
+  readonly createIsAllowed: boolean;
+  readonly onCreate: (params: {
     readonly newItem: InventoryItemDetailsOutDto;
   }) => void;
   readonly onUpdate: (params: {
@@ -24,7 +23,7 @@ export interface InventoryCatalogPageProps {
 }
 
 interface InventoryCatalogPageState {
-  readonly selectedItem: string | undefined;
+  readonly idOfSelectedItem: string | undefined;
   readonly addNewItemModalIsOpened: boolean;
 }
 
@@ -33,17 +32,26 @@ export class StyledInventoryCatalogPage extends React.Component<
   InventoryCatalogPageState
 > {
   public state = {
-    selectedItem: undefined,
+    idOfSelectedItem: undefined,
     addNewItemModalIsOpened: false,
   };
 
   public render(): JSX.Element {
-    // const { classes } = this.props;
+    const { items } = this.props;
+    const { idOfSelectedItem } = this.state;
 
     // TODO: make it column on mobile (item details on top, items list below)
     return (
       <Grid container spacing={24}>
-        <Grid item sm={12} md={6} />
+        <Grid item sm={12} md={6}>
+          <InventoryItemsList
+            items={items}
+            indexOfSelectedItem={idOfSelectedItem}
+            // TODO: bind handlers
+            onSelect={console.log}
+            onUpdateClick={console.log}
+          />
+        </Grid>
         <Grid item sm={12} md={6} />
       </Grid>
     );

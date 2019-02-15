@@ -11,6 +11,8 @@ import { errorModalReducer } from './reducers/error-modal.reducer';
 import { ErrorModalState } from './reducers/error-modal-state.interface';
 import { green, purple } from '@material-ui/core/colors';
 import { IntlProviderContainer } from './containers/IntlProviderContainer';
+import { inventoryApiConnectors } from './sub-features/inventory/api-connectors';
+import { inventoryEpics } from './sub-features/inventory/epics';
 import { inventoryReducer } from './sub-features/inventory/reducers/inventory.reducer';
 import { Provider } from 'react-redux';
 import { rootApiConnectors } from './api-connectors';
@@ -32,9 +34,10 @@ const rootReducer = combineReducers({
   errorModal: errorModalReducer,
   inventory: inventoryReducer,
 });
-const rootEpic = combineEpics(...appRootEpics);
+const rootEpic = combineEpics(...appRootEpics, ...inventoryEpics);
 const rootEpicMiddlewareDependencies = {
   ...rootApiConnectors,
+  ...inventoryApiConnectors,
   // DI local storage into epics to make testing easier (hope there will be tests someday :) )
   localStorageService: window.localStorage,
 };

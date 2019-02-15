@@ -16,9 +16,6 @@ export const selectCurrentPageName = createSelector(
         ? 'loginPage.title'
         : routePath === AppRouePaths.dashboard
         ? 'dashboardPage.title'
-        : // TODO: add patients path
-        routePath === '/patients'
-        ? 'patientsManagementPage.title'
         : 'defaultPageTitle';
 
     return currentTranslationsDictionary[translationsDictionaryKey];
