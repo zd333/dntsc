@@ -19,6 +19,8 @@ export const ruTranslationMessages: AppTranslationMessages = {
 
   'dashboardPage.title': 'Главное меню',
 
+  'InventoryCatalogPage.title': 'Каталог склада',
+
   'errorModal.title': 'Ошибка',
   'errorModal.defaultErrorMessage': 'Извините, возникла ошибка.',
 };

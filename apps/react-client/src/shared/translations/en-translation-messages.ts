@@ -16,6 +16,8 @@ export const enTranslationMessages = {
 
   'dashboardPage.title': 'Dashboard',
 
+  'InventoryCatalogPage.title': 'Inventory Catalog',
+
   'errorModal.title': 'Error',
   'errorModal.defaultErrorMessage':
     'Sorry, unexpected error happened. We can not finish your action.',

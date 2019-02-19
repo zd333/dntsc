@@ -6,7 +6,7 @@ import { selectRoutePath } from './route-path.selector';
 
 /**
  * This should be used in shell app bar and as window title.
- * TODO: bind to page title.
+ * TODO: bind to WEB page title.
  */
 export const selectCurrentPageName = createSelector(
   [selectRoutePath, selectCurrentTranslationsDictionary],
@@ -16,6 +16,8 @@ export const selectCurrentPageName = createSelector(
         ? 'loginPage.title'
         : routePath === AppRouePaths.dashboard
         ? 'dashboardPage.title'
+        : routePath === AppRouePaths.inventoryCatalog
+        ? 'InventoryCatalogPage.title'
         : 'defaultPageTitle';
 
     return currentTranslationsDictionary[translationsDictionaryKey];
