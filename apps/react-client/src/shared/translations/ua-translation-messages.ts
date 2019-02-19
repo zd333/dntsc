@@ -17,6 +17,8 @@ export const uaTranslationMessages: AppTranslationMessages = {
 
   'dashboardPage.title': 'Головне меню',
 
+  'InventoryCatalogPage.title': 'Каталог складу',
+
   'errorModal.title': 'Помилка',
   'errorModal.defaultErrorMessage': 'Вибачте, виникла несподівана помилка.',
 };

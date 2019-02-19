@@ -14,26 +14,36 @@ import {
 } from '@material-ui/core';
 
 export interface InventoryItemsListProps {
-  readonly items: Array<InventoryItemDetailsOutDto>;
-  readonly indexOfSelectedItem: number | undefined;
-  readonly onSelect: (params: { readonly indexOfItemToSelect: number }) => void;
+  readonly items: Array<InventoryItem>;
+  readonly idOfSelectedItem: InventoryItem['id'] | undefined;
+  readonly updateIsAllowed: boolean;
+  readonly onSelect: (params: {
+    readonly idOfItemToSelect: InventoryItem['id'];
+  }) => void;
   readonly onUpdateClick: (params: {
-    readonly indexOfUpdateClickedItem: number;
+    readonly idOfUpdateClickedItem: InventoryItem['id'];
   }) => void;
 }
 
 const StyledInventoryItemsList: React.SFC<
   StyledInventoryItemsListProps
 > = props => {
-  const { classes, items, onSelect, onUpdateClick } = props;
-  const handleItemSelect = (indexOfItemToSelect: number) => {
+  const {
+    classes,
+    items,
+    updateIsAllowed,
+    idOfSelectedItem,
+    onSelect,
+    onUpdateClick,
+  } = props;
+  const handleItemSelect = (idOfItemToSelect: InventoryItem['id']) => {
     if (typeof onSelect === 'function') {
-      onSelect({ indexOfItemToSelect });
+      onSelect({ idOfItemToSelect });
     }
   };
-  const handleUpdateClick = (indexOfUpdateClickedItem: number) => {
-    if (typeof onUpdateClick === 'function') {
-      onUpdateClick({ indexOfUpdateClickedItem });
+  const handleUpdateClick = (idOfUpdateClickedItem: InventoryItem['id']) => {
+    if (typeof onUpdateClick === 'function' && updateIsAllowed) {
+      onUpdateClick({ idOfUpdateClickedItem });
     }
   };
 
@@ -42,23 +52,26 @@ const StyledInventoryItemsList: React.SFC<
       {(items || []).map((item, index) => (
         <ListItem
           key={item.id}
+          selected={item.id === idOfSelectedItem}
           dense
           button
           // Non-lambda implementation not worth the performance benefit
           // tslint:disable-next-line:jsx-no-lambda
-          onClick={() => handleItemSelect(index)}
+          onClick={() => handleItemSelect(item.id)}
         >
           <ListItemText primary={item.name} />
-          <ListItemSecondaryAction>
-            <IconButton
-              aria-label="Edit"
-              // Non-lambda implementation not worth the performance benefit
-              // tslint:disable-next-line:jsx-no-lambda
-              onClick={() => handleUpdateClick(index)}
-            >
-              <Edit />
-            </IconButton>
-          </ListItemSecondaryAction>
+          {updateIsAllowed && (
+            <ListItemSecondaryAction>
+              <IconButton
+                aria-label="Edit"
+                // Non-lambda implementation not worth the performance benefit
+                // tslint:disable-next-line:jsx-no-lambda
+                onClick={() => handleUpdateClick(item.id)}
+              >
+                <Edit />
+              </IconButton>
+            </ListItemSecondaryAction>
+          )}
         </ListItem>
       ))}
     </List>
@@ -69,7 +82,6 @@ const inventoryItemsListStyles = ({ palette }: Theme) =>
   createStyles({
     root: {
       width: '100%',
-      maxWidth: 360,
       backgroundColor: palette.background.paper,
     },
   });
@@ -80,3 +92,11 @@ type StyledInventoryItemsListProps = InventoryItemsListProps &
 export const InventoryItemsList = withStyles(inventoryItemsListStyles)(
   StyledInventoryItemsList,
 );
+
+/**
+ * View model.
+ */
+export type InventoryItem = Pick<
+  InventoryItemDetailsOutDto,
+  Exclude<keyof InventoryItemDetailsOutDto, 'alternates'>
+> & { readonly alternates: Array<Pick<InventoryItem, 'id' | 'name'>> };

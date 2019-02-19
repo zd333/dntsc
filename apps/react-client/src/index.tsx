@@ -14,6 +14,7 @@ import { IntlProviderContainer } from './containers/IntlProviderContainer';
 import { inventoryApiConnectors } from './sub-features/inventory/api-connectors';
 import { inventoryEpics } from './sub-features/inventory/epics';
 import { inventoryReducer } from './sub-features/inventory/reducers/inventory.reducer';
+import { InventoryState } from './sub-features/inventory/reducers/inventory-state.interface';
 import { Provider } from 'react-redux';
 import { rootApiConnectors } from './api-connectors';
 import { sessionReducer } from './reducers/session.reducer';
@@ -83,6 +84,7 @@ export interface RootState {
   readonly session: SessionState;
   readonly router: RouterState;
   readonly errorModal: ErrorModalState;
+  readonly inventory: InventoryState;
 }
 /**
  * Type of object that collects all injected into epic middleware dependencies of the Appp.

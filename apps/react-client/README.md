@@ -2,6 +2,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 # Adding new page
 
-- add new entry to `selectCurrentPageName`
+- add new entry to `AppRouePaths`
+- add route to `appRoutes`
 - add is busy selector (like `dashboardPageIsBusy`) and add entry with this selector to `selectCurrentPageIsBusy`
 - add translations (at least page title)
+- add new entry to `selectCurrentPageName`

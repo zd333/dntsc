@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { InventoryItemDetailsOutDto } from '@api/sub-features/inventory/dto/inventory-item-details.out-dto';
-import { InventoryItemsList } from './InventoryItemsList';
+import { InventoryItem, InventoryItemsList } from './InventoryItemsList';
+import { InventoryItemDetailsForm } from './InventoryItemDetailsForm';
 import {
   Grid,
   createStyles,
@@ -10,20 +10,18 @@ import {
 } from '@material-ui/core';
 
 export interface InventoryCatalogPageProps {
-  readonly items: Array<InventoryItemDetailsOutDto>;
-  readonly updateIsAllowed: boolean;
-  readonly createIsAllowed: boolean;
-  readonly onCreate: (params: {
-    readonly newItem: InventoryItemDetailsOutDto;
-  }) => void;
+  readonly items: Array<InventoryItem>;
+  readonly updateAndCreateAreAllowed: boolean;
+  readonly onCreate: (params: { readonly newItem: InventoryItem }) => void;
   readonly onUpdate: (params: {
-    readonly id: InventoryItemDetailsOutDto['id'];
-    readonly updatedItem: InventoryItemDetailsOutDto;
+    readonly id: InventoryItem['id'];
+    readonly updatedItem: InventoryItem;
   }) => void;
 }
 
 interface InventoryCatalogPageState {
-  readonly idOfSelectedItem: string | undefined;
+  readonly idOfSelectedItem: InventoryItem['id'] | undefined;
+  readonly selectedItemIsInEditMode: boolean;
   readonly addNewItemModalIsOpened: boolean;
 }
 
@@ -33,11 +31,37 @@ export class StyledInventoryCatalogPage extends React.Component<
 > {
   public state = {
     idOfSelectedItem: undefined,
+    selectedItemIsInEditMode: false,
     addNewItemModalIsOpened: false,
   };
 
+  public handleItemSelect = (params: {
+    readonly idOfItemToSelect: InventoryItem['id'];
+  }) => {
+    if (this.state.selectedItemIsInEditMode) {
+      // Do not allow switching to another item when in edit mode
+      return;
+    }
+    this.setState({
+      idOfSelectedItem: params.idOfItemToSelect,
+    });
+  };
+
+  public handleItemStartUpdateModeClick = (params: {
+    readonly idOfUpdateClickedItem: InventoryItem['id'];
+  }) => {
+    if (this.state.selectedItemIsInEditMode) {
+      // Do not allow switching to another item when in edit mode
+      return;
+    }
+    this.setState({
+      idOfSelectedItem: params.idOfUpdateClickedItem,
+      selectedItemIsInEditMode: true,
+    });
+  };
+
   public render(): JSX.Element {
-    const { items } = this.props;
+    const { items, updateAndCreateAreAllowed } = this.props;
     const { idOfSelectedItem } = this.state;
 
     // TODO: make it column on mobile (item details on top, items list below)
@@ -46,13 +70,16 @@ export class StyledInventoryCatalogPage extends React.Component<
         <Grid item sm={12} md={6}>
           <InventoryItemsList
             items={items}
-            indexOfSelectedItem={idOfSelectedItem}
-            // TODO: bind handlers
-            onSelect={console.log}
-            onUpdateClick={console.log}
+            idOfSelectedItem={idOfSelectedItem}
+            updateIsAllowed={updateAndCreateAreAllowed}
+            onSelect={this.handleItemSelect}
+            onUpdateClick={this.handleItemStartUpdateModeClick}
           />
         </Grid>
-        <Grid item sm={12} md={6} />
+        <Grid item sm={12} md={6}>
+          {/* TODO: bind props */}
+          <InventoryItemDetailsForm item={undefined}=/>
+        </Grid>
       </Grid>
     );
   }

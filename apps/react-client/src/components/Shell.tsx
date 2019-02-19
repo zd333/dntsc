@@ -96,6 +96,7 @@ export class StyledShell extends React.Component<StyledShellProps, ShellState> {
           <Backdrop
             open={isBusy}
             classes={{ root: classes.backdropOverlay }}
+            style={{ zIndex: isBusy ? 1099 : -1 }}
             transitionDuration={{
               enter: BUSY_ANIMATION_TIMEOUT,
               exit: 0,
@@ -132,7 +133,6 @@ const shellStyles = ({ spacing, mixins }: Theme) =>
       left: `calc(50% - ${SPINNER_WIDTH / 2}px)`,
     },
     backdropOverlay: {
-      zIndex: 1099,
       // Do not use palette because there is no suitable grey with opacity and this is single usage of this color
       backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
