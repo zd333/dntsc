@@ -3,6 +3,19 @@ import { AppTranslationMessages } from './en-translation-messages';
 export const uaTranslationMessages: AppTranslationMessages = {
   defaultPageTitle: 'Керування клінікою',
 
+  'inventoryItemUnit.PCS.short': 'шт',
+  'inventoryItemUnit.KG.short': 'кг',
+  'inventoryItemUnit.GR.short': 'гр',
+  'inventoryItemUnit.MG.short': 'мг',
+  'inventoryItemUnit.LT.short': 'л',
+  'inventoryItemUnit.ML.short': 'мл',
+  'inventoryItemUnit.PCS.full': 'штук',
+  'inventoryItemUnit.KG.full': 'кілограм',
+  'inventoryItemUnit.GR.full': 'грам',
+  'inventoryItemUnit.MG.full': 'міліграм',
+  'inventoryItemUnit.LT.full': 'літр',
+  'inventoryItemUnit.ML.full': 'мілілітр',
+
   'mainMenu.InventoryMenuItem.text': 'Склад',
   'mainMenu.InventoryCatalogMenuItem.text': 'Каталог',
 

@@ -10,6 +10,7 @@
   "rules": {
     "jsx-boolean-value": false,
     "jsx-no-multiline-js": false,
-    "quotemark": [true, "single", "jsx-double"]
+    "quotemark": [true, "single", "jsx-double"],
+    "jsx-no-lambda": false
   }
 }

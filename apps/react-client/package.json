@@ -7,6 +7,8 @@
     "@material-ui/core": "^3.3.2",
     "@material-ui/icons": "^3.0.1",
     "connected-react-router": "^6.2.2",
+    "formik": "^1.5.1",
+    "formik-material-ui": "^0.0.16",
     "history": "^4.7.2",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",

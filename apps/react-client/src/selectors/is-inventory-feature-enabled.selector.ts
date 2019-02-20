@@ -7,6 +7,7 @@ export const selectIsInventoryFeatureEnabled = createSelector(
   [selectUserIsLoggedIn, selectUserRoles, selectAvailableFeatures],
   (userIsLoggedIn, userRoles, availableFeatures) =>
     userIsLoggedIn &&
+    Array.isArray(availableFeatures) &&
     availableFeatures.some(feature => feature === 'INVENTORY') &&
     userRoles.some(
       role =>
