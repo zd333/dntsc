@@ -28,6 +28,7 @@ export function sessionReducer(
         authToken,
         userRoles,
         userName,
+        userIsLoggedIn: true,
         authApiCommunicationIsInProgress: false,
       };
     }
@@ -44,6 +45,7 @@ export function sessionReducer(
         authToken: undefined,
         userRoles: [],
         userName: undefined,
+        userIsLoggedIn: false,
       };
     }
 

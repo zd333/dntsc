@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { InventoryItem, InventoryItemsList } from './InventoryItemsList';
 import { InventoryItemDetailsForm } from './InventoryItemDetailsForm';
+import { TranslatedInventoryItemUnit } from '../selectors/translated-inventory-item-units.selector';
 import {
   Grid,
   createStyles,
@@ -11,11 +12,14 @@ import {
 
 export interface InventoryCatalogPageProps {
   readonly items: Array<InventoryItem>;
+  readonly itemUnits: Array<TranslatedInventoryItemUnit>;
   readonly updateAndCreateAreAllowed: boolean;
-  readonly onCreate: (params: { readonly newItem: InventoryItem }) => void;
+  readonly onCreate: (params: {
+    readonly newItem: Pick<InventoryItem, 'name' | 'unit' | 'alternates'>;
+  }) => void;
   readonly onUpdate: (params: {
     readonly id: InventoryItem['id'];
-    readonly updatedItem: InventoryItem;
+    readonly updatedItem: Pick<InventoryItem, 'name' | 'unit' | 'alternates'>;
   }) => void;
 }
 
@@ -60,8 +64,34 @@ export class StyledInventoryCatalogPage extends React.Component<
     });
   };
 
+  public handleUpdateItemSubmit(params: {
+    readonly updatedItem: Pick<InventoryItem, 'name' | 'unit' | 'alternates'>;
+  }): void {
+    const selectedItem = this.getSelectedItem();
+
+    if (
+      !this.props.updateAndCreateAreAllowed ||
+      !selectedItem ||
+      !this.state.selectedItemIsInEditMode ||
+      typeof this.props.onUpdate !== 'function'
+    ) {
+      return;
+    }
+    this.props.onUpdate({
+      id: selectedItem.id,
+      updatedItem: params.updatedItem,
+    });
+  }
+
+  public getSelectedItem(): InventoryItem | undefined {
+    return (
+      this.props.items &&
+      this.props.items.find(item => item.id === this.state.idOfSelectedItem)
+    );
+  }
+
   public render(): JSX.Element {
-    const { items, updateAndCreateAreAllowed } = this.props;
+    const { items, itemUnits, updateAndCreateAreAllowed } = this.props;
     const { idOfSelectedItem } = this.state;
 
     // TODO: make it column on mobile (item details on top, items list below)
@@ -77,8 +107,13 @@ export class StyledInventoryCatalogPage extends React.Component<
           />
         </Grid>
         <Grid item sm={12} md={6}>
-          {/* TODO: bind props */}
-          <InventoryItemDetailsForm item={undefined}=/>
+          <InventoryItemDetailsForm
+            item={this.getSelectedItem()}
+            itemUnits={itemUnits}
+            isInEditMode={this.state.selectedItemIsInEditMode}
+            editModeIsAllowed={this.props.updateAndCreateAreAllowed}
+            onSubmit={this.handleUpdateItemSubmit}
+          />
         </Grid>
       </Grid>
     );

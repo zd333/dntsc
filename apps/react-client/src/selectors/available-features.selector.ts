@@ -3,5 +3,5 @@ import { selectSessionState } from './session-state.selector';
 
 export const selectAvailableFeatures = createSelector(
   [selectSessionState],
-  sessionState => (sessionState && sessionState.availableFeatures) || [],
+  sessionState => sessionState && sessionState.availableFeatures,
 );

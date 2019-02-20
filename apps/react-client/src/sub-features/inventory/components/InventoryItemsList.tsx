@@ -55,8 +55,6 @@ const StyledInventoryItemsList: React.SFC<
           selected={item.id === idOfSelectedItem}
           dense
           button
-          // Non-lambda implementation not worth the performance benefit
-          // tslint:disable-next-line:jsx-no-lambda
           onClick={() => handleItemSelect(item.id)}
         >
           <ListItemText primary={item.name} />
@@ -64,8 +62,6 @@ const StyledInventoryItemsList: React.SFC<
             <ListItemSecondaryAction>
               <IconButton
                 aria-label="Edit"
-                // Non-lambda implementation not worth the performance benefit
-                // tslint:disable-next-line:jsx-no-lambda
                 onClick={() => handleUpdateClick(item.id)}
               >
                 <Edit />

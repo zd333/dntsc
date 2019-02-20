@@ -31,12 +31,10 @@ enum passwordValidationErrors {
 
 export interface LoginPageProps {
   readonly isDisabled: boolean;
-  readonly onEmailLogin: (
-    params: {
-      readonly email: string;
-      readonly password: string;
-    },
-  ) => void;
+  readonly onEmailLogin: (params: {
+    readonly email: string;
+    readonly password: string;
+  }) => void;
 }
 
 interface LoginPageState {
@@ -48,6 +46,7 @@ interface LoginPageState {
   readonly passwordIsFocused: boolean;
 }
 
+// TODO: refactor with formik
 class StyledLoginPage extends React.Component<
   StyledLoginPageProps,
   LoginPageState
@@ -61,7 +60,6 @@ class StyledLoginPage extends React.Component<
     passwordIsFocused: false,
   };
 
-  // TODO: move input handling with error and validation into shared component
   public handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       email: event.target.value,

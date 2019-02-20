@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { RootState } from '../../..';
 import { selectAllInventoryItems } from '../selectors/all-inventory-items.selector';
+import { selectTranslatedInventoryItemUnits } from '../selectors/translated-inventory-item-units.selector';
 import { selectUpdateAndCreateInventoryItemsIsAllowed } from '../selectors/update-and-create-inventory-items-is-allowed.selector';
 import {
   InventoryCatalogPageProps,
@@ -18,6 +19,7 @@ const mapStateToProps: StateMapper<
   return {
     // TODO: finish
     items: selectAllInventoryItems(state),
+    itemUnits: selectTranslatedInventoryItemUnits(state),
     updateAndCreateAreAllowed: selectUpdateAndCreateInventoryItemsIsAllowed(
       state,
     ),

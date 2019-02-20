@@ -14,10 +14,13 @@ export const redirectUnauthenticatedToLoginPageEpic: Epic = (
   action$,
   state$,
 ) => {
-  const userIsLoggedIn$ = state$.pipe(map(selectUserIsLoggedIn));
+  const userIsLoggedIn$ = state$.pipe(
+    map(selectUserIsLoggedIn),
+    // Undefined means still unknown, wait for it is known if logged in or not
+    filter(userIsLoggedIn => typeof userIsLoggedIn !== 'undefined'),
+  );
 
   return action$.pipe(
-    // TODO: test if this catches router actions
     ofType(LOCATION_CHANGE),
     withLatestFrom(userIsLoggedIn$),
     filter(

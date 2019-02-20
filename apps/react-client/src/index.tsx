@@ -90,3 +90,5 @@ export interface RootState {
  * Type of object that collects all injected into epic middleware dependencies of the Appp.
  */
 export type AppEpicsDependencies = typeof rootEpicMiddlewareDependencies;
+
+// TODO: add code (effect?) that redirects on 401 (unauth) response
