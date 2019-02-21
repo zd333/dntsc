@@ -14,6 +14,7 @@ export function arrayToDictionary<T>(
   for (const arrayItem of array) {
     // Thank you TypeScript
     const keyValue: unknown = arrayItem[indexKey];
+
     normalizedObject = {
       ...normalizedObject,
       [keyValue as string]: arrayItem,

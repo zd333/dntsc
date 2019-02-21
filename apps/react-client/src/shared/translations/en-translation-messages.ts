@@ -29,7 +29,9 @@ export const enTranslationMessages = {
 
   'dashboardPage.title': 'Dashboard',
 
-  'InventoryCatalogPage.title': 'Inventory Catalog',
+  'inventoryCatalogPage.title': 'Inventory Catalog',
+  'inventoryCatalogPage.inventoryItemDetailsForm.nameControl.label': 'Name',
+  'inventoryCatalogPage.inventoryItemDetailsForm.unitsControl.label': 'Units',
 
   'errorModal.title': 'Error',
   'errorModal.defaultErrorMessage':

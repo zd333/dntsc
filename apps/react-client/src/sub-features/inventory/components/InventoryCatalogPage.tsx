@@ -91,12 +91,12 @@ export class StyledInventoryCatalogPage extends React.Component<
   }
 
   public render(): JSX.Element {
-    const { items, itemUnits, updateAndCreateAreAllowed } = this.props;
+    const { classes, items, itemUnits, updateAndCreateAreAllowed } = this.props;
     const { idOfSelectedItem } = this.state;
 
     // TODO: make it column on mobile (item details on top, items list below)
     return (
-      <Grid container spacing={24}>
+      <Grid container spacing={24} className={classes.root}>
         <Grid item sm={12} md={6}>
           <InventoryItemsList
             items={items}
@@ -120,8 +120,14 @@ export class StyledInventoryCatalogPage extends React.Component<
   }
 }
 
-const inventoryCatalogPageStyles = ({ palette, spacing }: Theme) =>
-  createStyles({});
+const inventoryCatalogPageStyles = ({ breakpoints }: Theme) =>
+  createStyles({
+    root: {
+      [breakpoints.down('sm')]: {
+        flexDirection: 'column-reverse',
+      },
+    },
+  });
 
 type StyledInventoryCatalogProps = InventoryCatalogPageProps &
   WithStyles<typeof inventoryCatalogPageStyles>;
