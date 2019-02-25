@@ -45,9 +45,7 @@ const StyledHeader: React.SFC<StyledHeaderProps> = props => {
   const handleLanguageSelectChange = (
     event: React.ChangeEvent<HTMLSelectElement>,
   ) => {
-    if (typeof onLanguageChange === 'function') {
-      onLanguageChange({ language: event.target.value as AppLanguages });
-    }
+    onLanguageChange({ language: event.target.value as AppLanguages });
   };
 
   return (
