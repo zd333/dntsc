@@ -1,6 +1,9 @@
 export const enTranslationMessages = {
   defaultPageTitle: 'Clinic Management',
 
+  'common.cancelButtonLabel': 'Cancel',
+  'common.saveButtonLabel': 'Save',
+
   'inventoryItemUnit.PCS.short': 'pcs',
   'inventoryItemUnit.KG.short': 'kg',
   'inventoryItemUnit.GR.short': 'gr',
@@ -30,6 +33,8 @@ export const enTranslationMessages = {
   'dashboardPage.title': 'Dashboard',
 
   'inventoryCatalogPage.title': 'Inventory Catalog',
+  'inventoryCatalogPage.inventoryItemsList.AddNewItemButton.label': 'Add',
+  'inventoryCatalogPage.inventoryItemsList.searchItemsControl.label': 'Search',
   'inventoryCatalogPage.inventoryItemDetailsForm.nameControl.label': 'Name',
   'inventoryCatalogPage.inventoryItemDetailsForm.unitsControl.label': 'Units',
 

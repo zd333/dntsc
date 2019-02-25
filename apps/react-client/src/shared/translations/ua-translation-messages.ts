@@ -3,6 +3,9 @@ import { AppTranslationMessages } from './en-translation-messages';
 export const uaTranslationMessages: AppTranslationMessages = {
   defaultPageTitle: 'Керування клінікою',
 
+  'common.cancelButtonLabel': 'Скасувати',
+  'common.saveButtonLabel': 'Зберігти',
+
   'inventoryItemUnit.PCS.short': 'шт',
   'inventoryItemUnit.KG.short': 'кг',
   'inventoryItemUnit.GR.short': 'гр',
@@ -31,6 +34,8 @@ export const uaTranslationMessages: AppTranslationMessages = {
   'dashboardPage.title': 'Головне меню',
 
   'inventoryCatalogPage.title': 'Каталог складу',
+  'inventoryCatalogPage.inventoryItemsList.AddNewItemButton.label': 'Додати',
+  'inventoryCatalogPage.inventoryItemsList.searchItemsControl.label': 'Пошук',
   'inventoryCatalogPage.inventoryItemDetailsForm.nameControl.label': 'Назва',
   'inventoryCatalogPage.inventoryItemDetailsForm.unitsControl.label': 'О.в.',
 

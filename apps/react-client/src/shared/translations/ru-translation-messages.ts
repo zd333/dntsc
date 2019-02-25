@@ -3,6 +3,9 @@ import { AppTranslationMessages } from './en-translation-messages';
 export const ruTranslationMessages: AppTranslationMessages = {
   defaultPageTitle: 'Управление клиникой',
 
+  'common.cancelButtonLabel': 'Отмена',
+  'common.saveButtonLabel': 'Сохранить',
+
   'inventoryItemUnit.PCS.short': 'шт',
   'inventoryItemUnit.KG.short': 'кг',
   'inventoryItemUnit.GR.short': 'гр',
@@ -33,6 +36,8 @@ export const ruTranslationMessages: AppTranslationMessages = {
   'dashboardPage.title': 'Главное меню',
 
   'inventoryCatalogPage.title': 'Каталог склада',
+  'inventoryCatalogPage.inventoryItemsList.AddNewItemButton.label': 'Добавить',
+  'inventoryCatalogPage.inventoryItemsList.searchItemsControl.label': 'Поиск',
   'inventoryCatalogPage.inventoryItemDetailsForm.nameControl.label': 'Название',
   'inventoryCatalogPage.inventoryItemDetailsForm.unitsControl.label': 'Е.и.',
 

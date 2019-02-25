@@ -37,12 +37,10 @@ const StyledInventoryItemsList: React.SFC<
     onUpdateClick,
   } = props;
   const handleItemSelect = (idOfItemToSelect: InventoryItem['id']) => {
-    if (typeof onSelect === 'function') {
-      onSelect({ idOfItemToSelect });
-    }
+    onSelect({ idOfItemToSelect });
   };
   const handleUpdateClick = (idOfUpdateClickedItem: InventoryItem['id']) => {
-    if (typeof onUpdateClick === 'function' && updateIsAllowed) {
+    if (updateIsAllowed) {
       onUpdateClick({ idOfUpdateClickedItem });
     }
   };

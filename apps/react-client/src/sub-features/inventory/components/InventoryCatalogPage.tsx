@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { InventoryItem, InventoryItemsList } from './InventoryItemsList';
 import { InventoryItemDetailsForm } from './InventoryItemDetailsForm';
 import { TranslatedInventoryItemUnit } from '../selectors/translated-inventory-item-units.selector';
@@ -8,12 +9,16 @@ import {
   Theme,
   WithStyles,
   withStyles,
+  Button,
+  TextField,
 } from '@material-ui/core';
 
+// TODO: handle submission error
 export interface InventoryCatalogPageProps {
   readonly items: Array<InventoryItem>;
   readonly itemUnits: Array<TranslatedInventoryItemUnit>;
   readonly updateAndCreateAreAllowed: boolean;
+  readonly onSearch: (params: { searchString: string | undefined }) => void;
   readonly onCreate: (params: {
     readonly newItem: Pick<InventoryItem, 'name' | 'unit' | 'alternates'>;
   }) => void;
@@ -64,9 +69,9 @@ export class StyledInventoryCatalogPage extends React.Component<
     });
   };
 
-  public handleUpdateItemSubmit(params: {
+  public handleUpdateItemSubmit = (params: {
     readonly updatedItem: Pick<InventoryItem, 'name' | 'unit' | 'alternates'>;
-  }): void {
+  }) => {
     const selectedItem = this.getSelectedItem();
 
     if (
@@ -81,7 +86,16 @@ export class StyledInventoryCatalogPage extends React.Component<
       id: selectedItem.id,
       updatedItem: params.updatedItem,
     });
-  }
+    this.setState({
+      selectedItemIsInEditMode: false,
+    });
+  };
+
+  public handleCancelEditMode = () => {
+    this.setState({
+      selectedItemIsInEditMode: false,
+    });
+  };
 
   public getSelectedItem(): InventoryItem | undefined {
     return (
@@ -91,38 +105,72 @@ export class StyledInventoryCatalogPage extends React.Component<
   }
 
   public render(): JSX.Element {
-    const { classes, items, itemUnits, updateAndCreateAreAllowed } = this.props;
+    const {
+      intl,
+      classes,
+      items,
+      itemUnits,
+      updateAndCreateAreAllowed,
+    } = this.props;
     const { idOfSelectedItem } = this.state;
+    const searchControlLabel = intl.formatMessage({
+      id: 'inventoryCatalogPage.inventoryItemsList.searchItemsControl.label',
+    });
 
-    // TODO: make it column on mobile (item details on top, items list below)
     return (
-      <Grid container spacing={24} className={classes.root}>
-        <Grid item sm={12} md={6}>
-          <InventoryItemsList
-            items={items}
-            idOfSelectedItem={idOfSelectedItem}
-            updateIsAllowed={updateAndCreateAreAllowed}
-            onSelect={this.handleItemSelect}
-            onUpdateClick={this.handleItemStartUpdateModeClick}
-          />
+      <React.Fragment>
+        <Grid container spacing={24}>
+          <Grid item sm={2}>
+            <Button
+              variant="contained"
+              color="primary"
+              disabled={
+                !updateAndCreateAreAllowed ||
+                !this.state.selectedItemIsInEditMode
+              }
+              // TODO: implement
+              onClick={() => void 0}
+            >
+              <FormattedMessage id="inventoryCatalogPage.inventoryItemsList.AddNewItemButton.label" />
+            </Button>
+          </Grid>
+          <Grid item sm={10}>
+            <TextField
+              label={searchControlLabel}
+              fullWidth={true}
+              variant="outlined"
+            />
+          </Grid>
         </Grid>
-        <Grid item sm={12} md={6}>
-          <InventoryItemDetailsForm
-            item={this.getSelectedItem()}
-            itemUnits={itemUnits}
-            isInEditMode={this.state.selectedItemIsInEditMode}
-            editModeIsAllowed={this.props.updateAndCreateAreAllowed}
-            onSubmit={this.handleUpdateItemSubmit}
-          />
+
+        <Grid container className={classes.itemsListAndDetails} spacing={8}>
+          <Grid item sm={12} md={6}>
+            <InventoryItemsList
+              items={items}
+              idOfSelectedItem={idOfSelectedItem}
+              updateIsAllowed={updateAndCreateAreAllowed}
+              onSelect={this.handleItemSelect}
+              onUpdateClick={this.handleItemStartUpdateModeClick}
+            />
+          </Grid>
+          <Grid item sm={12} md={6}>
+            <InventoryItemDetailsForm
+              item={this.getSelectedItem()}
+              itemUnits={itemUnits}
+              isInEditMode={this.state.selectedItemIsInEditMode}
+              onSubmit={this.handleUpdateItemSubmit}
+              onCancelEdit={this.handleCancelEditMode}
+            />
+          </Grid>
         </Grid>
-      </Grid>
+      </React.Fragment>
     );
   }
 }
 
 const inventoryCatalogPageStyles = ({ breakpoints }: Theme) =>
   createStyles({
-    root: {
+    itemsListAndDetails: {
       [breakpoints.down('sm')]: {
         flexDirection: 'column-reverse',
       },
@@ -130,8 +178,10 @@ const inventoryCatalogPageStyles = ({ breakpoints }: Theme) =>
   });
 
 type StyledInventoryCatalogProps = InventoryCatalogPageProps &
+  InjectedIntlProps &
   WithStyles<typeof inventoryCatalogPageStyles>;
 
+const TranslatedInventoryCatalogPage = injectIntl(StyledInventoryCatalogPage);
 export const InventoryCatalogPage = withStyles(inventoryCatalogPageStyles)(
-  StyledInventoryCatalogPage,
+  TranslatedInventoryCatalogPage,
 );
