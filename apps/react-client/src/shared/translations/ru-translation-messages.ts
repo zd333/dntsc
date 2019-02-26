@@ -3,6 +3,11 @@ import { AppTranslationMessages } from './en-translation-messages';
 export const ruTranslationMessages: AppTranslationMessages = {
   defaultPageTitle: 'Управление клиникой',
 
+  'common.validationErrorMessage.requiredField':
+    '{fieldName} обязательное поле',
+  'common.validationErrorMessage.stringMin':
+    '{fieldName} короче $\\{min\\} букв',
+
   'common.cancelButtonLabel': 'Отмена',
   'common.saveButtonLabel': 'Сохранить',
 
@@ -36,10 +41,15 @@ export const ruTranslationMessages: AppTranslationMessages = {
   'dashboardPage.title': 'Главное меню',
 
   'inventoryCatalogPage.title': 'Каталог склада',
-  'inventoryCatalogPage.inventoryItemsList.AddNewItemButton.label': 'Добавить',
+
+  'inventoryCatalogPage.inventoryItemsList.AddNewItemButton.label':
+    'Добавить новый',
   'inventoryCatalogPage.inventoryItemsList.searchItemsControl.label': 'Поиск',
+
   'inventoryCatalogPage.inventoryItemDetailsForm.nameControl.label': 'Название',
-  'inventoryCatalogPage.inventoryItemDetailsForm.unitsControl.label': 'Е.и.',
+
+  'inventoryCatalogPage.inventoryItemDetailsForm.unitsControl.label':
+    'Единицы измерения',
 
   'errorModal.title': 'Ошибка',
   'errorModal.defaultErrorMessage': 'Извините, возникла ошибка.',

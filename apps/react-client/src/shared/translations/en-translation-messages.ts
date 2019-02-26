@@ -1,6 +1,11 @@
 export const enTranslationMessages = {
   defaultPageTitle: 'Clinic Management',
 
+  'common.validationErrorMessage.requiredField':
+    '{fieldName} is required field',
+  'common.validationErrorMessage.stringMin':
+    '{fieldName} must be at least $\\{min\\} characters',
+
   'common.cancelButtonLabel': 'Cancel',
   'common.saveButtonLabel': 'Save',
 
@@ -33,8 +38,10 @@ export const enTranslationMessages = {
   'dashboardPage.title': 'Dashboard',
 
   'inventoryCatalogPage.title': 'Inventory Catalog',
+
   'inventoryCatalogPage.inventoryItemsList.AddNewItemButton.label': 'Add',
   'inventoryCatalogPage.inventoryItemsList.searchItemsControl.label': 'Search',
+
   'inventoryCatalogPage.inventoryItemDetailsForm.nameControl.label': 'Name',
   'inventoryCatalogPage.inventoryItemDetailsForm.unitsControl.label': 'Units',
 

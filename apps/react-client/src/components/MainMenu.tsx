@@ -106,7 +106,7 @@ export const StyledMainMenu: React.SFC<StyledMainMenuProps> = props => {
   );
 };
 
-const mainMenuStyles = ({ breakpoints, spacing, mixins }: Theme) =>
+const mainMenuStyles = ({ breakpoints, mixins }: Theme) =>
   createStyles({
     toolbar: mixins.toolbar,
     drawer: {
