@@ -13,12 +13,16 @@ import {
   TextField,
 } from '@material-ui/core';
 
-// TODO: handle submission error
+// TODO: implement search feature
+// TODO: add new item popup component
+// TODO: implement update item functionality
 export interface InventoryCatalogPageProps {
   readonly items: Array<InventoryItem>;
   readonly itemUnits: Array<TranslatedInventoryItemUnit>;
   readonly updateAndCreateAreAllowed: boolean;
-  readonly onSearch: (params: { searchString: string | undefined }) => void;
+  readonly onSearch: (params: {
+    readonly searchString: string | undefined;
+  }) => void;
   readonly onCreate: (params: {
     readonly newItem: Pick<InventoryItem, 'name' | 'unit' | 'alternates'>;
   }) => void;
@@ -119,29 +123,25 @@ export class StyledInventoryCatalogPage extends React.Component<
 
     return (
       <React.Fragment>
-        <Grid container spacing={24}>
-          <Grid item sm={2}>
+        <div className={classes.searchBar}>
+          {updateAndCreateAreAllowed && (
             <Button
+              className={classes.addButton}
               variant="contained"
               color="primary"
-              disabled={
-                !updateAndCreateAreAllowed ||
-                !this.state.selectedItemIsInEditMode
-              }
+              disabled={this.state.selectedItemIsInEditMode}
               // TODO: implement
               onClick={() => void 0}
             >
               <FormattedMessage id="inventoryCatalogPage.inventoryItemsList.AddNewItemButton.label" />
             </Button>
-          </Grid>
-          <Grid item sm={10}>
-            <TextField
-              label={searchControlLabel}
-              fullWidth={true}
-              variant="outlined"
-            />
-          </Grid>
-        </Grid>
+          )}
+          <TextField
+            label={searchControlLabel}
+            fullWidth={true}
+            variant="outlined"
+          />
+        </div>
 
         <Grid container className={classes.itemsListAndDetails} spacing={8}>
           <Grid item sm={12} md={6}>
@@ -168,12 +168,19 @@ export class StyledInventoryCatalogPage extends React.Component<
   }
 }
 
-const inventoryCatalogPageStyles = ({ breakpoints }: Theme) =>
+const inventoryCatalogPageStyles = ({ breakpoints, spacing }: Theme) =>
   createStyles({
     itemsListAndDetails: {
       [breakpoints.down('sm')]: {
         flexDirection: 'column-reverse',
       },
+    },
+    searchBar: {
+      display: 'flex',
+      marginBottom: spacing.unit * 4,
+    },
+    addButton: {
+      marginRight: spacing.unit * 2,
     },
   });
 

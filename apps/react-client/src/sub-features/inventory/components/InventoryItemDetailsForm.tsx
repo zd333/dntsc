@@ -1,9 +1,13 @@
 import * as React from 'react';
+import * as yup from 'yup';
 import { Field, Form, Formik } from 'formik';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { InventoryItem } from './InventoryItemsList';
 import { Select, TextField } from 'formik-material-ui';
-import { TranslatedInventoryItemUnit } from '../selectors/translated-inventory-item-units.selector';
+import {
+  TranslatedInventoryItemUnit,
+  allInventoryItemUnits,
+} from '../selectors/translated-inventory-item-units.selector';
 import {
   createStyles,
   withStyles,
@@ -48,15 +52,48 @@ const StyledInventoryItemDetailsForm: React.SFC<
     ? item
     : {
         name: '',
-        unit: itemUnits[0].unitValue,
+        unit: '',
         alternates: [],
       };
-  const nameControlLabel = intl.formatMessage({
+  const nameFieldName = intl.formatMessage({
     id: 'inventoryCatalogPage.inventoryItemDetailsForm.nameControl.label',
+  });
+  const validationSchema = yup.object().shape({
+    name: yup
+      .string()
+      .required(
+        intl.formatMessage(
+          {
+            id: 'common.validationErrorMessage.requiredField',
+          },
+          {
+            fieldName: nameFieldName,
+          },
+        ),
+      )
+      .min(
+        3,
+        intl.formatMessage(
+          { id: 'common.validationErrorMessage.stringMin' },
+          { fieldName: nameFieldName },
+        ),
+      ),
+    unit: yup
+      .mixed()
+      .required()
+      .oneOf(allInventoryItemUnits),
+    alternates: yup
+      .array(
+        yup.object({
+          id: yup.string().required(),
+          name: yup.string(),
+        }),
+      )
+      .required(),
   });
   const unitOptions = (itemUnits || []).map(unit => (
     <MenuItem key={unit.unitValue} value={unit.unitValue}>
-      {unit.unitLabelShort}
+      {unit.unitLabelFull} ({unit.unitLabelShort})
     </MenuItem>
   ));
 
@@ -66,43 +103,48 @@ const StyledInventoryItemDetailsForm: React.SFC<
         <Formik
           enableReinitialize={true}
           initialValues={initialValues}
+          validationSchema={validationSchema}
           onSubmit={(values, actions) => {
             onSubmit({
-              updatedItem: values,
+              updatedItem: values as InventoryItem,
             });
             actions.setSubmitting(false);
           }}
           render={({ submitForm, resetForm, isValid }) => (
             <Form>
               <Grid container spacing={24}>
-                <Grid item sm={12}>
+                <Grid item xs={12}>
                   <Field
+                    component={TextField}
                     name="name"
                     disabled={!isInEditMode}
-                    label={nameControlLabel}
-                    component={TextField}
+                    label={nameFieldName}
+                    fullWidth={true}
                   />
                 </Grid>
 
-                <Grid item sm={12}>
-                  <FormControl>
+                <Grid item xs={12}>
+                  <FormControl disabled={!isInEditMode} fullWidth={true}>
                     <InputLabel shrink htmlFor="inventory-item-units-label">
                       <FormattedMessage id="inventoryCatalogPage.inventoryItemDetailsForm.unitsControl.label" />
                     </InputLabel>
                     <Field
                       component={Select}
+                      name="unit"
+                      disabled={!isInEditMode}
                       inputProps={{
                         name: 'unit',
                         id: 'inventory-item-units-label',
                       }}
                     >
+                      {!item && <MenuItem value="">-</MenuItem>}
                       {unitOptions}
                     </Field>
                   </FormControl>
                 </Grid>
 
                 {isInEditMode && (
-                  <Grid item sm={12} className={classes.buttonsRow}>
+                  <Grid item xs={12} className={classes.buttonsRow}>
                     <Button
                       variant="contained"
                       onClick={() => {

@@ -3,6 +3,10 @@ import { AppTranslationMessages } from './en-translation-messages';
 export const uaTranslationMessages: AppTranslationMessages = {
   defaultPageTitle: 'Керування клінікою',
 
+  'common.validationErrorMessage.requiredField': `{fieldName} обов'язкове поле`,
+  'common.validationErrorMessage.stringMin':
+    '{fieldName} коротше $\\{min\\} букв',
+
   'common.cancelButtonLabel': 'Скасувати',
   'common.saveButtonLabel': 'Зберігти',
 
@@ -34,10 +38,14 @@ export const uaTranslationMessages: AppTranslationMessages = {
   'dashboardPage.title': 'Головне меню',
 
   'inventoryCatalogPage.title': 'Каталог складу',
-  'inventoryCatalogPage.inventoryItemsList.AddNewItemButton.label': 'Додати',
+
+  'inventoryCatalogPage.inventoryItemsList.AddNewItemButton.label':
+    'Додати новий',
   'inventoryCatalogPage.inventoryItemsList.searchItemsControl.label': 'Пошук',
+
   'inventoryCatalogPage.inventoryItemDetailsForm.nameControl.label': 'Назва',
-  'inventoryCatalogPage.inventoryItemDetailsForm.unitsControl.label': 'О.в.',
+  'inventoryCatalogPage.inventoryItemDetailsForm.unitsControl.label':
+    'Одиниці виміру',
 
   'errorModal.title': 'Помилка',
   'errorModal.defaultErrorMessage': 'Вибачте, виникла несподівана помилка.',

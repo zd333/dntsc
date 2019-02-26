@@ -7,7 +7,7 @@ import { selectCurrentTranslationsDictionary } from '../../../selectors/current-
  * Thus duplicate values here
  * ! This must be synced with `allInventoryItemUnits` of API app!
  */
-const allInventoryItemUnits: Array<InventoryItemUnits> = [
+export const allInventoryItemUnits: Array<InventoryItemUnits> = [
   'PCS',
   'MG',
   'GR',

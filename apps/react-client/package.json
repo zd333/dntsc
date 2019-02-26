@@ -6,6 +6,7 @@
     "@martin_hotell/rex-tils": "^2.0.0",
     "@material-ui/core": "^3.3.2",
     "@material-ui/icons": "^3.0.1",
+    "@types/yup": "^0.26.9",
     "connected-react-router": "^6.2.2",
     "formik": "^1.5.1",
     "formik-material-ui": "^0.0.16",
@@ -20,7 +21,8 @@
     "redux": "^4.0.1",
     "redux-observable": "^1.0.0",
     "reselect": "^4.0.0",
-    "rxjs": "^6.3.3"
+    "rxjs": "^6.3.3",
+    "yup": "^0.26.10"
   },
   "scripts": {
     "start": "react-scripts-ts start",
