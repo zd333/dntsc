@@ -22,15 +22,19 @@ export function inventoryReducer(
       const {
         searchResults: { items },
       } = action.payload;
-      const fountItemsDict = arrayToDictionary(items, 'id');
+      const foundItemsDict = arrayToDictionary(items, 'id');
+      // Merge new results to all items dictionary
       const itemsDict = {
         ...state.itemsDict,
-        ...fountItemsDict,
+        ...foundItemsDict,
       };
+      // Set ids of recently found items
+      const matchingSearchCriteriaItemIds = items.map(item => item.id);
 
       return {
         ...state,
         itemsDict,
+        matchingSearchCriteriaItemIds,
         searchItemsApiRequestInProgress: false,
       };
     }
