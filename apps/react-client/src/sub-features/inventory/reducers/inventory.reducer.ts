@@ -64,10 +64,16 @@ export function inventoryReducer(
         ...state.itemsDict,
         [id]: inventoryItemViewModelToDto(newItem),
       };
+      // Put new item to the top of the list (even if it doesn't match search)
+      const matchingSearchCriteriaItemIds = [
+        id,
+        ...state.matchingSearchCriteriaItemIds,
+      ];
 
       return {
         ...state,
         itemsDict,
+        matchingSearchCriteriaItemIds,
         saveNewItemApiRequestInProgress: false,
       };
     }
