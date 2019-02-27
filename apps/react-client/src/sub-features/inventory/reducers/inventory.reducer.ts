@@ -1,5 +1,6 @@
 import { arrayToDictionary } from '../../../shared/helpers/array-to-dictionary';
 import { InventoryInitialState } from './inventory-initial-state';
+import { inventoryItemViewModelToDto } from '../helpers/inventory-item-dto-to-view-model';
 import { InventoryState } from './inventory-state.interface';
 import {
   AllInventoryActions,
@@ -61,7 +62,7 @@ export function inventoryReducer(
       };
       const itemsDict = {
         ...state.itemsDict,
-        [id]: newItem,
+        [id]: inventoryItemViewModelToDto(newItem),
       };
 
       return {

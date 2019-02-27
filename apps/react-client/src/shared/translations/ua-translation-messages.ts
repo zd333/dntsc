@@ -43,6 +43,9 @@ export const uaTranslationMessages: AppTranslationMessages = {
     'Додати новий',
   'inventoryCatalogPage.inventoryItemsList.searchItemsControl.label': 'Пошук',
 
+  'inventoryCatalogPage.addNewInventoryItemDialog.title':
+    'Додати нову позицію складу',
+
   'inventoryCatalogPage.inventoryItemDetailsForm.nameControl.label': 'Назва',
   'inventoryCatalogPage.inventoryItemDetailsForm.unitsControl.label':
     'Одиниці виміру',
