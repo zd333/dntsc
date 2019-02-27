@@ -1,14 +1,22 @@
 import { AppEpicsDependencies, RootState } from '../../..';
-import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { Epic } from 'redux-observable';
 import { of as observableOf } from 'rxjs';
 import { ofType } from '@martin_hotell/rex-tils';
 import { selectAuthToken } from '../../../selectors/auth-token.selector';
 import {
+  catchError,
+  map,
+  switchMap,
+  withLatestFrom,
+  debounceTime,
+} from 'rxjs/operators';
+import {
   AllInventoryActions,
   InventoryActionTypes,
   InventoryActions,
 } from '../actions/inventory.actions';
+
+const DEBOUNCE_TIME = 1000;
 
 export const searchInventoryItemsApiCallEpic: Epic<
   AllInventoryActions,
@@ -21,10 +29,11 @@ export const searchInventoryItemsApiCallEpic: Epic<
   return action$.pipe(
     ofType(InventoryActionTypes.SEARCH_ITEMS_START),
     withLatestFrom(authToken$),
+    debounceTime(DEBOUNCE_TIME),
     switchMap(([action, authToken]) => {
       const { searchString } = action.payload;
 
-      return searchInventoryItemsApiConnector({ authToken, searchString }).pipe(
+      return searchInventoryItemsApiConnector({ searchString, authToken }).pipe(
         map(searchResults =>
           InventoryActions.searchItemsSuccess({ searchResults }),
         ),
