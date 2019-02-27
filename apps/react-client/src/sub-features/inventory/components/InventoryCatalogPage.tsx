@@ -11,6 +11,11 @@ import {
   withStyles,
   Button,
   TextField,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  Card,
+  CardContent,
 } from '@material-ui/core';
 
 // TODO: add new item popup component
@@ -73,24 +78,38 @@ export class StyledInventoryCatalogPage extends React.Component<
   };
 
   public handleUpdateItemSubmit = (params: {
-    readonly updatedItem: Pick<InventoryItem, 'name' | 'unit' | 'alternates'>;
+    readonly item: Pick<InventoryItem, 'name' | 'unit' | 'alternates'>;
   }) => {
     const selectedItem = this.getSelectedItem();
 
     if (
       !this.props.updateAndCreateAreAllowed ||
       !selectedItem ||
-      !this.state.selectedItemIsInEditMode ||
-      typeof this.props.onUpdate !== 'function'
+      !this.state.selectedItemIsInEditMode
     ) {
       return;
     }
     this.props.onUpdate({
       id: selectedItem.id,
-      updatedItem: params.updatedItem,
+      updatedItem: params.item,
     });
     this.setState({
       selectedItemIsInEditMode: false,
+    });
+  };
+
+  public handleCreateNewItemSubmit = (params: {
+    readonly item: Pick<InventoryItem, 'name' | 'unit' | 'alternates'>;
+  }) => {
+    if (!this.props.updateAndCreateAreAllowed) {
+      return;
+    }
+
+    this.props.onCreate({
+      newItem: params.item,
+    });
+    this.setState({
+      addNewItemModalIsOpened: false,
     });
   };
 
@@ -112,6 +131,18 @@ export class StyledInventoryCatalogPage extends React.Component<
       event.currentTarget.value.length >= 3 ? event.currentTarget.value : '';
 
     this.props.onSearch({ searchString });
+  };
+
+  public handleAddNewItemButtonClick = () => {
+    this.setState({
+      addNewItemModalIsOpened: true,
+    });
+  };
+
+  public handleCancelAddNewItemButtonClick = () => {
+    this.setState({
+      addNewItemModalIsOpened: false,
+    });
   };
 
   public getSelectedItem(): InventoryItem | undefined {
@@ -143,8 +174,7 @@ export class StyledInventoryCatalogPage extends React.Component<
               variant="contained"
               color="primary"
               disabled={this.state.selectedItemIsInEditMode}
-              // TODO: implement
-              onClick={() => void 0}
+              onClick={this.handleAddNewItemButtonClick}
             >
               <FormattedMessage id="inventoryCatalogPage.inventoryItemsList.AddNewItemButton.label" />
             </Button>
@@ -168,15 +198,38 @@ export class StyledInventoryCatalogPage extends React.Component<
             />
           </Grid>
           <Grid item sm={12} md={6}>
-            <InventoryItemDetailsForm
-              item={this.getSelectedItem()}
-              itemUnits={itemUnits}
-              isInEditMode={this.state.selectedItemIsInEditMode}
-              onSubmit={this.handleUpdateItemSubmit}
-              onCancelEdit={this.handleCancelEditMode}
-            />
+            <Card>
+              <CardContent>
+                <InventoryItemDetailsForm
+                  item={this.getSelectedItem()}
+                  itemUnits={itemUnits}
+                  isInEditMode={this.state.selectedItemIsInEditMode}
+                  onSubmit={this.handleUpdateItemSubmit}
+                  onCancelEdit={this.handleCancelEditMode}
+                />
+              </CardContent>
+            </Card>
           </Grid>
         </Grid>
+
+        <Dialog
+          open={this.state.addNewItemModalIsOpened}
+          aria-labelledby="add-new-inventory-item-dialog-title"
+          onClose={this.handleCancelAddNewItemButtonClick}
+        >
+          <DialogTitle id="add-new-inventory-item-dialog-title">
+            <FormattedMessage id="inventoryCatalogPage.addNewInventoryItemDialog.title" />
+          </DialogTitle>
+          <DialogContent>
+            <InventoryItemDetailsForm
+              item={undefined}
+              itemUnits={itemUnits}
+              isInEditMode={true}
+              onSubmit={this.handleCreateNewItemSubmit}
+              onCancelEdit={this.handleCancelAddNewItemButtonClick}
+            />
+          </DialogContent>
+        </Dialog>
       </React.Fragment>
     );
   }

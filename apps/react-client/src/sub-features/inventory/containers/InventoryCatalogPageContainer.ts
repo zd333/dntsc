@@ -18,7 +18,6 @@ const mapStateToProps: StateMapper<
   RootState
 > = state => {
   return {
-    // TODO: finish
     items: selectMatchingSearchItems(state),
     itemUnits: selectTranslatedInventoryItemUnits(state),
     updateAndCreateAreAllowed: selectUpdateAndCreateInventoryItemsIsAllowed(
@@ -38,6 +37,9 @@ const mapDispatchToProps: DispatchMapper<
           searchString: params.searchString,
         }),
       );
+    },
+    onCreate: params => {
+      dispatch(InventoryActions.createItemStart({ item: params.newItem }));
     },
   };
 };

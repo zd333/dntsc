@@ -131,6 +131,7 @@ const shellStyles = ({ spacing, mixins }: Theme) =>
       position: 'absolute',
       top: `calc(50vh - ${SPINNER_WIDTH / 2}px)`,
       left: `calc(50% - ${SPINNER_WIDTH / 2}px)`,
+      zIndex: 1001,
     },
     backdropOverlay: {
       // Do not use palette because there is no suitable grey with opacity and this is single usage of this color
