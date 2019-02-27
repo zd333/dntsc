@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
+import { InventoryActions } from '../actions/inventory.actions';
 import { RootState } from '../../..';
-import { selectAllInventoryItems } from '../selectors/all-inventory-items.selector';
+import { selectMatchingSearchItems } from '../selectors/matching-search-items.selector';
 import { selectTranslatedInventoryItemUnits } from '../selectors/translated-inventory-item-units.selector';
 import { selectUpdateAndCreateInventoryItemsIsAllowed } from '../selectors/update-and-create-inventory-items-is-allowed.selector';
 import {
@@ -18,7 +19,7 @@ const mapStateToProps: StateMapper<
 > = state => {
   return {
     // TODO: finish
-    items: selectAllInventoryItems(state),
+    items: selectMatchingSearchItems(state),
     itemUnits: selectTranslatedInventoryItemUnits(state),
     updateAndCreateAreAllowed: selectUpdateAndCreateInventoryItemsIsAllowed(
       state,
@@ -30,7 +31,14 @@ const mapDispatchToProps: DispatchMapper<
   InventoryCatalogPageProps
 > = dispatch => {
   return {
-    // TODO: implement
+    // TODO: finish
+    onSearch: params => {
+      dispatch(
+        InventoryActions.searchItemsStart({
+          searchString: params.searchString,
+        }),
+      );
+    },
   };
 };
 

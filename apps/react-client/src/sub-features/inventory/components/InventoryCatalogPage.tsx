@@ -13,7 +13,6 @@ import {
   TextField,
 } from '@material-ui/core';
 
-// TODO: implement search feature
 // TODO: add new item popup component
 // TODO: implement update item functionality
 export interface InventoryCatalogPageProps {
@@ -101,6 +100,20 @@ export class StyledInventoryCatalogPage extends React.Component<
     });
   };
 
+  public handleSearchInputChange = (
+    event: React.SyntheticEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
+    if (!event || !event.currentTarget || !event.currentTarget.value) {
+      return;
+    }
+    const searchString =
+      event.currentTarget.value.length >= 3 ? event.currentTarget.value : '';
+
+    this.props.onSearch({ searchString });
+  };
+
   public getSelectedItem(): InventoryItem | undefined {
     return (
       this.props.items &&
@@ -140,6 +153,7 @@ export class StyledInventoryCatalogPage extends React.Component<
             label={searchControlLabel}
             fullWidth={true}
             variant="outlined"
+            onChange={this.handleSearchInputChange}
           />
         </div>
 
