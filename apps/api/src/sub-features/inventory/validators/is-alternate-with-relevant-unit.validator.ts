@@ -1,4 +1,4 @@
-import { CreateInventoryItemInDtoWithClinicContext } from '../dto/create-inventory-item.dto';
+import { CreateInventoryItemInDtoWithClinicContext } from '../dto/create-inventory-item.in-dto';
 import { Injectable } from '@nestjs/common';
 import { InventoryDbConnectorService } from '../services/inventory-db-connector.service';
 import { inventoryItemsHaveRelevantUnits } from '../helpers/inventory-items-have-relevant-units';

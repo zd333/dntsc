@@ -5,7 +5,7 @@ import { convertDocumentsToPaginatedListOutDto } from '../../../../src/sub-featu
 import { convertDocumentToOutDto } from '../../../../src/sub-features/shared/helpers/convert-document-to-out-dto';
 import { CreatedInventoryItemOutDto } from '../dto/created-inventory-item.out-dto';
 import { CreateInventoryBalanceChangeInDtoWithClinicContext } from '../dto/create-inventory-balance-change.in-dto';
-import { CreateInventoryItemInDtoWithClinicContext } from '../dto/create-inventory-item.dto';
+import { CreateInventoryItemInDtoWithClinicContext } from '../dto/create-inventory-item.in-dto';
 import { InventoryBalanceChangeDetailsOutDto } from '../dto/inventory-balance-change-details.out-dto';
 import { InventoryDbConnectorService } from '../services/inventory-db-connector.service';
 import { InventoryItemBalanceOutDto } from '../dto/inventory-item-balance.out-dto';
@@ -13,6 +13,7 @@ import { InventoryItemDetailsOutDto } from '../dto/inventory-item-details.out-dt
 import { PaginatedListOutDto } from '../../../../src/sub-features/shared/dto/paginated-list-out-dto.interface';
 import { RequesterIsEmployeeOfTargetClinicGuard } from '../../../../src/sub-features/shared/guards/requester-is-employee-of-target-clinic.guard';
 import { RequestIsInClinicContextGuard } from '../../../../src/sub-features/shared/guards/request-is-in-clinic-context.guard';
+import { UpdateInventoryItemInDtoWithClinicContext } from '../dto/update-inventory-item.in-dto';
 import { WithMongoIdInDto } from '../../../../src/sub-features/shared/dto/with-mongo-id.in-dto';
 import {
   QueryParamsForSearchablePaginatedListInDto,
@@ -32,6 +33,9 @@ import {
   Req,
   Param,
   NotFoundException,
+  Put,
+  HttpCode,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 
 @UseGuards(TenantFeaturesGuard)
@@ -105,6 +109,33 @@ export class InventoryController {
     return convertDocumentToOutDto({
       document,
       dtoConstructor: InventoryItemDetailsOutDto,
+    });
+  }
+
+  @UseGuards(
+    AuthGuard(),
+    ACGuard,
+    RequestIsInClinicContextGuard,
+    RequesterIsEmployeeOfTargetClinicGuard,
+  )
+  @UseRoles({
+    resource: 'inventory-item',
+    action: 'update',
+    possession: 'any',
+  })
+  @Put('items/:id')
+  @HttpCode(202)
+  public async updateItem(
+    @Param() { id }: WithMongoIdInDto,
+    @Body() dto: UpdateInventoryItemInDtoWithClinicContext,
+  ): Promise<void> {
+    if (id !== dto.id) {
+      throw new UnprocessableEntityException();
+    }
+
+    await this.inventoryDbConnector.updateItem({
+      id,
+      dto,
     });
   }
 

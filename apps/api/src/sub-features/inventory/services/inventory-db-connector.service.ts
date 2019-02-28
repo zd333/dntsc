@@ -1,5 +1,5 @@
 import { CreateInventoryBalanceChangeInDtoWithClinicContext } from '../dto/create-inventory-balance-change.in-dto';
-import { CreateInventoryItemInDtoWithClinicContext } from '../dto/create-inventory-item.dto';
+import { CreateInventoryItemInDtoWithClinicContext } from '../dto/create-inventory-item.in-dto';
 import { Document, Model, Types } from 'mongoose';
 import { getMongoFindConditionForFieldSearch } from '../../../../src/sub-features/shared/helpers/get-mongo-find-condition-for-field-search';
 import { getPaginationMongoFindOptionsFromDto } from '../../../../src/sub-features/shared/helpers/get-pagination-mongo-find-options-from-in-dto';
@@ -8,6 +8,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { MongoFindResults } from '../../../../src/sub-features/shared/helpers/convert-documents-to-paginated-list-out-dto';
 import { QueryParamsForSearchablePaginatedListInDto } from '../../../../src/sub-features/shared/dto/query-params-for-paginated-list.in-dto';
 import { runMongoPaginatedQueryWithAutoLimit } from '../../../../src/sub-features/shared/helpers/run-mongo-paginated-query-with-auto-limit';
+import { UpdateInventoryItemInDtoWithClinicContext } from '../dto/update-inventory-item.in-dto';
 import {
   INVENTORY_BALANCE_CHANGE_SCHEMA_COLLECTION_NAME,
   InventoryBalanceChangeDocument,
@@ -40,6 +41,22 @@ export class InventoryDbConnectorService {
     await doc.save();
 
     return doc;
+  }
+
+  public async updateItem(params: {
+    readonly id: string;
+    readonly dto: UpdateInventoryItemInDtoWithClinicContext;
+  }): Promise<void> {
+    const { id, dto } = params;
+    const { targetClinicId, id: idToStrip, ...dtoWithStrippedId } = dto;
+    const dtoWithAlternates = {
+      ...dtoWithStrippedId,
+      ...(dtoWithStrippedId.alternates
+        ? { alternates: dtoWithStrippedId.alternates }
+        : { $unset: { alternates: undefined } }),
+    };
+
+    await this.inventoryItemModel.findByIdAndUpdate(id, dtoWithAlternates);
   }
 
   public async getItemById(id: string): Promise<InventoryItemDocument | null> {
@@ -81,14 +98,16 @@ export class InventoryDbConnectorService {
   public async checkInventoryItemWithGivenNameExistsInClinic(params: {
     readonly inventoryItemName: string;
     readonly clinics: Array<string>;
+    readonly idToExclude?: string;
   }): Promise<boolean> {
-    const { clinics, inventoryItemName } = params;
+    const { clinics, inventoryItemName, idToExclude } = params;
     const findConditions = {
       clinics: { $in: clinics },
       ...getMongoFindConditionForFieldSearch({
         fieldName: 'name',
         searchString: inventoryItemName,
       }),
+      ...(idToExclude ? { _id: { $ne: idToExclude } } : {}),
     };
     const found = await this.inventoryItemModel
       .find(findConditions, { limit: 1 })
