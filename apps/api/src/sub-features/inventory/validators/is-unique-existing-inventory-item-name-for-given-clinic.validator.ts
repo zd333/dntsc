@@ -1,6 +1,6 @@
-import { CreateInventoryItemInDtoWithClinicContext } from '../dto/create-inventory-item.in-dto';
 import { Injectable } from '@nestjs/common';
 import { InventoryDbConnectorService } from '../services/inventory-db-connector.service';
+import { UpdateInventoryItemInDtoWithClinicContext } from '../dto/update-inventory-item.in-dto';
 import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
@@ -8,11 +8,15 @@ import {
 } from 'class-validator';
 
 @ValidatorConstraint({
-  name: 'isUniqueInventoryItemNameForGivenClinics',
+  name: 'isUniqueExistingInventoryItemNameForGivenClinics',
   async: true,
 })
 @Injectable()
-export class IsUniqueInventoryItemNameForGivenClinic
+/**
+ * Almost same as `IsUniqueInventoryItemNameForGivenClinic`,
+ * but for existing inventory items which are being updated.
+ */
+export class IsUniqueExistingInventoryItemNameForGivenClinic
   implements ValidatorConstraintInterface {
   constructor(
     private readonly inventoryDbConnector: InventoryDbConnectorService,
@@ -22,12 +26,13 @@ export class IsUniqueInventoryItemNameForGivenClinic
     value: string,
     validationArguments: ValidationArguments,
   ): Promise<boolean> {
-    const dtoObject = validationArguments.object as CreateInventoryItemInDtoWithClinicContext;
+    const dtoObject = validationArguments.object as UpdateInventoryItemInDtoWithClinicContext;
     const { targetClinicId } = dtoObject;
     const nameIsOccupied = await this.inventoryDbConnector.checkInventoryItemWithGivenNameExistsInClinic(
       {
         inventoryItemName: value,
         clinics: [targetClinicId],
+        idToExclude: dtoObject.id,
       },
     );
 

@@ -1,8 +1,10 @@
-import { InDtoWithClinicContext } from '../../../../src/middlewares/add-clinic-context.middleware';
-import { IsUniqueInventoryItemNameForGivenClinic } from '../validators/is-unique-inventory-item-name-for-given-clinic.validator';
+import { InDtoWithClinicContext } from '../../../middlewares/add-clinic-context.middleware';
+import { IsIdOfExistingDbEntityValidator } from '../../shared/validators/is-id-of-existing-db-entity.validator';
+import { IsUniqueExistingInventoryItemNameForGivenClinic } from '../validators/is-unique-existing-inventory-item-name-for-given-clinic.validator';
 import {
   InventoryItemUnits,
   allInventoryItemUnits,
+  INVENTORY_ITEM_SCHEMA_COLLECTION_NAME,
 } from '../db-schemas/inventory-item.db-schema';
 import {
   IsString,
@@ -14,10 +16,15 @@ import {
   IsIn,
 } from 'class-validator';
 
-export class CreateInventoryItemInDtoWithClinicContext extends InDtoWithClinicContext {
+export class UpdateInventoryItemInDtoWithClinicContext extends InDtoWithClinicContext {
+  @Validate(IsIdOfExistingDbEntityValidator, [
+    INVENTORY_ITEM_SCHEMA_COLLECTION_NAME,
+  ])
+  public readonly id: string;
+
   @MinLength(3)
   @IsString()
-  @Validate(IsUniqueInventoryItemNameForGivenClinic)
+  @Validate(IsUniqueExistingInventoryItemNameForGivenClinic)
   public readonly name: string;
 
   @IsIn(allInventoryItemUnits)
@@ -49,7 +56,7 @@ export class CreateInventoryItemInDtoWithClinicContext extends InDtoWithClinicCo
 /**
  * DTO type for clients.
  */
-export type CreateInventoryItemInDto = Pick<
-  CreateInventoryItemInDtoWithClinicContext,
-  Exclude<keyof CreateInventoryItemInDtoWithClinicContext, 'targetClinicId'>
+export type UpdateInventoryItemInDto = Pick<
+  UpdateInventoryItemInDtoWithClinicContext,
+  Exclude<keyof UpdateInventoryItemInDtoWithClinicContext, 'targetClinicId'>
 >;

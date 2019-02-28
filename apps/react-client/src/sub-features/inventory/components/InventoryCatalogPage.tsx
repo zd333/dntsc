@@ -18,7 +18,6 @@ import {
   CardContent,
 } from '@material-ui/core';
 
-// TODO: add new item popup component
 // TODO: implement update item functionality
 export interface InventoryCatalogPageProps {
   readonly items: Array<InventoryItem>;
