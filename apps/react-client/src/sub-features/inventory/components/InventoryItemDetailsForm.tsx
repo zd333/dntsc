@@ -3,6 +3,7 @@ import * as yup from 'yup';
 import { Field, Form, Formik } from 'formik';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { InventoryItem } from './InventoryItemsList';
+import { Omitted } from '../../../shared/types/omitted.type';
 import { Select, TextField } from 'formik-material-ui';
 import {
   TranslatedInventoryItemUnit,
@@ -24,7 +25,7 @@ export interface InventoryItemDetailsFormProps {
   readonly itemUnits: Array<TranslatedInventoryItemUnit>;
   readonly isInEditMode: boolean;
   readonly onSubmit: (params: {
-    readonly item: Pick<InventoryItem, 'name' | 'unit' | 'alternates'>;
+    readonly item: Omitted<InventoryItem, 'id'>;
   }) => void;
   readonly onCancelEdit: () => void;
 }

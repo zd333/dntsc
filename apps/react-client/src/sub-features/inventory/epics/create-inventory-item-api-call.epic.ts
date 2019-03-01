@@ -22,12 +22,16 @@ export const createInventoryItemApiCallEpic: Epic<
     ofType(InventoryActionTypes.CREATE_ITEM_START),
     withLatestFrom(authToken$),
     switchMap(([action, authToken]) => {
-      const { item } = action.payload;
+      const { newItemData } = action.payload;
 
-      return createInventoryItemApiConnector({ item, authToken }).pipe(
-        map(({ id }) => InventoryActions.createItemSuccess({ id, item })),
+      return createInventoryItemApiConnector({ newItemData, authToken }).pipe(
+        map(({ id }) =>
+          InventoryActions.createItemSuccess({ id, newItemData }),
+        ),
         catchError(error =>
-          observableOf(InventoryActions.createItemError({ error })),
+          observableOf(
+            InventoryActions.createItemError({ error, newItemData }),
+          ),
         ),
       );
     }),

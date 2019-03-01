@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Edit } from '@material-ui/icons';
 import { InventoryItemDetailsOutDto } from '@api/sub-features/inventory/dto/inventory-item-details.out-dto';
+import { Omitted } from '../../../shared/types/omitted.type';
 import {
   createStyles,
   Theme,
@@ -90,7 +91,7 @@ export const InventoryItemsList = withStyles(inventoryItemsListStyles)(
 /**
  * View model.
  */
-export type InventoryItem = Pick<
+export type InventoryItem = Omitted<
   InventoryItemDetailsOutDto,
-  Exclude<keyof InventoryItemDetailsOutDto, 'alternates'>
+  'alternates'
 > & { readonly alternates: Array<Pick<InventoryItem, 'id' | 'name'>> };

@@ -3,6 +3,7 @@ import { getApiUrl } from '../shared/helpers/get-api-url';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { TenantDetailsOutDto } from '@api/sub-features/tenants/dto/tenant-details.out-dto';
+import { TypedAjaxResponse } from '../shared/types/typed-ajax-response.interface';
 
 const GET_TENANT_OF_CURRENT_CLINIC_PATH = '/tenants/clinic_tenant';
 
@@ -11,5 +12,11 @@ export const getTenantOfCurrentClinicApiConnector = (): Observable<
 > => {
   const url = getApiUrl({ path: GET_TENANT_OF_CURRENT_CLINIC_PATH });
 
-  return ajax.get(url).pipe(map(result => result.response));
+  return ajax
+    .get(url)
+    .pipe(
+      map(
+        (response: TypedAjaxResponse<TenantDetailsOutDto>) => response.response,
+      ),
+    );
 };

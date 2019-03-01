@@ -6,7 +6,7 @@ import { SessionActions } from '../../src/actions/session.actions';
 import {
   StateMapper,
   DispatchMapper,
-} from '../../src/shared/interfaces/container-state-mapper.interface';
+} from '../../src/shared/types/container-state-mapper.interface';
 
 const mapStateToProps: StateMapper<LoginPageProps, RootState> = state => {
   return {
