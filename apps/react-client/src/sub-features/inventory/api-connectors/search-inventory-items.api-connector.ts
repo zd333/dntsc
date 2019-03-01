@@ -5,6 +5,7 @@ import { InventoryItemDetailsOutDto } from '@api/sub-features/inventory/dto/inve
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { PaginatedListOutDto } from '@api/sub-features/shared/dto/paginated-list-out-dto.interface';
+import { TypedAjaxResponse } from '../../../shared/types/typed-ajax-response.interface';
 
 const SEARCH_INVENTORY_ITEMS_PATH = '/inventory/items';
 const ITEMS_PER_CALL_LIMIT = 100;
@@ -22,5 +23,15 @@ export const searchInventoryItemsApiConnector = (params: {
   const url = getApiUrl({ path: SEARCH_INVENTORY_ITEMS_PATH, queryParams });
   const headers = getAuthHeadersForApiRequest(params.authToken);
 
-  return ajax.get(url, headers).pipe(map(result => result.response));
+  return ajax
+    .get(url, headers)
+    .pipe(
+      map(
+        (
+          response: TypedAjaxResponse<
+            PaginatedListOutDto<InventoryItemDetailsOutDto>
+          >,
+        ) => response.response,
+      ),
+    );
 };

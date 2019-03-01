@@ -2,6 +2,7 @@ import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { InventoryItem, InventoryItemsList } from './InventoryItemsList';
 import { InventoryItemDetailsForm } from './InventoryItemDetailsForm';
+import { Omitted } from '../../../shared/types/omitted.type';
 import { TranslatedInventoryItemUnit } from '../selectors/translated-inventory-item-units.selector';
 import {
   Grid,
@@ -27,11 +28,11 @@ export interface InventoryCatalogPageProps {
     readonly searchString: string | undefined;
   }) => void;
   readonly onCreate: (params: {
-    readonly newItem: Pick<InventoryItem, 'name' | 'unit' | 'alternates'>;
+    readonly newItemData: Omitted<InventoryItem, 'id'>;
   }) => void;
   readonly onUpdate: (params: {
     readonly id: InventoryItem['id'];
-    readonly updatedItem: Pick<InventoryItem, 'name' | 'unit' | 'alternates'>;
+    readonly itemUpdates: Omitted<InventoryItem, 'id'>;
   }) => void;
 }
 
@@ -77,7 +78,7 @@ export class StyledInventoryCatalogPage extends React.Component<
   };
 
   public handleUpdateItemSubmit = (params: {
-    readonly item: Pick<InventoryItem, 'name' | 'unit' | 'alternates'>;
+    readonly item: Omitted<InventoryItem, 'id'>;
   }) => {
     const selectedItem = this.getSelectedItem();
 
@@ -90,7 +91,7 @@ export class StyledInventoryCatalogPage extends React.Component<
     }
     this.props.onUpdate({
       id: selectedItem.id,
-      updatedItem: params.item,
+      itemUpdates: params.item,
     });
     this.setState({
       selectedItemIsInEditMode: false,
@@ -98,14 +99,14 @@ export class StyledInventoryCatalogPage extends React.Component<
   };
 
   public handleCreateNewItemSubmit = (params: {
-    readonly item: Pick<InventoryItem, 'name' | 'unit' | 'alternates'>;
+    readonly item: Omitted<InventoryItem, 'id'>;
   }) => {
     if (!this.props.updateAndCreateAreAllowed) {
       return;
     }
 
     this.props.onCreate({
-      newItem: params.item,
+      newItemData: params.item,
     });
     this.setState({
       addNewItemModalIsOpened: false,

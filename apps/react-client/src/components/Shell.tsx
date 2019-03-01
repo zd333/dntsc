@@ -2,6 +2,7 @@ import * as React from 'react';
 import { AppLanguages } from '../reducers/session-state.interface';
 import { Header, HeaderProps } from './Header';
 import { MainMenu, MainMenuProps } from './MainMenu';
+import { Omitted } from '../shared/types/omitted.type';
 import {
   createStyles,
   Theme,
@@ -27,11 +28,8 @@ export type ShellProps = {
    */
   readonly routePath: string;
   readonly isBusy: boolean;
-} & Pick<
-  HeaderProps,
-  Exclude<keyof HeaderProps, 'languageOptions' | 'onMenuClick'>
-> &
-  Pick<MainMenuProps, Exclude<keyof MainMenuProps, 'mobileOpened'>>;
+} & Omitted<HeaderProps, 'languageOptions' | 'onMenuClick'> &
+  Omitted<MainMenuProps, 'mobileOpened'>;
 
 interface ShellState {
   readonly mobileOpened: boolean;

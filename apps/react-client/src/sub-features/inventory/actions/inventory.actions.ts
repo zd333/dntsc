@@ -1,6 +1,7 @@
 import { ActionsUnion, createAction } from '@martin_hotell/rex-tils';
 import { InventoryItem } from '../components/InventoryItemsList';
 import { InventoryItemDetailsOutDto } from '@api/sub-features/inventory/dto/inventory-item-details.out-dto';
+import { Omitted } from '../../../shared/types/omitted.type';
 import { PaginatedListOutDto } from '@api/sub-features/shared/dto/paginated-list-out-dto.interface';
 import {
   ApiError,
@@ -33,25 +34,29 @@ export const InventoryActions = {
     }),
 
   createItemStart: (payload: {
-    readonly item: Pick<InventoryItem, 'name' | 'unit' | 'alternates'>;
+    readonly newItemData: Omitted<InventoryItem, 'id'>;
   }) => createAction(InventoryActionTypes.CREATE_ITEM_START, payload),
   createItemSuccess: (payload: {
     readonly id: InventoryItem['id'];
-    readonly item: Pick<InventoryItem, 'name' | 'unit' | 'alternates'>;
+    readonly newItemData: Omitted<InventoryItem, 'id'>;
   }) => createAction(InventoryActionTypes.CREATE_ITEM_SUCCESS, payload),
-  createItemError: (payload: { readonly error?: ApiError }) =>
+  createItemError: (payload: {
+    readonly error?: ApiError;
+    readonly newItemData: Omitted<InventoryItem, 'id'>;
+  }) =>
     createCommonErrorAction(InventoryActionTypes.CREATE_ITEM_ERROR, {
       isCommonErrorAction: true,
       error: payload.error,
+      newItemData: payload.newItemData,
     }),
 
   updateItemStart: (payload: {
-    readonly originalItem: InventoryItem;
-    readonly updatedItem: InventoryItem;
+    readonly id: InventoryItem['id'];
+    readonly itemUpdates: Omitted<InventoryItem, 'id'>;
   }) => createAction(InventoryActionTypes.UPDATE_ITEM_START, payload),
 
   updateItemError: (payload: {
-    readonly originalItem: InventoryItem;
+    readonly originalItem: InventoryItemDetailsOutDto;
     readonly error?: ApiError;
   }) =>
     createCommonErrorAction(InventoryActionTypes.UPDATE_ITEM_ERROR, {

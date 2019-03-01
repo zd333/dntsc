@@ -34,7 +34,6 @@ import {
   Param,
   NotFoundException,
   Put,
-  HttpCode,
   UnprocessableEntityException,
 } from '@nestjs/common';
 
@@ -124,7 +123,6 @@ export class InventoryController {
     possession: 'any',
   })
   @Put('items/:id')
-  @HttpCode(202)
   public async updateItem(
     @Param() { id }: WithMongoIdInDto,
     @Body() dto: UpdateInventoryItemInDtoWithClinicContext,

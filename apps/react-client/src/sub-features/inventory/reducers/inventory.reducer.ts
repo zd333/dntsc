@@ -55,7 +55,7 @@ export function inventoryReducer(
     }
 
     case InventoryActionTypes.CREATE_ITEM_SUCCESS: {
-      const { id, item } = action.payload;
+      const { id, newItemData: item } = action.payload;
       const newItem = {
         id,
         ...item,
@@ -86,10 +86,14 @@ export function inventoryReducer(
     }
 
     case InventoryActionTypes.UPDATE_ITEM_START: {
-      const { updatedItem } = action.payload;
+      const { id, itemUpdates } = action.payload;
+      const updatedItem = {
+        id,
+        ...itemUpdates,
+      };
       const itemsDict = {
         ...state.itemsDict,
-        [updatedItem.id]: updatedItem,
+        [id]: inventoryItemViewModelToDto(updatedItem),
       };
 
       return {

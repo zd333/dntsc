@@ -7,7 +7,7 @@ import { selectErrorModalMessage } from '../../src/selectors/error-modal-message
 import {
   StateMapper,
   DispatchMapper,
-} from '../../src/shared/interfaces/container-state-mapper.interface';
+} from '../../src/shared/types/container-state-mapper.interface';
 
 const mapStateToProps: StateMapper<ErrorModalProps, RootState> = state => {
   return {

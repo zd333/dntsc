@@ -11,7 +11,7 @@ import { Shell, ShellProps } from '../components/Shell';
 import {
   DispatchMapper,
   StateMapper,
-} from '../shared/interfaces/container-state-mapper.interface';
+} from '../shared/types/container-state-mapper.interface';
 
 const mapStateToProps: StateMapper<ShellProps, RootState> = state => {
   return {
