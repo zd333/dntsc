@@ -9,4 +9,9 @@ export interface InventoryState {
   >;
   readonly searchItemsApiRequestInProgress: boolean;
   readonly saveNewItemApiRequestInProgress: boolean;
+  /**
+   * Set of unique tags that are already used in inventory items.
+   * Use it for item tags typeahead.
+   */
+  readonly usedTags: Array<string>;
 }

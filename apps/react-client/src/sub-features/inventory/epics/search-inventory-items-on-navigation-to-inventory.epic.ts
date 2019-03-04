@@ -1,7 +1,7 @@
-import { AppRouePaths } from '../../../components/app-routes';
 import { Epic } from 'redux-observable';
 import { filter, mapTo } from 'rxjs/operators';
 import { InventoryActions } from '../actions/inventory.actions';
+import { inventoryRoutesPaths } from '../../../components/app-routes';
 import { LOCATION_CHANGE } from 'connected-react-router';
 import { ofType } from '@martin_hotell/rex-tils';
 
@@ -13,10 +13,10 @@ export const searchInventoryItemsOnNavigationToInventory: Epic = action$ =>
   action$.pipe(
     ofType(LOCATION_CHANGE),
     filter(action =>
-      action.payload.location.pathname.startsWith(
-        // Add all inventory routes to this statement
-        AppRouePaths.inventoryCatalog,
+      inventoryRoutesPaths.some(path =>
+        action.payload.location.pathname.toLowerCase().startsWith(path),
       ),
     ),
+    // TODO: this should be done only when dict is empty
     mapTo(InventoryActions.searchItemsStart({})),
   );

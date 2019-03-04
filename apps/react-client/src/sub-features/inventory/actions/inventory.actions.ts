@@ -19,6 +19,10 @@ export enum InventoryActionTypes {
 
   UPDATE_ITEM_START = '[Inventory actions] Update item start',
   UPDATE_ITEM_ERROR = '[Inventory actions] Update item error',
+
+  GET_USED_TAGS_START = '[Inventory actions] Get used tags start',
+  GET_USED_TAGS_SUCCESS = '[Inventory actions] Get used tags success',
+  GET_USED_TAGS_ERROR = '[Inventory actions] Get used tags error',
 }
 
 export const InventoryActions = {
@@ -63,6 +67,16 @@ export const InventoryActions = {
       isCommonErrorAction: true,
       error: payload.error,
       originalItem: payload.originalItem,
+    }),
+
+  getUsedTagsStart: () =>
+    createAction(InventoryActionTypes.GET_USED_TAGS_START),
+  getUsedTagsSuccess: (payload: { readonly usedTags: Array<string> }) =>
+    createAction(InventoryActionTypes.GET_USED_TAGS_SUCCESS, payload),
+  getUsedTagsError: (payload: { readonly error?: ApiError }) =>
+    createCommonErrorAction(InventoryActionTypes.GET_USED_TAGS_ERROR, {
+      isCommonErrorAction: true,
+      error: payload.error,
     }),
 };
 
