@@ -18,6 +18,8 @@ import {
   Grid,
   InputLabel,
   FormControl,
+  Chip,
+  Theme,
 } from '@material-ui/core';
 
 export interface InventoryItemDetailsFormProps {
@@ -108,6 +110,7 @@ const StyledInventoryItemDetailsForm: React.SFC<
       render={({ submitForm, resetForm, isValid }) => (
         <Form>
           <Grid container spacing={24}>
+            {/* Name */}
             <Grid item xs={12}>
               <Field
                 component={TextField}
@@ -118,6 +121,7 @@ const StyledInventoryItemDetailsForm: React.SFC<
               />
             </Grid>
 
+            {/* Units */}
             <Grid item xs={12}>
               <FormControl disabled={!isInEditMode} fullWidth={true}>
                 <InputLabel shrink htmlFor="inventory-item-units-label">
@@ -135,6 +139,22 @@ const StyledInventoryItemDetailsForm: React.SFC<
                   {unitOptions}
                 </Field>
               </FormControl>
+            </Grid>
+
+            {/* Tags */}
+            <Grid item xs={12}>
+              {item &&
+                item.tags &&
+                item.tags.map(tag => (
+                  <Chip
+                    key={tag}
+                    label={tag}
+                    className={classes.tagChip}
+                    // TODO: implement delete tag handler
+                    onDelete={isInEditMode ? () => void 0 : undefined}
+                  />
+                  // TODO: add new tag input
+                ))}
             </Grid>
 
             {isInEditMode && (
@@ -166,11 +186,16 @@ const StyledInventoryItemDetailsForm: React.SFC<
   );
 };
 
-const inventoryItemDetailsFormStyles = () =>
+const inventoryItemDetailsFormStyles = ({ spacing }: Theme) =>
   createStyles({
     buttonsRow: {
       display: 'flex',
       justifyContent: 'space-between',
+    },
+    tagChip: {
+      marginRight: spacing.unit,
+      // TODO: check if this is needed after input markup is added
+      marginBottom: spacing.unit,
     },
   });
 

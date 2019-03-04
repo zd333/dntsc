@@ -5,4 +5,5 @@ export const InventoryInitialState: InventoryState = {
   matchingSearchCriteriaItemIds: [],
   searchItemsApiRequestInProgress: false,
   saveNewItemApiRequestInProgress: false,
+  usedTags: [],
 };

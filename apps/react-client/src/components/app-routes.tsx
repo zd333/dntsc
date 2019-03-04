@@ -11,11 +11,14 @@ export enum AppRouePaths {
   inventoryCatalog = '/inventory/catalog',
 }
 
-const inventoryRoutes = (
-  <Route
-    path={AppRouePaths.inventoryCatalog}
-    component={InventoryCatalogPageContainer}
-  />
+const inventoryRoutesMappings: RoutePathComponentMappings = [
+  {
+    path: AppRouePaths.inventoryCatalog,
+    component: InventoryCatalogPageContainer,
+  },
+];
+export const inventoryRoutesPaths = inventoryRoutesMappings.map(
+  mapping => mapping.path,
 );
 
 /**
@@ -29,8 +32,19 @@ export const appRoutes = (
     <ShellContainer>
       <Switch>
         <Route path={AppRouePaths.dashboard} component={DashboardPage} />
-        {inventoryRoutes}
+        {inventoryRoutesMappings.map(mapping => (
+          <Route
+            key={mapping.path}
+            path={mapping.path}
+            component={mapping.component}
+          />
+        ))}
       </Switch>
     </ShellContainer>
   </Switch>
 );
+
+type RoutePathComponentMappings = Array<{
+  readonly path: AppRouePaths;
+  readonly component: React.ComponentType;
+}>;
