@@ -10,15 +10,14 @@ import { InventoryBalanceChangeDetailsOutDto } from '../dto/inventory-balance-ch
 import { InventoryDbConnectorService } from '../services/inventory-db-connector.service';
 import { InventoryItemBalanceOutDto } from '../dto/inventory-item-balance.out-dto';
 import { InventoryItemDetailsOutDto } from '../dto/inventory-item-details.out-dto';
+import { InventoryItemsSearchParams } from '../dto/inventory-items-search-params.in-dto';
+import { InventoryItemsTagsOutDto } from '../dto/inventory-items-tags.out-dto';
 import { PaginatedListOutDto } from '../../../../src/sub-features/shared/dto/paginated-list-out-dto.interface';
+import { QueryParamsForPaginatedListInDto } from '../../../../src/sub-features/shared/dto/query-params-for-paginated-list.in-dto';
 import { RequesterIsEmployeeOfTargetClinicGuard } from '../../../../src/sub-features/shared/guards/requester-is-employee-of-target-clinic.guard';
 import { RequestIsInClinicContextGuard } from '../../../../src/sub-features/shared/guards/request-is-in-clinic-context.guard';
 import { UpdateInventoryItemInDtoWithClinicContext } from '../dto/update-inventory-item.in-dto';
 import { WithMongoIdInDto } from '../../../../src/sub-features/shared/dto/with-mongo-id.in-dto';
-import {
-  QueryParamsForSearchablePaginatedListInDto,
-  QueryParamsForPaginatedListInDto,
-} from '../../../../src/sub-features/shared/dto/query-params-for-paginated-list.in-dto';
 import {
   IsRelatedToFeatures,
   TenantFeaturesGuard,
@@ -76,10 +75,12 @@ export class InventoryController {
   @Get('items')
   public async getItems(
     @Req() req: AppRequest,
-    @Query() dto: QueryParamsForSearchablePaginatedListInDto,
+    @Query() dto: InventoryItemsSearchParams,
   ): Promise<PaginatedListOutDto<InventoryItemDetailsOutDto>> {
     const { targetClinicId } = req;
+    const filterTags = (dto && dto.tags && dto.tags.split(',')) || undefined;
     const findResults = await this.inventoryDbConnector.getClinicItems({
+      filterTags,
       clinicId: targetClinicId,
       paginationParams: dto,
     });
@@ -88,6 +89,27 @@ export class InventoryController {
       findResults,
       singleDtoItemConstructor: InventoryItemDetailsOutDto,
     });
+  }
+
+  @UseGuards(
+    AuthGuard(),
+    RequestIsInClinicContextGuard,
+    RequesterIsEmployeeOfTargetClinicGuard,
+  )
+  @Get('items-tags')
+  public async getItemsTags(
+    @Req() req: AppRequest,
+  ): Promise<InventoryItemsTagsOutDto> {
+    const { targetClinicId } = req;
+    const items = await this.inventoryDbConnector.getClinicItems({
+      clinicId: targetClinicId,
+    });
+    const tags = items.documents
+      .map(doc => doc.tags || [])
+      .reduce((result, current) => [...result, ...current], []);
+    const uniqueTags = Array.from(new Set(tags).values());
+
+    return { usedTags: uniqueTags };
   }
 
   @UseGuards(

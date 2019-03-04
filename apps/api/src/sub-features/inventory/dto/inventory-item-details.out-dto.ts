@@ -13,5 +13,9 @@ export class InventoryItemDetailsOutDto {
 
   @Expose()
   @Type(() => String)
+  public readonly tags?: Array<string>;
+
+  @Expose()
+  @Type(() => String)
   public readonly alternates?: Array<string>;
 }

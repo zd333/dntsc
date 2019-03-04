@@ -49,14 +49,25 @@ export class InventoryDbConnectorService {
   }): Promise<void> {
     const { id, dto } = params;
     const { targetClinicId, id: idToStrip, ...dtoWithStrippedId } = dto;
-    const dtoWithAlternates = {
+    // `alternates` and/or `tags` are optional thus need custom unset code to be deleted
+    const unsetStatement =
+      !!dtoWithStrippedId.alternates && !!dtoWithStrippedId.tags
+        ? // Nothing to unset/delete
+          {}
+        : {
+            $unset: {
+              ...(!dtoWithStrippedId.alternates
+                ? { alternates: undefined }
+                : {}),
+              ...(!dtoWithStrippedId.tags ? { tags: undefined } : {}),
+            },
+          };
+    const docUpdates = {
       ...dtoWithStrippedId,
-      ...(dtoWithStrippedId.alternates
-        ? { alternates: dtoWithStrippedId.alternates }
-        : { $unset: { alternates: undefined } }),
+      ...unsetStatement,
     };
 
-    await this.inventoryItemModel.findByIdAndUpdate(id, dtoWithAlternates);
+    await this.inventoryItemModel.findByIdAndUpdate(id, docUpdates);
   }
 
   public async getItemById(id: string): Promise<InventoryItemDocument | null> {
@@ -66,12 +77,18 @@ export class InventoryDbConnectorService {
   public async getClinicItems(params: {
     readonly clinicId: string | undefined;
     readonly paginationParams?: QueryParamsForSearchablePaginatedListInDto;
+    readonly filterTags?: Array<string>;
   }): Promise<MongoFindResults<InventoryItemDocument>> {
-    const { clinicId, paginationParams } = params;
+    const { clinicId, paginationParams, filterTags } = params;
     const findOptions = getPaginationMongoFindOptionsFromDto(paginationParams);
     // Add search condition only if search string is present
     const findConditions = {
       clinics: clinicId,
+      ...(filterTags
+        ? {
+            tags: { $all: filterTags },
+          }
+        : {}),
       ...(paginationParams && paginationParams.searchString
         ? getMongoFindConditionForFieldSearch({
             fieldName: 'name',

@@ -24,6 +24,10 @@ const schemaDefinition: SchemaDefinition = {
     type: [{ type: Schema.Types.ObjectId, ref: CLINIC_SCHEMA_COLLECTION_NAME }],
     required: true,
   },
+  tags: {
+    type: [String],
+    required: false,
+  },
   alternates: {
     type: [Schema.Types.ObjectId],
     ref: INVENTORY_ITEM_SCHEMA_COLLECTION_NAME,
@@ -35,6 +39,7 @@ export type InventoryItemDocument = Readonly<Document> & {
   readonly name: string;
   readonly unit: InventoryItemUnits;
   readonly clinics: Array<string>;
+  readonly tags?: Array<string>;
   readonly alternates?: Array<string>;
 };
 
