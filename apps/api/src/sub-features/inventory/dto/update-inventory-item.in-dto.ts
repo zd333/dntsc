@@ -14,6 +14,7 @@ import {
   ArrayUnique,
   Validate,
   IsIn,
+  IsLowercase,
 } from 'class-validator';
 
 export class UpdateInventoryItemInDtoWithClinicContext extends InDtoWithClinicContext {
@@ -30,9 +31,12 @@ export class UpdateInventoryItemInDtoWithClinicContext extends InDtoWithClinicCo
   @IsIn(allInventoryItemUnits)
   public readonly unit: InventoryItemUnits;
 
-  /**
-   * Array of ids of other inventory items that can be used as substitution.
-   */
+  @IsOptional()
+  @ArrayNotEmpty()
+  @ArrayUnique()
+  @IsLowercase({ each: true })
+  public readonly tags?: Array<string>;
+
   @IsOptional()
   @ArrayNotEmpty()
   @ArrayUnique()

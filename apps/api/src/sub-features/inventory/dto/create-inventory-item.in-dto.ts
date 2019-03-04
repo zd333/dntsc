@@ -12,6 +12,7 @@ import {
   ArrayUnique,
   Validate,
   IsIn,
+  IsLowercase,
 } from 'class-validator';
 
 export class CreateInventoryItemInDtoWithClinicContext extends InDtoWithClinicContext {
@@ -22,6 +23,15 @@ export class CreateInventoryItemInDtoWithClinicContext extends InDtoWithClinicCo
 
   @IsIn(allInventoryItemUnits)
   public readonly unit: InventoryItemUnits;
+
+  /**
+   * Use tags to categorize items.
+   */
+  @IsOptional()
+  @ArrayNotEmpty()
+  @ArrayUnique()
+  @IsLowercase({ each: true })
+  public readonly tags?: Array<string>;
 
   /**
    * Array of ids of other inventory items that can be used as substitution.
