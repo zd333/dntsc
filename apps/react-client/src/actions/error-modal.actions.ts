@@ -1,9 +1,11 @@
 import { Action } from '@martin_hotell/rex-tils/types/redux/types';
+import { AjaxError } from 'rxjs/ajax';
 import { createAction } from '@martin_hotell/rex-tils';
 
+// TODO: clarify what is this object and if this is `AjaxError` or not
+// export type ApiError = AjaxError;
 export interface ApiError {
   readonly error?: string;
-  // TODO: add better typing
   // tslint:disable-next-line:no-any
   readonly message?: Array<any>;
 }
@@ -40,7 +42,7 @@ export interface CommonErrorActionPayload {
   readonly error?: ApiError;
 }
 
-type CommonErrorAction = ReturnType<typeof createCommonErrorAction>;
+export type CommonErrorAction = Action<string, CommonErrorActionPayload>;
 
 /**
  * Type guard to check if action follows CommonErrorActionType signature,

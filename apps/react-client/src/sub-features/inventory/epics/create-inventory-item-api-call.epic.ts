@@ -1,18 +1,17 @@
-import { AppEpicsDependencies, RootState } from '../../..';
+import { AllAppActions, AppEpicsDependencies, RootState } from '../../..';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { createAppEpicErrorAction } from '../../../shared/helpers/create-app-epic-error-action';
 import { Epic } from 'redux-observable';
-import { of as observableOf } from 'rxjs';
 import { ofType } from '@martin_hotell/rex-tils';
 import { selectAuthToken } from '../../../selectors/auth-token.selector';
 import {
-  AllInventoryActions,
   InventoryActionTypes,
   InventoryActions,
 } from '../actions/inventory.actions';
 
 export const createInventoryItemApiCallEpic: Epic<
-  AllInventoryActions,
-  AllInventoryActions,
+  AllAppActions,
+  AllAppActions,
   RootState,
   AppEpicsDependencies
 > = (action$, state$, { createInventoryItemApiConnector }) => {
@@ -29,7 +28,8 @@ export const createInventoryItemApiCallEpic: Epic<
           InventoryActions.createItemSuccess({ id, newItemData }),
         ),
         catchError(error =>
-          observableOf(
+          createAppEpicErrorAction(
+            error,
             InventoryActions.createItemError({ error, newItemData }),
           ),
         ),
@@ -37,3 +37,6 @@ export const createInventoryItemApiCallEpic: Epic<
     }),
   );
 };
+
+// TODO: replace all specific actions with `AllAppActions`
+// TODO: refactor all epic error handlers using `createAppEpicErrorAction`

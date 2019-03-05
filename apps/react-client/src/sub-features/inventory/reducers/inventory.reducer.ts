@@ -115,6 +115,15 @@ export function inventoryReducer(
       };
     }
 
+    case InventoryActionTypes.GET_USED_TAGS_SUCCESS: {
+      const { usedTags } = action.payload;
+
+      return {
+        ...state,
+        usedTags,
+      };
+    }
+
     default:
       return state;
   }
