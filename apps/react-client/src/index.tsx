@@ -1,5 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { AllInventoryActions } from './sub-features/inventory/actions/inventory.actions';
+import { AllSessionActions } from './actions/session.actions';
 import { App } from './components/App';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { appRootEpics } from './epics';
@@ -25,7 +27,12 @@ import {
   RouterState,
   connectRouter,
   routerMiddleware,
+  RouterAction,
 } from 'connected-react-router';
+import {
+  AllErrorModalActions,
+  CommonErrorAction,
+} from './actions/error-modal.actions';
 
 const history = createBrowserHistory();
 
@@ -87,8 +94,17 @@ export interface RootState {
   readonly inventory: InventoryState;
 }
 /**
- * Type of object that collects all injected into epic middleware dependencies of the Appp.
+ * Type of object that collects all injected into epic middleware dependencies of the App.
  */
 export type AppEpicsDependencies = typeof rootEpicMiddlewareDependencies;
+
+/**
+ * Union type of all app actions.
+ */
+export type AllAppActions =
+  | RouterAction
+  | AllSessionActions
+  | CommonErrorAction
+  | AllInventoryActions;
 
 // TODO: add code (effect?) that redirects on 401 (unauth) response
