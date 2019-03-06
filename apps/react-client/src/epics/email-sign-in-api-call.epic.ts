@@ -1,17 +1,16 @@
-import { AppEpicsDependencies, RootState } from '../../src';
+import { AllAppActions, AppEpicsDependencies, RootState } from '../../src';
 import { catchError, map, switchMap } from 'rxjs/operators';
+import { createAppEpicErrorAction } from '../shared/helpers/create-app-epic-error-action';
 import { Epic } from 'redux-observable';
-import { of as observableOf } from 'rxjs';
 import { ofType } from '@martin_hotell/rex-tils';
 import {
   SessionActionTypes,
-  AllSessionActions,
   SessionActions,
 } from '../../src/actions/session.actions';
 
 export const emailSignInApiCallEpic: Epic<
-  AllSessionActions,
-  AllSessionActions,
+  AllAppActions,
+  AllAppActions,
   RootState,
   AppEpicsDependencies
 > = (action$, state$, { signInApiConnector }) =>
@@ -31,7 +30,10 @@ export const emailSignInApiCallEpic: Epic<
           }),
         ),
         catchError(error =>
-          observableOf(SessionActions.emailLoginError({ error })),
+          createAppEpicErrorAction(
+            error,
+            SessionActions.emailLoginError({ error }),
+          ),
         ),
       ),
     ),

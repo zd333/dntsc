@@ -1,5 +1,5 @@
+import { AllAppActions, AppEpicsDependencies, RootState } from '..';
 import { AllSessionActions, SessionActions } from '../actions/session.actions';
-import { AppEpicsDependencies, RootState } from '..';
 import { EMPTY, fromEvent, Observable, of as observableOf } from 'rxjs';
 import { Epic } from 'redux-observable';
 import { map, startWith, switchMap, withLatestFrom } from 'rxjs/operators';
@@ -15,8 +15,8 @@ import {
  * ! Note, this epic doesn't track store actions, but listens to browser event.
  */
 export const syncAppSessionWithSavedInLocalStorageSessionEpic: Epic<
-  AllSessionActions,
-  AllSessionActions,
+  AllAppActions,
+  AllAppActions,
   RootState,
   AppEpicsDependencies
 > = (action$, state$, { localStorageService }) => {

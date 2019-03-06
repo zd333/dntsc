@@ -1,6 +1,6 @@
-import { AppEpicsDependencies, RootState } from '../../..';
+import { AllAppActions, AppEpicsDependencies, RootState } from '../../..';
+import { createAppEpicErrorAction } from '../../../shared/helpers/create-app-epic-error-action';
 import { Epic } from 'redux-observable';
-import { of as observableOf } from 'rxjs';
 import { ofType } from '@martin_hotell/rex-tils';
 import { selectAuthToken } from '../../../selectors/auth-token.selector';
 import {
@@ -11,7 +11,6 @@ import {
   debounceTime,
 } from 'rxjs/operators';
 import {
-  AllInventoryActions,
   InventoryActionTypes,
   InventoryActions,
 } from '../actions/inventory.actions';
@@ -19,8 +18,8 @@ import {
 const DEBOUNCE_TIME = 1000;
 
 export const searchInventoryItemsApiCallEpic: Epic<
-  AllInventoryActions,
-  AllInventoryActions,
+  AllAppActions,
+  AllAppActions,
   RootState,
   AppEpicsDependencies
 > = (action$, state$, { searchInventoryItemsApiConnector }) => {
@@ -38,7 +37,10 @@ export const searchInventoryItemsApiCallEpic: Epic<
           InventoryActions.searchItemsSuccess({ searchResults }),
         ),
         catchError(error =>
-          observableOf(InventoryActions.searchItemsError({ error })),
+          createAppEpicErrorAction(
+            error,
+            InventoryActions.searchItemsError({ error }),
+          ),
         ),
       );
     }),

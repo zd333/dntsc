@@ -49,7 +49,10 @@ const StyledInventoryItemDetailsForm: React.SFC<
     onSubmit,
     onCancelEdit,
   } = props;
-  const initialValues = item
+  // TODO: move tags to component state
+  // Handle tags independently because they are implemented using chips and thus not part of main Formik form
+  let tags = (item && item.tags) || [];
+  const initialFormValues = item
     ? item
     : {
         name: '',
@@ -95,15 +98,21 @@ const StyledInventoryItemDetailsForm: React.SFC<
       {unit.unitLabelFull} ({unit.unitLabelShort})
     </MenuItem>
   ));
+  const handleDeleteTagClick = (tagToDelete: string): void => {
+    tags = tags.filter(tag => tag !== tagToDelete);
+  };
 
   return (
     <Formik
       enableReinitialize={true}
-      initialValues={initialValues}
+      initialValues={initialFormValues}
       validationSchema={validationSchema}
       onSubmit={(values, actions) => {
         onSubmit({
-          item: values as InventoryItem,
+          item: {
+            ...(values as Omitted<InventoryItem, 'id'>),
+            tags,
+          },
         });
         actions.setSubmitting(false);
       }}
@@ -143,18 +152,17 @@ const StyledInventoryItemDetailsForm: React.SFC<
 
             {/* Tags */}
             <Grid item xs={12}>
-              {item &&
-                item.tags &&
-                item.tags.map(tag => (
-                  <Chip
-                    key={tag}
-                    label={tag}
-                    className={classes.tagChip}
-                    // TODO: implement delete tag handler
-                    onDelete={isInEditMode ? () => void 0 : undefined}
-                  />
-                  // TODO: add new tag input
-                ))}
+              {tags.map(tag => (
+                <Chip
+                  key={tag}
+                  label={tag}
+                  className={classes.tagChip}
+                  onDelete={
+                    isInEditMode ? () => handleDeleteTagClick(tag) : undefined
+                  }
+                />
+                // TODO: add new tag input
+              ))}
             </Grid>
 
             {isInEditMode && (

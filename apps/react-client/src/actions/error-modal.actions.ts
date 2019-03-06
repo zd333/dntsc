@@ -1,5 +1,4 @@
 import { Action } from '@martin_hotell/rex-tils/types/redux/types';
-import { AjaxError } from 'rxjs/ajax';
 import { createAction } from '@martin_hotell/rex-tils';
 
 // TODO: clarify what is this object and if this is `AjaxError` or not

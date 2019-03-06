@@ -37,6 +37,3 @@ export const createInventoryItemApiCallEpic: Epic<
     }),
   );
 };
-
-// TODO: replace all specific actions with `AllAppActions`
-// TODO: refactor all epic error handlers using `createAppEpicErrorAction`
