@@ -1,5 +1,6 @@
-import { AppEpicsDependencies, RootState } from '../../..';
-import { EMPTY, of as observableOf } from 'rxjs';
+import { AllAppActions, AppEpicsDependencies, RootState } from '../../..';
+import { createAppEpicErrorAction } from '../../../shared/helpers/create-app-epic-error-action';
+import { EMPTY } from 'rxjs';
 import { Epic } from 'redux-observable';
 import { ofType } from '@martin_hotell/rex-tils';
 import { selectAllItemsDict } from '../selectors/all-items-dictionary.selector';
@@ -12,14 +13,13 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 import {
-  AllInventoryActions,
   InventoryActionTypes,
   InventoryActions,
 } from '../actions/inventory.actions';
 
 export const updateInventoryItemApiCallEpic: Epic<
-  AllInventoryActions,
-  AllInventoryActions,
+  AllAppActions,
+  AllAppActions,
   RootState,
   AppEpicsDependencies
 > = (action$, state$, { updateInventoryItemApiConnector }) => {
@@ -40,7 +40,8 @@ export const updateInventoryItemApiCallEpic: Epic<
       }).pipe(
         switchMapTo(EMPTY),
         catchError(error =>
-          observableOf(
+          createAppEpicErrorAction(
+            error,
             InventoryActions.updateItemError({ originalItem, error }),
           ),
         ),

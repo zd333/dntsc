@@ -6,6 +6,7 @@ import { App } from './components/App';
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { appRootEpics } from './epics';
 import { combineEpics, createEpicMiddleware } from 'redux-observable';
+import { CommonErrorAction } from './actions/error-modal.actions';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createBrowserHistory } from 'history';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
@@ -29,10 +30,6 @@ import {
   routerMiddleware,
   RouterAction,
 } from 'connected-react-router';
-import {
-  AllErrorModalActions,
-  CommonErrorAction,
-} from './actions/error-modal.actions';
 
 const history = createBrowserHistory();
 
@@ -100,11 +97,12 @@ export type AppEpicsDependencies = typeof rootEpicMiddlewareDependencies;
 
 /**
  * Union type of all app actions.
+ * !Router actions have different type nature, thus must be processed in epics slightly differently,
+ * ! use `ofType` from `redux-observable` library for router actions
+ * !and `ofType` from `@martin_hotell/rex-tils` for all other actions.
  */
 export type AllAppActions =
   | RouterAction
   | AllSessionActions
   | CommonErrorAction
   | AllInventoryActions;
-
-// TODO: add code (effect?) that redirects on 401 (unauth) response

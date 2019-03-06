@@ -1,9 +1,12 @@
 import { AppRouePaths } from '../components/app-routes';
-import { Epic } from 'redux-observable';
+import { Epic, ofType } from 'redux-observable';
 import { filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
-import { LOCATION_CHANGE, routerActions } from 'connected-react-router';
-import { ofType } from '@martin_hotell/rex-tils';
 import { selectUserIsLoggedIn } from '../../src/selectors/user-is-logged-in.selector';
+import {
+  LOCATION_CHANGE,
+  routerActions,
+  LocationChangeAction,
+} from 'connected-react-router';
 
 /**
  * Redirects user to login page on navigation attempt when:
@@ -21,7 +24,7 @@ export const redirectUnauthenticatedToLoginPageEpic: Epic = (
   );
 
   return action$.pipe(
-    ofType(LOCATION_CHANGE),
+    ofType<LocationChangeAction>(LOCATION_CHANGE),
     withLatestFrom(userIsLoggedIn$),
     filter(
       ([action, userIsLoggedIn]) =>

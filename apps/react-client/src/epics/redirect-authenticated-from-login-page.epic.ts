@@ -1,14 +1,18 @@
+import { AllAppActions } from '..';
 import { AppRouePaths } from '../components/app-routes';
-import { Epic } from 'redux-observable';
+import { Epic, ofType } from 'redux-observable';
 import { filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
-import { LOCATION_CHANGE, routerActions } from 'connected-react-router';
-import { ofType } from '@martin_hotell/rex-tils';
 import { selectUserIsLoggedIn } from '../../src/selectors/user-is-logged-in.selector';
+import {
+  LOCATION_CHANGE,
+  routerActions,
+  LocationChangeAction,
+} from 'connected-react-router';
 
 /**
  * Redirects logged in user to home page on navigation attempt to login page.
  */
-export const redirectAuthenticatedFromLoginPageEpic: Epic = (
+export const redirectAuthenticatedFromLoginPageEpic: Epic<AllAppActions> = (
   action$,
   state$,
 ) => {
@@ -19,11 +23,11 @@ export const redirectAuthenticatedFromLoginPageEpic: Epic = (
   );
 
   return action$.pipe(
-    ofType(LOCATION_CHANGE),
+    ofType<LocationChangeAction>(LOCATION_CHANGE),
     withLatestFrom(userIsLoggedIn$),
     filter(
       ([action, userIsLoggedIn]) =>
-        userIsLoggedIn &&
+        !!userIsLoggedIn &&
         action.payload.location.pathname.startsWith(AppRouePaths.login),
     ),
     mapTo(routerActions.push('/')),

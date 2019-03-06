@@ -1,23 +1,26 @@
+import { AllAppActions } from '../../..';
+import { AppRouePaths } from '../../../components/app-routes';
 import { Epic } from 'redux-observable';
 import { filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
 import { LOCATION_CHANGE } from 'connected-react-router';
 import { ofType } from '@martin_hotell/rex-tils';
+import { selectRoutePath } from '../../../selectors/route-path.selector';
 import { selectUsedInventoryItemsTags } from '../selectors/used-inventory-items-tags.selector';
+import { selectUserIsLoggedIn } from '../../../selectors/user-is-logged-in.selector';
 import {
   InventoryActions,
   InventoryActionTypes,
 } from '../actions/inventory.actions';
 
-/**
- * Dispatches `GET_USED_TAGS_START` action when there are no used tags in the state on next events:
- * * navigation to any inventory route
- * * new items was successfully added
- * * item was updated (both success and error cases)
- */
-export const startGettingUsedInventoryItemsTags: Epic = (action$, state$) => {
+export const startGettingUsedInventoryItemsTags: Epic<AllAppActions> = (
+  action$,
+  state$,
+) => {
+  const userIsLoggedIn$ = state$.pipe(map(selectUserIsLoggedIn));
   const usedInventoryItemsTags$ = state$.pipe(
     map(selectUsedInventoryItemsTags),
   );
+  const routePath$ = state$.pipe(map(selectRoutePath));
 
   return action$.pipe(
     ofType(
@@ -26,8 +29,25 @@ export const startGettingUsedInventoryItemsTags: Epic = (action$, state$) => {
       InventoryActionTypes.UPDATE_ITEM_START,
       InventoryActionTypes.UPDATE_ITEM_ERROR,
     ),
-    withLatestFrom(usedInventoryItemsTags$),
-    filter(([, uedInventoryItemsTags]) => uedInventoryItemsTags.length === 0),
+    withLatestFrom(userIsLoggedIn$, usedInventoryItemsTags$, routePath$),
+    filter(([action, userIsLoggedIn, usedInventoryItemsTags, routePath]) => {
+      if (!userIsLoggedIn) {
+        // No need to fetch used tags for logged out user
+        return false;
+      }
+
+      if (action.type === LOCATION_CHANGE) {
+        // If it is navigation - then fetch used tags only when destination is relevant page and there are no loaded ones in the state
+        return (
+          usedInventoryItemsTags.length === 0 &&
+          // Add here all routes that need used tags data
+          routePath.startsWith(AppRouePaths.inventoryCatalog)
+        );
+      }
+
+      // This is either create or update action, in any case need to re-fetch used tags
+      return true;
+    }),
     mapTo(InventoryActions.getUsedTagsStart()),
   );
 };
