@@ -22,6 +22,7 @@ import {
 export interface InventoryCatalogPageProps {
   readonly items: Array<InventoryItem>;
   readonly itemUnits: Array<TranslatedInventoryItemUnit>;
+  readonly existingTags: Array<string>;
   readonly updateAndCreateAreAllowed: boolean;
   readonly onSearch: (params: {
     readonly searchString: string | undefined;
@@ -151,12 +152,24 @@ export class StyledInventoryCatalogPage extends React.Component<
     );
   }
 
+  public getTagsSuggestionsForExistingItem(): Array<string> {
+    const item = this.getSelectedItem();
+    const itemTags = item && item.tags;
+
+    return itemTags
+      ? this.props.existingTags.filter(tag =>
+          itemTags.every(itemTag => itemTag !== tag),
+        )
+      : this.props.existingTags;
+  }
+
   public render(): JSX.Element {
     const {
       intl,
       classes,
       items,
       itemUnits,
+      existingTags,
       updateAndCreateAreAllowed,
     } = this.props;
     const { idOfSelectedItem } = this.state;
@@ -202,6 +215,7 @@ export class StyledInventoryCatalogPage extends React.Component<
                 <InventoryItemDetailsForm
                   item={this.getSelectedItem()}
                   itemUnits={itemUnits}
+                  tagSuggestions={this.getTagsSuggestionsForExistingItem()}
                   isInEditMode={this.state.selectedItemIsInEditMode}
                   onSubmit={this.handleUpdateItemSubmit}
                   onCancelEdit={this.handleCancelEditMode}
@@ -223,6 +237,7 @@ export class StyledInventoryCatalogPage extends React.Component<
             <InventoryItemDetailsForm
               item={undefined}
               itemUnits={itemUnits}
+              tagSuggestions={existingTags}
               isInEditMode={true}
               onSubmit={this.handleCreateNewItemSubmit}
               onCancelEdit={this.handleCancelAddNewItemButtonClick}

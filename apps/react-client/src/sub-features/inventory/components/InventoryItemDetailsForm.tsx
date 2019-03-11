@@ -25,6 +25,7 @@ import {
 export interface InventoryItemDetailsFormProps {
   readonly item: InventoryItem | undefined;
   readonly itemUnits: Array<TranslatedInventoryItemUnit>;
+  readonly tagSuggestions: Array<string>;
   readonly isInEditMode: boolean;
   readonly onSubmit: (params: {
     readonly item: Omitted<InventoryItem, 'id'>;
@@ -77,6 +78,24 @@ export class StyledInventoryItemDetailsForm extends React.Component<
     }));
   };
 
+  public handleNewTagInputKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+  ): void => {
+    if (event.key !== 'Enter' && event.key !== ' ') {
+      return;
+    }
+
+    event.preventDefault();
+    const input = event.target as HTMLInputElement;
+    const newTag = input.value;
+
+    this.setState((previousState: InventoryItemDetailsFormState) => ({
+      tags: previousState.tags ? [...previousState.tags, newTag] : [newTag],
+      tagsAreDirty: true,
+    }));
+    // TODO: clear new tag input value
+  };
+
   public render(): JSX.Element {
     const {
       classes,
@@ -88,15 +107,22 @@ export class StyledInventoryItemDetailsForm extends React.Component<
       onCancelEdit,
     } = this.props;
     const initialFormValues = item
-      ? item
+      ? {
+          ...item,
+          newTag: '',
+        }
       : {
           name: '',
           unit: '',
           alternates: [],
+          newTag: '',
         };
 
     const nameFieldName = intl.formatMessage({
       id: 'inventoryCatalogPage.inventoryItemDetailsForm.nameControl.label',
+    });
+    const tagsFieldName = intl.formatMessage({
+      id: 'inventoryCatalogPage.inventoryItemDetailsForm.tagsControl.label',
     });
     const validationSchema = yup.object().shape({
       name: yup
@@ -122,6 +148,15 @@ export class StyledInventoryItemDetailsForm extends React.Component<
         .mixed()
         .required()
         .oneOf(allInventoryItemUnits),
+      newTag: yup
+        .string()
+        .min(
+          3,
+          intl.formatMessage(
+            { id: 'common.validationErrorMessage.stringMin' },
+            { fieldName: tagsFieldName },
+          ),
+        ),
       alternates: yup.array(
         yup.object({
           id: yup.string().required(),
@@ -142,15 +177,18 @@ export class StyledInventoryItemDetailsForm extends React.Component<
         initialValues={initialFormValues}
         validationSchema={validationSchema}
         onSubmit={(values, actions) => {
+          const { newTag, ...itemValues } = values;
+          const tags = newTag ? [...this.state.tags, newTag] : this.state.tags;
+
           onSubmit({
             item: {
-              ...(values as Omitted<InventoryItem, 'id'>),
-              tags: this.state.tags,
+              ...(itemValues as Omitted<InventoryItem, 'id'>),
+              tags,
             },
           });
           actions.setSubmitting(false);
         }}
-        render={({ submitForm, resetForm, isValid, dirty, validateForm }) => (
+        render={({ submitForm, resetForm, isValid, dirty, values }) => (
           <Form>
             <Grid container spacing={24}>
               {/* Name */}
@@ -185,9 +223,9 @@ export class StyledInventoryItemDetailsForm extends React.Component<
               </Grid>
 
               {/* Tags */}
-              {this.state.tags && (
-                <Grid item xs={12}>
-                  {this.state.tags.map(tag => (
+              <Grid item xs={12}>
+                {this.state.tags &&
+                  this.state.tags.map(tag => (
                     <Chip
                       key={tag}
                       label={tag}
@@ -198,10 +236,18 @@ export class StyledInventoryItemDetailsForm extends React.Component<
                           : undefined
                       }
                     />
-                    // TODO: add new tag input
                   ))}
-                </Grid>
-              )}
+                {/* New tag input */}
+                {isInEditMode && (
+                  <Field
+                    component={TextField}
+                    name="newTag"
+                    label={tagsFieldName}
+                    fullWidth={!this.state.tags || this.state.tags.length === 0}
+                    onKeyDown={this.handleNewTagInputKeyDown}
+                  />
+                )}
+              </Grid>
 
               {isInEditMode && (
                 <Grid item xs={12} className={classes.buttonsRow}>
@@ -250,7 +296,7 @@ const inventoryItemDetailsFormStyles = ({ spacing }: Theme) =>
     tagChip: {
       marginRight: spacing.unit,
       // TODO: check if this is needed after input markup is added
-      marginBottom: spacing.unit,
+      marginTop: spacing.unit * 2,
     },
   });
 

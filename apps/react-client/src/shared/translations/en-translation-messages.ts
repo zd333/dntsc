@@ -47,6 +47,7 @@ export const enTranslationMessages = {
 
   'inventoryCatalogPage.inventoryItemDetailsForm.nameControl.label': 'Name',
   'inventoryCatalogPage.inventoryItemDetailsForm.unitsControl.label': 'Units',
+  'inventoryCatalogPage.inventoryItemDetailsForm.tagsControl.label': 'Tags',
 
   'errorModal.title': 'Error',
   'errorModal.defaultErrorMessage':

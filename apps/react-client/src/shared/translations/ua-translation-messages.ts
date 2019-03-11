@@ -49,6 +49,7 @@ export const uaTranslationMessages: AppTranslationMessages = {
   'inventoryCatalogPage.inventoryItemDetailsForm.nameControl.label': 'Назва',
   'inventoryCatalogPage.inventoryItemDetailsForm.unitsControl.label':
     'Одиниці виміру',
+  'inventoryCatalogPage.inventoryItemDetailsForm.tagsControl.label': 'Теги',
 
   'errorModal.title': 'Помилка',
   'errorModal.defaultErrorMessage': 'Вибачте, виникла несподівана помилка.',
