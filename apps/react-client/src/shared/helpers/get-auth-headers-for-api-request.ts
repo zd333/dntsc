@@ -1,3 +1,7 @@
+const STATIC_HEADERS = {
+  'Content-Type': 'application/json',
+};
+
 /**
  * Use this helper in API connectors that require authentication to get auth headers.
  * Returns headers as object.
@@ -8,6 +12,7 @@ export const getAuthHeadersForApiRequest = (
 ): { readonly [key: string]: string } =>
   authToken
     ? {
+        ...STATIC_HEADERS,
         Authorization: `Bearer ${authToken}`,
       }
-    : {};
+    : STATIC_HEADERS;

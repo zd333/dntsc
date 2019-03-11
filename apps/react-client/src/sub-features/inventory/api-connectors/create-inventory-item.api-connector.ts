@@ -19,26 +19,32 @@ export const createInventoryItemApiConnector = (params: {
   const headers = getAuthHeadersForApiRequest(params.authToken);
   const {
     alternates: viewModelAlternates,
-    ...itemDataWithoutAlternates
+    tags: viewModelTags,
+    ...itemDataWithoutAlternatesAndTags
   } = params.newItemData;
   const alternates =
     viewModelAlternates && viewModelAlternates.length
       ? viewModelAlternates.map(alternate => alternate.id)
       : undefined;
+  const tags =
+    viewModelTags && viewModelTags.length ? viewModelTags : undefined;
   const body: CreateInventoryItemInDto = {
-    ...itemDataWithoutAlternates,
+    ...itemDataWithoutAlternatesAndTags,
     ...(alternates
       ? {
           alternates,
         }
       : {}),
+    ...(tags
+      ? {
+          tags,
+        }
+      : {}),
   };
 
-  return ajax
-    .post(url, body, headers)
-    .pipe(
-      map((response: TypedAjaxResponse<CreatedInventoryItemOutDto>) => ({
-        id: response.response.id,
-      })),
-    );
+  return ajax.post(url, body, headers).pipe(
+    map((response: TypedAjaxResponse<CreatedInventoryItemOutDto>) => ({
+      id: response.response.id,
+    })),
+  );
 };
