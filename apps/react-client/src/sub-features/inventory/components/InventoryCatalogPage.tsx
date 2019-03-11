@@ -19,7 +19,6 @@ import {
   CardContent,
 } from '@material-ui/core';
 
-// TODO: implement update item functionality
 export interface InventoryCatalogPageProps {
   readonly items: Array<InventoryItem>;
   readonly itemUnits: Array<TranslatedInventoryItemUnit>;

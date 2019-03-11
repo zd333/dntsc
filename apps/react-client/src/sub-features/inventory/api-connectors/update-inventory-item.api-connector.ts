@@ -18,17 +18,25 @@ export const updateInventoryItemApiConnector = (params: {
   const headers = getAuthHeadersForApiRequest(params.authToken);
   const {
     alternates: viewModelAlternates,
+    tags: viewModelTags,
     ...itemDataWithoutAlternates
   } = params.itemUpdates;
   const alternates =
     viewModelAlternates && viewModelAlternates.length
       ? viewModelAlternates.map(alternate => alternate.id)
       : undefined;
+  const tags =
+    viewModelTags && viewModelTags.length ? viewModelTags : undefined;
   const body: UpdateInventoryItemInDto = {
     ...itemDataWithoutAlternates,
     ...(alternates
       ? {
           alternates,
+        }
+      : {}),
+    ...(tags
+      ? {
+          tags,
         }
       : {}),
     id: params.id,
