@@ -50,9 +50,9 @@ export const ruTranslationMessages: AppTranslationMessages = {
     'Добавить новую позицию склада',
 
   'inventoryCatalogPage.inventoryItemDetailsForm.nameControl.label': 'Название',
-
   'inventoryCatalogPage.inventoryItemDetailsForm.unitsControl.label':
     'Единицы измерения',
+  'inventoryCatalogPage.inventoryItemDetailsForm.tagsControl.label': 'Теги',
 
   'errorModal.title': 'Ошибка',
   'errorModal.defaultErrorMessage': 'Извините, возникла ошибка.',

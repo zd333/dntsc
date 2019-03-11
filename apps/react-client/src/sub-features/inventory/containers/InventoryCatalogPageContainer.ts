@@ -4,6 +4,7 @@ import { RootState } from '../../..';
 import { selectMatchingSearchItems } from '../selectors/matching-search-items.selector';
 import { selectTranslatedInventoryItemUnits } from '../selectors/translated-inventory-item-units.selector';
 import { selectUpdateAndCreateInventoryItemsIsAllowed } from '../selectors/update-and-create-inventory-items-is-allowed.selector';
+import { selectUsedInventoryItemsTags } from '../selectors/used-inventory-items-tags.selector';
 import {
   StateMapper,
   DispatchMapper,
@@ -23,6 +24,7 @@ const mapStateToProps: StateMapper<
     updateAndCreateAreAllowed: selectUpdateAndCreateInventoryItemsIsAllowed(
       state,
     ),
+    existingTags: selectUsedInventoryItemsTags(state),
   };
 };
 
