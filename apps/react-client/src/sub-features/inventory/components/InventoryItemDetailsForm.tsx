@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as yup from 'yup';
-import { Field, Form, Formik } from 'formik';
+import { Field, Form, Formik, FormikActions, FormikProps } from 'formik';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { InventoryItem } from './InventoryItemsList';
 import { Omitted } from '../../../shared/types/omitted.type';
@@ -43,6 +43,7 @@ interface InventoryItemDetailsFormState {
 }
 
 // TODO: implement alternates
+// TODO: implement tags typeahead
 export class StyledInventoryItemDetailsForm extends React.Component<
   StyledTranslatedInventoryItemDetailsFormProps,
   InventoryItemDetailsFormState
@@ -78,9 +79,14 @@ export class StyledInventoryItemDetailsForm extends React.Component<
     }));
   };
 
-  public handleNewTagInputKeyDown = (
-    event: React.KeyboardEvent<HTMLInputElement>,
-  ): void => {
+  public handleNewTagInputKeyDown = (params: {
+    event: React.KeyboardEvent<HTMLInputElement>;
+    setFieldValue: FormikActions<
+      InventoryItemDetailsFormValues
+    >['setFieldValue'];
+  }): void => {
+    const { event, setFieldValue } = params;
+
     if (event.key !== 'Enter' && event.key !== ' ') {
       return;
     }
@@ -93,7 +99,7 @@ export class StyledInventoryItemDetailsForm extends React.Component<
       tags: previousState.tags ? [...previousState.tags, newTag] : [newTag],
       tagsAreDirty: true,
     }));
-    // TODO: clear new tag input value
+    setFieldValue('newTag', '', false);
   };
 
   public render(): JSX.Element {
@@ -106,17 +112,17 @@ export class StyledInventoryItemDetailsForm extends React.Component<
       onSubmit,
       onCancelEdit,
     } = this.props;
-    const initialFormValues = item
-      ? {
-          ...item,
-          newTag: '',
-        }
-      : {
-          name: '',
-          unit: '',
-          alternates: [],
-          newTag: '',
-        };
+    const { id: idToRemove, tags: tagsToRemove, ...itemData } = item || {
+      id: undefined,
+      tags: undefined,
+      name: '',
+      unit: '' as '',
+      alternates: [],
+    };
+    const initialFormValues: InventoryItemDetailsFormValues = {
+      ...itemData,
+      newTag: '',
+    };
 
     const nameFieldName = intl.formatMessage({
       id: 'inventoryCatalogPage.inventoryItemDetailsForm.nameControl.label',
@@ -176,7 +182,10 @@ export class StyledInventoryItemDetailsForm extends React.Component<
         isInitialValid={true}
         initialValues={initialFormValues}
         validationSchema={validationSchema}
-        onSubmit={(values, actions) => {
+        onSubmit={(
+          values: InventoryItemDetailsFormValues,
+          actions: FormikActions<InventoryItemDetailsFormValues>,
+        ) => {
           const { newTag, ...itemValues } = values;
           const tags = newTag ? [...this.state.tags, newTag] : this.state.tags;
 
@@ -188,7 +197,13 @@ export class StyledInventoryItemDetailsForm extends React.Component<
           });
           actions.setSubmitting(false);
         }}
-        render={({ submitForm, resetForm, isValid, dirty, values }) => (
+        render={({
+          submitForm,
+          resetForm,
+          isValid,
+          dirty,
+          setFieldValue,
+        }: FormikProps<InventoryItemDetailsFormValues>) => (
           <Form>
             <Grid container spacing={24}>
               {/* Name */}
@@ -244,7 +259,9 @@ export class StyledInventoryItemDetailsForm extends React.Component<
                     name="newTag"
                     label={tagsFieldName}
                     fullWidth={!this.state.tags || this.state.tags.length === 0}
-                    onKeyDown={this.handleNewTagInputKeyDown}
+                    onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) =>
+                      this.handleNewTagInputKeyDown({ event, setFieldValue })
+                    }
                   />
                 )}
               </Grid>
@@ -295,7 +312,6 @@ const inventoryItemDetailsFormStyles = ({ spacing }: Theme) =>
     },
     tagChip: {
       marginRight: spacing.unit,
-      // TODO: check if this is needed after input markup is added
       marginTop: spacing.unit * 2,
     },
   });
@@ -310,3 +326,14 @@ const TranslatedInventoryItemDetailsForm = injectIntl(
 export const InventoryItemDetailsForm = withStyles(
   inventoryItemDetailsFormStyles,
 )(TranslatedInventoryItemDetailsForm);
+
+/**
+ * Formik typings.
+ */
+type InventoryItemDetailsFormValues = Pick<
+  InventoryItem,
+  'name' | 'alternates'
+> & {
+  readonly newTag: string;
+  readonly unit: InventoryItem['unit'] | '';
+};
