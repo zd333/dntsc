@@ -44,6 +44,7 @@ interface InventoryItemDetailsFormState {
 
 // TODO: implement alternates
 // TODO: implement tags typeahead
+// TODO: unique tags validation
 export class StyledInventoryItemDetailsForm extends React.Component<
   StyledTranslatedInventoryItemDetailsFormProps,
   InventoryItemDetailsFormState
@@ -258,7 +259,6 @@ export class StyledInventoryItemDetailsForm extends React.Component<
                     component={TextField}
                     name="newTag"
                     label={tagsFieldName}
-                    fullWidth={!this.state.tags || this.state.tags.length === 0}
                     onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) =>
                       this.handleNewTagInputKeyDown({ event, setFieldValue })
                     }

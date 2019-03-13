@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Autocomplete } from '../../../shared/components/Autocomplete';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { InventoryItem, InventoryItemsList } from './InventoryItemsList';
 import { InventoryItemDetailsForm } from './InventoryItemDetailsForm';
@@ -196,6 +197,14 @@ export class StyledInventoryCatalogPage extends React.Component<
             fullWidth={true}
             variant="outlined"
             onChange={this.handleSearchInputChange}
+          />
+        </div>
+        <div>
+          // TODO: finish
+          <Autocomplete
+            options={['gugugu1', 'gugugu2', 'mememe']}
+            label={'TODO'}
+            isMulti={true}
           />
         </div>
 
