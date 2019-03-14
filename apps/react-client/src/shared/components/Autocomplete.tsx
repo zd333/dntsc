@@ -1,7 +1,7 @@
 import * as classNames from 'classnames';
 import * as React from 'react';
 import CancelIcon from '@material-ui/icons/Cancel';
-import Select from 'react-select';
+import Select, { Creatable } from 'react-select';
 import { ControlProps } from 'react-select/lib/components/Control';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import { InputBaseComponentProps } from '@material-ui/core/InputBase';
@@ -24,14 +24,151 @@ import {
   MenuItem,
 } from '@material-ui/core';
 
+/**
+ * Default react-select option type.
+ * `label` and `value` are going to be duplicated, but it is easier than
+ * struggling with lib to make it work with primitive options.
+ */
+interface AutocompleteOptionType {
+  readonly label: string;
+  readonly value: string;
+}
+
 export interface AutocompleteProps {
+  readonly value: string | Array<string> | undefined;
   readonly options: Array<string>;
   readonly label: string;
   readonly placeholder?: string;
   readonly isDisabled?: boolean;
   readonly allowCreate?: boolean;
   readonly isMulti?: boolean;
+  readonly onChange: (value: string | Array<string>) => void;
 }
+
+const components = {
+  Control,
+  Menu,
+  MultiValue,
+  NoOptionsMessage,
+  Option,
+  Placeholder,
+  SingleValue,
+  ValueContainer,
+};
+
+const StyledAutocomplete: React.SFC<StyledAutocompleteProps> = props => {
+  const {
+    classes,
+    theme,
+    isMulti,
+    options,
+    label,
+    placeholder,
+    value,
+    allowCreate,
+    isDisabled,
+    onChange,
+  } = props;
+  const selectStyles: Partial<Styles> = {
+    input: (base: React.CSSProperties) => ({
+      ...base,
+      color: theme.palette.text.primary,
+      '& input': {
+        font: 'inherit',
+      },
+    }),
+  };
+
+  const getSuggestions = (): Array<AutocompleteOptionType> =>
+    Array.isArray(options)
+      ? options.map(option => ({ label: option, value: option }))
+      : [];
+  const getCurrentValue = ():
+    | Array<AutocompleteOptionType>
+    | AutocompleteOptionType
+    | undefined => {
+    if (isMulti) {
+      return Array.isArray(value)
+        ? value.map(v => ({ label: v, value: v }))
+        : value
+        ? [
+            {
+              value,
+              label: value,
+            },
+          ]
+        : undefined;
+    }
+    if (Array.isArray(value)) {
+      const v = value[0];
+
+      return { value: v, label: v };
+    }
+
+    return value
+      ? {
+          value,
+          label: value,
+        }
+      : undefined;
+  };
+  const handleChange = (
+    val: Array<AutocompleteOptionType> | AutocompleteOptionType,
+  ) => {
+    if (!val) {
+      return;
+    }
+    if (isMulti) {
+      onChange(Array.isArray(val) ? val.map(v => v.value) : [val.value]);
+
+      return;
+    }
+
+    onChange(Array.isArray(val) ? val[0].value : val.value);
+  };
+
+  return (
+    <div className={classes.root}>
+      {allowCreate ? (
+        <Creatable
+          classes={classes}
+          styles={selectStyles}
+          textFieldProps={{
+            label,
+            InputLabelProps: {
+              shrink: true,
+            },
+          }}
+          options={getSuggestions()}
+          components={components}
+          value={getCurrentValue()}
+          placeholder={placeholder || ' '}
+          isMulti={!!isMulti}
+          isDisabled={isDisabled}
+          onChange={handleChange}
+        />
+      ) : (
+        <Select
+          classes={classes}
+          styles={selectStyles}
+          textFieldProps={{
+            label,
+            InputLabelProps: {
+              shrink: true,
+            },
+          }}
+          options={getSuggestions()}
+          components={components}
+          value={getCurrentValue()}
+          placeholder={placeholder || ' '}
+          isMulti={!!isMulti}
+          isDisabled={isDisabled}
+          onChange={handleChange}
+        />
+      )}
+    </div>
+  );
+};
 
 function inputComponent({
   inputRef,
@@ -155,60 +292,10 @@ function ValueContainer(
   );
 }
 
-const components = {
-  Control,
-  Menu,
-  MultiValue,
-  NoOptionsMessage,
-  Option,
-  Placeholder,
-  SingleValue,
-  ValueContainer,
-};
-
-// TODO: finish
-const StyledAutocomplete: React.SFC<StyledAutocompleteProps> = props => {
-  const { classes, theme, isMulti, options, label, placeholder } = props;
-  const selectStyles: Partial<Styles> = {
-    input: (base: React.CSSProperties) => ({
-      ...base,
-      color: theme.palette.text.primary,
-      '& input': {
-        font: 'inherit',
-      },
-    }),
-  };
-
-  const getSuggestions = (): Array<AutocompleteOptionType> =>
-    Array.isArray(options) ? options.map(option => ({ label: option })) : [];
-
-  return (
-    <div className={classes.root}>
-      <Select
-        classes={classes}
-        styles={selectStyles}
-        textFieldProps={{
-          label,
-          InputLabelProps: {
-            shrink: true,
-          },
-        }}
-        options={getSuggestions()}
-        components={components}
-        // value={this.state.multi}
-        // onChange={this.handleChange('multi')}
-        placeholder={placeholder || ' '}
-        isMulti={!!isMulti}
-      />
-    </div>
-  );
-};
-
 const autocompleteStyles = ({ palette, spacing }: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
-      height: 250,
     },
     input: {
       display: 'flex',
@@ -252,10 +339,6 @@ const autocompleteStyles = ({ palette, spacing }: Theme) =>
       height: spacing.unit * 2,
     },
   });
-
-interface AutocompleteOptionType {
-  readonly label: string;
-}
 
 type StyledAutocompleteProps = AutocompleteProps &
   WithStyles<typeof autocompleteStyles, true>;
