@@ -1,10 +1,17 @@
 import * as React from 'react';
 import * as yup from 'yup';
-import { Field, Form, Formik, FormikActions, FormikProps } from 'formik';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { InventoryItem } from './InventoryItemsList';
 import { Omitted } from '../../../shared/types/omitted.type';
 import { Select, TextField } from 'formik-material-ui';
+import {
+  Field,
+  Form,
+  Formik,
+  FormikActions,
+  FormikProps,
+  FieldProps,
+} from 'formik';
 import {
   TranslatedInventoryItemUnit,
   allInventoryItemUnits,
@@ -18,9 +25,12 @@ import {
   Grid,
   InputLabel,
   FormControl,
-  Chip,
   Theme,
 } from '@material-ui/core';
+import {
+  AutocompleteProps,
+  Autocomplete,
+} from '../../../shared/components/Autocomplete';
 
 export interface InventoryItemDetailsFormProps {
   readonly item: InventoryItem | undefined;
@@ -34,12 +44,7 @@ export interface InventoryItemDetailsFormProps {
 }
 
 interface InventoryItemDetailsFormState {
-  /**
-   * Keep tags independently in state because they are implemented using chips
-   * and thus not part of main Formik form.
-   */
-  readonly tags: Array<string>;
-  readonly tagsAreDirty: boolean;
+  readonly todo: 'remove';
 }
 
 // TODO: implement alternates
@@ -49,60 +54,6 @@ export class StyledInventoryItemDetailsForm extends React.Component<
   StyledTranslatedInventoryItemDetailsFormProps,
   InventoryItemDetailsFormState
 > {
-  public state: InventoryItemDetailsFormState = {
-    tags: [],
-    tagsAreDirty: false,
-  };
-
-  public componentDidUpdate(): void {
-    const itemTags = (this.props.item && this.props.item.tags) || [];
-    if (
-      this.state.tagsAreDirty ||
-      (itemTags.length === 0 && this.state.tags.length === 0) ||
-      // This can potentially cause infinite set state loop
-      // Be careful with reference comparison, consider refactoring with array contents comparison
-      itemTags === this.state.tags
-    ) {
-      return;
-    }
-    this.setState({
-      tags: (this.props.item && this.props.item.tags) || [],
-      tagsAreDirty: false,
-    });
-  }
-
-  public handleDeleteTagClick = (tagToDelete: string): void => {
-    this.setState((previousState: InventoryItemDetailsFormState) => ({
-      tags:
-        previousState.tags &&
-        previousState.tags.filter(tag => tag !== tagToDelete),
-      tagsAreDirty: true,
-    }));
-  };
-
-  public handleNewTagInputKeyDown = (params: {
-    event: React.KeyboardEvent<HTMLInputElement>;
-    setFieldValue: FormikActions<
-      InventoryItemDetailsFormValues
-    >['setFieldValue'];
-  }): void => {
-    const { event, setFieldValue } = params;
-
-    if (event.key !== 'Enter' && event.key !== ' ') {
-      return;
-    }
-
-    event.preventDefault();
-    const input = event.target as HTMLInputElement;
-    const newTag = input.value;
-
-    this.setState((previousState: InventoryItemDetailsFormState) => ({
-      tags: previousState.tags ? [...previousState.tags, newTag] : [newTag],
-      tagsAreDirty: true,
-    }));
-    setFieldValue('newTag', '', false);
-  };
-
   public render(): JSX.Element {
     const {
       classes,
@@ -112,19 +63,15 @@ export class StyledInventoryItemDetailsForm extends React.Component<
       isInEditMode,
       onSubmit,
       onCancelEdit,
+      tagSuggestions,
     } = this.props;
-    const { id: idToRemove, tags: tagsToRemove, ...itemData } = item || {
+    const { id: idToRemove, ...initialFormValues } = item || {
       id: undefined,
       tags: undefined,
       name: '',
       unit: '' as '',
       alternates: [],
     };
-    const initialFormValues: InventoryItemDetailsFormValues = {
-      ...itemData,
-      newTag: '',
-    };
-
     const nameFieldName = intl.formatMessage({
       id: 'inventoryCatalogPage.inventoryItemDetailsForm.nameControl.label',
     });
@@ -155,15 +102,17 @@ export class StyledInventoryItemDetailsForm extends React.Component<
         .mixed()
         .required()
         .oneOf(allInventoryItemUnits),
-      newTag: yup
-        .string()
-        .min(
-          3,
-          intl.formatMessage(
-            { id: 'common.validationErrorMessage.stringMin' },
-            { fieldName: tagsFieldName },
+      tags: yup.array(
+        yup
+          .string()
+          .min(
+            3,
+            intl.formatMessage(
+              { id: 'common.validationErrorMessage.stringMin' },
+              { fieldName: tagsFieldName },
+            ),
           ),
-        ),
+      ),
       alternates: yup.array(
         yup.object({
           id: yup.string().required(),
@@ -187,23 +136,14 @@ export class StyledInventoryItemDetailsForm extends React.Component<
           values: InventoryItemDetailsFormValues,
           actions: FormikActions<InventoryItemDetailsFormValues>,
         ) => {
-          const { newTag, ...itemValues } = values;
-          const tags = newTag ? [...this.state.tags, newTag] : this.state.tags;
-
-          onSubmit({
-            item: {
-              ...(itemValues as Omitted<InventoryItem, 'id'>),
-              tags,
-            },
-          });
+          // Casting type due to form units allow empty values, but here it can be only not empty because of validation
+          onSubmit({ item: values as Omitted<InventoryItem, 'id'> });
           actions.setSubmitting(false);
         }}
         render={({
           submitForm,
           resetForm,
           isValid,
-          dirty,
-          setFieldValue,
         }: FormikProps<InventoryItemDetailsFormValues>) => (
           <Form>
             <Grid container spacing={24}>
@@ -240,30 +180,15 @@ export class StyledInventoryItemDetailsForm extends React.Component<
 
               {/* Tags */}
               <Grid item xs={12}>
-                {this.state.tags &&
-                  this.state.tags.map(tag => (
-                    <Chip
-                      key={tag}
-                      label={tag}
-                      className={classes.tagChip}
-                      onDelete={
-                        isInEditMode
-                          ? () => this.handleDeleteTagClick(tag)
-                          : undefined
-                      }
-                    />
-                  ))}
-                {/* New tag input */}
-                {isInEditMode && (
-                  <Field
-                    component={TextField}
-                    name="newTag"
-                    label={tagsFieldName}
-                    onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) =>
-                      this.handleNewTagInputKeyDown({ event, setFieldValue })
-                    }
-                  />
-                )}
+                <Field
+                  name="tags"
+                  component={TagsControl}
+                  isDisabled={!isInEditMode}
+                  isMulti={true}
+                  allowCreate={true}
+                  label={tagsFieldName}
+                  options={tagSuggestions}
+                />
               </Grid>
 
               {isInEditMode && (
@@ -273,10 +198,6 @@ export class StyledInventoryItemDetailsForm extends React.Component<
                     onClick={() => {
                       resetForm();
                       onCancelEdit();
-                      this.setState({
-                        tags: (item && item.tags) || [],
-                        tagsAreDirty: false,
-                      });
                     }}
                   >
                     <FormattedMessage id="common.cancelButtonLabel" />
@@ -285,11 +206,7 @@ export class StyledInventoryItemDetailsForm extends React.Component<
                   <Button
                     variant="contained"
                     color="primary"
-                    disabled={
-                      !isInEditMode ||
-                      !isValid ||
-                      (!dirty && !this.state.tagsAreDirty)
-                    }
+                    disabled={!isInEditMode || !isValid}
                     onClick={submitForm}
                   >
                     <FormattedMessage id="common.saveButtonLabel" />
@@ -304,6 +221,16 @@ export class StyledInventoryItemDetailsForm extends React.Component<
   }
 }
 
+// TODO: finish
+function TagsControl({
+  field,
+  form,
+  ...props
+}: FieldProps & AutocompleteProps): JSX.Element {
+  return <Autocomplete {...props} />;
+}
+
+// TODO: height should support tags suggestions dropdown
 const inventoryItemDetailsFormStyles = ({ spacing }: Theme) =>
   createStyles({
     buttonsRow: {
@@ -330,10 +257,10 @@ export const InventoryItemDetailsForm = withStyles(
 /**
  * Formik typings.
  */
+// TODO: refactor with omitted
 type InventoryItemDetailsFormValues = Pick<
   InventoryItem,
-  'name' | 'alternates'
+  'name' | 'alternates' | 'tags'
 > & {
-  readonly newTag: string;
   readonly unit: InventoryItem['unit'] | '';
 };

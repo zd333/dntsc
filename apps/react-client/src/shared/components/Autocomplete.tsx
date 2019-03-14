@@ -126,45 +126,30 @@ const StyledAutocomplete: React.SFC<StyledAutocompleteProps> = props => {
 
     onChange(Array.isArray(val) ? val[0].value : val.value);
   };
+  const controlProps = {
+    classes,
+    components,
+    isDisabled,
+    styles: selectStyles,
+    textFieldProps: {
+      label,
+      InputLabelProps: {
+        shrink: true,
+      },
+    },
+    isMulti: !!isMulti,
+    placeholder: placeholder || ' ',
+    options: getSuggestions(),
+    value: getCurrentValue(),
+    onChange: handleChange,
+  };
 
   return (
     <div className={classes.root}>
       {allowCreate ? (
-        <Creatable
-          classes={classes}
-          styles={selectStyles}
-          textFieldProps={{
-            label,
-            InputLabelProps: {
-              shrink: true,
-            },
-          }}
-          options={getSuggestions()}
-          components={components}
-          value={getCurrentValue()}
-          placeholder={placeholder || ' '}
-          isMulti={!!isMulti}
-          isDisabled={isDisabled}
-          onChange={handleChange}
-        />
+        <Creatable {...controlProps} />
       ) : (
-        <Select
-          classes={classes}
-          styles={selectStyles}
-          textFieldProps={{
-            label,
-            InputLabelProps: {
-              shrink: true,
-            },
-          }}
-          options={getSuggestions()}
-          components={components}
-          value={getCurrentValue()}
-          placeholder={placeholder || ' '}
-          isMulti={!!isMulti}
-          isDisabled={isDisabled}
-          onChange={handleChange}
-        />
+        <Select {...controlProps} />
       )}
     </div>
   );
@@ -292,6 +277,7 @@ function ValueContainer(
   );
 }
 
+// TODO: z-index of dropdown
 const autocompleteStyles = ({ palette, spacing }: Theme) =>
   createStyles({
     root: {

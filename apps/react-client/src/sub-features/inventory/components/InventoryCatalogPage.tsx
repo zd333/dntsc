@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Autocomplete } from '../../../shared/components/Autocomplete';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { InventoryItem, InventoryItemsList } from './InventoryItemsList';
 import { InventoryItemDetailsForm } from './InventoryItemDetailsForm';
@@ -199,8 +198,9 @@ export class StyledInventoryCatalogPage extends React.Component<
             onChange={this.handleSearchInputChange}
           />
         </div>
-        <div>
-          {/* TODO: finish */}
+
+        {/* TODO: implement filter by tags functionality */}
+        {/* <div>
           <Autocomplete
             value={undefined}
             options={['gugugu1', 'gugugu3', 'mememe']}
@@ -210,7 +210,7 @@ export class StyledInventoryCatalogPage extends React.Component<
             isDisabled={false}
             onChange={v => console.log(v)}
           />
-        </div>
+        </div> */}
 
         <Grid container className={classes.itemsListAndDetails} spacing={8}>
           <Grid item sm={12} md={6}>
