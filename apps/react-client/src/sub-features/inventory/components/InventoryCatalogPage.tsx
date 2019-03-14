@@ -200,11 +200,15 @@ export class StyledInventoryCatalogPage extends React.Component<
           />
         </div>
         <div>
-          // TODO: finish
+          {/* TODO: finish */}
           <Autocomplete
-            options={['gugugu1', 'gugugu2', 'mememe']}
+            value={undefined}
+            options={['gugugu1', 'gugugu3', 'mememe']}
             label={'TODO'}
-            isMulti={true}
+            isMulti={false}
+            allowCreate={false}
+            isDisabled={false}
+            onChange={v => console.log(v)}
           />
         </div>
 
