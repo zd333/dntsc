@@ -1,9 +1,7 @@
-import * as classNames from 'classnames';
 import * as React from 'react';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Select, { Creatable } from 'react-select';
 import { ControlProps } from 'react-select/lib/components/Control';
-import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import { InputBaseComponentProps } from '@material-ui/core/InputBase';
 import { MenuProps, NoticeProps } from 'react-select/lib/components/Menu';
 import { MultiValueProps } from 'react-select/lib/components/MultiValue';
@@ -201,9 +199,7 @@ function MultiValue(
     <Chip
       tabIndex={-1}
       label={props.children}
-      className={classNames(props.selectProps.classes.chip, {
-        [props.selectProps.classes.chipFocused]: props.isFocused,
-      })}
+      className={props.selectProps.classes.chip}
       onDelete={props.removeProps.onClick}
       deleteIcon={<CancelIcon {...props.removeProps} />}
     />
@@ -277,7 +273,6 @@ function ValueContainer(
   );
 }
 
-// TODO: z-index of dropdown
 const autocompleteStyles = ({ palette, spacing }: Theme) =>
   createStyles({
     root: {
@@ -297,12 +292,6 @@ const autocompleteStyles = ({ palette, spacing }: Theme) =>
     chip: {
       margin: `${spacing.unit / 2}px ${spacing.unit / 4}px`,
     },
-    chipFocused: {
-      backgroundColor: emphasize(
-        palette.type === 'light' ? palette.grey[300] : palette.grey[700],
-        0.08,
-      ),
-    },
     noOptionsMessage: {
       padding: `${spacing.unit}px ${spacing.unit * 2}px`,
     },
@@ -320,9 +309,6 @@ const autocompleteStyles = ({ palette, spacing }: Theme) =>
       marginTop: spacing.unit,
       left: 0,
       right: 0,
-    },
-    divider: {
-      height: spacing.unit * 2,
     },
   });
 

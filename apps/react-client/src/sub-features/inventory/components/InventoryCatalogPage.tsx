@@ -223,7 +223,7 @@ export class StyledInventoryCatalogPage extends React.Component<
             />
           </Grid>
           <Grid item sm={12} md={6}>
-            <Card>
+            <Card classes={{ root: classes.itemDetailsCardRoot }}>
               <CardContent>
                 <InventoryItemDetailsForm
                   item={this.getSelectedItem()}
@@ -239,14 +239,15 @@ export class StyledInventoryCatalogPage extends React.Component<
         </Grid>
 
         <Dialog
-          open={this.state.addNewItemModalIsOpened}
           aria-labelledby="add-new-inventory-item-dialog-title"
+          open={this.state.addNewItemModalIsOpened}
           onClose={this.handleCancelAddNewItemButtonClick}
+          classes={{ paper: classes.newItemDialogPaper }}
         >
           <DialogTitle id="add-new-inventory-item-dialog-title">
             <FormattedMessage id="inventoryCatalogPage.addNewInventoryItemDialog.title" />
           </DialogTitle>
-          <DialogContent>
+          <DialogContent classes={{ root: classes.newItemDialogContent }}>
             <InventoryItemDetailsForm
               item={undefined}
               itemUnits={itemUnits}
@@ -275,6 +276,15 @@ const inventoryCatalogPageStyles = ({ breakpoints, spacing }: Theme) =>
     },
     addButton: {
       marginRight: spacing.unit * 2,
+    },
+    newItemDialogPaper: {
+      overflowY: 'visible',
+    },
+    newItemDialogContent: {
+      overflowY: 'visible',
+    },
+    itemDetailsCardRoot: {
+      overflow: 'visible',
     },
   });
 
