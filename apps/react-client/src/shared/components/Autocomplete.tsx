@@ -22,18 +22,14 @@ import {
   MenuItem,
 } from '@material-ui/core';
 
-/**
- * Default react-select option type.
- * `label` and `value` are going to be duplicated, but it is easier than
- * struggling with lib to make it work with primitive options.
- */
-interface AutocompleteOptionType {
+interface AutocompleteOptionType<T extends object> {
   readonly label: string;
-  readonly value: string;
+  readonly value: T;
 }
-
-export interface AutocompleteProps {
-  readonly value: string | Array<string> | undefined;
+// TODO: finish refactoring to object
+export interface AutocompleteProps<T extends object> {
+  readonly value: T | Array<T> | undefined;
+  readonly labelPropName: keyof T;
   readonly options: Array<string>;
   readonly label: string;
   readonly placeholder?: string;
@@ -200,8 +196,10 @@ function MultiValue(
       tabIndex={-1}
       label={props.children}
       className={props.selectProps.classes.chip}
-      onDelete={props.removeProps.onClick}
-      deleteIcon={<CancelIcon {...props.removeProps} />}
+      onDelete={props.isDisabled ? undefined : props.removeProps.onClick}
+      deleteIcon={
+        props.isDisabled ? undefined : <CancelIcon {...props.removeProps} />
+      }
     />
   );
 }

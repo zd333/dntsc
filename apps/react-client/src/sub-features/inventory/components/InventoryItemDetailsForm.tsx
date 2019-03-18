@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as yup from 'yup';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { InventoryItem } from './InventoryItemsList';
+import { InventoryItemUnits } from '@api/sub-features/inventory/db-schemas/inventory-item.db-schema';
 import { Omitted } from '../../../shared/types/omitted.type';
 import { Select, TextField } from 'formik-material-ui';
 import {
@@ -36,6 +37,7 @@ export interface InventoryItemDetailsFormProps {
   readonly item: InventoryItem | undefined;
   readonly itemUnits: Array<TranslatedInventoryItemUnit>;
   readonly tagSuggestions: Array<string>;
+  readonly alternatesSuggestions: InventoryItemsAlternatesSuggestions;
   readonly isInEditMode: boolean;
   readonly onSubmit: (params: {
     readonly item: Omitted<InventoryItem, 'id'>;
@@ -47,8 +49,7 @@ interface InventoryItemDetailsFormState {
   readonly todo: 'remove';
 }
 
-// TODO: implement alternates
-// TODO: implement tags typeahead
+// TODO: finish alternates
 // TODO: unique tags validation
 export class StyledInventoryItemDetailsForm extends React.Component<
   StyledTranslatedInventoryItemDetailsFormProps,
@@ -64,19 +65,24 @@ export class StyledInventoryItemDetailsForm extends React.Component<
       onSubmit,
       onCancelEdit,
       tagSuggestions,
+      alternatesSuggestions,
     } = this.props;
     const { id: idToRemove, ...initialFormValues } = item || {
       id: undefined,
       tags: undefined,
       name: '',
       unit: '' as '',
-      alternates: [],
+      alternates: undefined,
     };
     const nameFieldName = intl.formatMessage({
       id: 'inventoryCatalogPage.inventoryItemDetailsForm.nameControl.label',
     });
     const tagsFieldName = intl.formatMessage({
       id: 'inventoryCatalogPage.inventoryItemDetailsForm.tagsControl.label',
+    });
+    const alternatesFieldName = intl.formatMessage({
+      id:
+        'inventoryCatalogPage.inventoryItemDetailsForm.alternatesControl.label',
     });
     const validationSchema = yup.object().shape({
       name: yup
@@ -182,12 +188,25 @@ export class StyledInventoryItemDetailsForm extends React.Component<
               <Grid item xs={12}>
                 <Field
                   name="tags"
-                  component={TagsControl}
+                  component={AutocompleteControl}
                   isDisabled={!isInEditMode}
                   isMulti={true}
                   allowCreate={true}
                   label={tagsFieldName}
                   options={tagSuggestions}
+                />
+              </Grid>
+
+              {/* Alternates */}
+              <Grid item xs={12}>
+                <Field
+                  name="alternates"
+                  component={AutocompleteControl}
+                  isDisabled={!isInEditMode}
+                  isMulti={true}
+                  allowCreate={false}
+                  label={alternatesFieldName}
+                  options={alternatesSuggestions}
                 />
               </Grid>
 
@@ -221,16 +240,20 @@ export class StyledInventoryItemDetailsForm extends React.Component<
   }
 }
 
-// TODO: finish
-function TagsControl({
+function AutocompleteControl({
   field,
   form,
   ...props
 }: FieldProps & AutocompleteProps): JSX.Element {
-  return <Autocomplete {...props} />;
+  const handleChange = (value: string | Array<string>) => {
+    form.setFieldValue(field.name, value);
+  };
+
+  return (
+    <Autocomplete value={field.value} onChange={handleChange} {...props} />
+  );
 }
 
-// TODO: height should support tags suggestions dropdown
 const inventoryItemDetailsFormStyles = ({ spacing }: Theme) =>
   createStyles({
     buttonsRow: {
@@ -257,10 +280,10 @@ export const InventoryItemDetailsForm = withStyles(
 /**
  * Formik typings.
  */
-// TODO: refactor with omitted
-type InventoryItemDetailsFormValues = Pick<
-  InventoryItem,
-  'name' | 'alternates' | 'tags'
-> & {
+type InventoryItemDetailsFormValues = Omitted<InventoryItem, 'id' | 'unit'> & {
   readonly unit: InventoryItem['unit'] | '';
+};
+
+export type InventoryItemsAlternatesSuggestions = {
+  readonly [key in InventoryItemUnits]: Array<InventoryItem['unit']>
 };
