@@ -94,4 +94,4 @@ export const InventoryItemsList = withStyles(inventoryItemsListStyles)(
 export type InventoryItem = Omitted<
   InventoryItemDetailsOutDto,
   'alternates'
-> & { readonly alternates: Array<Pick<InventoryItem, 'id' | 'name'>> };
+> & { readonly alternates?: Array<Pick<InventoryItem, 'id' | 'name'>> };
