@@ -53,6 +53,8 @@ export const ruTranslationMessages: AppTranslationMessages = {
   'inventoryCatalogPage.inventoryItemDetailsForm.unitsControl.label':
     'Единицы измерения',
   'inventoryCatalogPage.inventoryItemDetailsForm.tagsControl.label': 'Теги',
+  'inventoryCatalogPage.inventoryItemDetailsForm.alternatesControl.label':
+    'Аналоги',
 
   'errorModal.title': 'Ошибка',
   'errorModal.defaultErrorMessage': 'Извините, возникла ошибка.',

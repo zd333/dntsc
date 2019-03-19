@@ -37,7 +37,12 @@ export interface InventoryItemDetailsFormProps {
   readonly item: InventoryItem | undefined;
   readonly itemUnits: Array<TranslatedInventoryItemUnit>;
   readonly tagSuggestions: Array<string>;
-  readonly alternatesSuggestions: InventoryItemsAlternatesSuggestions;
+  // TODO: make not optional
+  readonly alternatesSuggestions?: {
+    readonly [key in InventoryItemUnits]: Array<
+      Pick<InventoryItem, 'id' | 'name'>
+    >
+  };
   readonly isInEditMode: boolean;
   readonly onSubmit: (params: {
     readonly item: Omitted<InventoryItem, 'id'>;
@@ -131,6 +136,7 @@ export class StyledInventoryItemDetailsForm extends React.Component<
         {unit.unitLabelFull} ({unit.unitLabelShort})
       </MenuItem>
     ));
+    const tagsAutocompleteOptions = tagSuggestions.map(tag => ({ tag }));
 
     return (
       <Formik
@@ -188,12 +194,13 @@ export class StyledInventoryItemDetailsForm extends React.Component<
               <Grid item xs={12}>
                 <Field
                   name="tags"
-                  component={AutocompleteControl}
+                  component={TagsAutocomplete}
+                  optionLabelPropName="tag"
                   isDisabled={!isInEditMode}
                   isMulti={true}
                   allowCreate={true}
                   label={tagsFieldName}
-                  options={tagSuggestions}
+                  options={tagsAutocompleteOptions}
                 />
               </Grid>
 
@@ -201,12 +208,13 @@ export class StyledInventoryItemDetailsForm extends React.Component<
               <Grid item xs={12}>
                 <Field
                   name="alternates"
-                  component={AutocompleteControl}
+                  component={AlternatesAutocomplete}
+                  optionLabelPropName="name"
                   isDisabled={!isInEditMode}
                   isMulti={true}
                   allowCreate={false}
                   label={alternatesFieldName}
-                  options={alternatesSuggestions}
+                  suggestions={alternatesSuggestions}
                 />
               </Grid>
 
@@ -240,17 +248,50 @@ export class StyledInventoryItemDetailsForm extends React.Component<
   }
 }
 
-function AutocompleteControl({
+function TagsAutocomplete({
   field,
   form,
   ...props
-}: FieldProps & AutocompleteProps): JSX.Element {
-  const handleChange = (value: string | Array<string>) => {
-    form.setFieldValue(field.name, value);
+}: FieldProps & AutocompleteProps<{ readonly tag: string }>): JSX.Element {
+  const handleChange = (value: Array<{ readonly tag: string }>) => {
+    const extractedTags = value.map(v => v.tag);
+
+    form.setFieldValue(field.name, extractedTags);
   };
+  const wrappedValue =
+    field.value && Array.isArray(field.value)
+      ? field.value.map(v => ({ tag: v }))
+      : { tag: field.value };
 
   return (
-    <Autocomplete value={field.value} onChange={handleChange} {...props} />
+    <Autocomplete {...props} value={wrappedValue} onChange={handleChange} />
+  );
+}
+
+function AlternatesAutocomplete({
+  field,
+  form,
+  suggestions,
+  ...props
+}: FieldProps &
+  Omitted<AutocompleteProps<Pick<InventoryItem, 'id' | 'name'>>, 'options'> & {
+    readonly suggestions: InventoryItemDetailsFormProps['alternatesSuggestions'];
+  }): JSX.Element {
+  // const handleChange = (value: Array<{ readonly tag: string }>) => {
+  //   const extractedTags = value.map(v => v.tag);
+
+  //   form.setFieldValue(field.name, extractedTags);
+  // };
+  // TODO: define options
+  // const options = [];
+
+  return (
+    <Autocomplete
+      {...props}
+      value={field.value}
+      options={[]}
+      // onChange={handleChange}
+    />
   );
 }
 
@@ -282,8 +323,4 @@ export const InventoryItemDetailsForm = withStyles(
  */
 type InventoryItemDetailsFormValues = Omitted<InventoryItem, 'id' | 'unit'> & {
   readonly unit: InventoryItem['unit'] | '';
-};
-
-export type InventoryItemsAlternatesSuggestions = {
-  readonly [key in InventoryItemUnits]: Array<InventoryItem['unit']>
 };
