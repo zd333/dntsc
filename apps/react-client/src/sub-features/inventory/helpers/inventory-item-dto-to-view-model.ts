@@ -6,6 +6,8 @@ export function inventoryItemViewModelToDto(
 ): InventoryItemDetailsOutDto {
   return {
     ...viewModel,
-    alternates: viewModel.alternates.map(alternate => alternate.id),
+    alternates:
+      viewModel.alternates &&
+      viewModel.alternates.map(alternate => alternate.id),
   };
 }

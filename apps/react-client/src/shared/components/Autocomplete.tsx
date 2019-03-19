@@ -22,21 +22,28 @@ import {
   MenuItem,
 } from '@material-ui/core';
 
-interface AutocompleteOptionType<T extends object> {
+interface AutocompleteOptionType {
   readonly label: string;
-  readonly value: T;
+  // TODO: refactor to string value (it should contain id to use later in handleChange)
+  readonly value: string;
 }
-// TODO: finish refactoring to object
 export interface AutocompleteProps<T extends object> {
   readonly value: T | Array<T> | undefined;
-  readonly labelPropName: keyof T;
-  readonly options: Array<string>;
+  /**
+   * Value of option prop with this name will be used as display value in autocomplete options.
+   */
+  readonly optionLabelPropName: string;
+  /**
+   * Value of option prop with this name will be used as unique identifier to reorganize options.
+   */
+  readonly optionKeyPropName: string;
+  readonly options: Array<T>;
   readonly label: string;
   readonly placeholder?: string;
   readonly isDisabled?: boolean;
   readonly allowCreate?: boolean;
   readonly isMulti?: boolean;
-  readonly onChange: (value: string | Array<string>) => void;
+  readonly onChange: (value: T | Array<T>) => void;
 }
 
 const components = {
@@ -50,11 +57,14 @@ const components = {
   ValueContainer,
 };
 
-const StyledAutocomplete: React.SFC<StyledAutocompleteProps> = props => {
+function StyledAutocomplete<T extends object>(
+  props: StyledAutocompleteProps<T>,
+): React.ReactElement<T> {
   const {
     classes,
     theme,
     isMulti,
+    optionLabelPropName,
     options,
     label,
     placeholder,
@@ -75,7 +85,10 @@ const StyledAutocomplete: React.SFC<StyledAutocompleteProps> = props => {
 
   const getSuggestions = (): Array<AutocompleteOptionType> =>
     Array.isArray(options)
-      ? options.map(option => ({ label: option, value: option }))
+      ? options.map(option => ({
+          label: String(option[optionLabelPropName]),
+          value: option,
+        }))
       : [];
   const getCurrentValue = ():
     | Array<AutocompleteOptionType>
@@ -83,12 +96,12 @@ const StyledAutocomplete: React.SFC<StyledAutocompleteProps> = props => {
     | undefined => {
     if (isMulti) {
       return Array.isArray(value)
-        ? value.map(v => ({ label: v, value: v }))
+        ? value.map(v => ({ label: String(v[optionLabelPropName]), value: v }))
         : value
         ? [
             {
               value,
-              label: value,
+              label: String(value[optionLabelPropName]),
             },
           ]
         : undefined;
@@ -96,18 +109,18 @@ const StyledAutocomplete: React.SFC<StyledAutocompleteProps> = props => {
     if (Array.isArray(value)) {
       const v = value[0];
 
-      return { value: v, label: v };
+      return { label: String(v[optionLabelPropName]), value: v };
     }
 
     return value
       ? {
           value,
-          label: value,
+          label: String(value[optionLabelPropName]),
         }
       : undefined;
   };
   const handleChange = (
-    val: Array<AutocompleteOptionType> | AutocompleteOptionType,
+    val: Array<AutocompleteOptionType<T>> | AutocompleteOptionType<T>,
   ) => {
     if (!val) {
       return;
@@ -147,7 +160,7 @@ const StyledAutocomplete: React.SFC<StyledAutocompleteProps> = props => {
       )}
     </div>
   );
-};
+}
 
 function inputComponent({
   inputRef,
@@ -158,7 +171,9 @@ function inputComponent({
   return <div ref={inputRef} {...props as any} />;
 }
 
-function Control(props: ControlProps<AutocompleteOptionType>): JSX.Element {
+function Control<T extends object>(
+  props: ControlProps<AutocompleteOptionType<T>>,
+): JSX.Element {
   return (
     <TextField
       fullWidth
@@ -176,7 +191,9 @@ function Control(props: ControlProps<AutocompleteOptionType>): JSX.Element {
   );
 }
 
-function Menu(props: MenuProps<AutocompleteOptionType>): JSX.Element {
+function Menu<T extends object>(
+  props: MenuProps<AutocompleteOptionType<T>>,
+): JSX.Element {
   return (
     <Paper
       square
@@ -188,8 +205,8 @@ function Menu(props: MenuProps<AutocompleteOptionType>): JSX.Element {
   );
 }
 
-function MultiValue(
-  props: MultiValueProps<AutocompleteOptionType>,
+function MultiValue<T extends object>(
+  props: MultiValueProps<AutocompleteOptionType<T>>,
 ): JSX.Element {
   return (
     <Chip
@@ -204,8 +221,8 @@ function MultiValue(
   );
 }
 
-function NoOptionsMessage(
-  props: NoticeProps<AutocompleteOptionType>,
+function NoOptionsMessage<T extends object>(
+  props: NoticeProps<AutocompleteOptionType<T>>,
 ): JSX.Element {
   return (
     <Typography
@@ -218,7 +235,9 @@ function NoOptionsMessage(
   );
 }
 
-function Option(props: OptionProps<AutocompleteOptionType>): JSX.Element {
+function Option<T extends object>(
+  props: OptionProps<AutocompleteOptionType<T>>,
+): JSX.Element {
   return (
     <MenuItem
       buttonRef={props.innerRef}
@@ -234,8 +253,8 @@ function Option(props: OptionProps<AutocompleteOptionType>): JSX.Element {
   );
 }
 
-function Placeholder(
-  props: PlaceholderProps<AutocompleteOptionType>,
+function Placeholder<T extends object>(
+  props: PlaceholderProps<AutocompleteOptionType<T>>,
 ): JSX.Element {
   return (
     <Typography
@@ -248,8 +267,8 @@ function Placeholder(
   );
 }
 
-function SingleValue(
-  props: SingleValueProps<AutocompleteOptionType>,
+function SingleValue<T extends object>(
+  props: SingleValueProps<AutocompleteOptionType<T>>,
 ): JSX.Element {
   return (
     <Typography
@@ -261,8 +280,8 @@ function SingleValue(
   );
 }
 
-function ValueContainer(
-  props: ValueContainerProps<AutocompleteOptionType>,
+function ValueContainer<T extends object>(
+  props: ValueContainerProps<AutocompleteOptionType<T>>,
 ): JSX.Element {
   return (
     <div className={props.selectProps.classes.valueContainer}>
@@ -271,7 +290,7 @@ function ValueContainer(
   );
 }
 
-const autocompleteStyles = ({ palette, spacing }: Theme) =>
+const autocompleteStyles = ({ spacing }: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
@@ -310,7 +329,7 @@ const autocompleteStyles = ({ palette, spacing }: Theme) =>
     },
   });
 
-type StyledAutocompleteProps = AutocompleteProps &
+type StyledAutocompleteProps<T extends object> = AutocompleteProps<T> &
   WithStyles<typeof autocompleteStyles, true>;
 
 export const Autocomplete = withStyles(autocompleteStyles, { withTheme: true })(
