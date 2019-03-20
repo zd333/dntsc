@@ -106,3 +106,5 @@ export type AllAppActions =
   | AllSessionActions
   | CommonErrorAction
   | AllInventoryActions;
+
+// TODO: refactor all components with recompose and pure
