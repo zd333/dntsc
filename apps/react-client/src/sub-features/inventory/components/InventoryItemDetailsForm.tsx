@@ -55,7 +55,6 @@ interface InventoryItemDetailsFormState {
 }
 
 // TODO: finish alternates
-// TODO: unique tags validation
 export class StyledInventoryItemDetailsForm extends React.Component<
   StyledTranslatedInventoryItemDetailsFormProps,
   InventoryItemDetailsFormState
@@ -195,7 +194,6 @@ export class StyledInventoryItemDetailsForm extends React.Component<
                 <Field
                   name="tags"
                   component={TagsAutocomplete}
-                  optionLabelPropName="tag"
                   isDisabled={!isInEditMode}
                   isMulti={true}
                   allowCreate={true}
@@ -209,7 +207,7 @@ export class StyledInventoryItemDetailsForm extends React.Component<
                 <Field
                   name="alternates"
                   component={AlternatesAutocomplete}
-                  optionLabelPropName="name"
+                  optionPropName="name"
                   isDisabled={!isInEditMode}
                   isMulti={true}
                   allowCreate={false}
@@ -247,24 +245,24 @@ export class StyledInventoryItemDetailsForm extends React.Component<
     );
   }
 }
-
+// TODO: test
 function TagsAutocomplete({
   field,
   form,
   ...props
-}: FieldProps & AutocompleteProps<{ readonly tag: string }>): JSX.Element {
-  const handleChange = (value: Array<{ readonly tag: string }>) => {
-    const extractedTags = value.map(v => v.tag);
-
-    form.setFieldValue(field.name, extractedTags);
+}: FieldProps & AutocompleteProps<string>): JSX.Element {
+  const newItemCreator = (value: string) => value;
+  const handleChange = (values: Array<string>) => {
+    form.setFieldValue(field.name, values);
   };
-  const wrappedValue =
-    field.value && Array.isArray(field.value)
-      ? field.value.map(v => ({ tag: v }))
-      : { tag: field.value };
 
   return (
-    <Autocomplete {...props} value={wrappedValue} onChange={handleChange} />
+    <Autocomplete
+      {...props}
+      value={field.value}
+      onChange={handleChange}
+      newItemCreator={newItemCreator}
+    />
   );
 }
 
@@ -282,7 +280,6 @@ function AlternatesAutocomplete({
 
   //   form.setFieldValue(field.name, extractedTags);
   // };
-  // TODO: define options
   // const options = [];
 
   return (

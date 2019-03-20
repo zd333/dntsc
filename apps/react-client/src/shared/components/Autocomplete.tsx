@@ -22,27 +22,30 @@ import {
   MenuItem,
 } from '@material-ui/core';
 
-interface AutocompleteOptionType {
+/**
+ * Default react-select option type.
+ * `label` and `value` are duplicated, not many sense, but easier than
+ * struggling with library.
+ */
+interface ReactSelectOption {
   readonly label: string;
-  // TODO: refactor to string value (it should contain id to use later in handleChange)
   readonly value: string;
 }
-export interface AutocompleteProps<T extends object> {
+export interface AutocompleteProps<T> {
   readonly value: T | Array<T> | undefined;
-  /**
-   * Value of option prop with this name will be used as display value in autocomplete options.
-   */
-  readonly optionLabelPropName: string;
-  /**
-   * Value of option prop with this name will be used as unique identifier to reorganize options.
-   */
-  readonly optionKeyPropName: string;
   readonly options: Array<T>;
   readonly label: string;
   readonly placeholder?: string;
   readonly isDisabled?: boolean;
   readonly allowCreate?: boolean;
   readonly isMulti?: boolean;
+  readonly getDisplayValue?: (optionItem: T) => ReactSelectOption['label'];
+  readonly getUniqueId?: (optionItem: T) => ReactSelectOption['value'];
+  /**
+   * This prop will work only when `allowCreate` is true.
+   * If function is not passed - then new items will not be emitted among `onChange` values.
+   */
+  readonly newItemCreator?: (newOption: ReactSelectOption['value']) => T;
   readonly onChange: (value: T | Array<T>) => void;
 }
 
@@ -57,14 +60,16 @@ const components = {
   ValueContainer,
 };
 
-function StyledAutocomplete<T extends object>(
+function StyledAutocomplete<T>(
   props: StyledAutocompleteProps<T>,
 ): React.ReactElement<T> {
   const {
     classes,
     theme,
     isMulti,
-    optionLabelPropName,
+    getDisplayValue = (v: T) => String(v),
+    getUniqueId = (v: T) => String(v),
+    newItemCreator,
     options,
     label,
     placeholder,
@@ -83,25 +88,28 @@ function StyledAutocomplete<T extends object>(
     }),
   };
 
-  const getSuggestions = (): Array<AutocompleteOptionType> =>
+  const getSuggestions = (): Array<ReactSelectOption> =>
     Array.isArray(options)
       ? options.map(option => ({
-          label: String(option[optionLabelPropName]),
-          value: option,
+          label: getDisplayValue(option),
+          value: getUniqueId(option),
         }))
       : [];
   const getCurrentValue = ():
-    | Array<AutocompleteOptionType>
-    | AutocompleteOptionType
+    | Array<ReactSelectOption>
+    | ReactSelectOption
     | undefined => {
     if (isMulti) {
       return Array.isArray(value)
-        ? value.map(v => ({ label: String(v[optionLabelPropName]), value: v }))
+        ? value.map(v => ({
+            label: getDisplayValue(v),
+            value: getUniqueId(v),
+          }))
         : value
         ? [
             {
-              value,
-              label: String(value[optionLabelPropName]),
+              label: getDisplayValue(value),
+              value: getUniqueId(value),
             },
           ]
         : undefined;
@@ -109,29 +117,55 @@ function StyledAutocomplete<T extends object>(
     if (Array.isArray(value)) {
       const v = value[0];
 
-      return { label: String(v[optionLabelPropName]), value: v };
+      return {
+        label: getDisplayValue(v),
+        value: getUniqueId(v),
+      };
     }
 
     return value
       ? {
-          value,
-          label: String(value[optionLabelPropName]),
+          label: getDisplayValue(value),
+          value: getUniqueId(value),
         }
       : undefined;
   };
   const handleChange = (
-    val: Array<AutocompleteOptionType<T>> | AutocompleteOptionType<T>,
+    eventVal: Array<ReactSelectOption> | ReactSelectOption,
   ) => {
-    if (!val) {
+    if (!eventVal) {
       return;
     }
+    // Normalize values to array
+    const originalValues = value
+      ? Array.isArray(value)
+        ? value
+        : [value]
+      : [];
+    const eventValues = Array.isArray(eventVal) ? eventVal : [eventVal];
+    const valMapper = (option: ReactSelectOption) => {
+      const foundOriginalVal = originalValues.find(
+        originalVal => getUniqueId(originalVal) === option.value,
+      );
+      if (foundOriginalVal) {
+        return foundOriginalVal;
+      }
+
+      return allowCreate && typeof newItemCreator === 'function'
+        ? newItemCreator(option.value)
+        : undefined;
+    };
+
     if (isMulti) {
-      onChange(Array.isArray(val) ? val.map(v => v.value) : [val.value]);
+      onChange(eventValues.map(valMapper).filter(v => !!v) as Array<T>);
 
       return;
     }
 
-    onChange(Array.isArray(val) ? val[0].value : val.value);
+    const singleValue = valMapper(eventValues[0]);
+    if (singleValue) {
+      onChange(singleValue);
+    }
   };
   const controlProps = {
     classes,
@@ -171,9 +205,7 @@ function inputComponent({
   return <div ref={inputRef} {...props as any} />;
 }
 
-function Control<T extends object>(
-  props: ControlProps<AutocompleteOptionType<T>>,
-): JSX.Element {
+function Control<T>(props: ControlProps<ReactSelectOption>): JSX.Element {
   return (
     <TextField
       fullWidth
@@ -191,9 +223,7 @@ function Control<T extends object>(
   );
 }
 
-function Menu<T extends object>(
-  props: MenuProps<AutocompleteOptionType<T>>,
-): JSX.Element {
+function Menu<T>(props: MenuProps<ReactSelectOption>): JSX.Element {
   return (
     <Paper
       square
@@ -205,9 +235,7 @@ function Menu<T extends object>(
   );
 }
 
-function MultiValue<T extends object>(
-  props: MultiValueProps<AutocompleteOptionType<T>>,
-): JSX.Element {
+function MultiValue<T>(props: MultiValueProps<ReactSelectOption>): JSX.Element {
   return (
     <Chip
       tabIndex={-1}
@@ -221,8 +249,8 @@ function MultiValue<T extends object>(
   );
 }
 
-function NoOptionsMessage<T extends object>(
-  props: NoticeProps<AutocompleteOptionType<T>>,
+function NoOptionsMessage<T>(
+  props: NoticeProps<ReactSelectOption>,
 ): JSX.Element {
   return (
     <Typography
@@ -235,9 +263,7 @@ function NoOptionsMessage<T extends object>(
   );
 }
 
-function Option<T extends object>(
-  props: OptionProps<AutocompleteOptionType<T>>,
-): JSX.Element {
+function Option<T>(props: OptionProps<ReactSelectOption>): JSX.Element {
   return (
     <MenuItem
       buttonRef={props.innerRef}
@@ -253,8 +279,8 @@ function Option<T extends object>(
   );
 }
 
-function Placeholder<T extends object>(
-  props: PlaceholderProps<AutocompleteOptionType<T>>,
+function Placeholder<T>(
+  props: PlaceholderProps<ReactSelectOption>,
 ): JSX.Element {
   return (
     <Typography
@@ -267,8 +293,8 @@ function Placeholder<T extends object>(
   );
 }
 
-function SingleValue<T extends object>(
-  props: SingleValueProps<AutocompleteOptionType<T>>,
+function SingleValue<T>(
+  props: SingleValueProps<ReactSelectOption>,
 ): JSX.Element {
   return (
     <Typography
@@ -280,8 +306,8 @@ function SingleValue<T extends object>(
   );
 }
 
-function ValueContainer<T extends object>(
-  props: ValueContainerProps<AutocompleteOptionType<T>>,
+function ValueContainer<T>(
+  props: ValueContainerProps<ReactSelectOption>,
 ): JSX.Element {
   return (
     <div className={props.selectProps.classes.valueContainer}>
@@ -329,7 +355,7 @@ const autocompleteStyles = ({ spacing }: Theme) =>
     },
   });
 
-type StyledAutocompleteProps<T extends object> = AutocompleteProps<T> &
+type StyledAutocompleteProps<T> = AutocompleteProps<T> &
   WithStyles<typeof autocompleteStyles, true>;
 
 export const Autocomplete = withStyles(autocompleteStyles, { withTheme: true })(
