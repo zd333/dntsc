@@ -4,7 +4,7 @@ import { filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
 import { InventoryActions } from '../actions/inventory.actions';
 import { inventoryRoutesPaths } from '../../../components/app-routes';
 import { LOCATION_CHANGE, LocationChangeAction } from 'connected-react-router';
-import { selectIsItemsDictEmpty } from '../selectors/is-items-distionary-empty.selector';
+import { selectAllItems } from '../selectors/all-items.selector';
 
 /**
  * Fires search inventory items action when user navigates to any inventory route,
@@ -13,14 +13,14 @@ import { selectIsItemsDictEmpty } from '../selectors/is-items-distionary-empty.s
 export const searchInventoryItemsOnNavigationToInventory: Epic<
   AllAppActions
 > = (action$, state$) => {
-  const isItemsDictEmpty$ = state$.pipe(map(selectIsItemsDictEmpty));
+  const allItems$ = state$.pipe(map(selectAllItems));
 
   return action$.pipe(
     ofType<LocationChangeAction>(LOCATION_CHANGE),
-    withLatestFrom(isItemsDictEmpty$),
+    withLatestFrom(allItems$),
     filter(
-      ([action, isItemsDictEmpty]) =>
-        isItemsDictEmpty &&
+      ([action, allItems]) =>
+        (!allItems || allItems.length === 0) &&
         inventoryRoutesPaths.some(path =>
           action.payload.location.pathname.toLowerCase().startsWith(path),
         ),

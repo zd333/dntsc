@@ -1,9 +1,13 @@
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
-import { InventoryItem, InventoryItemsList } from './InventoryItemsList';
-import { InventoryItemDetailsForm } from './InventoryItemDetailsForm';
+import { InventoryItem } from '../selectors/items-dictionary.selector';
+import { InventoryItemsList } from './InventoryItemsList';
 import { Omitted } from '../../../shared/types/omitted.type';
 import { TranslatedInventoryItemUnit } from '../selectors/translated-inventory-item-units.selector';
+import {
+  InventoryItemDetailsForm,
+  InventoryItemDetailsFormProps,
+} from './InventoryItemDetailsForm';
 import {
   Grid,
   createStyles,
@@ -24,6 +28,7 @@ export interface InventoryCatalogPageProps {
   readonly itemUnits: Array<TranslatedInventoryItemUnit>;
   readonly existingTags: Array<string>;
   readonly updateAndCreateAreAllowed: boolean;
+  readonly alternatesSuggestions: InventoryItemDetailsFormProps['alternatesSuggestions'];
   readonly onSearch: (params: {
     readonly searchString: string | undefined;
   }) => void;
@@ -171,6 +176,7 @@ export class StyledInventoryCatalogPage extends React.Component<
       itemUnits,
       existingTags,
       updateAndCreateAreAllowed,
+      alternatesSuggestions,
     } = this.props;
     const { idOfSelectedItem } = this.state;
     const searchControlLabel = intl.formatMessage({
@@ -229,6 +235,7 @@ export class StyledInventoryCatalogPage extends React.Component<
                   item={this.getSelectedItem()}
                   itemUnits={itemUnits}
                   tagSuggestions={this.getTagsSuggestionsForExistingItem()}
+                  alternatesSuggestions={alternatesSuggestions}
                   isInEditMode={this.state.selectedItemIsInEditMode}
                   onSubmit={this.handleUpdateItemSubmit}
                   onCancelEdit={this.handleCancelEditMode}
@@ -252,6 +259,7 @@ export class StyledInventoryCatalogPage extends React.Component<
               item={undefined}
               itemUnits={itemUnits}
               tagSuggestions={existingTags}
+              alternatesSuggestions={alternatesSuggestions}
               isInEditMode={true}
               onSubmit={this.handleCreateNewItemSubmit}
               onCancelEdit={this.handleCancelAddNewItemButtonClick}

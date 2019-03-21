@@ -1,10 +1,14 @@
 import * as React from 'react';
 import * as yup from 'yup';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
-import { InventoryItem } from './InventoryItemsList';
 import { InventoryItemUnits } from '@api/sub-features/inventory/db-schemas/inventory-item.db-schema';
 import { Omitted } from '../../../shared/types/omitted.type';
 import { Select, TextField } from 'formik-material-ui';
+import { TranslatedInventoryItemUnit } from '../selectors/translated-inventory-item-units.selector';
+import {
+  allInventoryItemUnits,
+  InventoryItem,
+} from '../selectors/items-dictionary.selector';
 import {
   Field,
   Form,
@@ -13,10 +17,6 @@ import {
   FormikProps,
   FieldProps,
 } from 'formik';
-import {
-  TranslatedInventoryItemUnit,
-  allInventoryItemUnits,
-} from '../selectors/translated-inventory-item-units.selector';
 import {
   createStyles,
   withStyles,
@@ -37,8 +37,7 @@ export interface InventoryItemDetailsFormProps {
   readonly item: InventoryItem | undefined;
   readonly itemUnits: Array<TranslatedInventoryItemUnit>;
   readonly tagSuggestions: Array<string>;
-  // TODO: make not optional
-  readonly alternatesSuggestions?: {
+  readonly alternatesSuggestions: {
     readonly [key in InventoryItemUnits]: Array<
       Pick<InventoryItem, 'id' | 'name'>
     >
@@ -54,7 +53,8 @@ interface InventoryItemDetailsFormState {
   readonly todo: 'remove';
 }
 
-// TODO: finish alternates
+// TODO: test alternates, implement filter by alternates API support (+ filter by tags)
+// TODO: and then dispatch search action after each select of unit with selected unit
 export class StyledInventoryItemDetailsForm extends React.Component<
   StyledTranslatedInventoryItemDetailsFormProps,
   InventoryItemDetailsFormState
@@ -135,7 +135,19 @@ export class StyledInventoryItemDetailsForm extends React.Component<
         {unit.unitLabelFull} ({unit.unitLabelShort})
       </MenuItem>
     ));
-    const tagsAutocompleteOptions = tagSuggestions.map(tag => ({ tag }));
+    const getAlternatesSuggestionsForGivenUnit = (
+      unit: InventoryItemDetailsFormValues['unit'],
+    ): Array<Pick<InventoryItem, 'id' | 'name'>> | undefined => {
+      if (
+        !unit ||
+        !alternatesSuggestions ||
+        !Array.isArray(alternatesSuggestions[unit])
+      ) {
+        return undefined;
+      }
+
+      return alternatesSuggestions[unit];
+    };
 
     return (
       <Formik
@@ -155,6 +167,7 @@ export class StyledInventoryItemDetailsForm extends React.Component<
           submitForm,
           resetForm,
           isValid,
+          values,
         }: FormikProps<InventoryItemDetailsFormValues>) => (
           <Form>
             <Grid container spacing={24}>
@@ -193,12 +206,12 @@ export class StyledInventoryItemDetailsForm extends React.Component<
               <Grid item xs={12}>
                 <Field
                   name="tags"
-                  component={TagsAutocomplete}
+                  component={AutocompleteControl}
                   isDisabled={!isInEditMode}
                   isMulti={true}
                   allowCreate={true}
                   label={tagsFieldName}
-                  options={tagsAutocompleteOptions}
+                  options={tagSuggestions}
                 />
               </Grid>
 
@@ -206,13 +219,16 @@ export class StyledInventoryItemDetailsForm extends React.Component<
               <Grid item xs={12}>
                 <Field
                   name="alternates"
-                  component={AlternatesAutocomplete}
-                  optionPropName="name"
-                  isDisabled={!isInEditMode}
+                  component={AutocompleteControl}
+                  getDisplayValue={(s: Pick<InventoryItem, 'id' | 'name'>) =>
+                    s.name
+                  }
+                  getUniqueId={(s: Pick<InventoryItem, 'id' | 'name'>) => s.id}
+                  isDisabled={!isInEditMode || !values.unit}
                   isMulti={true}
                   allowCreate={false}
                   label={alternatesFieldName}
-                  suggestions={alternatesSuggestions}
+                  options={getAlternatesSuggestionsForGivenUnit(values.unit)}
                 />
               </Grid>
 
@@ -245,14 +261,19 @@ export class StyledInventoryItemDetailsForm extends React.Component<
     );
   }
 }
-// TODO: test
-function TagsAutocomplete({
+
+/**
+ * New item creation will work only with string items with this generic implementation.
+ * It is fine for tags (which are strings) and alternates (which do not support new items),
+ * but beware of using it as is in other cases.
+ */
+function AutocompleteControl<T>({
   field,
   form,
   ...props
-}: FieldProps & AutocompleteProps<string>): JSX.Element {
-  const newItemCreator = (value: string) => value;
-  const handleChange = (values: Array<string>) => {
+}: FieldProps & AutocompleteProps<T>): JSX.Element {
+  const newItemCreator = (newValue: string) => newValue;
+  const handleChange = (values: Array<T>) => {
     form.setFieldValue(field.name, values);
   };
 
@@ -261,33 +282,7 @@ function TagsAutocomplete({
       {...props}
       value={field.value}
       onChange={handleChange}
-      newItemCreator={newItemCreator}
-    />
-  );
-}
-
-function AlternatesAutocomplete({
-  field,
-  form,
-  suggestions,
-  ...props
-}: FieldProps &
-  Omitted<AutocompleteProps<Pick<InventoryItem, 'id' | 'name'>>, 'options'> & {
-    readonly suggestions: InventoryItemDetailsFormProps['alternatesSuggestions'];
-  }): JSX.Element {
-  // const handleChange = (value: Array<{ readonly tag: string }>) => {
-  //   const extractedTags = value.map(v => v.tag);
-
-  //   form.setFieldValue(field.name, extractedTags);
-  // };
-  // const options = [];
-
-  return (
-    <Autocomplete
-      {...props}
-      value={field.value}
-      options={[]}
-      // onChange={handleChange}
+      newItemCreator={props.allowCreate ? newItemCreator : undefined}
     />
   );
 }

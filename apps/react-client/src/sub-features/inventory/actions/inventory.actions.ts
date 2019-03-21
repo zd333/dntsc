@@ -1,5 +1,5 @@
 import { ActionsUnion, createAction } from '@martin_hotell/rex-tils';
-import { InventoryItem } from '../components/InventoryItemsList';
+import { InventoryItem } from '../selectors/items-dictionary.selector';
 import { InventoryItemDetailsOutDto } from '@api/sub-features/inventory/dto/inventory-item-details.out-dto';
 import { Omitted } from '../../../shared/types/omitted.type';
 import { PaginatedListOutDto } from '@api/sub-features/shared/dto/paginated-list-out-dto.interface';

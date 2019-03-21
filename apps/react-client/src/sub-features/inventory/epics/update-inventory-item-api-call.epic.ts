@@ -3,8 +3,8 @@ import { createAppEpicErrorAction } from '../../../shared/helpers/create-app-epi
 import { EMPTY } from 'rxjs';
 import { Epic } from 'redux-observable';
 import { ofType } from '@martin_hotell/rex-tils';
-import { selectAllItemsDict } from '../selectors/all-items-dictionary.selector';
 import { selectAuthToken } from '../../../selectors/auth-token.selector';
+import { selectRawItemsDict } from '../selectors/raw-items-dictionary.selector';
 import {
   catchError,
   map,
@@ -24,14 +24,14 @@ export const updateInventoryItemApiCallEpic: Epic<
   AppEpicsDependencies
 > = (action$, state$, { updateInventoryItemApiConnector }) => {
   const authToken$ = state$.pipe(map(selectAuthToken));
-  const allItemsDict$ = state$.pipe(map(selectAllItemsDict));
+  const rawItemsDict$ = state$.pipe(map(selectRawItemsDict));
 
   return action$.pipe(
     ofType(InventoryActionTypes.UPDATE_ITEM_START),
-    withLatestFrom(allItemsDict$, authToken$),
-    switchMap(([action, allItemsDict, authToken]) => {
+    withLatestFrom(rawItemsDict$, authToken$),
+    switchMap(([action, rawItemsDict, authToken]) => {
       const { id, itemUpdates } = action.payload;
-      const originalItem = allItemsDict[id];
+      const originalItem = rawItemsDict[id];
 
       return updateInventoryItemApiConnector({
         id,

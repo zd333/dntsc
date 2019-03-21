@@ -2,6 +2,7 @@ import { Action } from '@martin_hotell/rex-tils/types/redux/types';
 import { createAction } from '@martin_hotell/rex-tils';
 
 // TODO: clarify what is this object and if this is `AjaxError` or not
+// tslint:disable-next-line:comment-format
 // export type ApiError = AjaxError;
 export interface ApiError {
   readonly error?: string;

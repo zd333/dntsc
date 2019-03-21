@@ -1,4 +1,4 @@
-import { InventoryItem } from '../components/InventoryItemsList';
+import { InventoryItem } from '../selectors/items-dictionary.selector';
 import { InventoryItemDetailsOutDto } from '@api/sub-features/inventory/dto/inventory-item-details.out-dto';
 
 export function inventoryItemViewModelToDto(
