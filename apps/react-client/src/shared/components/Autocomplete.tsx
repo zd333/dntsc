@@ -244,6 +244,8 @@ function MultiValue<T>(props: MultiValueProps<ReactSelectOption>): JSX.Element {
       onDelete={props.isDisabled ? undefined : props.removeProps.onClick}
       deleteIcon={
         props.isDisabled ? undefined : <CancelIcon {...props.removeProps} />
+        // Prettier vs tslint :)
+        // tslint:disable-next-line:jsx-curly-spacing
       }
     />
   );

@@ -1,30 +1,19 @@
 import { createSelector } from 'reselect';
-import { InventoryItem } from '../components/InventoryItemsList';
 import { selectInventoryState } from './inventory-state.selector';
+import { selectItemsDict } from './items-dictionary.selector';
+
+const selectMatchingSearchCriteriaItemIds = createSelector(
+  [selectInventoryState],
+  inventoryState =>
+    inventoryState && inventoryState.matchingSearchCriteriaItemIds,
+);
 
 export const selectMatchingSearchItems = createSelector(
-  [selectInventoryState],
-  inventoryState => {
-    if (
-      !inventoryState ||
-      !Array.isArray(inventoryState.matchingSearchCriteriaItemIds) ||
-      !inventoryState.itemsDict
-    ) {
-      return [];
-    }
-
-    const dict = inventoryState.itemsDict;
-
-    return inventoryState.matchingSearchCriteriaItemIds.map(id => {
-      const item: InventoryItem = {
-        ...dict[id],
-        alternates: (dict[id].alternates || []).map(alternateId => ({
-          id: alternateId,
-          name: dict[alternateId].name,
-        })),
-      };
-
-      return item;
-    });
-  },
+  [selectMatchingSearchCriteriaItemIds, selectItemsDict],
+  (matchingSearchCriteriaItemIds, itemsDict) =>
+    Array.isArray(matchingSearchCriteriaItemIds) && itemsDict
+      ? matchingSearchCriteriaItemIds
+          .map(id => itemsDict[id])
+          .filter(item => !!item)
+      : [],
 );

@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { InventoryActions } from '../actions/inventory.actions';
 import { RootState } from '../../..';
+import { selectAlternatesSuggestions } from '../selectors/alternates-suggestions.selector';
 import { selectMatchingSearchItems } from '../selectors/matching-search-items.selector';
 import { selectTranslatedInventoryItemUnits } from '../selectors/translated-inventory-item-units.selector';
 import { selectUpdateAndCreateInventoryItemsIsAllowed } from '../selectors/update-and-create-inventory-items-is-allowed.selector';
@@ -21,6 +22,7 @@ const mapStateToProps: StateMapper<
   return {
     items: selectMatchingSearchItems(state),
     itemUnits: selectTranslatedInventoryItemUnits(state),
+    alternatesSuggestions: selectAlternatesSuggestions(state),
     updateAndCreateAreAllowed: selectUpdateAndCreateInventoryItemsIsAllowed(
       state,
     ),

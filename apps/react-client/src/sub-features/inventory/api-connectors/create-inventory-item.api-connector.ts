@@ -3,7 +3,7 @@ import { CreatedInventoryItemOutDto } from '@api/sub-features/inventory/dto/crea
 import { CreateInventoryItemInDto } from '@api/sub-features/inventory/dto/create-inventory-item.in-dto';
 import { getApiUrl } from '../../../shared/helpers/get-api-url';
 import { getAuthHeadersForApiRequest } from '../../../shared/helpers/get-auth-headers-for-api-request';
-import { InventoryItem } from '../components/InventoryItemsList';
+import { InventoryItem } from '../selectors/items-dictionary.selector';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Omitted } from '../../../shared/types/omitted.type';

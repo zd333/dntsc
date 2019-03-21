@@ -1,7 +1,7 @@
 import { ajax } from 'rxjs/ajax';
 import { getApiUrl } from '../../../shared/helpers/get-api-url';
 import { getAuthHeadersForApiRequest } from '../../../shared/helpers/get-auth-headers-for-api-request';
-import { InventoryItem } from '../components/InventoryItemsList';
+import { InventoryItem } from '../selectors/items-dictionary.selector';
 import { mapTo } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Omitted } from '../../../shared/types/omitted.type';

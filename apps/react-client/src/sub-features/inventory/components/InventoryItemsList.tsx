@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Edit } from '@material-ui/icons';
-import { InventoryItemDetailsOutDto } from '@api/sub-features/inventory/dto/inventory-item-details.out-dto';
-import { Omitted } from '../../../shared/types/omitted.type';
+import { InventoryItem } from '../selectors/items-dictionary.selector';
 import {
   createStyles,
   Theme,
@@ -87,11 +86,3 @@ type StyledInventoryItemsListProps = InventoryItemsListProps &
 export const InventoryItemsList = withStyles(inventoryItemsListStyles)(
   StyledInventoryItemsList,
 );
-
-/**
- * View model.
- */
-export type InventoryItem = Omitted<
-  InventoryItemDetailsOutDto,
-  'alternates'
-> & { readonly alternates?: Array<Pick<InventoryItem, 'id' | 'name'>> };
