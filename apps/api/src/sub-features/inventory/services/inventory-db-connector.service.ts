@@ -75,10 +75,12 @@ export class InventoryDbConnectorService {
   }
 
   public async getClinicItems(params: {
-    readonly clinicId: string | undefined;
+    readonly clinicId?: string;
     readonly paginationParams?: QueryParamsForSearchablePaginatedListInDto;
     readonly filterTags?: Array<string>;
+    readonly filterAlternatesOfItemId?: string;
   }): Promise<MongoFindResults<InventoryItemDocument>> {
+    // TODO: implement `filterAlternatesOfItemId`
     const { clinicId, paginationParams, filterTags } = params;
     const findOptions = getPaginationMongoFindOptionsFromDto(paginationParams);
     // Add search condition only if search string is present

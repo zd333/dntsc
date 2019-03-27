@@ -1,4 +1,6 @@
-import { IsLowercase, IsOptional, Matches } from 'class-validator';
+import { INVENTORY_ITEM_SCHEMA_COLLECTION_NAME } from '../db-schemas/inventory-item.db-schema';
+import { IsIdOfExistingDbEntityValidator } from '../../shared/validators/is-id-of-existing-db-entity.validator';
+import { IsLowercase, IsOptional, Matches, Validate } from 'class-validator';
 import { QueryParamsForSearchablePaginatedListInDto } from '../../shared/dto/query-params-for-paginated-list.in-dto';
 
 export class InventoryItemsSearchParams extends QueryParamsForSearchablePaginatedListInDto {
@@ -9,4 +11,15 @@ export class InventoryItemsSearchParams extends QueryParamsForSearchablePaginate
   @Matches(/^\w+(,\w+)*$/)
   @IsLowercase()
   public tags?: string;
+
+  /**
+   * Id of inventory item to search alternates.
+   */
+  @IsOptional()
+  @Validate(IsIdOfExistingDbEntityValidator, [
+    INVENTORY_ITEM_SCHEMA_COLLECTION_NAME,
+  ])
+  // URL query param is better to be underscore
+  /* tslint:disable-next-line:variable-name */
+  public alternates_of?: string;
 }
