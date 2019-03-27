@@ -53,8 +53,7 @@ interface InventoryItemDetailsFormState {
   readonly todo: 'remove';
 }
 
-// TODO: implement filter by alternates API support (+ filter by tags)
-// TODO: and then dispatch search action after each select of unit with selected unit
+// TODO: implement filter by alternates API support and then dispatch search action after each select of unit with selected unit
 export class StyledInventoryItemDetailsForm extends React.Component<
   StyledTranslatedInventoryItemDetailsFormProps,
   InventoryItemDetailsFormState

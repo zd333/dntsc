@@ -79,8 +79,10 @@ export class InventoryController {
   ): Promise<PaginatedListOutDto<InventoryItemDetailsOutDto>> {
     const { targetClinicId } = req;
     const filterTags = (dto && dto.tags && dto.tags.split(',')) || undefined;
+    const filterAlternatesOfItemId = dto && dto.alternates_of;
     const findResults = await this.inventoryDbConnector.getClinicItems({
       filterTags,
+      filterAlternatesOfItemId,
       clinicId: targetClinicId,
       paginationParams: dto,
     });
