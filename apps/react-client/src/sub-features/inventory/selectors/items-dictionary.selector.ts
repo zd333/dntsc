@@ -20,7 +20,7 @@ export const selectItemsDict = createSelector(
               alternates: (rawItemsDict[current].alternates || []).map(
                 alternateId => ({
                   id: alternateId,
-                  name: rawItemsDict[current].name,
+                  name: rawItemsDict[alternateId].name,
                 }),
               ),
             }
