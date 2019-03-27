@@ -136,19 +136,14 @@ function StyledAutocomplete<T>(
     if (!eventVal) {
       return;
     }
-    // Normalize values to array
-    const originalValues = value
-      ? Array.isArray(value)
-        ? value
-        : [value]
-      : [];
+    const originalOptions = Array.isArray(options) ? options : [];
     const eventValues = Array.isArray(eventVal) ? eventVal : [eventVal];
     const valMapper = (option: ReactSelectOption) => {
-      const foundOriginalVal = originalValues.find(
-        originalVal => getUniqueId(originalVal) === option.value,
+      const foundOriginalOption = originalOptions.find(
+        originalOption => getUniqueId(originalOption) === option.value,
       );
-      if (foundOriginalVal) {
-        return foundOriginalVal;
+      if (foundOriginalOption) {
+        return foundOriginalOption;
       }
 
       return allowCreate && typeof newItemCreator === 'function'
