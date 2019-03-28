@@ -30,9 +30,13 @@ export const searchInventoryItemsApiCallEpic: Epic<
     withLatestFrom(authToken$),
     debounceTime(DEBOUNCE_TIME),
     switchMap(([action, authToken]) => {
-      const { searchString } = action.payload;
+      const { searchString, tagsToFilterBy } = action.payload;
 
-      return searchInventoryItemsApiConnector({ searchString, authToken }).pipe(
+      return searchInventoryItemsApiConnector({
+        searchString,
+        tagsToFilterBy,
+        authToken,
+      }).pipe(
         map(searchResults =>
           InventoryActions.searchItemsSuccess({ searchResults }),
         ),

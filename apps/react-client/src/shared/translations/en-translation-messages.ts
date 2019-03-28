@@ -41,6 +41,8 @@ export const enTranslationMessages = {
 
   'inventoryCatalogPage.inventoryItemsList.AddNewItemButton.label': 'Add',
   'inventoryCatalogPage.inventoryItemsList.searchItemsControl.label': 'Search',
+  'inventoryCatalogPage.inventoryItemsList.filterByTagsControl.label':
+    'Filter by tags',
 
   'inventoryCatalogPage.addNewInventoryItemDialog.title':
     'Add new inventory item',

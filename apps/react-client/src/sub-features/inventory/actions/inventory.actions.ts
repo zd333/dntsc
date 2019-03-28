@@ -26,8 +26,10 @@ export enum InventoryActionTypes {
 }
 
 export const InventoryActions = {
-  searchItemsStart: (payload: { readonly searchString?: string }) =>
-    createAction(InventoryActionTypes.SEARCH_ITEMS_START, payload),
+  searchItemsStart: (payload: {
+    readonly searchString?: string;
+    readonly tagsToFilterBy?: Array<string>;
+  }) => createAction(InventoryActionTypes.SEARCH_ITEMS_START, payload),
   searchItemsSuccess: (payload: {
     readonly searchResults: PaginatedListOutDto<InventoryItemDetailsOutDto>;
   }) => createAction(InventoryActionTypes.SEARCH_ITEMS_SUCCESS, payload),
