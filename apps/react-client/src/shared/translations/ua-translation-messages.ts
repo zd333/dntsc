@@ -42,6 +42,8 @@ export const uaTranslationMessages: AppTranslationMessages = {
   'inventoryCatalogPage.inventoryItemsList.AddNewItemButton.label':
     'Додати новий',
   'inventoryCatalogPage.inventoryItemsList.searchItemsControl.label': 'Пошук',
+  'inventoryCatalogPage.inventoryItemsList.filterByTagsControl.label':
+    'Відфільтрувати за тегами',
 
   'inventoryCatalogPage.addNewInventoryItemDialog.title':
     'Додати нову позицію складу',

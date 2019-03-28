@@ -45,6 +45,8 @@ export const ruTranslationMessages: AppTranslationMessages = {
   'inventoryCatalogPage.inventoryItemsList.AddNewItemButton.label':
     'Добавить новый',
   'inventoryCatalogPage.inventoryItemsList.searchItemsControl.label': 'Поиск',
+  'inventoryCatalogPage.inventoryItemsList.filterByTagsControl.label':
+    'Отфильтровать по тегам',
 
   'inventoryCatalogPage.addNewInventoryItemDialog.title':
     'Добавить новую позицию склада',

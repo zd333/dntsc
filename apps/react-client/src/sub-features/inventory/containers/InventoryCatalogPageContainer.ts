@@ -38,6 +38,7 @@ const mapDispatchToProps: DispatchMapper<
       dispatch(
         InventoryActions.searchItemsStart({
           searchString: params.searchString,
+          tagsToFilterBy: params.tagsToFilterBy,
         }),
       );
     },

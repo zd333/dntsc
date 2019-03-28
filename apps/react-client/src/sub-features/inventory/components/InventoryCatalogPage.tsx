@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Autocomplete } from '../../../shared/components/Autocomplete';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { InventoryItem } from '../selectors/items-dictionary.selector';
 import { InventoryItemsList } from './InventoryItemsList';
@@ -30,7 +31,8 @@ export interface InventoryCatalogPageProps {
   readonly updateAndCreateAreAllowed: boolean;
   readonly alternatesSuggestions: InventoryItemDetailsFormProps['alternatesSuggestions'];
   readonly onSearch: (params: {
-    readonly searchString: string | undefined;
+    readonly searchString?: string;
+    readonly tagsToFilterBy?: Array<string>;
   }) => void;
   readonly onCreate: (params: {
     readonly newItemData: Omitted<InventoryItem, 'id'>;
@@ -42,9 +44,11 @@ export interface InventoryCatalogPageProps {
 }
 
 interface InventoryCatalogPageState {
-  readonly idOfSelectedItem: InventoryItem['id'] | undefined;
+  readonly idOfSelectedItem?: InventoryItem['id'];
   readonly selectedItemIsInEditMode: boolean;
   readonly addNewItemModalIsOpened: boolean;
+  readonly currentSearchString: string;
+  readonly currentTagsToFilterBy?: Array<string>;
 }
 
 export class StyledInventoryCatalogPage extends React.Component<
@@ -55,6 +59,8 @@ export class StyledInventoryCatalogPage extends React.Component<
     idOfSelectedItem: undefined,
     selectedItemIsInEditMode: false,
     addNewItemModalIsOpened: false,
+    currentSearchString: '',
+    currentTagsToFilterBy: undefined,
   };
 
   public handleItemSelect = (params: {
@@ -129,13 +135,30 @@ export class StyledInventoryCatalogPage extends React.Component<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >,
   ) => {
-    if (!event || !event.currentTarget || !event.currentTarget.value) {
-      return;
-    }
-    const searchString =
-      event.currentTarget.value.length >= 3 ? event.currentTarget.value : '';
+    const currentSearchString =
+      event &&
+      event.currentTarget &&
+      event.currentTarget.value &&
+      event.currentTarget.value.length >= 3
+        ? event.currentTarget.value
+        : '';
 
-    this.props.onSearch({ searchString });
+    this.setState({
+      currentSearchString,
+    });
+
+    this.props.onSearch({
+      searchString: currentSearchString,
+      tagsToFilterBy: this.state.currentTagsToFilterBy,
+    });
+  };
+
+  public handleFilterTagsChange = (tags: Array<string>) => {
+    this.setState({ currentTagsToFilterBy: tags });
+    this.props.onSearch({
+      searchString: this.state.currentSearchString,
+      tagsToFilterBy: tags,
+    });
   };
 
   public handleAddNewItemButtonClick = () => {
@@ -182,6 +205,9 @@ export class StyledInventoryCatalogPage extends React.Component<
     const searchControlLabel = intl.formatMessage({
       id: 'inventoryCatalogPage.inventoryItemsList.searchItemsControl.label',
     });
+    const filterByTagsControlLabel = intl.formatMessage({
+      id: 'inventoryCatalogPage.inventoryItemsList.filterByTagsControl.label',
+    });
 
     return (
       <React.Fragment>
@@ -205,18 +231,17 @@ export class StyledInventoryCatalogPage extends React.Component<
           />
         </div>
 
-        {/* TODO: implement filter by tags functionality */}
-        {/* <div>
+        {/* Filter by tags control */}
+        <div className={classes.filterTagsBar}>
           <Autocomplete
-            value={undefined}
-            options={['gugugu1', 'gugugu3', 'mememe']}
-            label={'TODO'}
-            isMulti={false}
+            value={this.state.currentTagsToFilterBy}
+            options={existingTags}
+            label={filterByTagsControlLabel}
             allowCreate={false}
-            isDisabled={false}
-            onChange={v => console.log(v)}
+            isMulti={true}
+            onChange={this.handleFilterTagsChange}
           />
-        </div> */}
+        </div>
 
         <Grid container className={classes.itemsListAndDetails} spacing={8}>
           <Grid item sm={12} md={6}>
@@ -280,6 +305,9 @@ const inventoryCatalogPageStyles = ({ breakpoints, spacing }: Theme) =>
     },
     searchBar: {
       display: 'flex',
+      marginBottom: spacing.unit * 4,
+    },
+    filterTagsBar: {
       marginBottom: spacing.unit * 4,
     },
     addButton: {
