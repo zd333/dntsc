@@ -74,14 +74,22 @@ export class InventoryDbConnectorService {
     return await this.inventoryItemModel.findById(id).exec();
   }
 
+  /**
+   * `filterTags` - search items that contain all specified tags.
+   * `filterAlternatesOfItemId` - search items that contain specified id in alternates list.
+   */
   public async getClinicItems(params: {
     readonly clinicId?: string;
     readonly paginationParams?: QueryParamsForSearchablePaginatedListInDto;
     readonly filterTags?: Array<string>;
     readonly filterAlternatesOfItemId?: string;
   }): Promise<MongoFindResults<InventoryItemDocument>> {
-    // TODO: implement `filterAlternatesOfItemId`
-    const { clinicId, paginationParams, filterTags } = params;
+    const {
+      clinicId,
+      paginationParams,
+      filterTags,
+      filterAlternatesOfItemId,
+    } = params;
     const findOptions = getPaginationMongoFindOptionsFromDto(paginationParams);
     // Add search condition only if search string is present
     const findConditions = {
@@ -89,6 +97,11 @@ export class InventoryDbConnectorService {
       ...(filterTags
         ? {
             tags: { $all: filterTags },
+          }
+        : {}),
+      ...(filterAlternatesOfItemId
+        ? {
+            alternates: filterAlternatesOfItemId,
           }
         : {}),
       ...(paginationParams && paginationParams.searchString
