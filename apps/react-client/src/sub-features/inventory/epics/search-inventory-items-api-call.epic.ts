@@ -26,24 +26,34 @@ export const searchInventoryItemsApiCallEpic: Epic<
   const authToken$ = state$.pipe(map(selectAuthToken));
 
   return action$.pipe(
-    ofType(InventoryActionTypes.SEARCH_ITEMS_START),
+    ofType(
+      InventoryActionTypes.FETCH_ITEMS_START,
+      InventoryActionTypes.FETCH_AND_FILTER_ITEMS_START,
+    ),
     withLatestFrom(authToken$),
     debounceTime(DEBOUNCE_TIME),
     switchMap(([action, authToken]) => {
-      const { searchString, tagsToFilterBy } = action.payload;
+      // Action params for fetch and filter are expected to be `searchString`, `tagsToFilterBy` and `alternatesOf`
+      const actionParams =
+        action.type === InventoryActionTypes.FETCH_AND_FILTER_ITEMS_START
+          ? action.payload
+          : {};
 
       return searchInventoryItemsApiConnector({
-        searchString,
-        tagsToFilterBy,
+        ...actionParams,
         authToken,
       }).pipe(
-        map(searchResults =>
-          InventoryActions.searchItemsSuccess({ searchResults }),
+        map(fetchResults =>
+          action.type === InventoryActionTypes.FETCH_ITEMS_START
+            ? InventoryActions.fetchItemsSuccess({ fetchResults })
+            : InventoryActions.fetchAndFilterItemsSuccess({
+                searchResults: fetchResults,
+              }),
         ),
         catchError(error =>
           createAppEpicErrorAction(
             error,
-            InventoryActions.searchItemsError({ error }),
+            InventoryActions.fetchAndFilterItemsError({ error }),
           ),
         ),
       );

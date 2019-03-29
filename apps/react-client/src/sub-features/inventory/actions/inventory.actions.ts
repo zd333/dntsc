@@ -9,9 +9,15 @@ import {
 } from '../../../actions/error-modal.actions';
 
 export enum InventoryActionTypes {
-  SEARCH_ITEMS_START = '[Inventory actions] Search items start',
-  SEARCH_ITEMS_SUCCESS = '[Inventory actions] Search items success',
-  SEARCH_ITEMS_ERROR = '[Inventory actions] Search items error',
+  FETCH_ITEMS_START = '[Inventory actions] Fetch items start',
+  FETCH_ITEMS_SUCCESS = '[Inventory actions] Fetch items success',
+  FETCH_ITEMS_ERROR = '[Inventory actions] Fetch items error',
+
+  TOGGLE_SHOW_FILTERED_ITEMS_MODE = '[Inventory actions] Toggle show filtered items mode',
+
+  FETCH_AND_FILTER_ITEMS_START = '[Inventory actions] Fetch and filter items start',
+  FETCH_AND_FILTER_ITEMS_SUCCESS = '[Inventory actions] Fetch and filter items success',
+  FETCH_AND_FILTER_ITEMS_ERROR = '[Inventory actions] Fetch and filter items error',
 
   CREATE_ITEM_START = '[Inventory actions] Create item start',
   CREATE_ITEM_SUCCESS = '[Inventory actions] Create item success',
@@ -26,15 +32,33 @@ export enum InventoryActionTypes {
 }
 
 export const InventoryActions = {
-  searchItemsStart: (payload: {
+  fetchItemsStart: () => createAction(InventoryActionTypes.FETCH_ITEMS_START),
+  fetchItemsSuccess: (payload: {
+    readonly fetchResults: PaginatedListOutDto<InventoryItemDetailsOutDto>;
+  }) => createAction(InventoryActionTypes.FETCH_ITEMS_SUCCESS, payload),
+  fetchItemsError: (payload: { readonly error?: ApiError }) =>
+    createCommonErrorAction(InventoryActionTypes.FETCH_ITEMS_ERROR, {
+      isCommonErrorAction: true,
+      error: payload.error,
+    }),
+
+  toggleShowFilteredItemsMode: (payload: {
+    readonly showFilteredItems: boolean;
+  }) =>
+    createAction(InventoryActionTypes.TOGGLE_SHOW_FILTERED_ITEMS_MODE, payload),
+
+  fetchAndFilterItemsStart: (payload: {
     readonly searchString?: string;
     readonly tagsToFilterBy?: Array<string>;
-  }) => createAction(InventoryActionTypes.SEARCH_ITEMS_START, payload),
-  searchItemsSuccess: (payload: {
+    readonly alternatesOf?: InventoryItem['id'];
+  }) =>
+    createAction(InventoryActionTypes.FETCH_AND_FILTER_ITEMS_START, payload),
+  fetchAndFilterItemsSuccess: (payload: {
     readonly searchResults: PaginatedListOutDto<InventoryItemDetailsOutDto>;
-  }) => createAction(InventoryActionTypes.SEARCH_ITEMS_SUCCESS, payload),
-  searchItemsError: (payload: { readonly error?: ApiError }) =>
-    createCommonErrorAction(InventoryActionTypes.SEARCH_ITEMS_ERROR, {
+  }) =>
+    createAction(InventoryActionTypes.FETCH_AND_FILTER_ITEMS_SUCCESS, payload),
+  fetchAndFilterItemsError: (payload: { readonly error?: ApiError }) =>
+    createCommonErrorAction(InventoryActionTypes.FETCH_AND_FILTER_ITEMS_ERROR, {
       isCommonErrorAction: true,
       error: payload.error,
     }),

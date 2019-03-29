@@ -4,6 +4,7 @@ export interface InventoryState {
   readonly itemsDict: {
     readonly [id: string]: InventoryItemDetailsOutDto;
   };
+  readonly showFilteredItems: boolean;
   readonly matchingSearchCriteriaItemIds: Array<
     InventoryItemDetailsOutDto['id']
   >;

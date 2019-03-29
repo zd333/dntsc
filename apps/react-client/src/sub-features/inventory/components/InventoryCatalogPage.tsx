@@ -34,6 +34,9 @@ export interface InventoryCatalogPageProps {
     readonly searchString?: string;
     readonly tagsToFilterBy?: Array<string>;
   }) => void;
+  readonly onSearchAlternates: (params: {
+    readonly unit: InventoryItem['unit'];
+  }) => void;
   readonly onCreate: (params: {
     readonly newItemData: Omitted<InventoryItem, 'id'>;
   }) => void;
