@@ -34,7 +34,7 @@ export interface InventoryCatalogPageProps {
     readonly searchString?: string;
     readonly tagsToFilterBy?: Array<string>;
   }) => void;
-  readonly onSearchAlternates: (params: {
+  readonly onSearchAlternatesForGivenUnit: (params: {
     readonly unit: InventoryItem['unit'];
   }) => void;
   readonly onCreate: (params: {
@@ -110,6 +110,12 @@ export class StyledInventoryCatalogPage extends React.Component<
     this.setState({
       selectedItemIsInEditMode: false,
     });
+  };
+
+  public handleUnitChange = (params: {
+    readonly unit: InventoryItem['unit'];
+  }) => {
+    this.props.onSearchAlternatesForGivenUnit(params);
   };
 
   public handleCreateNewItemSubmit = (params: {
@@ -261,11 +267,12 @@ export class StyledInventoryCatalogPage extends React.Component<
               <CardContent>
                 <InventoryItemDetailsForm
                   item={this.getSelectedItem()}
-                  itemUnits={itemUnits}
+                  availableItemUnits={itemUnits}
                   tagSuggestions={this.getTagsSuggestionsForExistingItem()}
                   alternatesSuggestions={alternatesSuggestions}
                   isInEditMode={this.state.selectedItemIsInEditMode}
                   onSubmit={this.handleUpdateItemSubmit}
+                  onUnitChange={this.handleUnitChange}
                   onCancelEdit={this.handleCancelEditMode}
                 />
               </CardContent>
@@ -285,11 +292,12 @@ export class StyledInventoryCatalogPage extends React.Component<
           <DialogContent classes={{ root: classes.newItemDialogContent }}>
             <InventoryItemDetailsForm
               item={undefined}
-              itemUnits={itemUnits}
+              availableItemUnits={itemUnits}
               tagSuggestions={existingTags}
               alternatesSuggestions={alternatesSuggestions}
               isInEditMode={true}
               onSubmit={this.handleCreateNewItemSubmit}
+              onUnitChange={this.handleUnitChange}
               onCancelEdit={this.handleCancelAddNewItemButtonClick}
             />
           </DialogContent>

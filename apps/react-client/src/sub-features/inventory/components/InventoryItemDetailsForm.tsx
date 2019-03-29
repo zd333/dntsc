@@ -35,7 +35,7 @@ import {
 
 export interface InventoryItemDetailsFormProps {
   readonly item: InventoryItem | undefined;
-  readonly itemUnits: Array<TranslatedInventoryItemUnit>;
+  readonly availableItemUnits: Array<TranslatedInventoryItemUnit>;
   readonly tagSuggestions: Array<string>;
   readonly alternatesSuggestions: {
     readonly [key in InventoryItemUnits]: Array<
@@ -43,27 +43,48 @@ export interface InventoryItemDetailsFormProps {
     >
   };
   readonly isInEditMode: boolean;
+  readonly onUnitChange: (params: {
+    readonly unit: InventoryItem['unit'];
+  }) => void;
   readonly onSubmit: (params: {
     readonly item: Omitted<InventoryItem, 'id'>;
   }) => void;
   readonly onCancelEdit: () => void;
 }
 
+// TODO: refactor to functional component
 interface InventoryItemDetailsFormState {
   readonly todo: 'remove';
 }
 
-// TODO: implement filter by alternates API support and then dispatch search action after each select of item with selected unit
+// TODO: implement API support of filter search by units and dispatch search action after each select of item with selected unit
 export class StyledInventoryItemDetailsForm extends React.Component<
   StyledTranslatedInventoryItemDetailsFormProps,
   InventoryItemDetailsFormState
 > {
+  public handleUnitSelectChange = (
+    event: React.SyntheticEvent<HTMLSelectElement>,
+  ) => {
+    const unitSelectValue = ((event &&
+      event.currentTarget &&
+      event.currentTarget.value) ||
+      '') as InventoryItemDetailsFormValues['unit'];
+
+    if (!unitSelectValue) {
+      return;
+    }
+
+    this.props.onUnitChange({
+      unit: unitSelectValue,
+    });
+  };
+
   public render(): JSX.Element {
     const {
       classes,
       intl,
       item,
-      itemUnits,
+      availableItemUnits: itemUnits,
       isInEditMode,
       onSubmit,
       onCancelEdit,
@@ -200,6 +221,7 @@ export class StyledInventoryItemDetailsForm extends React.Component<
                       name: 'unit',
                       id: 'inventory-item-units-label',
                     }}
+                    onChange={this.handleUnitSelectChange}
                   >
                     {unitOptions}
                   </Field>

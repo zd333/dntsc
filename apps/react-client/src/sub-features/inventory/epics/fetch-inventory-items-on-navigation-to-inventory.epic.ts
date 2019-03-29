@@ -25,6 +25,6 @@ export const searchInventoryItemsOnNavigationToInventory: Epic<
           action.payload.location.pathname.toLowerCase().startsWith(path),
         ),
     ),
-    mapTo(InventoryActions.fetchItemsStart()),
+    mapTo(InventoryActions.fetchItemsStart({})),
   );
 };
