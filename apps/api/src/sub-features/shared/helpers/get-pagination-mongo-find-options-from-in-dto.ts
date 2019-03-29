@@ -6,7 +6,7 @@ import { QueryParamsForPaginatedListInDto } from '../dto/query-params-for-pagina
  * !Search options must be handled on the consuming code side!
  */
 export function getPaginationMongoFindOptionsFromDto(
-  dto: QueryParamsForPaginatedListInDto,
+  dto: QueryParamsForPaginatedListInDto | undefined,
 ): PaginationMongoFindOptions {
   if (!dto) {
     return {};
@@ -26,7 +26,11 @@ export function getPaginationMongoFindOptionsFromDto(
     };
   }
   if (dto.orderBy) {
-    const orderDirection = dto.orderDirection.toUpperCase() === 'DESC' ? -1 : 1;
+    const orderDirection =
+      typeof dto.orderDirection === 'string' &&
+      dto.orderDirection.toUpperCase() === 'DESC'
+        ? -1
+        : 1;
     result = {
       ...result,
       sort: { [dto.orderBy]: orderDirection },
@@ -40,6 +44,6 @@ export interface PaginationMongoFindOptions {
   readonly limit?: number;
   readonly skip?: number;
   readonly sort?: {
-    [key: string]: 1 | -1;
+    readonly [key: string]: 1 | -1;
   };
 }

@@ -5,15 +5,21 @@ import { NestFactory } from '@nestjs/core';
 import { useContainer } from 'class-validator';
 import { ValidationPipe } from '@nestjs/common';
 
-async function bootstrap() {
+// Hard-code rate limit values (no need to have them flexible and pass via env variables)
+// 15 minutes
+const RATE_LIMIT_WINDOW = 15 * 60 * 1000;
+// Limit each IP to 100 requests per windowMs
+const RATE_LIMIT_MAX_REQUESTS = 100;
+
+async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
 
   // Helmet adds some good for security headers
   app.use(helmet());
   app.use(
-    rateLimit({
-      windowMs: 15 * 60 * 1000, // 15 minutes
-      max: 100, // limit each IP to 100 requests per windowMs
+    new rateLimit({
+      windowMs: RATE_LIMIT_WINDOW,
+      max: RATE_LIMIT_MAX_REQUESTS,
     }),
   );
 
@@ -32,7 +38,9 @@ async function bootstrap() {
     }),
   );
 
-  await app.listen(process.env.API_SERVING_PORT);
+  const port = Number(process.env.API_SERVING_PORT);
+
+  await app.listen(port);
 }
 
 bootstrap();

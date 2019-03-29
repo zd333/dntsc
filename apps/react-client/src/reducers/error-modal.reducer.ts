@@ -4,12 +4,14 @@ import {
   AllErrorModalActions,
   CLOSE_ERROR_NOTIFICATION_MODAL_ACTION_TYPE,
   isCommonErrorAction,
-} from 'src/actions/error-modal.actions';
+  ApiError,
+} from '../../src/actions/error-modal.actions';
 
 export function errorModalReducer(
   state: ErrorModalState = errorModalInitialState,
   action: AllErrorModalActions,
 ): ErrorModalState {
+  // Close modal action
   if (action && action.type === CLOSE_ERROR_NOTIFICATION_MODAL_ACTION_TYPE) {
     return {
       ...state,
@@ -20,10 +22,14 @@ export function errorModalReducer(
   if (isCommonErrorAction(action)) {
     return {
       ...state,
-      errorMessage: action.payload.errorMessage,
+      errorMessage: extractErrorMessage(action.payload.error),
       errorModalIsShown: true,
     };
   }
 
   return state;
+}
+
+function extractErrorMessage(error?: ApiError): string | undefined {
+  return !!error && typeof error.error === 'string' ? error.error : undefined;
 }

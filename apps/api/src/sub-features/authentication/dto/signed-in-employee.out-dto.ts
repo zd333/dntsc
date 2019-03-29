@@ -1,9 +1,16 @@
+import { AppAccessRoles } from '../../../app-access-roles';
 import { Expose } from 'class-transformer';
 
 export class SignedInEmployeeOutDto {
   @Expose()
-  readonly authToken: string;
+  public readonly authToken: string;
 
   @Expose()
-  readonly hasToChangePassword?: boolean;
+  public readonly hasToChangePassword?: boolean;
+
+  @Expose()
+  public readonly roles: Array<AppAccessRoles>;
+
+  @Expose()
+  public readonly name: string;
 }

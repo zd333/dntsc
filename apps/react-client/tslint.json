@@ -1,5 +1,5 @@
 {
-  "extends": ["tslint:recommended", "tslint-react", "tslint-config-prettier"],
+  "extends": ["../tslint-base.json", "tslint-react"],
   "linterOptions": {
     "exclude": [
       "config/**/*.js",
@@ -8,9 +8,9 @@
     ]
   },
   "rules": {
-    "interface-name": [true, "never-prefix"],
-    "ordered-imports": false,
-    "object-literal-sort-keys": false,
-    "jsx-boolean-value": false
+    "jsx-boolean-value": false,
+    "jsx-no-multiline-js": false,
+    "quotemark": [true, "single", "jsx-double"],
+    "jsx-no-lambda": false
   }
 }

@@ -7,9 +7,6 @@ export function inventoryItemHasWeightUnit<
   T extends { readonly unit: InventoryItemUnits }
 >(item: T): boolean {
   return (
-    !!item &&
-    (item.unit === InventoryItemUnits.kg ||
-      item.unit === InventoryItemUnits.gr ||
-      item.unit === InventoryItemUnits.mg)
+    !!item && (item.unit === 'KG' || item.unit === 'GR' || item.unit === 'MG')
   );
 }

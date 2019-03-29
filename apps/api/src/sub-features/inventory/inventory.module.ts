@@ -1,6 +1,7 @@
 import { InventoryController } from './controllers/inventory.controller';
 import { InventoryDbConnectorService } from './services/inventory-db-connector.service';
 import { IsAlternateWithRelevantUnit } from './validators/is-alternate-with-relevant-unit.validator';
+import { IsUniqueExistingInventoryItemNameForGivenClinic } from './validators/is-unique-existing-inventory-item-name-for-given-clinic.validator';
 import { IsUniqueInventoryItemNameForGivenClinic } from './validators/is-unique-inventory-item-name-for-given-clinic.validator';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -37,6 +38,7 @@ const schemasMap = [
   providers: [
     InventoryDbConnectorService,
     IsUniqueInventoryItemNameForGivenClinic,
+    IsUniqueExistingInventoryItemNameForGivenClinic,
     IsAlternateWithRelevantUnit,
   ],
   controllers: [InventoryController],

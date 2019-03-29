@@ -1,28 +1,27 @@
 import { ACGuard, UseRoles } from 'nest-access-control';
-import { AppRequest } from 'src/app.module';
+import { AppRequest } from '../../../../src/app.module';
 import { AuthGuard } from '@nestjs/passport';
-import { convertDocumentsToPaginatedListOutDto } from 'src/sub-features/shared/helpers/convert-documents-to-paginated-list-out-dto';
-import { convertDocumentToOutDto } from 'src/sub-features/shared/helpers/convert-document-to-out-dto';
+import { convertDocumentsToPaginatedListOutDto } from '../../../../src/sub-features/shared/helpers/convert-documents-to-paginated-list-out-dto';
+import { convertDocumentToOutDto } from '../../../../src/sub-features/shared/helpers/convert-document-to-out-dto';
 import { CreatedInventoryItemOutDto } from '../dto/created-inventory-item.out-dto';
-import { CreateInventoryBalanceChangeInDto } from '../dto/create-inventory-balance-change.in-dto';
-import { CreateInventoryItemInDto } from '../dto/create-inventory-item.dto';
+import { CreateInventoryBalanceChangeInDtoWithClinicContext } from '../dto/create-inventory-balance-change.in-dto';
+import { CreateInventoryItemInDtoWithClinicContext } from '../dto/create-inventory-item.in-dto';
 import { InventoryBalanceChangeDetailsOutDto } from '../dto/inventory-balance-change-details.out-dto';
 import { InventoryDbConnectorService } from '../services/inventory-db-connector.service';
 import { InventoryItemBalanceOutDto } from '../dto/inventory-item-balance.out-dto';
 import { InventoryItemDetailsOutDto } from '../dto/inventory-item-details.out-dto';
-import { PaginatedListOutDto } from 'src/sub-features/shared/dto/paginated-list-out-dto.interface';
-import { PlatformFeatures } from 'src/sub-features/tenants/db-schemas/tenant.db-schema';
-import { RequesterIsEmployeeOfTargetClinicGuard } from 'src/sub-features/shared/guards/requester-is-employee-of-target-clinic.guard';
-import { RequestIsInClinicContextGuard } from 'src/sub-features/shared/guards/request-is-in-clinic-context.guard';
-import { WithMongoIdInDto } from 'src/sub-features/shared/dto/with-mongo-id.in-dto';
-import {
-  QueryParamsForSearchablePaginatedListInDto,
-  QueryParamsForPaginatedListInDto,
-} from 'src/sub-features/shared/dto/query-params-for-paginated-list.in-dto';
+import { InventoryItemsSearchParams } from '../dto/inventory-items-search-params.in-dto';
+import { InventoryItemsTagsOutDto } from '../dto/inventory-items-tags.out-dto';
+import { PaginatedListOutDto } from '../../../../src/sub-features/shared/dto/paginated-list-out-dto.interface';
+import { QueryParamsForPaginatedListInDto } from '../../../../src/sub-features/shared/dto/query-params-for-paginated-list.in-dto';
+import { RequesterIsEmployeeOfTargetClinicGuard } from '../../../../src/sub-features/shared/guards/requester-is-employee-of-target-clinic.guard';
+import { RequestIsInClinicContextGuard } from '../../../../src/sub-features/shared/guards/request-is-in-clinic-context.guard';
+import { UpdateInventoryItemInDtoWithClinicContext } from '../dto/update-inventory-item.in-dto';
+import { WithMongoIdInDto } from '../../../../src/sub-features/shared/dto/with-mongo-id.in-dto';
 import {
   IsRelatedToFeatures,
   TenantFeaturesGuard,
-} from 'src/sub-features/shared/guards/tenant-features.guard';
+} from '../../../../src/sub-features/shared/guards/tenant-features.guard';
 import {
   Body,
   Controller,
@@ -33,10 +32,12 @@ import {
   Req,
   Param,
   NotFoundException,
+  Put,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 
 @UseGuards(TenantFeaturesGuard)
-@IsRelatedToFeatures(PlatformFeatures.inventory)
+@IsRelatedToFeatures('INVENTORY')
 @Controller('inventory')
 export class InventoryController {
   constructor(
@@ -56,7 +57,7 @@ export class InventoryController {
   })
   @Post('items')
   public async createItem(
-    @Body() dto: CreateInventoryItemInDto,
+    @Body() dto: CreateInventoryItemInDtoWithClinicContext,
   ): Promise<CreatedInventoryItemOutDto> {
     const document = await this.inventoryDbConnector.createItem(dto);
 
@@ -74,10 +75,14 @@ export class InventoryController {
   @Get('items')
   public async getItems(
     @Req() req: AppRequest,
-    @Query() dto: QueryParamsForSearchablePaginatedListInDto,
+    @Query() dto: InventoryItemsSearchParams,
   ): Promise<PaginatedListOutDto<InventoryItemDetailsOutDto>> {
     const { targetClinicId } = req;
+    const filterTags = (dto && dto.tags && dto.tags.split(',')) || undefined;
+    const filterAlternatesOfItemId = dto && dto.alternates_of;
     const findResults = await this.inventoryDbConnector.getClinicItems({
+      filterTags,
+      filterAlternatesOfItemId,
       clinicId: targetClinicId,
       paginationParams: dto,
     });
@@ -86,6 +91,27 @@ export class InventoryController {
       findResults,
       singleDtoItemConstructor: InventoryItemDetailsOutDto,
     });
+  }
+
+  @UseGuards(
+    AuthGuard(),
+    RequestIsInClinicContextGuard,
+    RequesterIsEmployeeOfTargetClinicGuard,
+  )
+  @Get('items-tags')
+  public async getItemsTags(
+    @Req() req: AppRequest,
+  ): Promise<InventoryItemsTagsOutDto> {
+    const { targetClinicId } = req;
+    const items = await this.inventoryDbConnector.getClinicItems({
+      clinicId: targetClinicId,
+    });
+    const tags = items.documents
+      .map(doc => doc.tags || [])
+      .reduce((result, current) => [...result, ...current], []);
+    const uniqueTags = Array.from(new Set(tags).values());
+
+    return { usedTags: uniqueTags };
   }
 
   @UseGuards(
@@ -106,6 +132,32 @@ export class InventoryController {
     return convertDocumentToOutDto({
       document,
       dtoConstructor: InventoryItemDetailsOutDto,
+    });
+  }
+
+  @UseGuards(
+    AuthGuard(),
+    ACGuard,
+    RequestIsInClinicContextGuard,
+    RequesterIsEmployeeOfTargetClinicGuard,
+  )
+  @UseRoles({
+    resource: 'inventory-item',
+    action: 'update',
+    possession: 'any',
+  })
+  @Put('items/:id')
+  public async updateItem(
+    @Param() { id }: WithMongoIdInDto,
+    @Body() dto: UpdateInventoryItemInDtoWithClinicContext,
+  ): Promise<void> {
+    if (id !== dto.id) {
+      throw new UnprocessableEntityException();
+    }
+
+    await this.inventoryDbConnector.updateItem({
+      id,
+      dto,
     });
   }
 
@@ -159,7 +211,7 @@ export class InventoryController {
   })
   @Post('balance-changes')
   public async createBalanceChange(
-    @Body() dto: CreateInventoryBalanceChangeInDto,
+    @Body() dto: CreateInventoryBalanceChangeInDtoWithClinicContext,
   ): Promise<void> {
     await this.inventoryDbConnector.createBalanceChange(dto);
   }

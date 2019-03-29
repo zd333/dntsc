@@ -30,24 +30,23 @@ enum passwordValidationErrors {
 }
 
 export interface LoginPageProps {
-  isDisabled: boolean;
-  onEmailLogin: (
-    params: {
-      readonly email: string;
-      readonly password: string;
-    },
-  ) => void;
+  readonly isDisabled: boolean;
+  readonly onEmailLogin: (params: {
+    readonly email: string;
+    readonly password: string;
+  }) => void;
 }
 
 interface LoginPageState {
-  email: string;
-  password: string;
-  emailIsDirty: boolean;
-  passwordIsDirty: boolean;
-  emailIsFocused: boolean;
-  passwordIsFocused: boolean;
+  readonly email: string;
+  readonly password: string;
+  readonly emailIsDirty: boolean;
+  readonly passwordIsDirty: boolean;
+  readonly emailIsFocused: boolean;
+  readonly passwordIsFocused: boolean;
 }
 
+// TODO: refactor with formik
 class StyledLoginPage extends React.Component<
   StyledLoginPageProps,
   LoginPageState
@@ -61,7 +60,6 @@ class StyledLoginPage extends React.Component<
     passwordIsFocused: false,
   };
 
-  // TODO: move input handling with error and validation into shared component
   public handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       email: event.target.value,
@@ -85,6 +83,8 @@ class StyledLoginPage extends React.Component<
     if (!this.state.email) {
       return emailValidationErrors.EMPTY;
     }
+    // No way to make it shorter :)
+    /* tslint:disable-next-line:max-line-length */
     const emailValidationRegexp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     return emailValidationRegexp.test(String(this.state.email).toLowerCase())
@@ -142,7 +142,7 @@ class StyledLoginPage extends React.Component<
     this.props.onEmailLogin({ email, password });
   };
 
-  public render() {
+  public render(): JSX.Element {
     return (
       <main className={this.props.classes.layout}>
         <Paper className={this.props.classes.paper}>

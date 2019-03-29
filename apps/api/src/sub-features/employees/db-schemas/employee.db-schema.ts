@@ -1,12 +1,10 @@
-import { AppAccessRoles } from 'src/app-access-roles';
 import { CLINIC_SCHEMA_COLLECTION_NAME } from '../../clinics/db-schemas/clinic.db-schema';
+import { Document, Schema, SchemaDefinition, Types } from 'mongoose';
+import { passwordHashingHook } from '../../../../src/sub-features/shared/helpers/password-hashing-mongoose-schema-hook';
 import {
-  Document,
-  Schema,
-  SchemaDefinition,
-  Types
-  } from 'mongoose';
-import { passwordHashingHook } from 'src/sub-features/shared/helpers/password-hashing-mongoose-schema-hook';
+  AppAccessRoles,
+  allAppAccessRoles,
+} from '../../../../src/app-access-roles';
 
 export const EMPLOYEE_SCHEMA_COLLECTION_NAME = 'Employees';
 
@@ -24,7 +22,7 @@ const schemaDefinition: SchemaDefinition = {
     type: [{ type: Schema.Types.ObjectId, ref: CLINIC_SCHEMA_COLLECTION_NAME }],
     required: false,
   },
-  roles: { type: [String], required: false },
+  roles: [{ type: String, enum: allAppAccessRoles, required: false }],
 };
 
 const schema = new Schema(schemaDefinition);

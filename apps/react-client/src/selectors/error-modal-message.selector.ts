@@ -3,5 +3,5 @@ import { selectErrorModalState } from './error-modal-state.selector';
 
 export const selectErrorModalMessage = createSelector(
   [selectErrorModalState],
-  errorModalState => errorModalState && errorModalState.errorMessage,
+  errorModalState => !!errorModalState && errorModalState.errorMessage,
 );

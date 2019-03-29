@@ -1,10 +1,10 @@
-import { AppAccessRoles } from 'src/app-access-roles';
-import { EmployeeDocument } from 'src/sub-features/employees/db-schemas/employee.db-schema';
-import { EmployeesDbConnectorService } from 'src/sub-features/employees/services/employees-db-connector.service';
-import { hasRoles } from 'src/sub-features/shared/helpers/has-roles';
+import { AppAccessRoles } from '../../../app-access-roles';
+import { EmployeeDocument } from '../../../sub-features/employees/db-schemas/employee.db-schema';
+import { EmployeesDbConnectorService } from '../../../../src/sub-features/employees/services/employees-db-connector.service';
+import { hasRoles } from '../../../sub-features/shared/helpers/has-roles';
 import { JwtService } from '@nestjs/jwt';
 import { SignedInEmployeeOutDto } from '../dto/signed-in-employee.out-dto';
-import { SignInEmployeeInDto } from '../dto/sign-in-employee.in-dto';
+import { SignInEmployeeInDtoWithClinicContext } from '../dto/sign-in-employee.in-dto';
 import { SignInPlatformOwnerInDto } from '../dto/sign-in-platform-owner.in-dto';
 import {
   Injectable,
@@ -30,7 +30,7 @@ export class AuthenticationService {
    * because it is most important functionality of this service.
    */
   public async signInEmployee(
-    dto: SignInEmployeeInDto,
+    dto: SignInEmployeeInDtoWithClinicContext,
   ): Promise<SignedInEmployeeOutDto> {
     const employee = await this.employeesDbConnector.getByCredentials({
       clinicId: dto.targetClinicId,
@@ -49,9 +49,9 @@ export class AuthenticationService {
 
     const payload: JwtPayload = { employeeId: employee._id };
     const authToken = this.jwt.sign(payload);
-    const { hasToChangePassword } = employee;
+    const { hasToChangePassword, roles, name } = employee;
 
-    return { authToken, hasToChangePassword };
+    return { authToken, hasToChangePassword, roles, name };
   }
 
   /**
@@ -72,15 +72,16 @@ export class AuthenticationService {
 
     const isActivePlatformOwner =
       employee.isActive &&
-      hasRoles({ target: employee, roles: [AppAccessRoles._PLATFORM_OWNER] });
+      hasRoles({ target: employee, roles: ['_PLATFORM_OWNER'] });
     if (!isActivePlatformOwner) {
       throw new ForbiddenException();
     }
 
     const payload: JwtPayload = { employeeId: employee._id };
     const authToken = this.jwt.sign(payload);
+    const { roles, name } = employee;
 
-    return { authToken };
+    return { authToken, roles, name };
   }
 
   /**
@@ -91,14 +92,14 @@ export class AuthenticationService {
     payload: JwtPayload,
   ): Promise<AuthenticatedUser | undefined> {
     if (!payload || !payload.employeeId) {
-      return;
+      return undefined;
     }
 
     const employee = await this.employeesDbConnector.getById(
       payload.employeeId,
     );
     if (!employee || !employee.isActive) {
-      return;
+      return undefined;
     }
 
     return convertEmployeeDocumentToAuthenticatedUser(employee);
@@ -125,15 +126,16 @@ export interface AuthenticatedUser {
 function convertEmployeeDocumentToAuthenticatedUser(
   employeeDocument: EmployeeDocument,
 ): AuthenticatedUser {
-  const roles =
+  const roles: Array<AppAccessRoles> =
     employeeDocument.roles && employeeDocument.roles.length
       ? employeeDocument.roles
-      : [AppAccessRoles._BASIC_PERMISSIONS];
+      : ['_BASIC_PERMISSIONS'];
   const isPlatformOwner = hasRoles({
     target: employeeDocument,
-    roles: [AppAccessRoles._PLATFORM_OWNER],
+    roles: ['_PLATFORM_OWNER'],
   });
   const clinics = employeeDocument.clinics.map(c => c.toHexString()) || [];
+
   return {
     roles,
     isEmployee: true,

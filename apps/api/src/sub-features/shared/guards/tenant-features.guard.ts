@@ -1,8 +1,8 @@
-import { AppRequest } from 'src/app.module';
-import { ClinicsDbConnectorService } from 'src/sub-features/clinics/services/clinics-db-connector.service';
-import { PlatformFeatures } from 'src/sub-features/tenants/db-schemas/tenant.db-schema';
+import { AppRequest } from '../../../../src/app.module';
+import { ClinicsDbConnectorService } from '../../../../src/sub-features/clinics/services/clinics-db-connector.service';
+import { PlatformFeatures } from '../../../../src/sub-features/tenants/db-schemas/tenant.db-schema';
 import { Reflector } from '@nestjs/core';
-import { TenantsDbConnectorService } from 'src/sub-features/tenants/services/tenants-db-connector.service';
+import { TenantsDbConnectorService } from '../../../../src/sub-features/tenants/services/tenants-db-connector.service';
 import {
   ReflectMetadata,
   Injectable,
@@ -62,12 +62,14 @@ export class TenantFeaturesGuard implements CanActivate {
     const tenantId = clinic.tenant;
     const tenant = await this.tenantsDbConnector.getById(tenantId);
 
-    return (
-      !!tenant &&
-      Array.isArray(tenant.features) &&
-      features.every(requiredFeature =>
-        tenant.features.some(feature => feature === requiredFeature),
-      )
+    if (!tenant || !Array.isArray(tenant.features)) {
+      return false;
+    }
+
+    const tenantFeatures = tenant.features;
+
+    return features.every(requiredFeature =>
+      tenantFeatures.some(feature => feature === requiredFeature),
     );
   }
 }

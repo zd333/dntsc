@@ -11,9 +11,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Request } from 'express';
 import { TenantsModule } from './sub-features/tenants/tenants.module';
 
+const mongoConnStr = process.env.MONGO_CONNECTION_STRING || '';
+
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.MONGO_CONNECTION_STRING, {
+    MongooseModule.forRoot(mongoConnStr, {
       useNewUrlParser: true,
     }),
     AccessControlModule.forRoles(appRoles),
@@ -26,7 +28,7 @@ import { TenantsModule } from './sub-features/tenants/tenants.module';
   providers: [AddClinicContextMiddleware],
 })
 export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
+  public configure(consumer: MiddlewareConsumer): void {
     consumer.apply(AddClinicContextMiddleware).forRoutes({
       path: '*',
       method: RequestMethod.ALL,
@@ -36,14 +38,20 @@ export class AppModule {
 
 /**
  * Request object + additional app-specific properties.
+ * Do not use original Express typing of request object due to it is not strict.
+ * Add only those fields which are used in the app (add more as we go).
  */
-export type AppRequest = Request & {
+export type AppRequest = Pick<Request, 'header' | 'body'> & {
   /**
    * User that performs request (if request is authenticated).
    */
-  user?: AuthenticatedUser;
+  // Must be mutable because is assigned by custom middleware
+  /* tslint:disable-next-line:readonly-keyword */
+  user: AuthenticatedUser;
   /**
    * Id of clinic, depends on request host name. See `AddClinicContextMiddleware`.
    */
+  // Must be mutable because is assigned by custom middleware
+  /* tslint:disable-next-line:readonly-keyword */
   targetClinicId?: string;
 };
