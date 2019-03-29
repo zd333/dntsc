@@ -32,7 +32,11 @@ export enum InventoryActionTypes {
 }
 
 export const InventoryActions = {
-  fetchItemsStart: () => createAction(InventoryActionTypes.FETCH_ITEMS_START),
+  fetchItemsStart: (payload: {
+    readonly searchString?: string;
+    readonly tagsToFilterBy?: Array<string>;
+    readonly alternatesOf?: InventoryItem['id'];
+  }) => createAction(InventoryActionTypes.FETCH_ITEMS_START, payload),
   fetchItemsSuccess: (payload: {
     readonly fetchResults: PaginatedListOutDto<InventoryItemDetailsOutDto>;
   }) => createAction(InventoryActionTypes.FETCH_ITEMS_SUCCESS, payload),

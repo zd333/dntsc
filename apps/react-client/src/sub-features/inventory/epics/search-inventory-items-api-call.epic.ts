@@ -33,14 +33,12 @@ export const searchInventoryItemsApiCallEpic: Epic<
     withLatestFrom(authToken$),
     debounceTime(DEBOUNCE_TIME),
     switchMap(([action, authToken]) => {
-      // Action params for fetch and filter are expected to be `searchString`, `tagsToFilterBy` and `alternatesOf`
-      const actionParams =
-        action.type === InventoryActionTypes.FETCH_AND_FILTER_ITEMS_START
-          ? action.payload
-          : {};
+      const { searchString, tagsToFilterBy, alternatesOf } = action.payload;
 
       return searchInventoryItemsApiConnector({
-        ...actionParams,
+        searchString,
+        tagsToFilterBy,
+        alternatesOf,
         authToken,
       }).pipe(
         map(fetchResults =>
