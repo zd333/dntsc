@@ -1,13 +1,14 @@
 import * as en from 'react-intl/locale-data/en';
 import * as ru from 'react-intl/locale-data/ru';
 import { addLocaleData, IntlProvider } from 'react-intl';
+import { AppLanguages } from '../reducers/session-state.interface';
 import { connect } from 'react-redux';
-import { enTranslationMessages } from 'src/shared/translations/en-translation-messages';
-import { RootState } from 'src';
-import { ruTranslationMessages } from 'src/shared/translations/ru-translation-messages';
-import { selectCurrentLanguage } from 'src/selectors/current-language.selector';
-import { StateMapper } from 'src/shared/interfaces/container-state-mapper.interface';
-import { uaTranslationMessages } from 'src/shared/translations/ua-translation-messages';
+import { enTranslationMessages } from '../../src/shared/translations/en-translation-messages';
+import { RootState } from '../../src';
+import { ruTranslationMessages } from '../../src/shared/translations/ru-translation-messages';
+import { selectCurrentLanguage } from '../../src/selectors/current-language.selector';
+import { StateMapper } from '../../src/shared/types/container-state-mapper.interface';
+import { uaTranslationMessages } from '../../src/shared/translations/ua-translation-messages';
 
 addLocaleData([...en, ...ru]);
 
@@ -15,18 +16,17 @@ const mapStateToProps: StateMapper<IntlProvider.Props, RootState> = state => {
   const currentLanguage = selectCurrentLanguage(state);
 
   switch (currentLanguage) {
-    case 'ru': {
-      return { locale: currentLanguage, messages: ruTranslationMessages };
+    case AppLanguages.ru: {
+      return { locale: AppLanguages.ru, messages: ruTranslationMessages };
     }
     // For now use ru locale data for ua because ua is missing in react-intl
-    // TODO: investigate and resolve if needed ^^^
-    case 'ua': {
-      return { locale: 'ru', messages: uaTranslationMessages };
+    case AppLanguages.ua: {
+      return { locale: AppLanguages.ru, messages: uaTranslationMessages };
     }
-    case 'en':
+    case AppLanguages.en:
     default: {
       // EN is fallback language
-      return { locale: 'en', messages: enTranslationMessages };
+      return { locale: AppLanguages.en, messages: enTranslationMessages };
     }
   }
 };

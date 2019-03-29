@@ -1,4 +1,4 @@
-import { CreateInventoryItemInDto } from '../dto/create-inventory-item.dto';
+import { CreateInventoryItemInDtoWithClinicContext } from '../dto/create-inventory-item.in-dto';
 import { Injectable } from '@nestjs/common';
 import { InventoryDbConnectorService } from '../services/inventory-db-connector.service';
 import {
@@ -22,7 +22,7 @@ export class IsUniqueInventoryItemNameForGivenClinic
     value: string,
     validationArguments: ValidationArguments,
   ): Promise<boolean> {
-    const dtoObject = validationArguments.object as CreateInventoryItemInDto;
+    const dtoObject = validationArguments.object as CreateInventoryItemInDtoWithClinicContext;
     const { targetClinicId } = dtoObject;
     const nameIsOccupied = await this.inventoryDbConnector.checkInventoryItemWithGivenNameExistsInClinic(
       {
@@ -34,7 +34,7 @@ export class IsUniqueInventoryItemNameForGivenClinic
     return !nameIsOccupied;
   }
 
-  defaultMessage() {
+  public defaultMessage(): string {
     return '$property must be unique for given clinic';
   }
 }

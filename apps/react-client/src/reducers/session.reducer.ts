@@ -3,7 +3,7 @@ import { SessionState } from './session-state.interface';
 import {
   AllSessionActions,
   SessionActionTypes,
-} from 'src/actions/session.actions';
+} from '../../src/actions/session.actions';
 
 export function sessionReducer(
   state: SessionState = sessionInitialState,
@@ -17,11 +17,19 @@ export function sessionReducer(
       };
     }
     case SessionActionTypes.EMAIL_LOGIN_SUCCESS: {
-      // TODO: process payload (token?)
+      const {
+        userRoles,
+        userName,
+        emailAccessToken: authToken,
+      } = action.payload;
+
       return {
         ...state,
+        authToken,
+        userRoles,
+        userName,
+        userIsLoggedIn: true,
         authApiCommunicationIsInProgress: false,
-        isLoggedIn: true,
       };
     }
     case SessionActionTypes.EMAIL_LOGIN_ERROR: {
@@ -30,6 +38,35 @@ export function sessionReducer(
         authApiCommunicationIsInProgress: false,
       };
     }
+
+    case SessionActionTypes.LOGOUT: {
+      return {
+        ...state,
+        authToken: undefined,
+        userRoles: [],
+        userName: undefined,
+        userIsLoggedIn: false,
+      };
+    }
+
+    case SessionActionTypes.GET_FEATURES_SUCCESS: {
+      const { features } = action.payload;
+
+      return {
+        ...state,
+        availableFeatures: features,
+      };
+    }
+
+    case SessionActionTypes.CHANGE_LANGUAGE: {
+      const { language: currentLanguage } = action.payload;
+
+      return {
+        ...state,
+        currentLanguage,
+      };
+    }
+
     default:
       return state;
   }

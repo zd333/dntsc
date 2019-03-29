@@ -1,13 +1,14 @@
-import { CreateInventoryBalanceChangeInDto } from '../dto/create-inventory-balance-change.in-dto';
-import { CreateInventoryItemInDto } from '../dto/create-inventory-item.dto';
+import { CreateInventoryBalanceChangeInDtoWithClinicContext } from '../dto/create-inventory-balance-change.in-dto';
+import { CreateInventoryItemInDtoWithClinicContext } from '../dto/create-inventory-item.in-dto';
 import { Document, Model, Types } from 'mongoose';
-import { getMongoFindConditionForFieldSearch } from 'src/sub-features/shared/helpers/get-mongo-find-condition-for-field-search';
-import { getPaginationMongoFindOptionsFromDto } from 'src/sub-features/shared/helpers/get-pagination-mongo-find-options-from-in-dto';
+import { getMongoFindConditionForFieldSearch } from '../../../../src/sub-features/shared/helpers/get-mongo-find-condition-for-field-search';
+import { getPaginationMongoFindOptionsFromDto } from '../../../../src/sub-features/shared/helpers/get-pagination-mongo-find-options-from-in-dto';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { MongoFindResults } from 'src/sub-features/shared/helpers/convert-documents-to-paginated-list-out-dto';
-import { QueryParamsForSearchablePaginatedListInDto } from 'src/sub-features/shared/dto/query-params-for-paginated-list.in-dto';
-import { runMongoPaginatedQueryWithAutoLimit } from 'src/sub-features/shared/helpers/run-mongo-paginated-query-with-auto-limit';
+import { MongoFindResults } from '../../../../src/sub-features/shared/helpers/convert-documents-to-paginated-list-out-dto';
+import { QueryParamsForSearchablePaginatedListInDto } from '../../../../src/sub-features/shared/dto/query-params-for-paginated-list.in-dto';
+import { runMongoPaginatedQueryWithAutoLimit } from '../../../../src/sub-features/shared/helpers/run-mongo-paginated-query-with-auto-limit';
+import { UpdateInventoryItemInDtoWithClinicContext } from '../dto/update-inventory-item.in-dto';
 import {
   INVENTORY_BALANCE_CHANGE_SCHEMA_COLLECTION_NAME,
   InventoryBalanceChangeDocument,
@@ -29,7 +30,7 @@ export class InventoryDbConnectorService {
   ) {}
 
   public async createItem(
-    dto: CreateInventoryItemInDto,
+    dto: CreateInventoryItemInDtoWithClinicContext,
   ): Promise<InventoryItemDocument> {
     const { targetClinicId, ...data } = dto;
     const doc = new this.inventoryItemModel({
@@ -42,19 +43,67 @@ export class InventoryDbConnectorService {
     return doc;
   }
 
+  public async updateItem(params: {
+    readonly id: string;
+    readonly dto: UpdateInventoryItemInDtoWithClinicContext;
+  }): Promise<void> {
+    const { id, dto } = params;
+    const { targetClinicId, id: idToStrip, ...dtoWithStrippedId } = dto;
+    // `alternates` and/or `tags` are optional thus need custom unset code to be deleted
+    const unsetStatement =
+      !!dtoWithStrippedId.alternates && !!dtoWithStrippedId.tags
+        ? // Nothing to unset/delete
+          {}
+        : {
+            $unset: {
+              ...(!dtoWithStrippedId.alternates
+                ? { alternates: undefined }
+                : {}),
+              ...(!dtoWithStrippedId.tags ? { tags: undefined } : {}),
+            },
+          };
+    const docUpdates = {
+      ...dtoWithStrippedId,
+      ...unsetStatement,
+    };
+
+    await this.inventoryItemModel.findByIdAndUpdate(id, docUpdates);
+  }
+
   public async getItemById(id: string): Promise<InventoryItemDocument | null> {
     return await this.inventoryItemModel.findById(id).exec();
   }
 
+  /**
+   * `filterTags` - search items that contain all specified tags.
+   * `filterAlternatesOfItemId` - search items that contain specified id in alternates list.
+   */
   public async getClinicItems(params: {
-    readonly clinicId: string;
+    readonly clinicId?: string;
     readonly paginationParams?: QueryParamsForSearchablePaginatedListInDto;
+    readonly filterTags?: Array<string>;
+    readonly filterAlternatesOfItemId?: string;
   }): Promise<MongoFindResults<InventoryItemDocument>> {
-    const { clinicId, paginationParams } = params;
+    const {
+      clinicId,
+      paginationParams,
+      filterTags,
+      filterAlternatesOfItemId,
+    } = params;
     const findOptions = getPaginationMongoFindOptionsFromDto(paginationParams);
     // Add search condition only if search string is present
     const findConditions = {
       clinics: clinicId,
+      ...(filterTags
+        ? {
+            tags: { $all: filterTags },
+          }
+        : {}),
+      ...(filterAlternatesOfItemId
+        ? {
+            alternates: filterAlternatesOfItemId,
+          }
+        : {}),
       ...(paginationParams && paginationParams.searchString
         ? getMongoFindConditionForFieldSearch({
             fieldName: 'name',
@@ -81,14 +130,16 @@ export class InventoryDbConnectorService {
   public async checkInventoryItemWithGivenNameExistsInClinic(params: {
     readonly inventoryItemName: string;
     readonly clinics: Array<string>;
+    readonly idToExclude?: string;
   }): Promise<boolean> {
-    const { clinics, inventoryItemName } = params;
+    const { clinics, inventoryItemName, idToExclude } = params;
     const findConditions = {
       clinics: { $in: clinics },
       ...getMongoFindConditionForFieldSearch({
         fieldName: 'name',
         searchString: inventoryItemName,
       }),
+      ...(idToExclude ? { _id: { $ne: idToExclude } } : {}),
     };
     const found = await this.inventoryItemModel
       .find(findConditions, { limit: 1 })
@@ -98,7 +149,7 @@ export class InventoryDbConnectorService {
   }
 
   public async createBalanceChange(
-    dto: CreateInventoryBalanceChangeInDto,
+    dto: CreateInventoryBalanceChangeInDtoWithClinicContext,
   ): Promise<Document> {
     const { targetClinicId, ...data } = dto;
     const doc = new this.inventoryBalanceChangeModel({
@@ -109,9 +160,7 @@ export class InventoryDbConnectorService {
     return await doc.save();
   }
 
-  public async getCurrentBalanceOfItem(
-    id: string,
-  ): Promise<number | undefined> {
+  public async getCurrentBalanceOfItem(id: string): Promise<number> {
     // Automatic casting is not done in aggregation queries
     const itemObjectId = Types.ObjectId(id);
     const result = await this.inventoryBalanceChangeModel
@@ -133,7 +182,7 @@ export class InventoryDbConnectorService {
       !!result[0] &&
       typeof result[0].total === 'number'
       ? result[0].total
-      : undefined;
+      : 0;
   }
 
   public async getBalanceChangesOfItem(params: {

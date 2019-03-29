@@ -1,4 +1,4 @@
-import { AppRequest } from 'src/app.module';
+import { AppRequest } from '../../../../src/app.module';
 import {
   CanActivate,
   ExecutionContext,

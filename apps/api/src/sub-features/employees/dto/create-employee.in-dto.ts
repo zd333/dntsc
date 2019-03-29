@@ -1,5 +1,5 @@
-import { AppAccessRoles } from 'src/app-access-roles';
-import { InDtoWithClinicContext } from 'src/middlewares/add-clinic-context.middleware';
+import { allAppAccessRoles, AppAccessRoles } from '../../../app-access-roles';
+import { InDtoWithClinicContext } from '../../../../src/middlewares/add-clinic-context.middleware';
 import { IsUniqueEmployeeLoginForGivenClinic } from '../validators/is-unique-employee-login-for-given-clinic.validator';
 import {
   IsString,
@@ -7,23 +7,23 @@ import {
   ArrayUnique,
   Validate,
   IsOptional,
-  IsEnum,
   NotEquals,
+  IsIn,
 } from 'class-validator';
 
-export class CreateEmployeeInDto extends InDtoWithClinicContext {
+export class CreateEmployeeInDtoWithClinicContext extends InDtoWithClinicContext {
   @MinLength(3)
   @IsString()
   @Validate(IsUniqueEmployeeLoginForGivenClinic)
-  readonly login: string;
+  public readonly login: string;
 
   @IsString()
   @MinLength(4)
-  readonly password: string;
+  public readonly password: string;
 
   @MinLength(3)
   @IsString()
-  readonly name: string;
+  public readonly name: string;
 
   /**
    * Access (permissions) roles list.
@@ -32,7 +32,15 @@ export class CreateEmployeeInDto extends InDtoWithClinicContext {
    */
   @IsOptional()
   @ArrayUnique()
-  @IsEnum(AppAccessRoles, { each: true })
-  @NotEquals(AppAccessRoles._PLATFORM_OWNER, { each: true })
-  readonly roles?: Array<AppAccessRoles>;
+  @IsIn(allAppAccessRoles, { each: true })
+  @NotEquals('_PLATFORM_OWNER', { each: true })
+  public readonly roles?: Array<AppAccessRoles>;
 }
+
+/**
+ * DTO type for clients.
+ */
+export type CreateEmployeeInDto = Pick<
+  CreateEmployeeInDtoWithClinicContext,
+  Exclude<keyof CreateEmployeeInDtoWithClinicContext, 'targetClinicId'>
+>;

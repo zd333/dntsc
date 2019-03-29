@@ -19,7 +19,7 @@ export class IsUniqueTenantNameValidator
     return !nameIsOccupied;
   }
 
-  defaultMessage() {
+  public defaultMessage(): string {
     return '$property must be unique, $value is already existing tenant';
   }
 }

@@ -23,7 +23,7 @@ export class NotUsedClinicHostNames implements ValidatorConstraintInterface {
     return !someHostNamesAreAlreadyUsed;
   }
 
-  defaultMessage() {
+  public defaultMessage(): string {
     return '$property must contain all new (not used by other clinics) host names';
   }
 }

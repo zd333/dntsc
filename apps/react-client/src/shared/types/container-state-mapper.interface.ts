@@ -25,5 +25,7 @@ type PartialConditionalSubType<Base, Condition> = Partial<
 >;
 type FunctionProps<Base> = PartialConditionalSubType<
   Base,
+  // Those are really any, because must be generic generic
+  /* tslint:disable-next-line:no-any */
   (...args: any) => any
 >;

@@ -5,14 +5,14 @@ import { Expose } from 'class-transformer';
  */
 export class EmployeeDetailsOutDto {
   @Expose()
-  readonly id: string;
+  public readonly id: string;
 
   @Expose()
-  readonly login: string;
+  public readonly login: string;
 
   @Expose()
-  readonly name: string;
+  public readonly name: string;
 
   @Expose()
-  readonly hasToChangePassword?: boolean;
+  public readonly hasToChangePassword?: boolean;
 }

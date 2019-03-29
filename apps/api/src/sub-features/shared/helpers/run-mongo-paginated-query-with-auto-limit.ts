@@ -11,6 +11,8 @@ const MAX_ITEMS_IN_RESPONSE = 1024;
 export async function runMongoPaginatedQueryWithAutoLimit<
   T extends Readonly<Document>
 >(params: {
+  // No 3-rd typings and hard to type, thus any
+  /* tslint:disable-next-line:no-any */
   readonly findConditions: { readonly [key: string]: any };
   readonly findOptions: PaginationMongoFindOptions;
   readonly model: Model<T>;

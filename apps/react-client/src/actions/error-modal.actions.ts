@@ -1,4 +1,14 @@
+import { Action } from '@martin_hotell/rex-tils/types/redux/types';
 import { createAction } from '@martin_hotell/rex-tils';
+
+// TODO: clarify what is this object and if this is `AjaxError` or not
+// tslint:disable-next-line:comment-format
+// export type ApiError = AjaxError;
+export interface ApiError {
+  readonly error?: string;
+  // tslint:disable-next-line:no-any
+  readonly message?: Array<any>;
+}
 
 /**
  * Definition of this state slice is not standard
@@ -17,19 +27,22 @@ export const closeErrorNotificationModalAction = () =>
  * This helper must be used to defined all global/common error actions
  * which require common error notification with modal
  */
-export function createCommonErrorAction(
-  type: string,
-  payload: CommonErrorActionPayload,
-) {
+export function createCommonErrorAction<
+  T extends string,
+  P extends CommonErrorActionPayload
+>(type: T, payload: P): Action<T, P> {
   return createAction(type, payload);
 }
 
-interface CommonErrorActionPayload {
-  isCommonErrorAction: true;
-  errorMessage?: string;
+export interface CommonErrorActionPayload {
+  readonly isCommonErrorAction: true;
+  /**
+   * This can become type union if there are more than one type of error object
+   */
+  readonly error?: ApiError;
 }
 
-type CommonErrorAction = ReturnType<typeof createCommonErrorAction>;
+export type CommonErrorAction = Action<string, CommonErrorActionPayload>;
 
 /**
  * Type guard to check if action follows CommonErrorActionType signature,

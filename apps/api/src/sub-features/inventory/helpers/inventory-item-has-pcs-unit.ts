@@ -6,5 +6,5 @@ import { InventoryItemUnits } from '../db-schemas/inventory-item.db-schema';
 export function inventoryItemHasPcsUnit<
   T extends { readonly unit: InventoryItemUnits }
 >(item: T): boolean {
-  return !!item && item.unit === InventoryItemUnits.pcs;
+  return !!item && item.unit === 'PCS';
 }

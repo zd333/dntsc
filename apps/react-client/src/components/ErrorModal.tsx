@@ -10,9 +10,9 @@ import {
 } from '@material-ui/core';
 
 export interface ErrorModalProps {
-  isOpened: boolean;
-  message?: string;
-  onClose: () => void;
+  readonly isOpened: boolean;
+  readonly message?: string;
+  readonly onClose: () => void;
 }
 
 const StyledErrorModal: React.SFC<StyledErrorModalProps> = props => {
@@ -22,17 +22,18 @@ const StyledErrorModal: React.SFC<StyledErrorModalProps> = props => {
   );
 
   return (
+    // TODO: refactor with Dialog component (Modal is low-level, no need to use it here)
     <Modal
-      aria-labelledby="simple-modal-title"
-      aria-describedby="simple-modal-description"
+      aria-labelledby="error-modal-title"
+      aria-describedby="error-modal-description"
       open={isOpened}
       onClose={onClose}
     >
       <div className={classes.paper}>
-        <Typography variant="h6" id="modal-title">
+        <Typography variant="h6" id="error-modal-title">
           <FormattedMessage id="errorModal.title" />
         </Typography>
-        <Typography variant="subtitle1" id="simple-modal-description">
+        <Typography variant="subtitle1" id="error-modal-description">
           {messageToShow}
         </Typography>
       </div>
