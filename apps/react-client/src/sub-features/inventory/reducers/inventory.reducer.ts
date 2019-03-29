@@ -12,19 +12,52 @@ export function inventoryReducer(
   action: AllInventoryActions,
 ): InventoryState {
   switch (action.type) {
-    case InventoryActionTypes.SEARCH_ITEMS_START: {
+    case InventoryActionTypes.FETCH_ITEMS_START:
+    case InventoryActionTypes.FETCH_AND_FILTER_ITEMS_START: {
       return {
         ...state,
         searchItemsApiRequestInProgress: true,
       };
     }
 
-    case InventoryActionTypes.SEARCH_ITEMS_SUCCESS: {
+    case InventoryActionTypes.FETCH_ITEMS_SUCCESS: {
+      const {
+        fetchResults: { items },
+      } = action.payload;
+      const newItemsDict = arrayToDictionary(items, 'id');
+      // Merge new results to all items dictionary
+      const itemsDict = {
+        ...state.itemsDict,
+        ...newItemsDict,
+      };
+
+      return {
+        ...state,
+        itemsDict,
+        searchItemsApiRequestInProgress: false,
+      };
+    }
+
+    case InventoryActionTypes.TOGGLE_SHOW_FILTERED_ITEMS_MODE: {
+      const { showFilteredItems } = action.payload;
+      // Automatically reset matching items list when we disable filtering mode
+      const matchingSearchCriteriaItemIds = showFilteredItems
+        ? state.matchingSearchCriteriaItemIds
+        : [];
+
+      return {
+        ...state,
+        showFilteredItems,
+        matchingSearchCriteriaItemIds,
+      };
+    }
+
+    case InventoryActionTypes.FETCH_AND_FILTER_ITEMS_SUCCESS: {
+      // Do same what we do with `FETCH_ITEMS_SUCCESS`, but also save `matchingSearchCriteriaItemIds`
       const {
         searchResults: { items },
       } = action.payload;
       const foundItemsDict = arrayToDictionary(items, 'id');
-      // Merge new results to all items dictionary
       const itemsDict = {
         ...state.itemsDict,
         ...foundItemsDict,
@@ -36,13 +69,16 @@ export function inventoryReducer(
         ...state,
         itemsDict,
         matchingSearchCriteriaItemIds,
+        showFilteredItems: true,
         searchItemsApiRequestInProgress: false,
       };
     }
 
-    case InventoryActionTypes.SEARCH_ITEMS_ERROR: {
+    case InventoryActionTypes.FETCH_ITEMS_ERROR:
+    case InventoryActionTypes.FETCH_AND_FILTER_ITEMS_ERROR: {
       return {
         ...state,
+        showFilteredItems: false,
         searchItemsApiRequestInProgress: false,
       };
     }

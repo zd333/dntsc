@@ -13,6 +13,7 @@ const ITEMS_PER_CALL_LIMIT = 100;
 export const searchInventoryItemsApiConnector = (params: {
   readonly searchString?: string;
   readonly tagsToFilterBy?: Array<string>;
+  readonly alternatesOf?: InventoryItemDetailsOutDto['id'];
   readonly authToken: string | undefined;
 }): Observable<PaginatedListOutDto<InventoryItemDetailsOutDto>> => {
   const queryParams = [
@@ -22,6 +23,9 @@ export const searchInventoryItemsApiConnector = (params: {
       : []),
     ...(params.tagsToFilterBy && params.tagsToFilterBy.length > 0
       ? [{ name: 'tags', value: params.tagsToFilterBy.join(',') }]
+      : []),
+    ...(params.alternatesOf
+      ? [{ name: 'alternates_of', value: params.alternatesOf }]
       : []),
   ];
   const url = getApiUrl({ path: SEARCH_INVENTORY_ITEMS_PATH, queryParams });

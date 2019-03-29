@@ -7,7 +7,7 @@ import { LOCATION_CHANGE, LocationChangeAction } from 'connected-react-router';
 import { selectAllItems } from '../selectors/all-items.selector';
 
 /**
- * Fires search inventory items action when user navigates to any inventory route,
+ * Fires fetch inventory items action when user navigates to any inventory route,
  * but only if there are no loaded inventory items yet.
  */
 export const searchInventoryItemsOnNavigationToInventory: Epic<
@@ -25,6 +25,6 @@ export const searchInventoryItemsOnNavigationToInventory: Epic<
           action.payload.location.pathname.toLowerCase().startsWith(path),
         ),
     ),
-    mapTo(InventoryActions.searchItemsStart({})),
+    mapTo(InventoryActions.fetchItemsStart()),
   );
 };

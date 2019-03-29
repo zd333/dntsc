@@ -53,7 +53,7 @@ interface InventoryItemDetailsFormState {
   readonly todo: 'remove';
 }
 
-// TODO: implement filter by alternates API support and then dispatch search action after each select of unit with selected unit
+// TODO: implement filter by alternates API support and then dispatch search action after each select of item with selected unit
 export class StyledInventoryItemDetailsForm extends React.Component<
   StyledTranslatedInventoryItemDetailsFormProps,
   InventoryItemDetailsFormState
@@ -136,7 +136,6 @@ export class StyledInventoryItemDetailsForm extends React.Component<
     ));
     const getAlternatesSuggestionsForGivenUnit = (
       unit: InventoryItemDetailsFormValues['unit'],
-      item: InventoryItem | undefined,
     ): Array<Pick<InventoryItem, 'id' | 'name'>> | undefined => {
       if (
         !unit ||
@@ -233,10 +232,7 @@ export class StyledInventoryItemDetailsForm extends React.Component<
                   isMulti={true}
                   allowCreate={false}
                   label={alternatesFieldName}
-                  options={getAlternatesSuggestionsForGivenUnit(
-                    values.unit,
-                    item,
-                  )}
+                  options={getAlternatesSuggestionsForGivenUnit(values.unit)}
                 />
               </Grid>
 

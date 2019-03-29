@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { InventoryActions } from '../actions/inventory.actions';
 import { RootState } from '../../..';
 import { selectAlternatesSuggestions } from '../selectors/alternates-suggestions.selector';
-import { selectMatchingSearchItems } from '../selectors/matching-search-items.selector';
+import { selectItemsToShow } from '../selectors/items-to-show.selector';
 import { selectTranslatedInventoryItemUnits } from '../selectors/translated-inventory-item-units.selector';
 import { selectUpdateAndCreateInventoryItemsIsAllowed } from '../selectors/update-and-create-inventory-items-is-allowed.selector';
 import { selectUsedInventoryItemsTags } from '../selectors/used-inventory-items-tags.selector';
@@ -20,7 +20,7 @@ const mapStateToProps: StateMapper<
   RootState
 > = state => {
   return {
-    items: selectMatchingSearchItems(state),
+    items: selectItemsToShow(state),
     itemUnits: selectTranslatedInventoryItemUnits(state),
     alternatesSuggestions: selectAlternatesSuggestions(state),
     updateAndCreateAreAllowed: selectUpdateAndCreateInventoryItemsIsAllowed(
@@ -36,7 +36,7 @@ const mapDispatchToProps: DispatchMapper<
   return {
     onSearch: params => {
       dispatch(
-        InventoryActions.searchItemsStart({
+        InventoryActions.fetchAndFilterItemsStart({
           searchString: params.searchString,
           tagsToFilterBy: params.tagsToFilterBy,
         }),
