@@ -3,6 +3,7 @@ import { EmployeeDocument } from '../../../sub-features/employees/db-schemas/emp
 import { EmployeesDbConnectorService } from '../../../../src/sub-features/employees/services/employees-db-connector.service';
 import { hasRoles } from '../../../sub-features/shared/helpers/has-roles';
 import { JwtService } from '@nestjs/jwt';
+import { RefreshAuthInDtoWithClinicContext } from '../dto/refresh-auth.in-dto';
 import { SignedInEmployeeOutDto } from '../dto/signed-in-employee.out-dto';
 import { SignInEmployeeInDtoWithClinicContext } from '../dto/sign-in-employee.in-dto';
 import { SignInPlatformOwnerInDto } from '../dto/sign-in-platform-owner.in-dto';
@@ -10,13 +11,17 @@ import {
   Injectable,
   UnauthorizedException,
   ForbiddenException,
+  Inject,
 } from '@nestjs/common';
+
+const TIME_TO_REFRESH_AUTH_TOKEN_AFTER_EXPIRATION = 1000;
 
 @Injectable()
 export class AuthenticationService {
   constructor(
     private readonly jwt: JwtService,
     private readonly employeesDbConnector: EmployeesDbConnectorService,
+    @Inject('USER_SESSION_EXPIRATION') private sessionExpirationTimeout: number,
   ) {}
 
   /**
@@ -49,9 +54,12 @@ export class AuthenticationService {
 
     const payload: JwtPayload = { employeeId: employee._id };
     const authToken = this.jwt.sign(payload);
+    const refreshToken = this.jwt.sign(payload, {
+      expiresIn: this.getRefreshTokenTimeout(),
+    });
     const { hasToChangePassword, roles, name } = employee;
 
-    return { authToken, hasToChangePassword, roles, name };
+    return { authToken, refreshToken, hasToChangePassword, roles, name };
   }
 
   /**
@@ -79,9 +87,12 @@ export class AuthenticationService {
 
     const payload: JwtPayload = { employeeId: employee._id };
     const authToken = this.jwt.sign(payload);
+    const refreshToken = this.jwt.sign(payload, {
+      expiresIn: this.getRefreshTokenTimeout(),
+    });
     const { roles, name } = employee;
 
-    return { authToken, roles, name };
+    return { authToken, refreshToken, roles, name };
   }
 
   /**
@@ -103,6 +114,47 @@ export class AuthenticationService {
     }
 
     return convertEmployeeDocumentToAuthenticatedUser(employee);
+  }
+
+  public async refreshAuth(
+    dto: RefreshAuthInDtoWithClinicContext,
+  ): Promise<SignedInEmployeeOutDto> {
+    if (!dto || !dto.refreshToken) {
+      throw new UnauthorizedException();
+    }
+    const payload = this.jwt.verify<JwtPayload>(dto.refreshToken);
+    const { employeeId } = payload;
+    const employee = await this.employeesDbConnector.getById(employeeId);
+    if (!employee) {
+      throw new UnauthorizedException();
+    }
+    if (!employee.isActive) {
+      throw new ForbiddenException();
+    }
+    const isPlatformOwner = hasRoles({
+      target: employee,
+      roles: ['_PLATFORM_OWNER'],
+    });
+    const authToken = this.jwt.sign(payload);
+    const refreshToken = this.jwt.sign(payload, {
+      expiresIn: this.getRefreshTokenTimeout(),
+    });
+    const { hasToChangePassword, roles, name } = employee;
+
+    return {
+      authToken,
+      refreshToken,
+      roles,
+      name,
+      ...(isPlatformOwner ? {} : { hasToChangePassword }),
+    };
+  }
+
+  private getRefreshTokenTimeout(): number {
+    return (
+      this.sessionExpirationTimeout +
+      TIME_TO_REFRESH_AUTH_TOKEN_AFTER_EXPIRATION
+    );
   }
 }
 

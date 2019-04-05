@@ -7,19 +7,28 @@ import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { SharedModule } from '../shared/shared.module';
 
+const sessionExpirationTimeout = Number(process.env.USER_SESSION_EXPIRATION);
+
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
       secretOrPrivateKey: process.env.JWT_SECRET,
       signOptions: {
-        expiresIn: Number(process.env.USER_SESSION_EXPIRATION),
+        expiresIn: sessionExpirationTimeout,
       },
     }),
     EmployeesModule,
     SharedModule,
   ],
-  providers: [AuthenticationService, JwtPassportStrategy],
+  providers: [
+    AuthenticationService,
+    JwtPassportStrategy,
+    {
+      provide: 'USER_SESSION_EXPIRATION',
+      useValue: sessionExpirationTimeout,
+    },
+  ],
   controllers: [AuthenticationController],
 })
 export class AuthenticationModule {}

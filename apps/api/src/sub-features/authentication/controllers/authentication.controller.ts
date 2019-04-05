@@ -43,4 +43,6 @@ export class AuthenticationController {
   ): Promise<SignedInEmployeeOutDto> {
     return await this.authenticationService.signInPlatformOwner(dto);
   }
+
+  // TODO: implement `reafresh` endpoint using `refreshAuth` method
 }
