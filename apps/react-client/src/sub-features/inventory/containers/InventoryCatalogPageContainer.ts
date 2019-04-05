@@ -51,8 +51,10 @@ const mapDispatchToProps: DispatchMapper<
       const { id, itemUpdates } = params;
       dispatch(InventoryActions.updateItemStart({ id, itemUpdates }));
     },
-    // TODO: implement search with given unit functionality
-    onSearchAlternatesForGivenUnit: () => void 0,
+    onNeedAlternatesForGivenUnit: params => {
+      const { unit } = params;
+      dispatch(InventoryActions.fetchItemsStart({ unitToFilterBy: unit }));
+    },
   };
 };
 
