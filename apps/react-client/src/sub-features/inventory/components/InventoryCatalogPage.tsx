@@ -34,7 +34,7 @@ export interface InventoryCatalogPageProps {
     readonly searchString?: string;
     readonly tagsToFilterBy?: Array<string>;
   }) => void;
-  readonly onSearchAlternatesForGivenUnit: (params: {
+  readonly onNeedAlternatesForGivenUnit: (params: {
     readonly unit: InventoryItem['unit'];
   }) => void;
   readonly onCreate: (params: {
@@ -54,7 +54,7 @@ interface InventoryCatalogPageState {
   readonly currentTagsToFilterBy?: Array<string>;
 }
 
-export class StyledInventoryCatalogPage extends React.Component<
+export class StyledInventoryCatalogPage extends React.PureComponent<
   StyledInventoryCatalogProps,
   InventoryCatalogPageState
 > {
@@ -115,7 +115,7 @@ export class StyledInventoryCatalogPage extends React.Component<
   public handleUnitChange = (params: {
     readonly unit: InventoryItem['unit'];
   }) => {
-    this.props.onSearchAlternatesForGivenUnit(params);
+    this.props.onNeedAlternatesForGivenUnit(params);
   };
 
   public handleCreateNewItemSubmit = (params: {

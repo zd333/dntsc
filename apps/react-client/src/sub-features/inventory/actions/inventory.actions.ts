@@ -36,6 +36,7 @@ export const InventoryActions = {
     readonly searchString?: string;
     readonly tagsToFilterBy?: Array<string>;
     readonly alternatesOf?: InventoryItem['id'];
+    readonly unitToFilterBy?: InventoryItem['unit'];
   }) => createAction(InventoryActionTypes.FETCH_ITEMS_START, payload),
   fetchItemsSuccess: (payload: {
     readonly fetchResults: PaginatedListOutDto<InventoryItemDetailsOutDto>;
@@ -55,6 +56,7 @@ export const InventoryActions = {
     readonly searchString?: string;
     readonly tagsToFilterBy?: Array<string>;
     readonly alternatesOf?: InventoryItem['id'];
+    readonly unitToFilterBy?: InventoryItem['unit'];
   }) =>
     createAction(InventoryActionTypes.FETCH_AND_FILTER_ITEMS_START, payload),
   fetchAndFilterItemsSuccess: (payload: {

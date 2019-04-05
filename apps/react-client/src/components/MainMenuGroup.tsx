@@ -30,7 +30,7 @@ interface MainMenuGroupState {
   readonly isOpened: boolean;
 }
 
-class StyledMainMenuGroup extends React.Component<
+class StyledMainMenuGroup extends React.PureComponent<
   StyledMainMenuGroupProps,
   MainMenuGroupState
 > {

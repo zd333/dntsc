@@ -16,6 +16,7 @@ import {
 import {
   INVENTORY_ITEM_SCHEMA_COLLECTION_NAME,
   InventoryItemDocument,
+  InventoryItemUnits,
 } from '../db-schemas/inventory-item.db-schema';
 
 @Injectable()
@@ -83,12 +84,14 @@ export class InventoryDbConnectorService {
     readonly paginationParams?: QueryParamsForSearchablePaginatedListInDto;
     readonly filterTags?: Array<string>;
     readonly filterAlternatesOfItemId?: string;
+    readonly filterUnit?: InventoryItemUnits;
   }): Promise<MongoFindResults<InventoryItemDocument>> {
     const {
       clinicId,
       paginationParams,
       filterTags,
       filterAlternatesOfItemId,
+      filterUnit,
     } = params;
     const findOptions = getPaginationMongoFindOptionsFromDto(paginationParams);
     // Add search condition only if search string is present
@@ -102,6 +105,11 @@ export class InventoryDbConnectorService {
       ...(filterAlternatesOfItemId
         ? {
             alternates: filterAlternatesOfItemId,
+          }
+        : {}),
+      ...(filterUnit
+        ? {
+            unit: filterUnit,
           }
         : {}),
       ...(paginationParams && paginationParams.searchString
