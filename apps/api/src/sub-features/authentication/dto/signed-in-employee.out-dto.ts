@@ -6,6 +6,12 @@ export class SignedInEmployeeOutDto {
   public readonly authToken: string;
 
   @Expose()
+  /**
+   * Contains `JwtPayload` payload, see `AuthenticationService`.
+   */
+  public readonly refreshToken: string;
+
+  @Expose()
   public readonly hasToChangePassword?: boolean;
 
   @Expose()
