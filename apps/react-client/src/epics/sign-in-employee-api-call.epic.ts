@@ -1,14 +1,11 @@
-import { AllAppActions, AppEpicsDependencies, RootState } from '../../src';
+import { AllAppActions, AppEpicsDependencies, RootState } from '..';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { createAppEpicErrorAction } from '../shared/helpers/create-app-epic-error-action';
 import { Epic } from 'redux-observable';
 import { ofType } from '@martin_hotell/rex-tils';
-import {
-  SessionActionTypes,
-  SessionActions,
-} from '../../src/actions/session.actions';
+import { SessionActions, SessionActionTypes } from '../actions/session.actions';
 
-export const emailSignInApiCallEpic: Epic<
+export const signInEmployeeApiCallEpic: Epic<
   AllAppActions,
   AllAppActions,
   RootState,
@@ -23,7 +20,8 @@ export const emailSignInApiCallEpic: Epic<
       }).pipe(
         map(dto =>
           SessionActions.emailLoginSuccess({
-            emailAccessToken: dto.authToken,
+            accessToken: dto.authToken,
+            refreshToken: dto.refreshToken,
             userRoles: dto.roles,
             userName: dto.name,
             hasToChangePassword: dto.hasToChangePassword,

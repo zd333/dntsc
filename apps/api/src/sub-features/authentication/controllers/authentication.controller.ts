@@ -1,5 +1,8 @@
 import { AppRequest } from '../../../../src/app.module';
 import { AuthenticationService } from '../services/authentication.service';
+import { AuthGuard } from '@nestjs/passport';
+import { RefreshAuthInDtoWithClinicContext } from '../dto/refresh-auth.in-dto';
+import { RequesterIsEmployeeOfTargetClinicGuard } from '../../shared/guards/requester-is-employee-of-target-clinic.guard';
 import { RequestIsInClinicContextGuard } from '../../../../src/sub-features/shared/guards/request-is-in-clinic-context.guard';
 import { SignedInEmployeeOutDto } from '../dto/signed-in-employee.out-dto';
 import { SignInEmployeeInDtoWithClinicContext } from '../dto/sign-in-employee.in-dto';
@@ -44,5 +47,20 @@ export class AuthenticationController {
     return await this.authenticationService.signInPlatformOwner(dto);
   }
 
-  // TODO: implement `reafresh` endpoint using `refreshAuth` method
+  /**
+   * Returns new fresh auth token.
+   * Checks refresh token which lives longer than regular auth token.
+   * Is implemented for regular employee (not for platform owners).
+   */
+  @UseGuards(
+    AuthGuard(),
+    RequestIsInClinicContextGuard,
+    RequesterIsEmployeeOfTargetClinicGuard,
+  )
+  @Post('refresh-employee-session')
+  public async refreshAuth(
+    @Body() dto: RefreshAuthInDtoWithClinicContext,
+  ): Promise<SignedInEmployeeOutDto> {
+    return await this.authenticationService.refreshEmployeeAuthToken(dto);
+  }
 }

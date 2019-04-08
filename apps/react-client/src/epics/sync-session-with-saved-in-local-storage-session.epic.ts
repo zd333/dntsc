@@ -41,6 +41,7 @@ export const syncAppSessionWithSavedInLocalStorageSessionEpic: Epic<
         const userIsLoggedInAccordingToSavedSessionData =
           !!sessionDataFromLocalStorage &&
           !!sessionDataFromLocalStorage.authToken &&
+          !!sessionDataFromLocalStorage.refreshToken &&
           Array.isArray(sessionDataFromLocalStorage.userRoles);
 
         if (userIsLoggedInAccordingToSavedSessionData === userIsLoggedIn) {
@@ -53,13 +54,15 @@ export const syncAppSessionWithSavedInLocalStorageSessionEpic: Epic<
         // Values are definitely typed (we checked it in `userIsLoggedInAccordingToSavedSessionData`)\
         // Need to use cast because TypeScript can't understand it
         const savedSession = sessionDataFromLocalStorage as SavedSession;
-        const emailAccessToken = savedSession.authToken as string;
+        const accessToken = savedSession.authToken as string;
+        const refreshToken = savedSession.refreshToken as string;
         const userRoles = savedSession.userRoles;
         const userName = savedSession.userName || '';
 
         return observableOf(
           SessionActions.emailLoginSuccess({
-            emailAccessToken,
+            accessToken,
+            refreshToken,
             userRoles,
             userName,
           }),

@@ -5,6 +5,7 @@ export interface SessionState {
   // Need explicit flag for saved session, undefined means still unknown
   readonly userIsLoggedIn: boolean | undefined;
   readonly authToken: string | undefined;
+  readonly refreshToken: string | undefined;
   readonly userRoles: Array<AppAccessRoles>;
   readonly userName: string | undefined;
   readonly authApiCommunicationIsInProgress: boolean;

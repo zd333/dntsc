@@ -3,6 +3,7 @@ import { AppLanguages, SessionState } from './session-state.interface';
 export const sessionInitialState: SessionState = {
   userIsLoggedIn: undefined,
   authToken: undefined,
+  refreshToken: undefined,
   userRoles: [],
   userName: undefined,
   authApiCommunicationIsInProgress: false,
