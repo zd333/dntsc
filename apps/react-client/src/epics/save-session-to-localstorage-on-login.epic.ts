@@ -21,7 +21,8 @@ export const saveSessionToLocalStorageOnLoginEpic: Epic<
     ofType(SessionActionTypes.EMAIL_LOGIN_SUCCESS),
     tap(action => {
       const sessionDataToSave: SavedSession = {
-        authToken: action.payload.emailAccessToken,
+        authToken: action.payload.accessToken,
+        refreshToken: action.payload.refreshToken,
         userRoles: action.payload.userRoles,
         userName: action.payload.userName,
       };
@@ -38,5 +39,5 @@ export const saveSessionToLocalStorageOnLoginEpic: Epic<
  */
 export type SavedSession = Pick<
   SessionState,
-  'authToken' | 'userRoles' | 'userName'
+  'authToken' | 'refreshToken' | 'userRoles' | 'userName'
 >;

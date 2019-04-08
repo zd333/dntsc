@@ -116,7 +116,7 @@ export class AuthenticationService {
     return convertEmployeeDocumentToAuthenticatedUser(employee);
   }
 
-  public async refreshAuth(
+  public async refreshEmployeeAuthToken(
     dto: RefreshAuthInDtoWithClinicContext,
   ): Promise<SignedInEmployeeOutDto> {
     if (!dto || !dto.refreshToken) {

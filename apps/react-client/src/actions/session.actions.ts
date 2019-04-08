@@ -9,6 +9,10 @@ export enum SessionActionTypes {
   EMAIL_LOGIN_SUCCESS = '[Session actions] Email login success',
   EMAIL_LOGIN_ERROR = '[Session actions] Email login error',
 
+  REFRESH_SESSION_START = '[Session actions] Refresh session start',
+  REFRESH_SESSION_SUCCESS = '[Session actions] Refresh session success',
+  REFRESH_SESSION_ERROR = '[Session actions] Refresh session error',
+
   LOGOUT = '[Session actions] Logout',
 
   GET_FEATURES_START = '[Session actions] Get features start',
@@ -24,13 +28,26 @@ export const SessionActions = {
     readonly password: string;
   }) => createAction(SessionActionTypes.EMAIL_LOGIN_START, payload),
   emailLoginSuccess: (payload: {
-    readonly emailAccessToken: string;
+    readonly accessToken: string;
+    readonly refreshToken: string;
     readonly userRoles: Array<AppAccessRoles>;
     readonly userName: string;
     readonly hasToChangePassword?: boolean;
   }) => createAction(SessionActionTypes.EMAIL_LOGIN_SUCCESS, payload),
   emailLoginError: (payload: { readonly error?: ApiError }) =>
     createCommonErrorAction(SessionActionTypes.EMAIL_LOGIN_ERROR, {
+      isCommonErrorAction: true,
+      error: payload.error,
+    }),
+
+  refreshSessionStart: () =>
+    createAction(SessionActionTypes.REFRESH_SESSION_START),
+  refreshSessionSuccess: (payload: {
+    readonly accessToken: string;
+    readonly refreshToken: string;
+  }) => createAction(SessionActionTypes.REFRESH_SESSION_SUCCESS, payload),
+  refreshSessionError: (payload: { readonly error?: ApiError }) =>
+    createCommonErrorAction(SessionActionTypes.REFRESH_SESSION_ERROR, {
       isCommonErrorAction: true,
       error: payload.error,
     }),

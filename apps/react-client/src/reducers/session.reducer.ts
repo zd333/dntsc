@@ -17,11 +17,7 @@ export function sessionReducer(
       };
     }
     case SessionActionTypes.EMAIL_LOGIN_SUCCESS: {
-      const {
-        userRoles,
-        userName,
-        emailAccessToken: authToken,
-      } = action.payload;
+      const { userRoles, userName, accessToken: authToken } = action.payload;
 
       return {
         ...state,
