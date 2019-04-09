@@ -47,3 +47,11 @@ export class InDtoWithClinicContext {
   @IsString()
   public readonly targetClinicId: string;
 }
+
+export function isInDtoWithClinicContext(
+  // This is really any
+  /* tslint:disable:no-any */
+  dto: any,
+): dto is InDtoWithClinicContext {
+  return typeof (dto as InDtoWithClinicContext).targetClinicId !== 'undefined';
+}

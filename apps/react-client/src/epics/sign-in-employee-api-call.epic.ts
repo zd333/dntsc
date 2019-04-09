@@ -24,7 +24,6 @@ export const signInEmployeeApiCallEpic: Epic<
             refreshToken: dto.refreshToken,
             userRoles: dto.roles,
             userName: dto.name,
-            hasToChangePassword: dto.hasToChangePassword,
           }),
         ),
         catchError(error =>

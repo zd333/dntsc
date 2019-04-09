@@ -12,7 +12,4 @@ export class EmployeeDetailsOutDto {
 
   @Expose()
   public readonly name: string;
-
-  @Expose()
-  public readonly hasToChangePassword?: boolean;
 }
