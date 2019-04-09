@@ -12,9 +12,6 @@ export class SignedInEmployeeOutDto {
   public readonly refreshToken: string;
 
   @Expose()
-  public readonly hasToChangePassword?: boolean;
-
-  @Expose()
   public readonly roles: Array<AppAccessRoles>;
 
   @Expose()

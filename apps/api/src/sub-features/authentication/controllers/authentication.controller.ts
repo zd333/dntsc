@@ -1,12 +1,12 @@
 import { AppRequest } from '../../../../src/app.module';
 import { AuthenticationService } from '../services/authentication.service';
-import { AuthGuard } from '@nestjs/passport';
 import { RefreshAuthInDtoWithClinicContext } from '../dto/refresh-auth.in-dto';
-import { RequesterIsEmployeeOfTargetClinicGuard } from '../../shared/guards/requester-is-employee-of-target-clinic.guard';
 import { RequestIsInClinicContextGuard } from '../../../../src/sub-features/shared/guards/request-is-in-clinic-context.guard';
 import { SignedInEmployeeOutDto } from '../dto/signed-in-employee.out-dto';
-import { SignInEmployeeInDtoWithClinicContext } from '../dto/sign-in-employee.in-dto';
-import { SignInPlatformOwnerInDto } from '../dto/sign-in-platform-owner.in-dto';
+import {
+  SignInEmployeeInDtoWithClinicContext,
+  SignInPlatformOwnerInDto,
+} from '../dto/sign-in-employee.in-dto';
 import {
   Body,
   Controller,
@@ -24,9 +24,9 @@ export class AuthenticationController {
    * Endpoint to sign in employee with login and password.
    */
   @Post('sign-in-employee')
-  @UseGuards(RequestIsInClinicContextGuard)
   public async signInEmployee(
-    @Body() dto: SignInEmployeeInDtoWithClinicContext,
+    @Body()
+    dto: SignInEmployeeInDtoWithClinicContext | SignInPlatformOwnerInDto,
     @Request() req: AppRequest,
   ): Promise<SignedInEmployeeOutDto> {
     if (req.user) {
@@ -35,16 +35,6 @@ export class AuthenticationController {
     }
 
     return await this.authenticationService.signInEmployee(dto);
-  }
-
-  /**
-   * Endpoint to sign in employee with login and password.
-   */
-  @Post('sign-in-platform-owner')
-  public async signInPlatformOwner(
-    @Body() dto: SignInPlatformOwnerInDto,
-  ): Promise<SignedInEmployeeOutDto> {
-    return await this.authenticationService.signInPlatformOwner(dto);
   }
 
   /**

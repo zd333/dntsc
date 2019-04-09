@@ -22,8 +22,8 @@ export class EmployeesDbConnectorService {
     const doc = new this.employeeModel({
       ...data,
       clinics: [targetClinicId],
-      isActive: true,
-      hasToChangePassword: true,
+      // All new employees are not active by default
+      isActive: false,
     });
 
     await doc.save();

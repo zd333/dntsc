@@ -27,5 +27,3 @@ export const appRootEpics: Array<Epic> = [
   refreshEmployeeSessionApiCallEpic,
   reloadRouteOnSessionRefresh,
 ];
-
-// TODO: implement effect that handles hasToChangePassword === true after login success (also take this into account in redirect on login effect)

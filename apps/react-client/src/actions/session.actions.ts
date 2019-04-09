@@ -32,7 +32,6 @@ export const SessionActions = {
     readonly refreshToken: string;
     readonly userRoles: Array<AppAccessRoles>;
     readonly userName: string;
-    readonly hasToChangePassword?: boolean;
   }) => createAction(SessionActionTypes.EMAIL_LOGIN_SUCCESS, payload),
   emailLoginError: (payload: { readonly error?: ApiError }) =>
     createCommonErrorAction(SessionActionTypes.EMAIL_LOGIN_ERROR, {
