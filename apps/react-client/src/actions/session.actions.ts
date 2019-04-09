@@ -45,6 +45,8 @@ export const SessionActions = {
   refreshSessionSuccess: (payload: {
     readonly accessToken: string;
     readonly refreshToken: string;
+    readonly userRoles: Array<AppAccessRoles>;
+    readonly userName: string;
   }) => createAction(SessionActionTypes.REFRESH_SESSION_SUCCESS, payload),
   refreshSessionError: (payload: { readonly error?: ApiError }) =>
     createCommonErrorAction(SessionActionTypes.REFRESH_SESSION_ERROR, {

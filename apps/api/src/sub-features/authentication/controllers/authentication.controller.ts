@@ -52,11 +52,7 @@ export class AuthenticationController {
    * Checks refresh token which lives longer than regular auth token.
    * Is implemented for regular employee (not for platform owners).
    */
-  @UseGuards(
-    AuthGuard(),
-    RequestIsInClinicContextGuard,
-    RequesterIsEmployeeOfTargetClinicGuard,
-  )
+  @UseGuards(RequestIsInClinicContextGuard)
   @Post('refresh-employee-session')
   public async refreshAuth(
     @Body() dto: RefreshAuthInDtoWithClinicContext,
