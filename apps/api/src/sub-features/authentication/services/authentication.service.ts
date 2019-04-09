@@ -21,7 +21,8 @@ export class AuthenticationService {
   constructor(
     private readonly jwt: JwtService,
     private readonly employeesDbConnector: EmployeesDbConnectorService,
-    @Inject('USER_SESSION_EXPIRATION') private sessionExpirationTimeout: number,
+    @Inject('USER_SESSION_EXPIRATION')
+    private readonly sessionExpirationTimeout: number,
   ) {}
 
   /**
@@ -122,8 +123,8 @@ export class AuthenticationService {
     if (!dto || !dto.refreshToken) {
       throw new UnauthorizedException();
     }
-    const payload = this.jwt.verify<JwtPayload>(dto.refreshToken);
-    const { employeeId } = payload;
+    const dtoPayload = this.jwt.verify<JwtPayload>(dto.refreshToken);
+    const { employeeId } = dtoPayload;
     const employee = await this.employeesDbConnector.getById(employeeId);
     if (!employee) {
       throw new UnauthorizedException();
@@ -135,8 +136,10 @@ export class AuthenticationService {
       target: employee,
       roles: ['_PLATFORM_OWNER'],
     });
-    const authToken = this.jwt.sign(payload);
-    const refreshToken = this.jwt.sign(payload, {
+    // Do not use dtoPayload due to it contains props added by jwt service
+    const resultPayload = { employeeId };
+    const authToken = this.jwt.sign(resultPayload);
+    const refreshToken = this.jwt.sign(resultPayload, {
       expiresIn: this.getRefreshTokenTimeout(),
     });
     const { hasToChangePassword, roles, name } = employee;

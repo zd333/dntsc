@@ -7,6 +7,7 @@ import { redirectOnLoginEpic } from './redirect-on-login.epic';
 import { redirectOnLogoutEpic } from './redirect-on-logout.epic';
 import { redirectUnauthenticatedToLoginPageEpic } from './redirect-unauthenticated-to-login-page.epic';
 import { refreshEmployeeSessionApiCallEpic } from './refresh-employee-session-api-call.epic';
+import { reloadRouteOnSessionRefresh } from './reload-route-on-session-refresh.epic';
 import { saveSessionToLocalStorageOnLoginEpic } from './save-session-to-localstorage-on-login.epic';
 import { signInEmployeeApiCallEpic } from './sign-in-employee-api-call.epic';
 import { syncAppSessionWithSavedInLocalStorageSessionEpic } from './sync-session-with-saved-in-local-storage-session.epic';
@@ -24,6 +25,7 @@ export const appRootEpics: Array<Epic> = [
   saveSessionToLocalStorageOnLoginEpic,
   syncAppSessionWithSavedInLocalStorageSessionEpic,
   refreshEmployeeSessionApiCallEpic,
+  reloadRouteOnSessionRefresh,
 ];
 
 // TODO: implement effect that handles hasToChangePassword === true after login success (also take this into account in redirect on login effect)

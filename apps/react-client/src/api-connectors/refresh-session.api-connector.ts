@@ -10,16 +10,14 @@ import { TypedAjaxResponse } from '../shared/types/typed-ajax-response.interface
 const REFRESH_SESSION_PATH = '/auth/refresh-employee-session';
 
 export const refreshSessionApiConnector = (params: {
-  readonly authToken: string;
   readonly refreshToken: string;
 }): Observable<SignedInEmployeeOutDto> => {
   const url = getApiUrl({ path: REFRESH_SESSION_PATH });
-  const headers = getAuthHeadersForApiRequest(params.authToken);
   const { refreshToken } = params;
   const body: RefreshAuthInDto = { refreshToken };
 
   return ajax
-    .post(url, body, headers)
+    .post(url, body)
     .pipe(
       map(
         (response: TypedAjaxResponse<SignedInEmployeeOutDto>) =>

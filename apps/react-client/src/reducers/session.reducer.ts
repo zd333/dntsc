@@ -16,12 +16,19 @@ export function sessionReducer(
         authApiCommunicationIsInProgress: true,
       };
     }
-    case SessionActionTypes.EMAIL_LOGIN_SUCCESS: {
-      const { userRoles, userName, accessToken: authToken } = action.payload;
+    case SessionActionTypes.EMAIL_LOGIN_SUCCESS:
+    case SessionActionTypes.REFRESH_SESSION_SUCCESS: {
+      const {
+        userRoles,
+        userName,
+        accessToken: authToken,
+        refreshToken,
+      } = action.payload;
 
       return {
         ...state,
         authToken,
+        refreshToken,
         userRoles,
         userName,
         userIsLoggedIn: true,
@@ -39,6 +46,7 @@ export function sessionReducer(
       return {
         ...state,
         authToken: undefined,
+        refreshToken: undefined,
         userRoles: [],
         userName: undefined,
         userIsLoggedIn: false,
