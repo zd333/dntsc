@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 
-export class CreatedEmployeeOutDto {
+export class RegisteredEmployeeOutDto {
   @Expose()
   public readonly id: string;
 }

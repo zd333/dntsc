@@ -1,6 +1,6 @@
-import { CreateEmployeeInDtoWithClinicContext } from '../dto/create-employee.in-dto';
 import { EmployeesDbConnectorService } from '../services/employees-db-connector.service';
 import { Injectable } from '@nestjs/common';
+import { RegisterEmployeeInDtoWithClinicContext } from '../dto/register-employee.in-dto';
 import {
   ValidatorConstraint,
   ValidatorConstraintInterface,
@@ -22,7 +22,7 @@ export class IsUniqueEmployeeLoginForGivenClinic
     value: string,
     validationArguments: ValidationArguments,
   ): Promise<boolean> {
-    const dtoObject = validationArguments.object as CreateEmployeeInDtoWithClinicContext;
+    const dtoObject = validationArguments.object as RegisterEmployeeInDtoWithClinicContext;
     const { targetClinicId } = dtoObject;
     const nameIsOccupied = await this.employeesDbConnector.checkEmployeeWithGivenPropertyValueExistsInSomeOfTheClinicsList(
       {

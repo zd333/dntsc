@@ -17,14 +17,12 @@ import {
   Inject,
 } from '@nestjs/common';
 
-const TIME_TO_REFRESH_AUTH_TOKEN_AFTER_EXPIRATION = 1000;
-
 @Injectable()
 export class AuthenticationService {
   constructor(
     private readonly jwt: JwtService,
     private readonly employeesDbConnector: EmployeesDbConnectorService,
-    @Inject('USER_SESSION_EXPIRATION')
+    @Inject('USER_SESSION_EXPIRATION_IN_SECONDS')
     private readonly sessionExpirationTimeout: number,
   ) {}
 
@@ -69,10 +67,11 @@ export class AuthenticationService {
       throw new ForbiddenException();
     }
 
-    const payload: JwtPayload = { employeeId: employee._id };
+    const payload: JwtAuthTokenPayload = { employeeId: employee._id };
     const authToken = this.jwt.sign(payload);
     const refreshToken = this.jwt.sign(payload, {
-      expiresIn: this.getRefreshTokenTimeout(),
+      // Use exact timeout value, auth token will expire earlier, see `AuthenticationModule`
+      expiresIn: this.sessionExpirationTimeout,
     });
     const { roles, name } = employee;
 
@@ -84,7 +83,7 @@ export class AuthenticationService {
    * Currently supports only employee users.
    */
   public async validateUserByJwtPayload(
-    payload: JwtPayload,
+    payload: JwtAuthTokenPayload,
   ): Promise<AuthenticatedUser | undefined> {
     if (!payload || !payload.employeeId) {
       return undefined;
@@ -106,7 +105,7 @@ export class AuthenticationService {
     if (!dto || !dto.refreshToken) {
       throw new UnauthorizedException();
     }
-    const dtoPayload = this.jwt.verify<JwtPayload>(dto.refreshToken);
+    const dtoPayload = this.jwt.verify<JwtAuthTokenPayload>(dto.refreshToken);
     const { employeeId } = dtoPayload;
     const employee = await this.employeesDbConnector.getById(employeeId);
     if (!employee) {
@@ -119,7 +118,8 @@ export class AuthenticationService {
     const resultPayload = { employeeId };
     const authToken = this.jwt.sign(resultPayload);
     const refreshToken = this.jwt.sign(resultPayload, {
-      expiresIn: this.getRefreshTokenTimeout(),
+      // Use exact timeout value, auth token will expire earlier, see `AuthenticationModule`
+      expiresIn: this.sessionExpirationTimeout,
     });
     const { roles, name } = employee;
 
@@ -130,16 +130,9 @@ export class AuthenticationService {
       name,
     };
   }
-
-  private getRefreshTokenTimeout(): number {
-    return (
-      this.sessionExpirationTimeout +
-      TIME_TO_REFRESH_AUTH_TOKEN_AFTER_EXPIRATION
-    );
-  }
 }
 
-export interface JwtPayload {
+export interface JwtAuthTokenPayload {
   readonly employeeId: string;
 }
 
