@@ -1,8 +1,9 @@
-import { CreateEmployeeInDtoWithClinicContext } from '../dto/create-employee.in-dto';
+import { CreateEmployeeRegistrationTokenInDtoWithClinicContext } from '../dto/create-employee-registration-token.in-dto';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { isMongooseDocumentPasswordHashValid } from '../../../../src/sub-features/shared/helpers/is-mongoose-document-password-hash-valid';
 import { Model } from 'mongoose';
+import { RegisterEmployeeInDtoWithClinicContext } from '../dto/register-employee.in-dto';
 import {
   EMPLOYEE_SCHEMA_COLLECTION_NAME,
   EmployeeDocument,
@@ -16,7 +17,8 @@ export class EmployeesDbConnectorService {
   ) {}
 
   public async create(
-    dto: CreateEmployeeInDtoWithClinicContext,
+    dto: RegisterEmployeeInDtoWithClinicContext &
+      CreateEmployeeRegistrationTokenInDtoWithClinicContext,
   ): Promise<EmployeeDocument> {
     const { targetClinicId, ...data } = dto;
     const doc = new this.employeeModel({
