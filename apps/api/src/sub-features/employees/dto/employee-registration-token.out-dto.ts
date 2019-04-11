@@ -1,9 +1,12 @@
 import { CreateEmployeeRegistrationTokenInDto } from './create-employee-registration-token.in-dto';
 import { Expose } from 'class-transformer';
+import { JwtTokenWithPayload } from '../../shared/types/jwt-token-with-payload';
 
 export class EmployeeRegistrationTokenOutDto {
   @Expose()
-  public readonly registrationToken: JwtTokenWithEmployeeRegistrationPayload;
+  public readonly registrationToken: JwtTokenWithPayload<
+    CreateEmployeeRegistrationTokenInDto
+  >;
 
   /**
    * ISO date/time string that defines moment when registration token expires.
@@ -14,12 +17,5 @@ export class EmployeeRegistrationTokenOutDto {
   @Expose()
   public readonly expiration: IsoDateTimeString;
 }
-
-export type JwtEmployeeRegistrationTokenPayload = CreateEmployeeRegistrationTokenInDto;
-
-/**
- * String with JWT token that contains `JwtEmployeeRegistrationTokenPayload` payload.
- */
-export type JwtTokenWithEmployeeRegistrationPayload = string;
 
 export type IsoDateTimeString = string;
