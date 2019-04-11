@@ -1,6 +1,8 @@
 import { ActionsUnion, createAction } from '@martin_hotell/rex-tils';
 import { ApiError, createCommonErrorAction } from './error-modal.actions';
 import { AppAccessRoles } from '@api/app-access-roles';
+import { JwtAuthTokenPayload } from '../../../api/src/sub-features/authentication/services/authentication.service';
+import { JwtTokenWithPayload } from '../../../api/src/sub-features/shared/types/jwt-token-with-payload';
 import { PlatformFeatures } from '@api/sub-features/tenants/db-schemas/tenant.db-schema';
 import { SessionState } from '../../src/reducers/session-state.interface';
 
@@ -28,8 +30,8 @@ export const SessionActions = {
     readonly password: string;
   }) => createAction(SessionActionTypes.EMAIL_LOGIN_START, payload),
   emailLoginSuccess: (payload: {
-    readonly accessToken: string;
-    readonly refreshToken: string;
+    readonly accessToken: JwtTokenWithPayload<JwtAuthTokenPayload>;
+    readonly refreshToken: JwtTokenWithPayload<JwtAuthTokenPayload>;
     readonly userRoles: Array<AppAccessRoles>;
     readonly userName: string;
   }) => createAction(SessionActionTypes.EMAIL_LOGIN_SUCCESS, payload),
@@ -42,8 +44,8 @@ export const SessionActions = {
   refreshSessionStart: () =>
     createAction(SessionActionTypes.REFRESH_SESSION_START),
   refreshSessionSuccess: (payload: {
-    readonly accessToken: string;
-    readonly refreshToken: string;
+    readonly accessToken: JwtTokenWithPayload<JwtAuthTokenPayload>;
+    readonly refreshToken: JwtTokenWithPayload<JwtAuthTokenPayload>;
     readonly userRoles: Array<AppAccessRoles>;
     readonly userName: string;
   }) => createAction(SessionActionTypes.REFRESH_SESSION_SUCCESS, payload),

@@ -1,9 +1,14 @@
 import { CreateEmployeeRegistrationTokenInDtoWithClinicContext } from '../dto/create-employee-registration-token.in-dto';
+import { getMongoFindConditionForFieldSearch } from '../../shared/helpers/get-mongo-find-condition-for-field-search';
+import { getPaginationMongoFindOptionsFromDto } from '../../shared/helpers/get-pagination-mongo-find-options-from-in-dto';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { isMongooseDocumentPasswordHashValid } from '../../../../src/sub-features/shared/helpers/is-mongoose-document-password-hash-valid';
 import { Model } from 'mongoose';
+import { MongoFindResults } from '../../shared/helpers/convert-documents-to-paginated-list-out-dto';
+import { QueryParamsForSearchablePaginatedListInDto } from '../../shared/dto/query-params-for-paginated-list.in-dto';
 import { RegisterEmployeeInDtoWithClinicContext } from '../dto/register-employee.in-dto';
+import { UpdateEmployeeInDtoWithClinicContext } from '../dto/update-employee.in-dto';
 import {
   EMPLOYEE_SCHEMA_COLLECTION_NAME,
   EmployeeDocument,
@@ -35,6 +40,34 @@ export class EmployeesDbConnectorService {
 
   public async getById(id: string): Promise<EmployeeDocument | null> {
     return await this.employeeModel.findById(id).exec();
+  }
+
+  public async getClinicEmployee(params: {
+    readonly clinicId: string;
+    readonly paginationParams?: QueryParamsForSearchablePaginatedListInDto;
+  }): Promise<MongoFindResults<EmployeeDocument>> {
+    const { clinicId, paginationParams } = params;
+    const findOptions = getPaginationMongoFindOptionsFromDto(paginationParams);
+    const findConditions = {
+      clinics: clinicId,
+      // Add search condition only if search string is present
+      ...(paginationParams && paginationParams.searchString
+        ? getMongoFindConditionForFieldSearch({
+            fieldName: 'name',
+            searchString: paginationParams.searchString,
+          })
+        : {}),
+    };
+
+    const documents = await this.employeeModel
+      .find(findConditions, null, findOptions)
+      .exec();
+    const skipped = findOptions.skip || 0;
+    const totalCount = findOptions.limit
+      ? await this.employeeModel.estimatedDocumentCount().exec()
+      : skipped + documents.length;
+
+    return { documents, skipped, totalCount };
   }
 
   public async checkEmployeeWithGivenPropertyValueExistsInSomeOfTheClinicsList(params: {
@@ -89,5 +122,28 @@ export class EmployeesDbConnectorService {
 
     // All is ok
     return employee;
+  }
+
+  public async update(params: {
+    readonly id: string;
+    readonly dto: UpdateEmployeeInDtoWithClinicContext;
+  }): Promise<void> {
+    const { id, dto } = params;
+    const { id: _, targetClinicId, ...dtoWithStrippedId } = dto;
+    // `roles` is optional thus need custom unset code to be deleted
+    const unsetStatement = dtoWithStrippedId.roles
+      ? // Nothing to unset/delete
+        {}
+      : {
+          $unset: {
+            alternates: undefined,
+          },
+        };
+    const docUpdates = {
+      ...dtoWithStrippedId,
+      ...unsetStatement,
+    };
+
+    await this.employeeModel.findByIdAndUpdate(id, docUpdates);
   }
 }

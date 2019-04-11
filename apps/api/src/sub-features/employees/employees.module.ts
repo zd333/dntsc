@@ -4,7 +4,7 @@ import { IsUniqueEmployeeLoginForGivenClinic } from './validators/is-unique-empl
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
-import { RequesterIsPlatformOwnerIfCreatesClinicOwnerGuard } from './guards/requester-is-platform-owner-if-creates-clinic-owner.guard';
+import { RequesterIsPlatformOwnerIfProcessesClinicOwnerGuard } from './guards/requester-is-platform-owner-if-processes-clinic-owner.guard';
 import { SharedModule } from '../shared/shared.module';
 import {
   EMPLOYEE_SCHEMA_COLLECTION_NAME,
@@ -26,7 +26,7 @@ const schemasMap = [
     SharedModule,
   ],
   providers: [
-    RequesterIsPlatformOwnerIfCreatesClinicOwnerGuard,
+    RequesterIsPlatformOwnerIfProcessesClinicOwnerGuard,
     EmployeesDbConnectorService,
     IsUniqueEmployeeLoginForGivenClinic,
   ],

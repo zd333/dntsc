@@ -1,13 +1,17 @@
 import { ClinicsModule } from '../clinics/clinics.module';
 import { forwardRef, Module } from '@nestjs/common';
 import { IsIdOfExistingDbEntityValidator } from './validators/is-id-of-existing-db-entity.validator';
+import { IsNotExpiredJwtTokenValidator } from './validators/is-not-expired-jwt-token.validator';
 import { JwtModule } from '@nestjs/jwt';
 import { RequesterIsEmployeeOfTargetClinicGuard } from './guards/requester-is-employee-of-target-clinic.guard';
 import { RequestIsInClinicContextGuard } from './guards/request-is-in-clinic-context.guard';
 import { TenantFeaturesGuard } from './guards/tenant-features.guard';
 import { TenantsModule } from '../tenants/tenants.module';
 
-const validators = [IsIdOfExistingDbEntityValidator];
+const validators = [
+  IsIdOfExistingDbEntityValidator,
+  IsNotExpiredJwtTokenValidator,
+];
 
 const guards = [
   RequesterIsEmployeeOfTargetClinicGuard,

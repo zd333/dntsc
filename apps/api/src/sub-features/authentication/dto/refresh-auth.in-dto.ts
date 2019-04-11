@@ -1,12 +1,11 @@
 import { InDtoWithClinicContext } from '../../../middlewares/add-clinic-context.middleware';
-import { IsString, MinLength } from 'class-validator';
+import { IsString } from 'class-validator';
+import { JwtAuthTokenPayload } from '../services/authentication.service';
+import { JwtTokenWithPayload } from '../../shared/types/jwt-token-with-payload';
 
 export class RefreshAuthInDtoWithClinicContext extends InDtoWithClinicContext {
   @IsString()
-  /**
-   * Contains `JwtPayload` payload, see `AuthenticationService` and `SignedInEmployeeOutDto`.
-   */
-  public readonly refreshToken: string;
+  public readonly refreshToken: JwtTokenWithPayload<JwtAuthTokenPayload>;
 }
 
 /**

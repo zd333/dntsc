@@ -49,7 +49,7 @@ export class InventoryDbConnectorService {
     readonly dto: UpdateInventoryItemInDtoWithClinicContext;
   }): Promise<void> {
     const { id, dto } = params;
-    const { targetClinicId, id: idToStrip, ...dtoWithStrippedId } = dto;
+    const { id: _, targetClinicId, ...dtoWithStrippedId } = dto;
     // `alternates` and/or `tags` are optional thus need custom unset code to be deleted
     const unsetStatement =
       !!dtoWithStrippedId.alternates && !!dtoWithStrippedId.tags
@@ -94,7 +94,6 @@ export class InventoryDbConnectorService {
       filterUnit,
     } = params;
     const findOptions = getPaginationMongoFindOptionsFromDto(paginationParams);
-    // Add search condition only if search string is present
     const findConditions = {
       clinics: clinicId,
       ...(filterTags
@@ -112,6 +111,7 @@ export class InventoryDbConnectorService {
             unit: filterUnit,
           }
         : {}),
+      // Add search condition only if search string is present
       ...(paginationParams && paginationParams.searchString
         ? getMongoFindConditionForFieldSearch({
             fieldName: 'name',
