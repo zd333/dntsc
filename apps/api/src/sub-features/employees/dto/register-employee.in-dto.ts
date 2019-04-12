@@ -2,6 +2,7 @@ import { allAppAccessRoles, AppAccessRoles } from '../../../app-access-roles';
 import { EmployeeRegistrationTokenOutDto } from './employee-registration-token.out-dto';
 import { InDtoWithClinicContext } from '../../../middlewares/add-clinic-context.middleware';
 import { IsNotExpiredJwtTokenValidator } from '../../shared/validators/is-not-expired-jwt-token.validator';
+import { IsNotUsedEmployeeRegistrationToken } from '../validators/is-not-used-employee-registration-token.validator';
 import { IsString, MinLength, Validate } from 'class-validator';
 import { IsUniqueEmployeeLoginForGivenClinic } from '../validators/is-unique-employee-login-for-given-clinic.validator';
 
@@ -20,6 +21,7 @@ export class RegisterEmployeeInDtoWithClinicContext extends InDtoWithClinicConte
   public readonly name: string;
 
   @Validate(IsNotExpiredJwtTokenValidator)
+  @Validate(IsNotUsedEmployeeRegistrationToken)
   public readonly registrationToken: EmployeeRegistrationTokenOutDto['registrationToken'];
 }
 

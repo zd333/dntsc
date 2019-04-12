@@ -30,7 +30,7 @@ export class UpdateEmployeeInDtoWithClinicContext extends InDtoWithClinicContext
   @ArrayUnique()
   @IsIn(allAppAccessRoles, { each: true })
   @NotEquals('_PLATFORM_OWNER', { each: true })
-  public readonly roles?: Array<AppAccessRoles>;
+  public readonly roles?: Array<AppAccessRoles> | null;
 
   @IsBoolean()
   public readonly isActive: boolean;
