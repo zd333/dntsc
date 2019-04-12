@@ -1,5 +1,6 @@
 import { EmployeesController } from './controllers/employees.controller';
 import { EmployeesDbConnectorService } from './services/employees-db-connector.service';
+import { IsNotUsedEmployeeRegistrationToken } from './validators/is-not-used-employee-registration-token.validator';
 import { IsUniqueEmployeeLoginForGivenClinic } from './validators/is-unique-employee-login-for-given-clinic.validator';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -29,6 +30,7 @@ const schemasMap = [
     RequesterIsPlatformOwnerIfProcessesClinicOwnerGuard,
     EmployeesDbConnectorService,
     IsUniqueEmployeeLoginForGivenClinic,
+    IsNotUsedEmployeeRegistrationToken,
   ],
   controllers: [EmployeesController],
   exports: [EmployeesDbConnectorService],

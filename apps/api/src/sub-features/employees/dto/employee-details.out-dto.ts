@@ -1,3 +1,4 @@
+import { AppAccessRoles } from '../../../app-access-roles';
 import { Expose } from 'class-transformer';
 
 /**
@@ -15,4 +16,7 @@ export class EmployeeDetailsOutDto {
 
   @Expose()
   public readonly isActive: boolean;
+
+  @Expose()
+  public roles?: Array<AppAccessRoles>;
 }

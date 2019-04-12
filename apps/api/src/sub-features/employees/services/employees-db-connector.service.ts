@@ -70,10 +70,15 @@ export class EmployeesDbConnectorService {
     return { documents, skipped, totalCount };
   }
 
-  public async checkEmployeeWithGivenPropertyValueExistsInSomeOfTheClinicsList(params: {
-    readonly employeePropertyName: string;
-    readonly employeePropertyValue: string;
-    readonly clinics: Array<string>;
+  public async checkEmployeeWithGivenPropertyValueExists(params: {
+    readonly employeePropertyName: keyof EmployeeDocument;
+    // This is really any
+    /* tslint:disable:no-any */
+    readonly employeePropertyValue: any;
+    /**
+     * If clinics are passed - then verification will be done only for given ones
+     */
+    readonly clinics?: Array<string>;
   }): Promise<boolean> {
     const { employeePropertyName, employeePropertyValue, clinics } = params;
     if (!employeePropertyName) {
@@ -85,7 +90,7 @@ export class EmployeesDbConnectorService {
       .find(
         {
           [employeePropertyName]: employeePropertyValue,
-          clinics: { $in: clinics },
+          ...(clinics ? { clinics: { $in: clinics } } : {}),
         },
         { limit: 1 },
       )
@@ -130,15 +135,16 @@ export class EmployeesDbConnectorService {
   }): Promise<void> {
     const { id, dto } = params;
     const { id: _, targetClinicId, ...dtoWithStrippedId } = dto;
-    // `roles` is optional thus need custom unset code to be deleted
-    const unsetStatement = dtoWithStrippedId.roles
-      ? // Nothing to unset/delete
-        {}
-      : {
+    // TODO: handle null values (move unset logic to helper)
+    // Unset statement for optional fields to delete them
+    const unsetStatement = !dtoWithStrippedId.roles
+      ? {
           $unset: {
-            alternates: undefined,
+            roles: undefined,
           },
-        };
+        }
+      : // Nothing to unset/delete
+        {};
     const docUpdates = {
       ...dtoWithStrippedId,
       ...unsetStatement,

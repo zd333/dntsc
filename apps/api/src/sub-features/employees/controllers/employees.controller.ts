@@ -36,7 +36,7 @@ import {
   Query,
 } from '@nestjs/common';
 
-const EMPLOYEE_REGISTRATION_TOKEN_EXPIRATION_TIMEOUT_IN_SECONDS = 600;
+const EMPLOYEE_REGISTRATION_TOKEN_EXPIRATION_TIMEOUT_IN_SECONDS = 300;
 
 @Controller('employees')
 export class EmployeesController {
@@ -93,7 +93,7 @@ export class EmployeesController {
     const roles = registrationTokenPayload && registrationTokenPayload.roles;
     const dtoWithRoles = {
       ...dto,
-      ...(roles ? roles : {}),
+      ...(roles ? { roles } : {}),
     };
     const document = await this.employeesDbConnector.create(dtoWithRoles);
 
@@ -110,7 +110,6 @@ export class EmployeesController {
     EmployeeDetailsOutDto
   > {
     const document = await this.employeesDbConnector.getById(id);
-
     if (!document) {
       throw new NotFoundException();
     }
@@ -121,7 +120,6 @@ export class EmployeesController {
     });
   }
 
-  // TODO: test
   @UseGuards(
     AuthGuard(),
     ACGuard,
@@ -149,14 +147,13 @@ export class EmployeesController {
     });
   }
 
-  // TODO: test
   @UseGuards(
     AuthGuard(),
     RequestIsInClinicContextGuard,
     RequesterIsEmployeeOfTargetClinicGuard,
   )
   @Get()
-  public async getItems(
+  public async getMultiple(
     @Req() req: AppRequest,
     @Query() dto: QueryParamsForSearchablePaginatedListInDto,
   ): Promise<PaginatedListOutDto<EmployeeDetailsOutDto>> {

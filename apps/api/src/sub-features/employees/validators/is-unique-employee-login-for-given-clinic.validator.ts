@@ -24,7 +24,7 @@ export class IsUniqueEmployeeLoginForGivenClinic
   ): Promise<boolean> {
     const dtoObject = validationArguments.object as RegisterEmployeeInDtoWithClinicContext;
     const { targetClinicId } = dtoObject;
-    const nameIsOccupied = await this.employeesDbConnector.checkEmployeeWithGivenPropertyValueExistsInSomeOfTheClinicsList(
+    const nameIsOccupied = await this.employeesDbConnector.checkEmployeeWithGivenPropertyValueExists(
       {
         clinics: [targetClinicId],
         employeePropertyName: 'login',

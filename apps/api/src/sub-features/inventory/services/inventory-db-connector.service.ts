@@ -50,7 +50,8 @@ export class InventoryDbConnectorService {
   }): Promise<void> {
     const { id, dto } = params;
     const { id: _, targetClinicId, ...dtoWithStrippedId } = dto;
-    // `alternates` and/or `tags` are optional thus need custom unset code to be deleted
+    // TODO: handle null values (move unset logic to helper)
+    // Unset statement for optional fields to delete them
     const unsetStatement =
       !!dtoWithStrippedId.alternates && !!dtoWithStrippedId.tags
         ? // Nothing to unset/delete

@@ -22,6 +22,7 @@ const schemaDefinition: SchemaDefinition = {
     required: false,
   },
   roles: [{ type: String, enum: allAppAccessRoles, required: false }],
+  registrationToken: { type: String, required: false },
 };
 
 const schema = new Schema(schemaDefinition);
@@ -33,7 +34,8 @@ export type EmployeeDocument = Readonly<Document> & {
   readonly login: string;
   readonly password: string;
   readonly clinics: Array<Types.ObjectId>;
-  readonly roles: Array<AppAccessRoles>;
+  readonly roles?: Array<AppAccessRoles>;
+  readonly registrationToken?: string;
 };
 
 export const EmployeeSchema = schema;
