@@ -27,11 +27,11 @@ export const enTranslationMessages = {
 
   'loginPage.title': 'Login',
   'loginPage.loginForm.title': 'Login',
-  'loginPage.loginForm.emailInput.label': 'Email',
+  'loginPage.loginForm.loginInput.label': 'Login',
   'loginPage.loginForm.passwordInput.label': 'Password',
-  'loginPage.loginForm.submitButton.text': 'Login',
-  'loginPage.loginForm.emailInput.validationErrorMessages.empty': 'is required',
-  'loginPage.loginForm.emailInput.validationErrorMessages.invalid': 'not email',
+  'loginPage.loginForm.submitButton.text': 'Sign in',
+  'loginPage.loginForm.loginInput.validationErrorMessages.empty': 'is required',
+  'loginPage.loginForm.loginInput.validationErrorMessages.short': 'too short',
   'loginPage.loginForm.passwordInput.validationErrorMessages.empty':
     'is required',
 

@@ -7,9 +7,9 @@ import { JwtTokenWithPayload } from '../../../api/src/sub-features/shared/types/
 import { PlatformFeatures } from '@api/sub-features/tenants/db-schemas/tenant.db-schema';
 
 export enum SessionActionTypes {
-  LOGIN_START = '[Session actions] Employee login via start',
-  LOGIN_SUCCESS = '[Session actions] Employee login via success',
-  LOGIN_ERROR = '[Session actions] Employee login via error',
+  LOGIN_START = '[Session actions] Login start',
+  LOGIN_SUCCESS = '[Session actions] Login success',
+  LOGIN_ERROR = '[Session actions] Login error',
 
   REFRESH_SESSION_START = '[Session actions] Refresh session start',
   REFRESH_SESSION_SUCCESS = '[Session actions] Refresh session success',
@@ -26,7 +26,7 @@ export enum SessionActionTypes {
 
 export const SessionActions = {
   loginStart: (payload: {
-    readonly email: string;
+    readonly login: string;
     readonly password: string;
   }) => createAction(SessionActionTypes.LOGIN_START, payload),
   loginSuccess: (payload: {
