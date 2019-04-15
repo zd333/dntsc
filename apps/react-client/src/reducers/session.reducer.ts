@@ -10,13 +10,13 @@ export function sessionReducer(
   action: AllSessionActions,
 ): SessionState {
   switch (action.type) {
-    case SessionActionTypes.EMAIL_LOGIN_START: {
+    case SessionActionTypes.LOGIN_START: {
       return {
         ...state,
         authApiCommunicationIsInProgress: true,
       };
     }
-    case SessionActionTypes.EMAIL_LOGIN_SUCCESS:
+    case SessionActionTypes.LOGIN_SUCCESS:
     case SessionActionTypes.REFRESH_SESSION_SUCCESS: {
       const {
         userRoles,
@@ -35,7 +35,7 @@ export function sessionReducer(
         authApiCommunicationIsInProgress: false,
       };
     }
-    case SessionActionTypes.EMAIL_LOGIN_ERROR: {
+    case SessionActionTypes.LOGIN_ERROR: {
       return {
         ...state,
         authApiCommunicationIsInProgress: false,

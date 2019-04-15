@@ -2,7 +2,6 @@ import * as React from 'react';
 import { AppLanguages } from '../reducers/session-state.interface';
 import { ExitToApp, Menu } from '@material-ui/icons';
 import { MAIN_MENU_WIDTH } from './Shell';
-import { pure } from 'recompose';
 import {
   AppBar,
   Toolbar,
@@ -123,6 +122,4 @@ const headerStyles = ({ breakpoints, spacing }: Theme) =>
 
 type StyledHeaderProps = HeaderProps & WithStyles<typeof headerStyles>;
 
-const SfcNotPureHeader = withStyles(headerStyles)(StyledHeader);
-
-export const Header = pure(SfcNotPureHeader);
+export const Header = withStyles(headerStyles)(StyledHeader);

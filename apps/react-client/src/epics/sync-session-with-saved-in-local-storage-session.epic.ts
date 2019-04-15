@@ -60,7 +60,7 @@ export const syncAppSessionWithSavedInLocalStorageSessionEpic: Epic<
         const userName = savedSession.userName || '';
 
         return observableOf(
-          SessionActions.emailLoginSuccess({
+          SessionActions.loginSuccess({
             accessToken,
             refreshToken,
             userRoles,

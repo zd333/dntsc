@@ -6,6 +6,8 @@ import { convertDocumentToOutDto } from '../../../../src/sub-features/shared/hel
 import { CreateClinicInDto } from '../dto/create-clinic.in-dto';
 import { CreatedClinicOutDto } from '../dto/created-clinic.out-dto';
 
+// TODO: add languageOptions property to clinic entity, sync with `AppLanguages` in client
+
 @Controller('clinics')
 export class ClinicsController {
   constructor(private readonly clinicsDbConnector: ClinicsDbConnectorService) {}

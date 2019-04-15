@@ -27,7 +27,7 @@ export const refreshEmployeeSessionApiCallEpic: Epic<
           SessionActions.refreshSessionSuccess({
             accessToken: dto.authToken,
             refreshToken: dto.refreshToken,
-            userRoles: dto.roles,
+            userRoles: dto.roles || [],
             userName: dto.name,
           }),
         ),

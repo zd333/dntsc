@@ -36,7 +36,7 @@ import {
   Query,
 } from '@nestjs/common';
 
-const EMPLOYEE_REGISTRATION_TOKEN_EXPIRATION_TIMEOUT_IN_SECONDS = 300;
+const EMPLOYEE_REGISTRATION_TOKEN_EXPIRATION_TIMEOUT_IN_SECONDS = 10800;
 
 @Controller('employees')
 export class EmployeesController {

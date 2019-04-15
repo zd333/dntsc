@@ -18,7 +18,7 @@ const mapDispatchToProps: DispatchMapper<LoginPageProps> = dispatch => {
   return {
     onEmailLogin: params => {
       dispatch(
-        SessionActions.emailLoginStart({
+        SessionActions.loginStart({
           email: params.email,
           password: params.password,
         }),

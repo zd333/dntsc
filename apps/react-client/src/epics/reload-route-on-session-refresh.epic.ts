@@ -6,7 +6,7 @@ import { routerActions } from 'connected-react-router';
 import { selectRoutePath } from '../selectors/route-path.selector';
 import { SessionActionTypes } from '../actions/session.actions';
 
-export const reloadRouteOnSessionRefresh: Epic = (action$, state$) => {
+export const reloadRouteOnSessionRefreshEpic: Epic = (action$, state$) => {
   const currentRoutePath$ = state$.pipe(map(selectRoutePath));
 
   return action$.pipe(

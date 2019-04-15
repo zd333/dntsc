@@ -1,15 +1,15 @@
 import { ActionsUnion, createAction } from '@martin_hotell/rex-tils';
 import { ApiError, createCommonErrorAction } from './error-modal.actions';
 import { AppAccessRoles } from '@api/app-access-roles';
+import { AppLanguages } from '../../src/reducers/session-state.interface';
 import { JwtAuthTokenPayload } from '../../../api/src/sub-features/authentication/services/authentication.service';
 import { JwtTokenWithPayload } from '../../../api/src/sub-features/shared/types/jwt-token-with-payload';
 import { PlatformFeatures } from '@api/sub-features/tenants/db-schemas/tenant.db-schema';
-import { SessionState } from '../../src/reducers/session-state.interface';
 
 export enum SessionActionTypes {
-  EMAIL_LOGIN_START = '[Session actions] Email login start',
-  EMAIL_LOGIN_SUCCESS = '[Session actions] Email login success',
-  EMAIL_LOGIN_ERROR = '[Session actions] Email login error',
+  LOGIN_START = '[Session actions] Employee login via start',
+  LOGIN_SUCCESS = '[Session actions] Employee login via success',
+  LOGIN_ERROR = '[Session actions] Employee login via error',
 
   REFRESH_SESSION_START = '[Session actions] Refresh session start',
   REFRESH_SESSION_SUCCESS = '[Session actions] Refresh session success',
@@ -25,18 +25,18 @@ export enum SessionActionTypes {
 }
 
 export const SessionActions = {
-  emailLoginStart: (payload: {
+  loginStart: (payload: {
     readonly email: string;
     readonly password: string;
-  }) => createAction(SessionActionTypes.EMAIL_LOGIN_START, payload),
-  emailLoginSuccess: (payload: {
+  }) => createAction(SessionActionTypes.LOGIN_START, payload),
+  loginSuccess: (payload: {
     readonly accessToken: JwtTokenWithPayload<JwtAuthTokenPayload>;
     readonly refreshToken: JwtTokenWithPayload<JwtAuthTokenPayload>;
     readonly userRoles: Array<AppAccessRoles>;
     readonly userName: string;
-  }) => createAction(SessionActionTypes.EMAIL_LOGIN_SUCCESS, payload),
-  emailLoginError: (payload: { readonly error?: ApiError }) =>
-    createCommonErrorAction(SessionActionTypes.EMAIL_LOGIN_ERROR, {
+  }) => createAction(SessionActionTypes.LOGIN_SUCCESS, payload),
+  loginError: (payload: { readonly error?: ApiError }) =>
+    createCommonErrorAction(SessionActionTypes.LOGIN_ERROR, {
       isCommonErrorAction: true,
       error: payload.error,
     }),
@@ -67,9 +67,8 @@ export const SessionActions = {
       error: payload.error,
     }),
 
-  changeLanguage: (payload: {
-    readonly language: SessionState['currentLanguage'];
-  }) => createAction(SessionActionTypes.CHANGE_LANGUAGE, payload),
+  changeLanguage: (payload: { readonly language: AppLanguages }) =>
+    createAction(SessionActionTypes.CHANGE_LANGUAGE, payload),
 };
 
 export type AllSessionActions = ActionsUnion<typeof SessionActions>;

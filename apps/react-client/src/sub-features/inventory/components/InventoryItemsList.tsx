@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Edit } from '@material-ui/icons';
 import { InventoryItem } from '../selectors/items-dictionary.selector';
-import { pure } from 'recompose';
 import {
   createStyles,
   Theme,
@@ -84,8 +83,6 @@ const inventoryItemsListStyles = ({ palette }: Theme) =>
 type StyledInventoryItemsListProps = InventoryItemsListProps &
   WithStyles<typeof inventoryItemsListStyles>;
 
-const SfcNotPureInventoryItemsList = withStyles(inventoryItemsListStyles)(
+export const InventoryItemsList = withStyles(inventoryItemsListStyles)(
   StyledInventoryItemsList,
 );
-
-export const InventoryItemsList = pure(SfcNotPureInventoryItemsList);

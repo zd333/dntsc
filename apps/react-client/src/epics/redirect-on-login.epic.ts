@@ -14,7 +14,7 @@ export const redirectOnLoginEpic: Epic = (action$, state$) => {
   const currentRoutePath$ = state$.pipe(map(selectRoutePath));
 
   return action$.pipe(
-    ofType(SessionActionTypes.EMAIL_LOGIN_SUCCESS),
+    ofType(SessionActionTypes.LOGIN_SUCCESS),
     withLatestFrom(currentRoutePath$),
     filter(([, currentRoutePath]) => currentRoutePath === AppRouePaths.login),
     mapTo(routerActions.push('/')),

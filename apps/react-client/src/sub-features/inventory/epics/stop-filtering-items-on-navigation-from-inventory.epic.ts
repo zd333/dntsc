@@ -8,7 +8,7 @@ import { LOCATION_CHANGE, LocationChangeAction } from 'connected-react-router';
 /**
  * Dispatches action to disable filtering mode when user leaves an inventory page.
  */
-export const stopFilteringItemsOnNavigationFromInventory: Epic<
+export const stopFilteringItemsOnNavigationFromInventoryEpic: Epic<
   AllAppActions
 > = action$ =>
   action$.pipe(
