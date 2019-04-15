@@ -1,8 +1,8 @@
 import { AllAppActions } from '../../..';
+import { allInventoryRoutesPaths } from '../../../components/app-routes';
 import { Epic, ofType } from 'redux-observable';
 import { filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
 import { InventoryActions } from '../actions/inventory.actions';
-import { inventoryRoutesPaths } from '../../../components/app-routes';
 import { LOCATION_CHANGE, LocationChangeAction } from 'connected-react-router';
 import { selectAllItems } from '../selectors/all-items.selector';
 
@@ -21,7 +21,7 @@ export const searchInventoryItemsOnNavigationToInventoryEpic: Epic<
     filter(
       ([action, allItems]) =>
         (!allItems || allItems.length === 0) &&
-        inventoryRoutesPaths.some(path =>
+        allInventoryRoutesPaths.some(path =>
           action.payload.location.pathname.toLowerCase().startsWith(path),
         ),
     ),

@@ -25,6 +25,7 @@ export function employeesReducer(
         createdRegistrationToken: registrationToken,
       };
     }
+    case EmployeesActionTypes.RESET_EMPLOYEE_REGISTRATION_TOKEN:
     case EmployeesActionTypes.CREATE_EMPLOYEE_REGISTRATION_TOKEN_ERROR: {
       return {
         ...state,

@@ -89,7 +89,6 @@ export class StyledEmployeeInvitationPage extends React.Component<
                 ))}
               </div>
             )}
-            // MenuProps={MenuProps}
           >
             {availableRoles.map(role => (
               <MenuItem key={role} value={role}>
