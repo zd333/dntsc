@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { DashboardPage } from '../sub-features/dashboard/components/DashboardPage';
+import { EmployeeInvitationPageContainer } from '../sub-features/employees/containers/EmployeeInvitationPageContainer';
 import { InventoryCatalogPageContainer } from '../sub-features/inventory/containers/InventoryCatalogPageContainer';
 import { LoginPageContainer } from '../containers/LoginPageContainer';
 import { Redirect, Route, Switch } from 'react-router';
@@ -9,6 +10,7 @@ export enum AppRouePaths {
   login = '/login',
   dashboard = '/dashboard',
   inventoryCatalog = '/inventory/catalog',
+  employeesInvitation = '/employees/invite',
 }
 
 const inventoryRoutesMappings: RoutePathComponentMappings = [
@@ -17,6 +19,21 @@ const inventoryRoutesMappings: RoutePathComponentMappings = [
     component: InventoryCatalogPageContainer,
   },
 ];
+const employeesRoutesMappings: RoutePathComponentMappings = [
+  {
+    path: AppRouePaths.employeesInvitation,
+    component: EmployeeInvitationPageContainer,
+  },
+];
+const allRoutesMappings = [
+  {
+    path: AppRouePaths.dashboard,
+    component: DashboardPage,
+  },
+  ...inventoryRoutesMappings,
+  ...employeesRoutesMappings,
+];
+
 export const inventoryRoutesPaths = inventoryRoutesMappings.map(
   mapping => mapping.path,
 );
@@ -31,8 +48,7 @@ export const appRoutes = (
     <Route path={AppRouePaths.login} component={LoginPageContainer} />
     <ShellContainer>
       <Switch>
-        <Route path={AppRouePaths.dashboard} component={DashboardPage} />
-        {inventoryRoutesMappings.map(mapping => (
+        {allRoutesMappings.map(mapping => (
           <Route
             key={mapping.path}
             path={mapping.path}
