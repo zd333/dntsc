@@ -1,7 +1,7 @@
 import { AllAppActions, AppEpicsDependencies, RootState } from '..';
 import { catchError, map, switchMap } from 'rxjs/operators';
-import { createAppEpicErrorAction } from '../shared/helpers/create-app-epic-error-action';
 import { Epic } from 'redux-observable';
+import { of as observableOf } from 'rxjs';
 import { ofType } from '@martin_hotell/rex-tils';
 import { SessionActions, SessionActionTypes } from '../actions/session.actions';
 
@@ -15,7 +15,7 @@ export const signInEmployeeApiCallEpic: Epic<
     ofType(SessionActionTypes.LOGIN_START),
     switchMap(action =>
       signInApiConnector({
-        login: action.payload.email,
+        login: action.payload.login,
         password: action.payload.password,
       }).pipe(
         map(dto =>
@@ -26,9 +26,8 @@ export const signInEmployeeApiCallEpic: Epic<
             userName: dto.name,
           }),
         ),
-        catchError(error =>
-          createAppEpicErrorAction(error, SessionActions.loginError({ error })),
-        ),
+        // ! This is special error case, do not use `createAppEpicErrorAction` here to avoid session refresh attempt
+        catchError(error => observableOf(SessionActions.loginError({ error }))),
       ),
     ),
   );

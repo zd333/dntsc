@@ -16,10 +16,10 @@ const mapStateToProps: StateMapper<LoginPageProps, RootState> = state => {
 
 const mapDispatchToProps: DispatchMapper<LoginPageProps> = dispatch => {
   return {
-    onEmailLogin: params => {
+    onLogin: params => {
       dispatch(
         SessionActions.loginStart({
-          email: params.email,
+          login: params.login,
           password: params.password,
         }),
       );

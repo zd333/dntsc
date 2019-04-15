@@ -29,12 +29,13 @@ export const ruTranslationMessages: AppTranslationMessages = {
 
   'loginPage.title': 'Вход',
   'loginPage.loginForm.title': 'Вход',
-  'loginPage.loginForm.emailInput.label': 'Email',
+  'loginPage.loginForm.loginInput.label': 'Логин',
   'loginPage.loginForm.passwordInput.label': 'Пароль',
   'loginPage.loginForm.submitButton.text': 'Войти',
-  'loginPage.loginForm.emailInput.validationErrorMessages.empty':
+  'loginPage.loginForm.loginInput.validationErrorMessages.empty':
     'обязательное',
-  'loginPage.loginForm.emailInput.validationErrorMessages.invalid': 'не email',
+  'loginPage.loginForm.loginInput.validationErrorMessages.short':
+    'слишком короткий',
   'loginPage.loginForm.passwordInput.validationErrorMessages.empty':
     'обязательное',
 

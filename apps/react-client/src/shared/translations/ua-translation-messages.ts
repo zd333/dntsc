@@ -28,11 +28,12 @@ export const uaTranslationMessages: AppTranslationMessages = {
 
   'loginPage.title': 'Вхід',
   'loginPage.loginForm.title': 'Вхід',
-  'loginPage.loginForm.emailInput.label': 'Email',
+  'loginPage.loginForm.loginInput.label': 'Логін',
   'loginPage.loginForm.passwordInput.label': 'Пароль',
   'loginPage.loginForm.submitButton.text': 'Увійти',
-  'loginPage.loginForm.emailInput.validationErrorMessages.empty': `обов'язкове`,
-  'loginPage.loginForm.emailInput.validationErrorMessages.invalid': 'не email',
+  'loginPage.loginForm.loginInput.validationErrorMessages.empty': `обов'язкове`,
+  'loginPage.loginForm.loginInput.validationErrorMessages.short':
+    'надто короткий',
   'loginPage.loginForm.passwordInput.validationErrorMessages.empty': `обов'язкове`,
 
   'dashboardPage.title': 'Головне меню',
