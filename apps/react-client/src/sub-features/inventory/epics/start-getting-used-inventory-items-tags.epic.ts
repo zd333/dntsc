@@ -12,7 +12,7 @@ import {
   InventoryActionTypes,
 } from '../actions/inventory.actions';
 
-export const startGettingUsedInventoryItemsTags: Epic<AllAppActions> = (
+export const startGettingUsedInventoryItemsTagsEpic: Epic<AllAppActions> = (
   action$,
   state$,
 ) => {

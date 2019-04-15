@@ -20,7 +20,7 @@ export const saveSessionToLocalStorageOnLoginEpic: Epic<
 > = (action$, state$, { localStorageService }) =>
   action$.pipe(
     ofType(
-      SessionActionTypes.EMAIL_LOGIN_SUCCESS,
+      SessionActionTypes.LOGIN_SUCCESS,
       SessionActionTypes.REFRESH_SESSION_SUCCESS,
     ),
     tap(action => {

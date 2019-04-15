@@ -18,7 +18,7 @@ export class SignedInEmployeeOutDto {
   public readonly refreshToken: JwtTokenWithPayload<JwtAuthTokenPayload>;
 
   @Expose()
-  public readonly roles: Array<AppAccessRoles>;
+  public readonly roles?: Array<AppAccessRoles>;
 
   @Expose()
   public readonly name: string;

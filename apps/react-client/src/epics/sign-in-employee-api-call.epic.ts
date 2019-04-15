@@ -12,25 +12,22 @@ export const signInEmployeeApiCallEpic: Epic<
   AppEpicsDependencies
 > = (action$, state$, { signInApiConnector }) =>
   action$.pipe(
-    ofType(SessionActionTypes.EMAIL_LOGIN_START),
+    ofType(SessionActionTypes.LOGIN_START),
     switchMap(action =>
       signInApiConnector({
         login: action.payload.email,
         password: action.payload.password,
       }).pipe(
         map(dto =>
-          SessionActions.emailLoginSuccess({
+          SessionActions.loginSuccess({
             accessToken: dto.authToken,
             refreshToken: dto.refreshToken,
-            userRoles: dto.roles,
+            userRoles: dto.roles || [],
             userName: dto.name,
           }),
         ),
         catchError(error =>
-          createAppEpicErrorAction(
-            error,
-            SessionActions.emailLoginError({ error }),
-          ),
+          createAppEpicErrorAction(error, SessionActions.loginError({ error })),
         ),
       ),
     ),

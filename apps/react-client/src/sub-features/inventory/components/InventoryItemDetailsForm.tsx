@@ -4,7 +4,6 @@ import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { FormikEffects } from '../../../shared/components/FormikEffect';
 import { InventoryItemUnits } from '@api/sub-features/inventory/db-schemas/inventory-item.db-schema';
 import { Omitted } from '../../../shared/types/omitted.type';
-import { pure } from 'recompose';
 import { Select, TextField } from 'formik-material-ui';
 import { TranslatedInventoryItemUnit } from '../selectors/translated-inventory-item-units.selector';
 import {
@@ -327,10 +326,6 @@ type StyledTranslatedInventoryItemDetailsFormProps = InventoryItemDetailsFormPro
 const TranslatedInventoryItemDetailsForm = injectIntl(
   StyledInventoryItemDetailsForm,
 );
-const SfcNotPureInventoryItemDetailsForm = withStyles(
+export const InventoryItemDetailsForm = withStyles(
   inventoryItemDetailsFormStyles,
 )(TranslatedInventoryItemDetailsForm);
-
-export const InventoryItemDetailsForm = pure(
-  SfcNotPureInventoryItemDetailsForm,
-);

@@ -47,7 +47,7 @@ interface LoginPageState {
 }
 
 // TODO: refactor with formik
-class StyledLoginPage extends React.PureComponent<
+class StyledLoginPage extends React.Component<
   StyledLoginPageProps,
   LoginPageState
 > {

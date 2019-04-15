@@ -36,10 +36,7 @@ interface ShellState {
   readonly savedPath: string;
 }
 
-export class StyledShell extends React.PureComponent<
-  StyledShellProps,
-  ShellState
-> {
+export class StyledShell extends React.Component<StyledShellProps, ShellState> {
   public state = {
     mobileOpened: false,
     savedPath: this.props.routePath,

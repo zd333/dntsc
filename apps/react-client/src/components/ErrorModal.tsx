@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { pure } from 'recompose';
 import {
   Typography,
   withStyles,
@@ -59,6 +58,4 @@ const errorModalStyles = ({ palette, spacing, shadows }: Theme) =>
 type StyledErrorModalProps = ErrorModalProps &
   WithStyles<typeof errorModalStyles>;
 
-const SfcNotPureErrorModal = withStyles(errorModalStyles)(StyledErrorModal);
-
-export const ErrorModal = pure(SfcNotPureErrorModal);
+export const ErrorModal = withStyles(errorModalStyles)(StyledErrorModal);

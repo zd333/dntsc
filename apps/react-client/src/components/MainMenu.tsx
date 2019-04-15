@@ -5,7 +5,6 @@ import { Dashboard, ShoppingCart } from '@material-ui/icons';
 import { FormattedMessage } from 'react-intl';
 import { MAIN_MENU_WIDTH } from './Shell';
 import { MainMenuGroup } from './MainMenuGroup';
-import { pure } from 'recompose';
 import {
   createStyles,
   Theme,
@@ -124,8 +123,6 @@ const mainMenuStyles = ({ breakpoints, mixins }: Theme) =>
 type StyledMainMenuProps = MainMenuProps &
   WithStyles<typeof mainMenuStyles, true>;
 
-const SfcNotPureMainMenu = withStyles(mainMenuStyles, { withTheme: true })(
+export const MainMenu = withStyles(mainMenuStyles, { withTheme: true })(
   StyledMainMenu,
 );
-
-export const MainMenu = pure(SfcNotPureMainMenu);
