@@ -80,7 +80,7 @@ export const StyledMainMenu: React.SFC<StyledMainMenuProps> = props => {
           subItems={[
             {
               textId: 'mainMenu.EmployeesInvitationMenuItem.text',
-              linkPath: AppRouePaths.employeesInvitation,
+              linkPath: AppRouePaths.employeeInvitation,
             },
           ]}
         />

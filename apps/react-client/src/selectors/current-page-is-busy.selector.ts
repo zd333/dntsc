@@ -28,7 +28,7 @@ export const selectCurrentPageIsBusy = createSelector(
       case AppRouePaths.inventoryCatalog: {
         return inventoryCatalogPageIsBusy;
       }
-      case AppRouePaths.employeesInvitation: {
+      case AppRouePaths.employeeInvitation: {
         return employeeInvitationPageIsBusy;
       }
       default: {

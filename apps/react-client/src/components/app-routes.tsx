@@ -10,7 +10,7 @@ export enum AppRouePaths {
   login = '/login',
   dashboard = '/dashboard',
   inventoryCatalog = '/inventory/catalog',
-  employeesInvitation = '/employees/invite',
+  employeeInvitation = '/employees/invite',
 }
 
 const inventoryRoutesMappings: RoutePathComponentMappings = [
@@ -21,7 +21,7 @@ const inventoryRoutesMappings: RoutePathComponentMappings = [
 ];
 const employeesRoutesMappings: RoutePathComponentMappings = [
   {
-    path: AppRouePaths.employeesInvitation,
+    path: AppRouePaths.employeeInvitation,
     component: EmployeeInvitationPageContainer,
   },
 ];
@@ -34,7 +34,7 @@ const allRoutesMappings = [
   ...employeesRoutesMappings,
 ];
 
-export const inventoryRoutesPaths = inventoryRoutesMappings.map(
+export const allInventoryRoutesPaths = inventoryRoutesMappings.map(
   mapping => mapping.path,
 );
 

@@ -9,6 +9,7 @@ export enum EmployeesActionTypes {
   CREATE_EMPLOYEE_REGISTRATION_TOKEN_START = '[Employees actions] Create employee registration token start',
   CREATE_EMPLOYEE_REGISTRATION_TOKEN_SUCCESS = '[Employees actions] Create employee registration token success',
   CREATE_EMPLOYEE_REGISTRATION_TOKEN_ERROR = '[Employees actions] Create employee registration token error',
+  RESET_EMPLOYEE_REGISTRATION_TOKEN = '[Employees actions] Reset employee registration token',
 }
 
 export const EmployeesActions = {
@@ -36,6 +37,8 @@ export const EmployeesActions = {
         error: payload.error,
       },
     ),
+  resetEmployeeRegistrationToken: () =>
+    createAction(EmployeesActionTypes.RESET_EMPLOYEE_REGISTRATION_TOKEN),
 };
 
 export type AllEmployeesActions = ActionsUnion<typeof EmployeesActions>;

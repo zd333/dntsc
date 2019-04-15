@@ -1,6 +1,7 @@
 import { AllAppActions, AppEpicsDependencies, RootState } from '../../..';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { createAppEpicErrorAction } from '../../../shared/helpers/create-app-epic-error-action';
+import { EMPTY } from 'rxjs';
 import { Epic } from 'redux-observable';
 import { ofType } from '@martin_hotell/rex-tils';
 import { selectAuthToken } from '../../../selectors/auth-token.selector';
