@@ -24,8 +24,16 @@ export const ruTranslationMessages: AppTranslationMessages = {
   'inventoryItemUnit.LT.full': 'литр',
   'inventoryItemUnit.ML.full': 'миллилитр',
 
+  'appAccessRole._CLINIC_OWNER': 'Владелец клиники',
+  'appAccessRole._HR': 'Менеджер персонала',
+  'appAccessRole._INVENTORY_MASTER': 'Менеджер склада',
+  'appAccessRole._INVENTORY_BALANCE_KEEPER': 'Оператор склада',
+
   'mainMenu.InventoryMenuItem.text': 'Склад',
   'mainMenu.InventoryCatalogMenuItem.text': 'Каталог',
+
+  'mainMenu.EmployeesMenuItem.text': 'Персонал',
+  'mainMenu.EmployeesInvitationMenuItem.text': 'Приглашение',
 
   'loginPage.title': 'Вход',
   'loginPage.loginForm.title': 'Вход',
@@ -58,6 +66,14 @@ export const ruTranslationMessages: AppTranslationMessages = {
   'inventoryCatalogPage.inventoryItemDetailsForm.tagsControl.label': 'Теги',
   'inventoryCatalogPage.inventoryItemDetailsForm.alternatesControl.label':
     'Аналоги',
+
+  'employeeInvitationPage.title': 'Приглашение сотрудников',
+  'employeeInvitationPage.invitationForm.rolesSelect.label':
+    'Выберите роли для нового сотрудника',
+  'employeeInvitationPage.invitationForm.submitButton.text':
+    'Сгенерировать приглашение',
+  'employeeInvitationPage.invitationLink.text':
+    'Скопируйте эту ссылку и предоставьте ее новому сотруднику для завершения его регистрации',
 
   'errorModal.title': 'Ошибка',
   'errorModal.defaultErrorMessage': 'Извините, возникла ошибка.',

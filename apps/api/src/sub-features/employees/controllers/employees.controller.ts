@@ -1,5 +1,4 @@
 import { ACGuard, UseRoles } from 'nest-access-control';
-import { addSeconds } from 'date-fns';
 import { AppRequest } from '../../../app.module';
 import { AuthGuard } from '@nestjs/passport';
 import { convertDocumentsToPaginatedListOutDto } from '../../shared/helpers/convert-documents-to-paginated-list-out-dto';
@@ -61,16 +60,12 @@ export class EmployeesController {
   public createRegistrationToken(
     @Body() dto: CreateEmployeeRegistrationTokenInDtoWithClinicContext,
   ): EmployeeRegistrationTokenOutDto {
-    const expiration = addSeconds(
-      Date.now(),
-      EMPLOYEE_REGISTRATION_TOKEN_EXPIRATION_TIMEOUT_IN_SECONDS,
-    ).toISOString();
     const { targetClinicId: _, ...payload } = dto;
     const registrationToken = this.jwt.sign(payload, {
       expiresIn: EMPLOYEE_REGISTRATION_TOKEN_EXPIRATION_TIMEOUT_IN_SECONDS,
     });
 
-    return { registrationToken, expiration };
+    return { registrationToken };
   }
 
   /**

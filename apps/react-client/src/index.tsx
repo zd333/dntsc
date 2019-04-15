@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { AllEmployeesActions } from './sub-features/employees/actions/amployees.actions';
 import { AllInventoryActions } from './sub-features/inventory/actions/inventory.actions';
 import { AllSessionActions } from './actions/session.actions';
 import { App } from './components/App';
@@ -10,6 +11,10 @@ import { CommonErrorAction } from './actions/error-modal.actions';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createBrowserHistory } from 'history';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
+import { employeesApiConnectors } from './sub-features/employees/api-connectors';
+import { employeesEpics } from './sub-features/employees/epics';
+import { employeesReducer } from './sub-features/employees/reducers/employees.reducer';
+import { EmployeesState } from './sub-features/employees/reducers/employees-state.interface';
 import { errorModalReducer } from './reducers/error-modal.reducer';
 import { ErrorModalState } from './reducers/error-modal-state.interface';
 import { green, purple } from '@material-ui/core/colors';
@@ -38,11 +43,17 @@ const rootReducer = combineReducers({
   session: sessionReducer,
   errorModal: errorModalReducer,
   inventory: inventoryReducer,
+  employees: employeesReducer,
 });
-const rootEpic = combineEpics(...appRootEpics, ...inventoryEpics);
+const rootEpic = combineEpics(
+  ...appRootEpics,
+  ...inventoryEpics,
+  ...employeesEpics,
+);
 const rootEpicMiddlewareDependencies = {
   ...rootApiConnectors,
   ...inventoryApiConnectors,
+  ...employeesApiConnectors,
   // DI local storage into epics to make testing easier (hope there will be tests someday :) )
   localStorageService: window.localStorage,
 };
@@ -89,6 +100,7 @@ export interface RootState {
   readonly router: RouterState;
   readonly errorModal: ErrorModalState;
   readonly inventory: InventoryState;
+  readonly employees: EmployeesState;
 }
 /**
  * Type of object that collects all injected into epic middleware dependencies of the App.
@@ -105,4 +117,5 @@ export type AllAppActions =
   | RouterAction
   | AllSessionActions
   | CommonErrorAction
-  | AllInventoryActions;
+  | AllInventoryActions
+  | AllEmployeesActions;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { AppRouePaths } from './app-routes';
 import { createLinkComponent } from '../shared/helpers/create-link-component';
-import { Dashboard, ShoppingCart } from '@material-ui/icons';
+import { Dashboard, Group, ShoppingCart } from '@material-ui/icons';
 import { FormattedMessage } from 'react-intl';
 import { MAIN_MENU_WIDTH } from './Shell';
 import { MainMenuGroup } from './MainMenuGroup';
@@ -22,11 +22,19 @@ import {
 export interface MainMenuProps {
   readonly mobileOpened: boolean;
   readonly isInventoryEnabled: boolean;
+  readonly isEmployeesEnabled: boolean;
   readonly onClose: () => void;
 }
 
 export const StyledMainMenu: React.SFC<StyledMainMenuProps> = props => {
-  const { mobileOpened, isInventoryEnabled, onClose, classes, theme } = props;
+  const {
+    mobileOpened,
+    isInventoryEnabled,
+    isEmployeesEnabled,
+    onClose,
+    classes,
+    theme,
+  } = props;
   const dashboardMenuContent = (
     <React.Fragment>
       <List>
@@ -63,6 +71,23 @@ export const StyledMainMenu: React.SFC<StyledMainMenuProps> = props => {
       <Divider />
     </React.Fragment>
   );
+  const employeesMenuContent = isEmployeesEnabled && (
+    <React.Fragment>
+      <List>
+        <MainMenuGroup
+          textId="mainMenu.EmployeesMenuItem.text"
+          icon={<Group />}
+          subItems={[
+            {
+              textId: 'mainMenu.EmployeesInvitationMenuItem.text',
+              linkPath: AppRouePaths.employeesInvitation,
+            },
+          ]}
+        />
+      </List>
+      <Divider />
+    </React.Fragment>
+  );
 
   const drawer = (
     <div>
@@ -73,6 +98,8 @@ export const StyledMainMenu: React.SFC<StyledMainMenuProps> = props => {
       {dashboardMenuContent}
 
       {inventoryMenuContent}
+
+      {employeesMenuContent}
     </div>
   );
 

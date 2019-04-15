@@ -22,8 +22,16 @@ export const enTranslationMessages = {
   'inventoryItemUnit.LT.full': 'liter',
   'inventoryItemUnit.ML.full': 'milliliter',
 
+  'appAccessRole._CLINIC_OWNER': 'Clinic Owner',
+  'appAccessRole._HR': 'HR',
+  'appAccessRole._INVENTORY_MASTER': 'Inventory Master',
+  'appAccessRole._INVENTORY_BALANCE_KEEPER': 'Inventory Balance Operator',
+
   'mainMenu.InventoryMenuItem.text': 'Inventory',
   'mainMenu.InventoryCatalogMenuItem.text': 'Catalog',
+
+  'mainMenu.EmployeesMenuItem.text': 'Employees',
+  'mainMenu.EmployeesInvitationMenuItem.text': 'Invitation',
 
   'loginPage.title': 'Login',
   'loginPage.loginForm.title': 'Login',
@@ -52,6 +60,14 @@ export const enTranslationMessages = {
   'inventoryCatalogPage.inventoryItemDetailsForm.tagsControl.label': 'Tags',
   'inventoryCatalogPage.inventoryItemDetailsForm.alternatesControl.label':
     'Alternates',
+
+  'employeeInvitationPage.title': 'Employee Invitation',
+  'employeeInvitationPage.invitationForm.rolesSelect.label':
+    'Select roles for new employee',
+  'employeeInvitationPage.invitationForm.submitButton.text':
+    'Generate invitation link',
+  'employeeInvitationPage.invitationLink.text':
+    'Copy this link and share it with new employee to finish registration',
 
   'errorModal.title': 'Error',
   'errorModal.defaultErrorMessage':

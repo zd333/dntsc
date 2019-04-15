@@ -23,8 +23,16 @@ export const uaTranslationMessages: AppTranslationMessages = {
   'inventoryItemUnit.LT.full': 'літр',
   'inventoryItemUnit.ML.full': 'мілілітр',
 
+  'appAccessRole._CLINIC_OWNER': 'Володар клініки',
+  'appAccessRole._HR': 'Менеджер персоналу',
+  'appAccessRole._INVENTORY_MASTER': 'Менеджер складу',
+  'appAccessRole._INVENTORY_BALANCE_KEEPER': 'Оператор складу',
+
   'mainMenu.InventoryMenuItem.text': 'Склад',
   'mainMenu.InventoryCatalogMenuItem.text': 'Каталог',
+
+  'mainMenu.EmployeesMenuItem.text': 'Персонал',
+  'mainMenu.EmployeesInvitationMenuItem.text': 'Запрошення',
 
   'loginPage.title': 'Вхід',
   'loginPage.loginForm.title': 'Вхід',
@@ -55,6 +63,14 @@ export const uaTranslationMessages: AppTranslationMessages = {
   'inventoryCatalogPage.inventoryItemDetailsForm.tagsControl.label': 'Теги',
   'inventoryCatalogPage.inventoryItemDetailsForm.alternatesControl.label':
     'Аналоги',
+
+  'employeeInvitationPage.title': 'Запрошення працівників',
+  'employeeInvitationPage.invitationForm.rolesSelect.label':
+    'Оберіть ролі для нового працівника',
+  'employeeInvitationPage.invitationForm.submitButton.text':
+    'Сгенерувати запрошення',
+  'employeeInvitationPage.invitationLink.text':
+    'Скопіюйте це посилання та надайте його новому працівнику для завершення його реєстрації',
 
   'errorModal.title': 'Помилка',
   'errorModal.defaultErrorMessage': 'Вибачте, виникла несподівана помилка.',
