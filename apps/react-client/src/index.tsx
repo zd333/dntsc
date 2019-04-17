@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { AllEmployeesActions } from './sub-features/employees/actions/amployees.actions';
+import { AllEmployeesActions } from './sub-features/employees/actions/employees.actions';
 import { AllInventoryActions } from './sub-features/inventory/actions/inventory.actions';
 import { AllSessionActions } from './actions/session.actions';
 import { App } from './components/App';

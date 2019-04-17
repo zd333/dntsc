@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { EmployeesActions } from '../actions/amployees.actions';
+import { EmployeesActions } from '../actions/employees.actions';
 import { RootState } from '../../..';
 import { selectCreatedEmployeeRegistrationToken } from '../selectors/created-employee-registration-token.selector';
 import { selectRolesAllowedToOperateWith } from '../selectors/roles-allowed-to-operate-with.selector';

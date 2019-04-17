@@ -105,15 +105,24 @@ export class AuthenticationService {
     if (!dto || !dto.refreshToken) {
       throw new UnauthorizedException();
     }
-    const dtoPayload = this.jwt.verify<JwtAuthTokenPayload>(dto.refreshToken);
+
+    let dtoPayload: JwtAuthTokenPayload;
+    try {
+      dtoPayload = this.jwt.verify<JwtAuthTokenPayload>(dto.refreshToken);
+    } catch(e) {
+      throw new UnauthorizedException();
+    }
+
     const { employeeId } = dtoPayload;
     const employee = await this.employeesDbConnector.getById(employeeId);
+
     if (!employee) {
       throw new UnauthorizedException();
     }
     if (!employee.isActive) {
       throw new ForbiddenException();
     }
+
     // Do not use dtoPayload due to it contains props added by jwt service
     const resultPayload = { employeeId };
     const authToken = this.jwt.sign(resultPayload);

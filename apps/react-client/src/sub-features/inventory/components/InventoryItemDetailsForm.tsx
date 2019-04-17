@@ -60,7 +60,7 @@ type InventoryItemDetailsFormValues = Omitted<InventoryItem, 'id' | 'unit'> & {
   readonly unit: InventoryItem['unit'] | '';
 };
 
-const StyledInventoryItemDetailsForm: React.SFC<
+const StyledInventoryItemDetailsForm: React.FunctionComponent<
   StyledTranslatedInventoryItemDetailsFormProps
 > = props => {
   const {
@@ -328,4 +328,4 @@ const TranslatedInventoryItemDetailsForm = injectIntl(
 );
 export const InventoryItemDetailsForm = withStyles(
   inventoryItemDetailsFormStyles,
-)(TranslatedInventoryItemDetailsForm);
+)(React.memo(TranslatedInventoryItemDetailsForm));

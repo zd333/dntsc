@@ -28,7 +28,7 @@ interface EmployeeInvitationPageState {
   readonly selectedRoles: Array<AppAccessRoles>;
 }
 
-export class StyledEmployeeInvitationPage extends React.Component<
+export class StyledEmployeeInvitationPage extends React.PureComponent<
   StyledEmployeeInvitationPageProps,
   EmployeeInvitationPageState
 > {
