@@ -30,7 +30,7 @@ interface MainMenuGroupState {
   readonly isOpened: boolean;
 }
 
-class StyledMainMenuGroup extends React.Component<
+class StyledMainMenuGroup extends React.PureComponent<
   StyledMainMenuGroupProps,
   MainMenuGroupState
 > {
@@ -89,7 +89,7 @@ class StyledMainMenuGroup extends React.Component<
           {this.state.isOpened ? <ExpandLess /> : <ExpandMore />}
         </ListItem>
         <Collapse in={this.state.isOpened} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
+          <List component="nav" disablePadding>
             {subitemElements}
           </List>
         </Collapse>

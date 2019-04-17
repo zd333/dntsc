@@ -1,6 +1,6 @@
 import { AllAppActions } from '../../..';
 import { AppRouePaths } from '../../../components/app-routes';
-import { EmployeesActions } from '../actions/amployees.actions';
+import { EmployeesActions } from '../actions/employees.actions';
 import { Epic, ofType } from 'redux-observable';
 import { filter, mapTo } from 'rxjs/operators';
 import { LOCATION_CHANGE, LocationChangeAction } from 'connected-react-router';

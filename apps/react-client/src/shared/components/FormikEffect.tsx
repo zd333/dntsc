@@ -20,7 +20,7 @@ interface ConnectedFormikEffectsProps<T> extends FormikEffectsProps<T> {
   readonly formik: FormikContext<T>;
 }
 
-class ConnectedFormikEffects<T> extends React.Component<
+class ConnectedFormikEffects<T> extends React.PureComponent<
   ConnectedFormikEffectsProps<T>
 > {
   public componentWillReceiveProps(

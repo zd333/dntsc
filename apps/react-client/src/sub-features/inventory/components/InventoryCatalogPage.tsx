@@ -54,7 +54,7 @@ interface InventoryCatalogPageState {
   readonly currentTagsToFilterBy?: Array<string>;
 }
 
-export class StyledInventoryCatalogPage extends React.Component<
+export class StyledInventoryCatalogPage extends React.PureComponent<
   StyledInventoryCatalogProps,
   InventoryCatalogPageState
 > {

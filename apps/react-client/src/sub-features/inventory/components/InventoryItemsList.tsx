@@ -25,7 +25,7 @@ export interface InventoryItemsListProps {
   }) => void;
 }
 
-const StyledInventoryItemsList: React.SFC<
+const StyledInventoryItemsList: React.FunctionComponent<
   StyledInventoryItemsListProps
 > = props => {
   const {
@@ -84,5 +84,5 @@ type StyledInventoryItemsListProps = InventoryItemsListProps &
   WithStyles<typeof inventoryItemsListStyles>;
 
 export const InventoryItemsList = withStyles(inventoryItemsListStyles)(
-  StyledInventoryItemsList,
+  React.memo(StyledInventoryItemsList),
 );

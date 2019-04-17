@@ -8,7 +8,7 @@ import { selectAuthToken } from '../../../selectors/auth-token.selector';
 import {
   EmployeesActionTypes,
   EmployeesActions,
-} from '../actions/amployees.actions';
+} from '../actions/employees.actions';
 
 export const createEmployeeRegistrationTokenApiCallEpic: Epic<
   AllAppActions,

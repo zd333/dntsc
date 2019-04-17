@@ -8,8 +8,10 @@ import { ShellContainer } from '../containers/ShellContainer';
 
 export enum AppRouePaths {
   login = '/login',
+  // TODO: add '/register-employee/:registrationToken' route
   dashboard = '/dashboard',
   inventoryCatalog = '/inventory/catalog',
+  // TODO: add '/employees' route with list of employees + isActive toggler
   employeeInvitation = '/employees/invite',
 }
 

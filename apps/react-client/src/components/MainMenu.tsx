@@ -26,7 +26,9 @@ export interface MainMenuProps {
   readonly onClose: () => void;
 }
 
-export const StyledMainMenu: React.SFC<StyledMainMenuProps> = props => {
+export const StyledMainMenu: React.FunctionComponent<
+  StyledMainMenuProps
+> = props => {
   const {
     mobileOpened,
     isInventoryEnabled,
@@ -151,5 +153,5 @@ type StyledMainMenuProps = MainMenuProps &
   WithStyles<typeof mainMenuStyles, true>;
 
 export const MainMenu = withStyles(mainMenuStyles, { withTheme: true })(
-  StyledMainMenu,
+  React.memo(StyledMainMenu),
 );

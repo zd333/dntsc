@@ -3,7 +3,7 @@ import { EmployeesState } from './employees-state.interface';
 import {
   AllEmployeesActions,
   EmployeesActionTypes,
-} from '../actions/amployees.actions';
+} from '../actions/employees.actions';
 
 export function employeesReducer(
   state: EmployeesState = EmployeesInitialState,

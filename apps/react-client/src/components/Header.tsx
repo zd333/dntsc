@@ -27,7 +27,7 @@ export interface HeaderProps {
   readonly onLogout: () => void;
 }
 
-const StyledHeader: React.SFC<StyledHeaderProps> = props => {
+const StyledHeader: React.FunctionComponent<StyledHeaderProps> = props => {
   const {
     classes,
     title,
@@ -122,4 +122,4 @@ const headerStyles = ({ breakpoints, spacing }: Theme) =>
 
 type StyledHeaderProps = HeaderProps & WithStyles<typeof headerStyles>;
 
-export const Header = withStyles(headerStyles)(StyledHeader);
+export const Header = withStyles(headerStyles)(React.memo(StyledHeader));

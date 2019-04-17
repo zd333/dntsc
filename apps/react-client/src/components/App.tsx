@@ -3,7 +3,7 @@ import { appRoutes } from './app-routes';
 import { CssBaseline } from '@material-ui/core';
 import { ErrorModalContainer } from '../../src/containers/ErrorModalContainer';
 
-export const App: React.SFC = () => (
+export const App: React.FunctionComponent = () => (
   <React.Fragment>
     <ErrorModalContainer />
     <CssBaseline />
