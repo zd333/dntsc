@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { EmployeeDetailsOutDto } from '@api/sub-features/employees/dto/employee-details.out-dto';
+import { employeesEpics } from '../epics';
 import {
   createStyles,
   Theme,
@@ -8,12 +9,14 @@ import {
   ListItem,
   ListItemText,
   ListItemSecondaryAction,
+  Typography,
 } from '@material-ui/core';
-// TODO: finish
+
 export interface EmployeeListItemProps {
   readonly employee: EmployeeVM;
   readonly onIsActiveChange: (params: {
     readonly isActive: EmployeeVM['isActive'];
+    readonly id: EmployeeVM['id'];
   }) => void;
 }
 
@@ -22,9 +25,31 @@ const StyledEmployeeListItem: React.FunctionComponent<
 > = props => {
   const { classes, employee } = props;
 
+  const getEmployeeRolesText = () =>
+    Array.isArray(employee.roles) && employee.roles.length
+      ? // TODO: translations
+        employee.roles.map(role => `appAccessRole.${role}`).join(', ')
+      : 'no roles (TODO: translate)';
+
   return (
-    <ListItem key={employee.id} dense>
-      <ListItemText primary={employee.name} />
+    <ListItem key={employee.id}>
+      <ListItemText
+        primary={employee.name}
+        secondary={
+          <React.Fragment>
+            <Typography
+              component="span"
+              className={classes.inline}
+              color="textPrimary"
+            >
+              {employee.login}
+            </Typography>
+            {` — ${getEmployeeRolesText()}`}
+          </React.Fragment>
+        }
+      />
+      {/* TODO: is active toggler */}
+
       {/* {updateIsAllowed && (
         <ListItemSecondaryAction>
           <IconButton
@@ -41,9 +66,8 @@ const StyledEmployeeListItem: React.FunctionComponent<
 
 const EmployeeListItemStyles = ({ palette }: Theme) =>
   createStyles({
-    root: {
-      width: '100%',
-      backgroundColor: palette.background.paper,
+    inline: {
+      display: 'inline',
     },
   });
 

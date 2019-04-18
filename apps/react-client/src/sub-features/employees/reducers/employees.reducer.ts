@@ -1,3 +1,4 @@
+import { arrayToDictionary } from '../../../shared/helpers/array-to-dictionary';
 import { EmployeesInitialState } from './employees-initial-state';
 import { EmployeesState } from './employees-state.interface';
 import {
@@ -31,6 +32,36 @@ export function employeesReducer(
         ...state,
         createEmployeeRegistrationTokenInProgress: false,
         createdRegistrationToken: '',
+      };
+    }
+
+    case EmployeesActionTypes.FETCH_EMPLOYEES_START: {
+      return {
+        ...state,
+        fetchEmployeesApiRequestInProgress: true,
+      };
+    }
+    case EmployeesActionTypes.FETCH_EMPLOYEES_SUCCESS: {
+      const {
+        fetchResults: { items },
+      } = action.payload;
+      const newEmployeesDict = arrayToDictionary(items, 'id');
+      // Merge new results
+      const employeesDict = {
+        ...state.employeesDict,
+        ...newEmployeesDict,
+      };
+
+      return {
+        ...state,
+        employeesDict,
+        fetchEmployeesApiRequestInProgress: false,
+      };
+    }
+    case EmployeesActionTypes.FETCH_EMPLOYEES_ERROR: {
+      return {
+        ...state,
+        fetchEmployeesApiRequestInProgress: false,
       };
     }
 

@@ -18,8 +18,10 @@ export const selectCurrentPageName = createSelector(
         ? 'dashboardPage.title'
         : routePath === AppRouePaths.inventoryCatalog
         ? 'inventoryCatalogPage.title'
-        : routePath === AppRouePaths.inventoryCatalog
+        : routePath === AppRouePaths.employeeInvitation
         ? 'employeeInvitationPage.title'
+        : routePath === AppRouePaths.employeeManagement
+        ? 'employeeManagementPage.title'
         : 'defaultPageTitle';
 
     return currentTranslationsDictionary[translationsDictionaryKey];

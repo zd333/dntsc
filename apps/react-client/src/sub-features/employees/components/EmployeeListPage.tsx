@@ -9,16 +9,31 @@ import {
 } from '@material-ui/core';
 export interface EmployeeListPageProps {
   readonly employees: Array<EmployeeVM>;
-  readonly onIsActiveChange: (params: {
-    readonly employeeId: EmployeeVM['id'];
-    readonly isActive: EmployeeVM['isActive'];
+  readonly onEmployeeChanges: (params: {
+    readonly updatedEmployee: EmployeeVM;
   }) => void;
 }
-// TODO: finish
+
 const StyledEmployeeListPage: React.FunctionComponent<
   StyledEmployeeListPageProps
 > = props => {
-  const { classes, employees } = props;
+  const { classes, employees, onEmployeeChanges } = props;
+
+  const handleIsActiveChange = (params: {
+    readonly isActive: EmployeeVM['isActive'];
+    readonly id: EmployeeVM['id'];
+  }) => {
+    const { id, isActive } = params;
+    const targetEmployee = employees.find(employee => employee.id === id);
+
+    if (!targetEmployee) {
+      return;
+    }
+
+    const updatedEmployee = { ...targetEmployee, isActive };
+
+    onEmployeeChanges({ updatedEmployee });
+  };
 
   return (
     <div className={classes.root}>
@@ -27,7 +42,7 @@ const StyledEmployeeListPage: React.FunctionComponent<
           <EmployeeListItem
             key={employee.id}
             employee={employee}
-            onIsActiveChange={() => void 0}
+            onIsActiveChange={handleIsActiveChange}
           />
         ))}
       </List>

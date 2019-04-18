@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { DashboardPage } from '../sub-features/dashboard/components/DashboardPage';
 import { EmployeeInvitationPageContainer } from '../sub-features/employees/containers/EmployeeInvitationPageContainer';
+import { EmployeeListPageContainer } from '../sub-features/employees/containers/EmployeeListPageContainer';
 import { InventoryCatalogPageContainer } from '../sub-features/inventory/containers/InventoryCatalogPageContainer';
 import { LoginPageContainer } from '../containers/LoginPageContainer';
 import { Redirect, Route, Switch } from 'react-router';
@@ -11,10 +12,14 @@ export enum AppRouePaths {
   // TODO: add '/register-employee/:registrationToken' route
   dashboard = '/dashboard',
   inventoryCatalog = '/inventory/catalog',
-  // TODO: add '/employees' route with list of employees + isActive toggler
   employeeInvitation = '/employees/invite',
+  employeeManagement = '/employees/manage',
 }
-
+/**
+ * TODO: consider adding mappings conditionally using permissions/features info from state.
+ * See `ShellContainer`, `selectIsInventoryFeatureEnabled`, `selectIsEmployeesManagementAllowedToCurrentUser`, etc.
+ * Or find another way to guard routes.
+ */
 const inventoryRoutesMappings: RoutePathComponentMappings = [
   {
     path: AppRouePaths.inventoryCatalog,
@@ -25,6 +30,10 @@ const employeesRoutesMappings: RoutePathComponentMappings = [
   {
     path: AppRouePaths.employeeInvitation,
     component: EmployeeInvitationPageContainer,
+  },
+  {
+    path: AppRouePaths.employeeManagement,
+    component: EmployeeListPageContainer,
   },
 ];
 const allRoutesMappings = [

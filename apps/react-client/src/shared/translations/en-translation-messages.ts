@@ -32,6 +32,7 @@ export const enTranslationMessages = {
 
   'mainMenu.EmployeesMenuItem.text': 'Employees',
   'mainMenu.EmployeesInvitationMenuItem.text': 'Invitation',
+  'mainMenu.EmployeesManagementMenuItem.text': 'Management',
 
   'loginPage.title': 'Login',
   'loginPage.loginForm.title': 'Login',
@@ -68,6 +69,8 @@ export const enTranslationMessages = {
     'Generate invitation link',
   'employeeInvitationPage.invitationLink.text':
     'Copy this link and share it with new employee to finish registration',
+
+  'employeeManagementPage.title': 'Employee Management',
 
   'errorModal.title': 'Error',
   'errorModal.defaultErrorMessage':
