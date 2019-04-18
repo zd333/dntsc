@@ -27,7 +27,7 @@ export const EmployeesActions = {
   fetchEmployeesStart: () =>
     createAction(EmployeesActionTypes.FETCH_EMPLOYEES_START),
   fetchEmployeesSuccess: (payload: {
-    readonly employees: PaginatedListOutDto<EmployeeDetailsOutDto>;
+    readonly fetchResults: PaginatedListOutDto<EmployeeDetailsOutDto>;
   }) => createAction(EmployeesActionTypes.FETCH_EMPLOYEES_SUCCESS, payload),
   fetchEmployeesError: (payload: { readonly error?: ApiError }) =>
     createCommonErrorAction(EmployeesActionTypes.FETCH_EMPLOYEES_ERROR, {

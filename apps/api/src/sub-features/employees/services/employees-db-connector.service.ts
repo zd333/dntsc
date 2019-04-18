@@ -135,7 +135,6 @@ export class EmployeesDbConnectorService {
   }): Promise<void> {
     const { id, dto } = params;
     const { id: _, targetClinicId, ...dtoWithStrippedId } = dto;
-    // TODO: handle null values (move unset logic to helper)
     // Unset statement for optional fields to delete them
     const unsetStatement = !dtoWithStrippedId.roles
       ? {

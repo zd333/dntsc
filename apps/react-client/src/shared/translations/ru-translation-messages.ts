@@ -34,6 +34,7 @@ export const ruTranslationMessages: AppTranslationMessages = {
 
   'mainMenu.EmployeesMenuItem.text': 'Персонал',
   'mainMenu.EmployeesInvitationMenuItem.text': 'Приглашение',
+  'mainMenu.EmployeesManagementMenuItem.text': 'Управление',
 
   'loginPage.title': 'Вход',
   'loginPage.loginForm.title': 'Вход',
@@ -74,6 +75,8 @@ export const ruTranslationMessages: AppTranslationMessages = {
     'Сгенерировать приглашение',
   'employeeInvitationPage.invitationLink.text':
     'Скопируйте эту ссылку и предоставьте ее новому сотруднику для завершения его регистрации',
+
+  'employeeManagementPage.title': 'Управление персоналом',
 
   'errorModal.title': 'Ошибка',
   'errorModal.defaultErrorMessage': 'Извините, возникла ошибка.',

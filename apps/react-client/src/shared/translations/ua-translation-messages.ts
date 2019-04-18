@@ -33,6 +33,7 @@ export const uaTranslationMessages: AppTranslationMessages = {
 
   'mainMenu.EmployeesMenuItem.text': 'Персонал',
   'mainMenu.EmployeesInvitationMenuItem.text': 'Запрошення',
+  'mainMenu.EmployeesManagementMenuItem.text': 'Керування',
 
   'loginPage.title': 'Вхід',
   'loginPage.loginForm.title': 'Вхід',
@@ -71,6 +72,8 @@ export const uaTranslationMessages: AppTranslationMessages = {
     'Сгенерувати запрошення',
   'employeeInvitationPage.invitationLink.text':
     'Скопіюйте це посилання та надайте його новому працівнику для завершення його реєстрації',
+
+  'employeeManagementPage.title': 'Керування персоналом',
 
   'errorModal.title': 'Помилка',
   'errorModal.defaultErrorMessage': 'Вибачте, виникла несподівана помилка.',

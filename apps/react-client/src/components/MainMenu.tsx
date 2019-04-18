@@ -84,6 +84,10 @@ export const StyledMainMenu: React.FunctionComponent<
               textId: 'mainMenu.EmployeesInvitationMenuItem.text',
               linkPath: AppRouePaths.employeeInvitation,
             },
+            {
+              textId: 'mainMenu.EmployeesManagementMenuItem.text',
+              linkPath: AppRouePaths.employeeManagement,
+            },
           ]}
         />
       </List>
