@@ -65,6 +65,41 @@ export function employeesReducer(
       };
     }
 
+    case EmployeesActionTypes.UPDATE_EMPLOYEE_START: {
+      const { updatedEmployee } = action.payload;
+      // Optimistically update state
+      const employeesDict = {
+        ...state.employeesDict,
+        [updatedEmployee.id]: updatedEmployee,
+      };
+
+      return {
+        ...state,
+        employeesDict,
+        saveEmployeeUpdatesApiRequestInProgress: true,
+      };
+    }
+    case EmployeesActionTypes.UPDATE_EMPLOYEE_SUCCESS: {
+      return {
+        ...state,
+        saveEmployeeUpdatesApiRequestInProgress: false,
+      };
+    }
+    case EmployeesActionTypes.UPDATE_EMPLOYEE_ERROR: {
+      const { originalEmployee } = action.payload;
+      // Revert optimistic updates
+      const employeesDict = {
+        ...state.employeesDict,
+        [originalEmployee.id]: originalEmployee,
+      };
+
+      return {
+        ...state,
+        employeesDict,
+        saveEmployeeUpdatesApiRequestInProgress: false,
+      };
+    }
+
     default:
       return state;
   }

@@ -11,6 +11,7 @@ export interface EmployeeListPageProps {
   readonly employees: Array<EmployeeVM>;
   readonly onEmployeeChanges: (params: {
     readonly updatedEmployee: EmployeeVM;
+    readonly originalEmployee: EmployeeVM;
   }) => void;
 }
 
@@ -24,15 +25,15 @@ const StyledEmployeeListPage: React.FunctionComponent<
     readonly id: EmployeeVM['id'];
   }) => {
     const { id, isActive } = params;
-    const targetEmployee = employees.find(employee => employee.id === id);
+    const originalEmployee = employees.find(employee => employee.id === id);
 
-    if (!targetEmployee) {
+    if (!originalEmployee) {
       return;
     }
 
-    const updatedEmployee = { ...targetEmployee, isActive };
+    const updatedEmployee = { ...originalEmployee, isActive };
 
-    onEmployeeChanges({ updatedEmployee });
+    onEmployeeChanges({ updatedEmployee, originalEmployee });
   };
 
   return (
@@ -60,6 +61,6 @@ const EmployeeListPageStyles = () =>
 type StyledEmployeeListPageProps = EmployeeListPageProps &
   WithStyles<typeof EmployeeListPageStyles>;
 
-export const EmployeeListPage = withStyles(EmployeeListPageStyles)(
-  React.memo(StyledEmployeeListPage),
+export const EmployeeListPage = React.memo(
+  withStyles(EmployeeListPageStyles)(StyledEmployeeListPage),
 );

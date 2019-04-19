@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { EmployeeDetailsOutDto } from '@api/sub-features/employees/dto/employee-details.out-dto';
-import { employeesEpics } from '../epics';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   createStyles,
   Theme,
@@ -10,6 +10,8 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   Typography,
+  Switch,
+  Button,
 } from '@material-ui/core';
 
 export interface EmployeeListItemProps {
@@ -21,18 +23,41 @@ export interface EmployeeListItemProps {
 }
 
 const StyledEmployeeListItem: React.FunctionComponent<
-  StyledEmployeeListItemProps
+  StyledTranslatedEmployeeListItemProps
 > = props => {
-  const { classes, employee } = props;
+  const { classes, intl, employee, onIsActiveChange } = props;
 
+  const getEmployeeUpdatesAreDenied = () => {
+    // Do not allow to edit clinic owners - clinic staff should ask platform owner about such things
+    return (
+      !!employee &&
+      Array.isArray(employee.roles) &&
+      employee.roles.some(role => role === '_CLINIC_OWNER')
+    );
+  };
   const getEmployeeRolesText = () =>
     Array.isArray(employee.roles) && employee.roles.length
-      ? // TODO: translations
-        employee.roles.map(role => `appAccessRole.${role}`).join(', ')
-      : 'no roles (TODO: translate)';
+      ? employee.roles
+          .map(role => intl.formatMessage({ id: `appAccessRole.${role}` }))
+          .join(', ')
+      : intl.formatMessage({
+          id: 'employeeManagementPage.employeeList.item.noRolesMessage',
+        });
+  const handleIsActiveSwitchChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    checked: boolean,
+  ) => {
+    onIsActiveChange({ isActive: checked, id: employee.id });
+  };
 
   return (
     <ListItem key={employee.id}>
+      <Switch
+        disabled={getEmployeeUpdatesAreDenied()}
+        checked={employee.isActive}
+        onChange={handleIsActiveSwitchChange}
+      />
+
       <ListItemText
         primary={employee.name}
         secondary={
@@ -48,18 +73,18 @@ const StyledEmployeeListItem: React.FunctionComponent<
           </React.Fragment>
         }
       />
-      {/* TODO: is active toggler */}
 
-      {/* {updateIsAllowed && (
-        <ListItemSecondaryAction>
-          <IconButton
-            aria-label="Edit"
-            onClick={() => handleUpdateClick(item.id)}
-          >
-            <Edit />
-          </IconButton>
-        </ListItemSecondaryAction>
-      )} */}
+      {/* TODO: make mobile friendly */}
+      <ListItemSecondaryAction>
+        {/* TODO: implement */}
+        <Button
+          disabled={true || getEmployeeUpdatesAreDenied()}
+          variant="contained"
+          color="primary"
+        >
+          <FormattedMessage id="employeeManagementPage.employeeList.item.changeRolesButton.label" />
+        </Button>
+      </ListItemSecondaryAction>
     </ListItem>
   );
 };
@@ -71,11 +96,14 @@ const EmployeeListItemStyles = ({ palette }: Theme) =>
     },
   });
 
-type StyledEmployeeListItemProps = EmployeeListItemProps &
+type StyledTranslatedEmployeeListItemProps = EmployeeListItemProps &
+  InjectedIntlProps &
   WithStyles<typeof EmployeeListItemStyles>;
 
-export const EmployeeListItem = withStyles(EmployeeListItemStyles)(
-  React.memo(StyledEmployeeListItem),
+const TranslatedEmployeeListItem = injectIntl(StyledEmployeeListItem);
+
+export const EmployeeListItem = React.memo(
+  withStyles(EmployeeListItemStyles)(TranslatedEmployeeListItem),
 );
 
 /**

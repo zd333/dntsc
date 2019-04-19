@@ -29,6 +29,7 @@ const mapDispatchToProps: DispatchMapper<EmployeeListPageProps> = dispatch => {
       dispatch(
         EmployeesActions.updateEmployeeStart({
           updatedEmployee: params.updatedEmployee,
+          originalEmployee: params.originalEmployee,
         }),
       );
     },

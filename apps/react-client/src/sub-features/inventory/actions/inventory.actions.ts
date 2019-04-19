@@ -1,5 +1,5 @@
 import { ActionsUnion, createAction } from '@martin_hotell/rex-tils';
-import { InventoryItem } from '../selectors/items-dictionary.selector';
+import { InventoryItemVM } from '../selectors/items-dictionary.selector';
 import { InventoryItemDetailsOutDto } from '@api/sub-features/inventory/dto/inventory-item-details.out-dto';
 import { Omitted } from '../../../shared/types/omitted.type';
 import { PaginatedListOutDto } from '@api/sub-features/shared/dto/paginated-list-out-dto.interface';
@@ -35,8 +35,8 @@ export const InventoryActions = {
   fetchItemsStart: (payload: {
     readonly searchString?: string;
     readonly tagsToFilterBy?: Array<string>;
-    readonly alternatesOf?: InventoryItem['id'];
-    readonly unitToFilterBy?: InventoryItem['unit'];
+    readonly alternatesOf?: InventoryItemVM['id'];
+    readonly unitToFilterBy?: InventoryItemVM['unit'];
   }) => createAction(InventoryActionTypes.FETCH_ITEMS_START, payload),
   fetchItemsSuccess: (payload: {
     readonly fetchResults: PaginatedListOutDto<InventoryItemDetailsOutDto>;
@@ -55,8 +55,8 @@ export const InventoryActions = {
   fetchAndFilterItemsStart: (payload: {
     readonly searchString?: string;
     readonly tagsToFilterBy?: Array<string>;
-    readonly alternatesOf?: InventoryItem['id'];
-    readonly unitToFilterBy?: InventoryItem['unit'];
+    readonly alternatesOf?: InventoryItemVM['id'];
+    readonly unitToFilterBy?: InventoryItemVM['unit'];
   }) =>
     createAction(InventoryActionTypes.FETCH_AND_FILTER_ITEMS_START, payload),
   fetchAndFilterItemsSuccess: (payload: {
@@ -70,15 +70,15 @@ export const InventoryActions = {
     }),
 
   createItemStart: (payload: {
-    readonly newItemData: Omitted<InventoryItem, 'id'>;
+    readonly newItemData: Omitted<InventoryItemVM, 'id'>;
   }) => createAction(InventoryActionTypes.CREATE_ITEM_START, payload),
   createItemSuccess: (payload: {
-    readonly id: InventoryItem['id'];
-    readonly newItemData: Omitted<InventoryItem, 'id'>;
+    readonly id: InventoryItemVM['id'];
+    readonly newItemData: Omitted<InventoryItemVM, 'id'>;
   }) => createAction(InventoryActionTypes.CREATE_ITEM_SUCCESS, payload),
   createItemError: (payload: {
     readonly error?: ApiError;
-    readonly newItemData: Omitted<InventoryItem, 'id'>;
+    readonly newItemData: Omitted<InventoryItemVM, 'id'>;
   }) =>
     createCommonErrorAction(InventoryActionTypes.CREATE_ITEM_ERROR, {
       isCommonErrorAction: true,
@@ -87,8 +87,8 @@ export const InventoryActions = {
     }),
 
   updateItemStart: (payload: {
-    readonly id: InventoryItem['id'];
-    readonly itemUpdates: Omitted<InventoryItem, 'id'>;
+    readonly id: InventoryItemVM['id'];
+    readonly itemUpdates: Omitted<InventoryItemVM, 'id'>;
   }) => createAction(InventoryActionTypes.UPDATE_ITEM_START, payload),
 
   updateItemError: (payload: {

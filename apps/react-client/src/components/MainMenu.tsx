@@ -156,6 +156,6 @@ const mainMenuStyles = ({ breakpoints, mixins }: Theme) =>
 type StyledMainMenuProps = MainMenuProps &
   WithStyles<typeof mainMenuStyles, true>;
 
-export const MainMenu = withStyles(mainMenuStyles, { withTheme: true })(
-  React.memo(StyledMainMenu),
+export const MainMenu = React.memo(
+  withStyles(mainMenuStyles, { withTheme: true })(StyledMainMenu),
 );

@@ -1,7 +1,7 @@
 import { ajax } from 'rxjs/ajax';
 import { getApiUrl } from '../../../shared/helpers/get-api-url';
 import { getAuthHeadersForApiRequest } from '../../../shared/helpers/get-auth-headers-for-api-request';
-import { InventoryItem } from '../selectors/items-dictionary.selector';
+import { InventoryItemVM } from '../selectors/items-dictionary.selector';
 import { mapTo } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Omitted } from '../../../shared/types/omitted.type';
@@ -10,8 +10,8 @@ import { UpdateInventoryItemInDto } from '@api/sub-features/inventory/dto/update
 const UPDATE_INVENTORY_ITEM_PATH = (id: string) => `/inventory/items/${id}`;
 
 export const updateInventoryItemApiConnector = (params: {
-  readonly id: InventoryItem['id'];
-  readonly itemUpdates: Omitted<InventoryItem, 'id'>;
+  readonly id: InventoryItemVM['id'];
+  readonly itemUpdates: Omitted<InventoryItemVM, 'id'>;
   readonly authToken: string | undefined;
 }): Observable<void> => {
   const url = getApiUrl({ path: UPDATE_INVENTORY_ITEM_PATH(params.id) });

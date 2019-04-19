@@ -8,7 +8,7 @@ import { Select, TextField } from 'formik-material-ui';
 import { TranslatedInventoryItemUnit } from '../selectors/translated-inventory-item-units.selector';
 import {
   allInventoryItemUnits,
-  InventoryItem,
+  InventoryItemVM,
 } from '../selectors/items-dictionary.selector';
 import {
   Field,
@@ -35,20 +35,20 @@ import {
 } from '../../../shared/components/Autocomplete';
 
 export interface InventoryItemDetailsFormProps {
-  readonly item: InventoryItem | undefined;
+  readonly item: InventoryItemVM | undefined;
   readonly availableItemUnits: Array<TranslatedInventoryItemUnit>;
   readonly tagSuggestions: Array<string>;
   readonly alternatesSuggestions: {
     readonly [key in InventoryItemUnits]: Array<
-      Pick<InventoryItem, 'id' | 'name'>
+      Pick<InventoryItemVM, 'id' | 'name'>
     >
   };
   readonly isInEditMode: boolean;
   readonly onUnitChange: (params: {
-    readonly unit: InventoryItem['unit'];
+    readonly unit: InventoryItemVM['unit'];
   }) => void;
   readonly onSubmit: (params: {
-    readonly item: Omitted<InventoryItem, 'id'>;
+    readonly item: Omitted<InventoryItemVM, 'id'>;
   }) => void;
   readonly onCancelEdit: () => void;
 }
@@ -56,8 +56,8 @@ export interface InventoryItemDetailsFormProps {
 /**
  * Formik typings.
  */
-type InventoryItemDetailsFormValues = Omitted<InventoryItem, 'id' | 'unit'> & {
-  readonly unit: InventoryItem['unit'] | '';
+type InventoryItemDetailsFormValues = Omitted<InventoryItemVM, 'id' | 'unit'> & {
+  readonly unit: InventoryItemVM['unit'] | '';
 };
 
 const StyledInventoryItemDetailsForm: React.FunctionComponent<
@@ -140,7 +140,7 @@ const StyledInventoryItemDetailsForm: React.FunctionComponent<
   ));
   const getAlternatesSuggestionsForGivenUnit = (
     unit: InventoryItemDetailsFormValues['unit'],
-  ): Array<Pick<InventoryItem, 'id' | 'name'>> | undefined => {
+  ): Array<Pick<InventoryItemVM, 'id' | 'name'>> | undefined => {
     if (
       !unit ||
       !alternatesSuggestions ||
@@ -168,7 +168,7 @@ const StyledInventoryItemDetailsForm: React.FunctionComponent<
         actions: FormikActions<InventoryItemDetailsFormValues>,
       ) => {
         // Casting type due to form units allow empty values, but here it can be only not empty because of validation
-        onSubmit({ item: values as Omitted<InventoryItem, 'id'> });
+        onSubmit({ item: values as Omitted<InventoryItemVM, 'id'> });
         actions.setSubmitting(false);
       }}
       render={({
@@ -241,10 +241,10 @@ const StyledInventoryItemDetailsForm: React.FunctionComponent<
               <Field
                 name="alternates"
                 component={AutocompleteControl}
-                getDisplayValue={(s: Pick<InventoryItem, 'id' | 'name'>) =>
+                getDisplayValue={(s: Pick<InventoryItemVM, 'id' | 'name'>) =>
                   s.name
                 }
-                getUniqueId={(s: Pick<InventoryItem, 'id' | 'name'>) => s.id}
+                getUniqueId={(s: Pick<InventoryItemVM, 'id' | 'name'>) => s.id}
                 isDisabled={!isInEditMode || !values.unit}
                 isMulti={true}
                 allowCreate={false}
@@ -326,6 +326,8 @@ type StyledTranslatedInventoryItemDetailsFormProps = InventoryItemDetailsFormPro
 const TranslatedInventoryItemDetailsForm = injectIntl(
   StyledInventoryItemDetailsForm,
 );
-export const InventoryItemDetailsForm = withStyles(
-  inventoryItemDetailsFormStyles,
-)(React.memo(TranslatedInventoryItemDetailsForm));
+export const InventoryItemDetailsForm = React.memo(
+  withStyles(inventoryItemDetailsFormStyles)(
+    TranslatedInventoryItemDetailsForm,
+  ),
+);

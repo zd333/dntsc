@@ -122,4 +122,4 @@ const headerStyles = ({ breakpoints, spacing }: Theme) =>
 
 type StyledHeaderProps = HeaderProps & WithStyles<typeof headerStyles>;
 
-export const Header = withStyles(headerStyles)(React.memo(StyledHeader));
+export const Header = React.memo(withStyles(headerStyles)(StyledHeader));
