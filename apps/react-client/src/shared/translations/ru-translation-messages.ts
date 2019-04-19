@@ -77,6 +77,9 @@ export const ruTranslationMessages: AppTranslationMessages = {
     'Скопируйте эту ссылку и предоставьте ее новому сотруднику для завершения его регистрации',
 
   'employeeManagementPage.title': 'Управление персоналом',
+  'employeeManagementPage.employeeList.item.noRolesMessage': 'Права отсутсвуют',
+  'employeeManagementPage.employeeList.item.changeRolesButton.label':
+    'Редактировать права',
 
   'errorModal.title': 'Ошибка',
   'errorModal.defaultErrorMessage': 'Извините, возникла ошибка.',

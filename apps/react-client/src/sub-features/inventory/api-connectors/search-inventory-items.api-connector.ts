@@ -1,7 +1,7 @@
 import { ajax } from 'rxjs/ajax';
 import { getApiUrl } from '../../../shared/helpers/get-api-url';
 import { getAuthHeadersForApiRequest } from '../../../shared/helpers/get-auth-headers-for-api-request';
-import { InventoryItem } from '../selectors/items-dictionary.selector';
+import { InventoryItemVM } from '../selectors/items-dictionary.selector';
 import { InventoryItemDetailsOutDto } from '@api/sub-features/inventory/dto/inventory-item-details.out-dto';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -15,7 +15,7 @@ export const searchInventoryItemsApiConnector = (params: {
   readonly searchString?: string;
   readonly tagsToFilterBy?: Array<string>;
   readonly alternatesOf?: InventoryItemDetailsOutDto['id'];
-  readonly unitToFilterBy?: InventoryItem['unit'];
+  readonly unitToFilterBy?: InventoryItemVM['unit'];
   readonly authToken: string | undefined;
 }): Observable<PaginatedListOutDto<InventoryItemDetailsOutDto>> => {
   const queryParams = [

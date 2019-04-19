@@ -71,6 +71,10 @@ export const enTranslationMessages = {
     'Copy this link and share it with new employee to finish registration',
 
   'employeeManagementPage.title': 'Employee Management',
+  'employeeManagementPage.employeeList.item.noRolesMessage':
+    'No roles (permissions)',
+  'employeeManagementPage.employeeList.item.changeRolesButton.label':
+    'Edit roles',
 
   'errorModal.title': 'Error',
   'errorModal.defaultErrorMessage':

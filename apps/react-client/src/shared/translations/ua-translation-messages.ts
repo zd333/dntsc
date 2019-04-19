@@ -74,6 +74,9 @@ export const uaTranslationMessages: AppTranslationMessages = {
     'Скопіюйте це посилання та надайте його новому працівнику для завершення його реєстрації',
 
   'employeeManagementPage.title': 'Керування персоналом',
+  'employeeManagementPage.employeeList.item.noRolesMessage': 'Права відсутні',
+  'employeeManagementPage.employeeList.item.changeRolesButton.label':
+    'Редагувати права',
 
   'errorModal.title': 'Помилка',
   'errorModal.defaultErrorMessage': 'Вибачте, виникла несподівана помилка.',

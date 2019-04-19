@@ -3,7 +3,7 @@ import { CreatedInventoryItemOutDto } from '@api/sub-features/inventory/dto/crea
 import { CreateInventoryItemInDto } from '@api/sub-features/inventory/dto/create-inventory-item.in-dto';
 import { getApiUrl } from '../../../shared/helpers/get-api-url';
 import { getAuthHeadersForApiRequest } from '../../../shared/helpers/get-auth-headers-for-api-request';
-import { InventoryItem } from '../selectors/items-dictionary.selector';
+import { InventoryItemVM } from '../selectors/items-dictionary.selector';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Omitted } from '../../../shared/types/omitted.type';
@@ -12,7 +12,7 @@ import { TypedAjaxResponse } from '../../../shared/types/typed-ajax-response.int
 const CREATE_INVENTORY_ITEM_PATH = '/inventory/items';
 
 export const createInventoryItemApiConnector = (params: {
-  readonly newItemData: Omitted<InventoryItem, 'id'>;
+  readonly newItemData: Omitted<InventoryItemVM, 'id'>;
   readonly authToken: string | undefined;
 }): Observable<{ readonly id: string }> => {
   const url = getApiUrl({ path: CREATE_INVENTORY_ITEM_PATH });

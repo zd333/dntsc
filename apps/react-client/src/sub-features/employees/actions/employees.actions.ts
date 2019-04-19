@@ -35,15 +35,17 @@ export const EmployeesActions = {
       error: payload.error,
     }),
 
-  updateEmployeeStart: (payload: { readonly updatedEmployee: EmployeeVM }) =>
-    createAction(EmployeesActionTypes.UPDATE_EMPLOYEE_START, payload),
+  updateEmployeeStart: (payload: {
+    readonly updatedEmployee: EmployeeVM;
+    readonly originalEmployee: EmployeeVM;
+  }) => createAction(EmployeesActionTypes.UPDATE_EMPLOYEE_START, payload),
   updateEmployeeSuccess: () =>
     createAction(EmployeesActionTypes.UPDATE_EMPLOYEE_SUCCESS),
   updateEmployeeError: (payload: {
     readonly originalEmployee: EmployeeVM;
     readonly error?: ApiError;
   }) =>
-    createCommonErrorAction(EmployeesActionTypes.FETCH_EMPLOYEES_ERROR, {
+    createCommonErrorAction(EmployeesActionTypes.UPDATE_EMPLOYEE_ERROR, {
       isCommonErrorAction: true,
       error: payload.error,
       originalEmployee: payload.originalEmployee,

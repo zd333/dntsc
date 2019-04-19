@@ -1,5 +1,5 @@
 import { ajax } from 'rxjs/ajax';
-import { EmployeeDetailsOutDto } from '../../../../../api/src/sub-features/employees/dto/employee-details.out-dto';
+import { EmployeeDetailsOutDto } from '@api/sub-features/employees/dto/employee-details.out-dto';
 import { getApiUrl } from '../../../shared/helpers/get-api-url';
 import { getAuthHeadersForApiRequest } from '../../../shared/helpers/get-auth-headers-for-api-request';
 import { map } from 'rxjs/operators';
