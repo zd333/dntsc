@@ -13,7 +13,6 @@ export const selectIsInventoryFeatureEnabled = createSelector(
       role =>
         role === '_INVENTORY_BALANCE_KEEPER' ||
         role === '_INVENTORY_MASTER' ||
-        role === '_CLINIC_OWNER' ||
-        role === '_PLATFORM_OWNER',
+        role === '_CLINIC_OWNER',
     ),
 );

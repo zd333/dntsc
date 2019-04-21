@@ -73,8 +73,10 @@ export const enTranslationMessages = {
   'employeeManagementPage.title': 'Employee Management',
   'employeeManagementPage.employeeList.item.noRolesMessage':
     'No roles (permissions)',
-  'employeeManagementPage.employeeList.item.changeRolesButton.label':
-    'Edit roles',
+  'employeeManagementPage.employeeDetailsForm.nameControl.label': 'Name',
+  'employeeManagementPage.employeeDetailsForm.rolesControl.label': 'Roles',
+
+  'employeeManagementPage.editEmployeeDialog.title': 'Edit Employee',
 
   'errorModal.title': 'Error',
   'errorModal.defaultErrorMessage':

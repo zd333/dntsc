@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import { EmployeesActions } from '../actions/employees.actions';
 import { RootState } from '../../..';
 import { selectAllEmployees } from '../selectors/all-employees.selector';
-import { selectCreatedEmployeeRegistrationToken } from '../selectors/created-employee-registration-token.selector';
 import { selectRolesAllowedToOperateWith } from '../selectors/roles-allowed-to-operate-with.selector';
 import {
   EmployeeListPageProps,
@@ -20,6 +19,7 @@ const mapStateToProps: StateMapper<
 > = state => {
   return {
     employees: selectAllEmployees(state),
+    availableRoles: selectRolesAllowedToOperateWith(state),
   };
 };
 

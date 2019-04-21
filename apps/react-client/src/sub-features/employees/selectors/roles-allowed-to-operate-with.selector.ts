@@ -24,14 +24,12 @@ export const selectRolesAllowedToOperateWith = createSelector(
 
     if (userRoles.some(role => role === '_PLATFORM_OWNER')) {
       // Platform owner is allowed to create any role in clinic
-      return allOperableAccessRoles.filter(role => role !== '_PLATFORM_OWNER');
+      return [...allOperableAccessRoles];
     }
 
     if (userRoles.some(role => role === '_CLINIC_OWNER' || role === '_HR')) {
       // Clinic owners and HRs can create any role except new clinic owners
-      return allOperableAccessRoles.filter(
-        role => role !== '_PLATFORM_OWNER' && role !== '_CLINIC_OWNER',
-      );
+      return allOperableAccessRoles.filter(role => role !== '_CLINIC_OWNER');
     }
 
     return [];

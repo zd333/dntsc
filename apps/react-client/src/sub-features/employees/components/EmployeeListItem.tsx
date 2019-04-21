@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Edit } from '@material-ui/icons';
 import { EmployeeDetailsOutDto } from '@api/sub-features/employees/dto/employee-details.out-dto';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -12,6 +13,7 @@ import {
   Typography,
   Switch,
   Button,
+  IconButton,
 } from '@material-ui/core';
 
 export interface EmployeeListItemProps {
@@ -20,12 +22,13 @@ export interface EmployeeListItemProps {
     readonly isActive: EmployeeVM['isActive'];
     readonly id: EmployeeVM['id'];
   }) => void;
+  readonly onEditClick: (params: { readonly id: EmployeeVM['id'] }) => void;
 }
 
 const StyledEmployeeListItem: React.FunctionComponent<
   StyledTranslatedEmployeeListItemProps
 > = props => {
-  const { classes, intl, employee, onIsActiveChange } = props;
+  const { classes, intl, employee, onIsActiveChange, onEditClick } = props;
 
   const getEmployeeUpdatesAreDenied = () => {
     // Do not allow to edit clinic owners - clinic staff should ask platform owner about such things
@@ -49,6 +52,7 @@ const StyledEmployeeListItem: React.FunctionComponent<
   ) => {
     onIsActiveChange({ isActive: checked, id: employee.id });
   };
+  const handleEditClick = () => onEditClick({ id: employee.id });
 
   return (
     <ListItem key={employee.id}>
@@ -74,17 +78,13 @@ const StyledEmployeeListItem: React.FunctionComponent<
         }
       />
 
-      {/* TODO: make mobile friendly */}
-      <ListItemSecondaryAction>
-        {/* TODO: implement */}
-        <Button
-          disabled={true || getEmployeeUpdatesAreDenied()}
-          variant="contained"
-          color="primary"
-        >
-          <FormattedMessage id="employeeManagementPage.employeeList.item.changeRolesButton.label" />
-        </Button>
-      </ListItemSecondaryAction>
+      {!getEmployeeUpdatesAreDenied() && (
+        <ListItemSecondaryAction>
+          <IconButton aria-label="Edit" onClick={handleEditClick}>
+            <Edit />
+          </IconButton>
+        </ListItemSecondaryAction>
+      )}
     </ListItem>
   );
 };

@@ -78,8 +78,11 @@ export const ruTranslationMessages: AppTranslationMessages = {
 
   'employeeManagementPage.title': 'Управление персоналом',
   'employeeManagementPage.employeeList.item.noRolesMessage': 'Права отсутсвуют',
-  'employeeManagementPage.employeeList.item.changeRolesButton.label':
-    'Редактировать права',
+  'employeeManagementPage.employeeDetailsForm.nameControl.label': 'Имя',
+  'employeeManagementPage.employeeDetailsForm.rolesControl.label': 'Права',
+
+  'employeeManagementPage.editEmployeeDialog.title':
+    'Редактирование сотрудника',
 
   'errorModal.title': 'Ошибка',
   'errorModal.defaultErrorMessage': 'Извините, возникла ошибка.',
