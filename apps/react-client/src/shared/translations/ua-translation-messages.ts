@@ -75,8 +75,10 @@ export const uaTranslationMessages: AppTranslationMessages = {
 
   'employeeManagementPage.title': 'Керування персоналом',
   'employeeManagementPage.employeeList.item.noRolesMessage': 'Права відсутні',
-  'employeeManagementPage.employeeList.item.changeRolesButton.label':
-    'Редагувати права',
+  'employeeManagementPage.employeeDetailsForm.nameControl.label': `Ім'я`,
+  'employeeManagementPage.employeeDetailsForm.rolesControl.label': 'Права',
+
+  'employeeManagementPage.editEmployeeDialog.title': 'Редагування працівника',
 
   'errorModal.title': 'Помилка',
   'errorModal.defaultErrorMessage': 'Вибачте, виникла несподівана помилка.',
