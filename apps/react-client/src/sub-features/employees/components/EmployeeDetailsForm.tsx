@@ -122,7 +122,6 @@ const StyledEmployeeDetailsForm: React.FunctionComponent<
               <Field
                 component={TextField}
                 name="name"
-                disabled={isEmployeeClinicOwner()}
                 label={nameFieldName}
                 fullWidth={true}
               />

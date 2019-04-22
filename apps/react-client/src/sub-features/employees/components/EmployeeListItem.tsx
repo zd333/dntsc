@@ -18,6 +18,7 @@ import {
 
 export interface EmployeeListItemProps {
   readonly employee: EmployeeVM;
+  readonly isEditAllowed: boolean;
   readonly onIsActiveChange: (params: {
     readonly isActive: EmployeeVM['isActive'];
     readonly id: EmployeeVM['id'];
@@ -28,8 +29,16 @@ export interface EmployeeListItemProps {
 const StyledEmployeeListItem: React.FunctionComponent<
   StyledTranslatedEmployeeListItemProps
 > = props => {
-  const { classes, intl, employee, onIsActiveChange, onEditClick } = props;
+  const {
+    classes,
+    intl,
+    employee,
+    isEditAllowed,
+    onIsActiveChange,
+    onEditClick,
+  } = props;
 
+  // TODO: remove
   const getEmployeeUpdatesAreDenied = () => {
     // Do not allow to edit clinic owners - clinic staff should ask platform owner about such things
     return (
@@ -57,7 +66,7 @@ const StyledEmployeeListItem: React.FunctionComponent<
   return (
     <ListItem key={employee.id}>
       <Switch
-        disabled={getEmployeeUpdatesAreDenied()}
+        disabled={!isEditAllowed}
         checked={employee.isActive}
         onChange={handleIsActiveSwitchChange}
       />
@@ -78,7 +87,7 @@ const StyledEmployeeListItem: React.FunctionComponent<
         }
       />
 
-      {!getEmployeeUpdatesAreDenied() && (
+      {isEditAllowed && (
         <ListItemSecondaryAction>
           <IconButton aria-label="Edit" onClick={handleEditClick}>
             <Edit />

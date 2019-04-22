@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { EmployeesActions } from '../actions/employees.actions';
 import { RootState } from '../../..';
 import { selectAllEmployees } from '../selectors/all-employees.selector';
+import { selectCurrentUserIsPlatformOwner } from '../../../selectors/current-user-is-platform-owner.selector';
 import { selectRolesAllowedToOperateWith } from '../selectors/roles-allowed-to-operate-with.selector';
 import {
   EmployeeListPageProps,
@@ -19,6 +20,7 @@ const mapStateToProps: StateMapper<
 > = state => {
   return {
     employees: selectAllEmployees(state),
+    isClinicOwnerEditAllowed: selectCurrentUserIsPlatformOwner(state),
     availableRoles: selectRolesAllowedToOperateWith(state),
   };
 };
