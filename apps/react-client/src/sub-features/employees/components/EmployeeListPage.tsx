@@ -18,6 +18,7 @@ import {
 
 export interface EmployeeListPageProps {
   readonly employees: Array<EmployeeVM>;
+  readonly isClinicOwnerEditAllowed: boolean;
   readonly availableRoles: Array<AppAccessRoles>;
   readonly onEmployeeChanges: (params: {
     readonly updatedEmployee: EmployeeVM;
@@ -28,7 +29,13 @@ export interface EmployeeListPageProps {
 const StyledEmployeeListPage: React.FunctionComponent<
   StyledEmployeeListPageProps
 > = props => {
-  const { classes, employees, availableRoles, onEmployeeChanges } = props;
+  const {
+    classes,
+    employees,
+    isClinicOwnerEditAllowed,
+    availableRoles,
+    onEmployeeChanges,
+  } = props;
 
   const [idOfEmployeeBeingEdited, setIdOfEmployeeBeingEdited] = React.useState<
     EmployeeVM['id'] | undefined
@@ -38,6 +45,10 @@ const StyledEmployeeListPage: React.FunctionComponent<
     idOfEmployeeBeingEdited
       ? employees.find(employee => employee.id === idOfEmployeeBeingEdited)
       : undefined;
+  const isEmployeeEditAllowed = (employee: EmployeeVM) =>
+    isClinicOwnerEditAllowed ||
+    !Array.isArray(employee.roles) ||
+    !employee.roles.some(role => role === '_CLINIC_OWNER');
 
   const handleIsActiveChange = (params: {
     readonly isActive: EmployeeVM['isActive'];
@@ -86,6 +97,7 @@ const StyledEmployeeListPage: React.FunctionComponent<
             <EmployeeListItem
               key={employee.id}
               employee={employee}
+              isEditAllowed={isEmployeeEditAllowed(employee)}
               onIsActiveChange={handleIsActiveChange}
               onEditClick={handleEditEmployeeClick}
             />
