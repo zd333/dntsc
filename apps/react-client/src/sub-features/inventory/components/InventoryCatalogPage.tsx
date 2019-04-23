@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Autocomplete } from '../../../shared/components/Autocomplete';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
-import { InventoryItemVM } from '../selectors/items-dictionary.selector';
 import { InventoryItemsList } from './InventoryItemsList';
+import { InventoryItemVM } from '../selectors/items-dictionary.selector';
 import { Omitted } from '../../../shared/types/omitted.type';
 import { TranslatedInventoryItemUnit } from '../selectors/translated-inventory-item-units.selector';
 import {
@@ -54,6 +54,7 @@ interface InventoryCatalogPageState {
   readonly currentTagsToFilterBy?: Array<string>;
 }
 
+// TODO: refactor with `useState` hook
 export class StyledInventoryCatalogPage extends React.PureComponent<
   StyledInventoryCatalogProps,
   InventoryCatalogPageState

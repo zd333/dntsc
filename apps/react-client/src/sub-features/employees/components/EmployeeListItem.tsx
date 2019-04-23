@@ -38,15 +38,6 @@ const StyledEmployeeListItem: React.FunctionComponent<
     onEditClick,
   } = props;
 
-  // TODO: remove
-  const getEmployeeUpdatesAreDenied = () => {
-    // Do not allow to edit clinic owners - clinic staff should ask platform owner about such things
-    return (
-      !!employee &&
-      Array.isArray(employee.roles) &&
-      employee.roles.some(role => role === '_CLINIC_OWNER')
-    );
-  };
   const getEmployeeRolesText = () =>
     Array.isArray(employee.roles) && employee.roles.length
       ? employee.roles

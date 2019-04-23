@@ -5,21 +5,25 @@ import { AppLanguages } from '../../src/reducers/session-state.interface';
 import { PlatformFeatures } from '@api/sub-features/tenants/db-schemas/tenant.db-schema';
 
 export enum SessionActionTypes {
-  LOGIN_START = '[Session actions] Login start',
-  LOGIN_SUCCESS = '[Session actions] Login success',
-  LOGIN_ERROR = '[Session actions] Login error',
+  LOGIN_START = '[Session] Login start',
+  LOGIN_SUCCESS = '[Session] Login success',
+  LOGIN_ERROR = '[Session] Login error',
 
-  REFRESH_SESSION_START = '[Session actions] Refresh session start',
-  REFRESH_SESSION_SUCCESS = '[Session actions] Refresh session success',
-  REFRESH_SESSION_ERROR = '[Session actions] Refresh session error',
+  REFRESH_SESSION_START = '[Session] Refresh session start',
+  REFRESH_SESSION_SUCCESS = '[Session] Refresh session success',
+  REFRESH_SESSION_ERROR = '[Session] Refresh session error',
 
-  LOGOUT = '[Session actions] Logout',
+  LOGOUT = '[Session] Logout',
 
-  GET_FEATURES_START = '[Session actions] Get features start',
-  GET_FEATURES_SUCCESS = '[Session actions] Get features success',
-  GET_FEATURES_ERROR = '[Session actions] Get features error',
+  GET_FEATURES_START = '[Session] Get features start',
+  GET_FEATURES_SUCCESS = '[Session] Get features success',
+  GET_FEATURES_ERROR = '[Session] Get features error',
 
-  CHANGE_LANGUAGE = '[Session actions] change language',
+  CHANGE_LANGUAGE = '[Session] change language',
+
+  REGISTER_EMPLOYEE_START = '[Session] Register via token start',
+  REGISTER_EMPLOYEE_SUCCESS = '[Session] Register via token success',
+  REGISTER_EMPLOYEE_ERROR = '[Session] Register via token error',
 }
 
 export const SessionActions = {
@@ -67,6 +71,22 @@ export const SessionActions = {
 
   changeLanguage: (payload: { readonly language: AppLanguages }) =>
     createAction(SessionActionTypes.CHANGE_LANGUAGE, payload),
+
+  registerEmployeeStart: (payload: {
+    readonly login: string;
+    readonly password: string;
+    readonly name: string;
+    readonly registrationToken: string;
+  }) => createAction(SessionActionTypes.REGISTER_EMPLOYEE_START, payload),
+  registerEmployeeSuccess: (payload: {
+    readonly login: string;
+    readonly password: string;
+  }) => createAction(SessionActionTypes.REGISTER_EMPLOYEE_SUCCESS, payload),
+  registerEmployeeError: (payload: { readonly error?: ApiError }) =>
+    createCommonErrorAction(SessionActionTypes.REGISTER_EMPLOYEE_ERROR, {
+      isCommonErrorAction: true,
+      error: payload.error,
+    }),
 };
 
 export type AllSessionActions = ActionsUnion<typeof SessionActions>;

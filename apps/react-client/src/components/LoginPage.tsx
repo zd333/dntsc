@@ -49,6 +49,7 @@ interface LoginPageState {
 }
 
 // TODO: refactor with formik
+// TODO: refactor with `useState` hook
 class StyledLoginPage extends React.PureComponent<
   StyledLoginPageProps,
   LoginPageState

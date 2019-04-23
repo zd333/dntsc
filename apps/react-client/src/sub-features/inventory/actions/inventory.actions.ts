@@ -9,26 +9,26 @@ import {
 } from '../../../actions/error-modal.actions';
 
 export enum InventoryActionTypes {
-  FETCH_ITEMS_START = '[Inventory actions] Fetch items start',
-  FETCH_ITEMS_SUCCESS = '[Inventory actions] Fetch items success',
-  FETCH_ITEMS_ERROR = '[Inventory actions] Fetch items error',
+  FETCH_ITEMS_START = '[Inventory] Fetch items start',
+  FETCH_ITEMS_SUCCESS = '[Inventory] Fetch items success',
+  FETCH_ITEMS_ERROR = '[Inventory] Fetch items error',
 
-  TOGGLE_SHOW_FILTERED_ITEMS_MODE = '[Inventory actions] Toggle show filtered items mode',
+  TOGGLE_SHOW_FILTERED_ITEMS_MODE = '[Inventory] Toggle show filtered items mode',
 
-  FETCH_AND_FILTER_ITEMS_START = '[Inventory actions] Fetch and filter items start',
-  FETCH_AND_FILTER_ITEMS_SUCCESS = '[Inventory actions] Fetch and filter items success',
-  FETCH_AND_FILTER_ITEMS_ERROR = '[Inventory actions] Fetch and filter items error',
+  FETCH_AND_FILTER_ITEMS_START = '[Inventory] Fetch and filter items start',
+  FETCH_AND_FILTER_ITEMS_SUCCESS = '[Inventory] Fetch and filter items success',
+  FETCH_AND_FILTER_ITEMS_ERROR = '[Inventory] Fetch and filter items error',
 
-  CREATE_ITEM_START = '[Inventory actions] Create item start',
-  CREATE_ITEM_SUCCESS = '[Inventory actions] Create item success',
-  CREATE_ITEM_ERROR = '[Inventory actions] Create item error',
+  CREATE_ITEM_START = '[Inventory] Create item start',
+  CREATE_ITEM_SUCCESS = '[Inventory] Create item success',
+  CREATE_ITEM_ERROR = '[Inventory] Create item error',
 
-  UPDATE_ITEM_START = '[Inventory actions] Update item start',
-  UPDATE_ITEM_ERROR = '[Inventory actions] Update item error',
+  UPDATE_ITEM_START = '[Inventory] Update item start',
+  UPDATE_ITEM_ERROR = '[Inventory] Update item error',
 
-  GET_USED_TAGS_START = '[Inventory actions] Get used tags start',
-  GET_USED_TAGS_SUCCESS = '[Inventory actions] Get used tags success',
-  GET_USED_TAGS_ERROR = '[Inventory actions] Get used tags error',
+  GET_USED_TAGS_START = '[Inventory] Get used tags start',
+  GET_USED_TAGS_SUCCESS = '[Inventory] Get used tags success',
+  GET_USED_TAGS_ERROR = '[Inventory] Get used tags error',
 }
 
 export const InventoryActions = {

@@ -2,14 +2,16 @@ import * as React from 'react';
 import { DashboardPage } from '../sub-features/dashboard/components/DashboardPage';
 import { EmployeeInvitationPageContainer } from '../sub-features/employees/containers/EmployeeInvitationPageContainer';
 import { EmployeeListPageContainer } from '../sub-features/employees/containers/EmployeeListPageContainer';
+import { EmployeeRegistrationPageContainer } from '../containers/EmployeeRegistrationPageContainer';
 import { InventoryCatalogPageContainer } from '../sub-features/inventory/containers/InventoryCatalogPageContainer';
 import { LoginPageContainer } from '../containers/LoginPageContainer';
 import { Redirect, Route, Switch } from 'react-router';
 import { ShellContainer } from '../containers/ShellContainer';
 
 export enum AppRouePaths {
+  // TODO: add pendingApproval = '/pending-approval',
+  registerEmployee = '/register-employee/:registrationToken',
   login = '/login',
-  // TODO: add '/register-employee/:registrationToken' route
   dashboard = '/dashboard',
   inventoryCatalog = '/inventory/catalog',
   employeeInvitation = '/employees/invite',
@@ -56,6 +58,10 @@ export const allInventoryRoutesPaths = inventoryRoutesMappings.map(
 export const appRoutes = (
   <Switch>
     <Redirect from="/" exact={true} to={AppRouePaths.dashboard} />
+    <Route
+      path={AppRouePaths.registerEmployee}
+      component={EmployeeRegistrationPageContainer}
+    />
     <Route path={AppRouePaths.login} component={LoginPageContainer} />
     <ShellContainer>
       <Switch>
