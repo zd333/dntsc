@@ -1,6 +1,7 @@
 import { ACGuard, UseRoles } from 'nest-access-control';
 import { AppRequest } from '../../../app.module';
 import { AuthGuard } from '@nestjs/passport';
+import { CheckEmployeeRegistrationTokenInDtoWithClinicContext } from '../dto/check-employee-registration-token.in-dto';
 import { convertDocumentsToPaginatedListOutDto } from '../../shared/helpers/convert-documents-to-paginated-list-out-dto';
 import { convertDocumentToOutDto } from '../../../../src/sub-features/shared/helpers/convert-document-to-out-dto';
 import { CreatedTenantOutDto } from '../../../../src/sub-features/tenants/dto/created-tenant.out-dto';
@@ -67,6 +68,19 @@ export class EmployeesController {
 
     return { registrationToken };
   }
+
+  /**
+   * Client can use this endpoint to ensure that employee registration token is valid.
+   * No payload in response, only response status code makes sense (OK or error).
+   */
+  @UseGuards(RequestIsInClinicContextGuard)
+  @Post('check-registration-token')
+  public async checkEmployeeRegistrationToken(
+    // Underscore name to make TS compiler ignore unused var
+    // DTO should be present even if not used to be decorated and processed by validators
+    /* tslint:disable:variable-name */
+    @Body() _dto: CheckEmployeeRegistrationTokenInDtoWithClinicContext,
+  ): Promise<void> {}
 
   /**
    * Unauthenticated users can use this endpoint to register as employee.
