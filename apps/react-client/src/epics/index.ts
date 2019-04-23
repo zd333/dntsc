@@ -7,6 +7,7 @@ import { redirectOnLoginEpic } from './redirect-on-login.epic';
 import { redirectOnLogoutEpic } from './redirect-on-logout.epic';
 import { redirectUnauthenticatedToLoginPageEpic } from './redirect-unauthenticated-to-login-page.epic';
 import { refreshEmployeeSessionApiCallEpic } from './refresh-employee-session-api-call.epic';
+import { registerEmployeeApiCallEpic } from './register-employee-api-call.epic';
 import { reloadRouteOnSessionRefreshEpic } from './reload-route-on-session-refresh.epic';
 import { restoreSavedLastUserLanguageOnLoginEpic } from './restore-saved-last-user-language-on-login.epic';
 import { saveLastUserLanguageEpic } from './save-last-user-language.epic';
@@ -32,4 +33,5 @@ export const appRootEpics: Array<Epic> = [
   saveLastUserLanguageEpic,
   restoreSavedLastUserLanguageOnLoginEpic,
   syncLanguageWithSavedInLocalStorageEpic,
+  registerEmployeeApiCallEpic,
 ];

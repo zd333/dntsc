@@ -36,6 +36,7 @@ interface ShellState {
   readonly savedPath: string;
 }
 
+// TODO: refactor with `useState` hook
 export class StyledShell extends React.PureComponent<
   StyledShellProps,
   ShellState

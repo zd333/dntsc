@@ -2,17 +2,10 @@ import * as React from 'react';
 import * as yup from 'yup';
 import { AppAccessRoles } from '@api/app-access-roles';
 import { EmployeeVM } from './EmployeeListItem';
+import { Field, Form, Formik, FormikActions, FormikProps } from 'formik';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { Omitted } from '../../../shared/types/omitted.type';
 import { Select, TextField } from 'formik-material-ui';
-import {
-  Field,
-  Form,
-  Formik,
-  FormikActions,
-  FormikProps,
-  FieldProps,
-} from 'formik';
 import {
   createStyles,
   withStyles,

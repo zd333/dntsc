@@ -9,18 +9,18 @@ import {
 } from '../../../actions/error-modal.actions';
 
 export enum EmployeesActionTypes {
-  FETCH_EMPLOYEES_START = '[Employees actions] Fetch employees start',
-  FETCH_EMPLOYEES_SUCCESS = '[Employees actions] Fetch employees success',
-  FETCH_EMPLOYEES_ERROR = '[Employees actions] Fetch employees error',
+  FETCH_EMPLOYEES_START = '[Employees] Fetch employees start',
+  FETCH_EMPLOYEES_SUCCESS = '[Employees] Fetch employees success',
+  FETCH_EMPLOYEES_ERROR = '[Employees] Fetch employees error',
 
-  UPDATE_EMPLOYEE_START = '[Employees actions] Update employee start',
-  UPDATE_EMPLOYEE_SUCCESS = '[Employees actions] Update employee success',
-  UPDATE_EMPLOYEE_ERROR = '[Employees actions] Update employee error',
+  UPDATE_EMPLOYEE_START = '[Employees] Update employee start',
+  UPDATE_EMPLOYEE_SUCCESS = '[Employees] Update employee success',
+  UPDATE_EMPLOYEE_ERROR = '[Employees] Update employee error',
 
-  CREATE_EMPLOYEE_REGISTRATION_TOKEN_START = '[Employees actions] Create employee registration token start',
-  CREATE_EMPLOYEE_REGISTRATION_TOKEN_SUCCESS = '[Employees actions] Create employee registration token success',
-  CREATE_EMPLOYEE_REGISTRATION_TOKEN_ERROR = '[Employees actions] Create employee registration token error',
-  RESET_EMPLOYEE_REGISTRATION_TOKEN = '[Employees actions] Reset employee registration token',
+  CREATE_EMPLOYEE_REGISTRATION_TOKEN_START = '[Employees] Create employee registration token start',
+  CREATE_EMPLOYEE_REGISTRATION_TOKEN_SUCCESS = '[Employees] Create employee registration token success',
+  CREATE_EMPLOYEE_REGISTRATION_TOKEN_ERROR = '[Employees] Create employee registration token error',
+  RESET_EMPLOYEE_REGISTRATION_TOKEN = '[Employees] Reset employee registration token',
 }
 
 export const EmployeesActions = {

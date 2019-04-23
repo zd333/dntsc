@@ -34,6 +34,16 @@ export const enTranslationMessages = {
   'mainMenu.EmployeesInvitationMenuItem.text': 'Invitation',
   'mainMenu.EmployeesManagementMenuItem.text': 'Management',
 
+  'employeeRegistrationPage.title': 'Employee Sign Up',
+  'employeeRegistrationPage.employeeRegistrationForm.title': 'Employee Sign Up',
+  'employeeRegistrationPage.employeeRegistrationForm.nameControl.label': 'Name',
+  'employeeRegistrationPage.employeeRegistrationForm.loginControl.label':
+    'Login',
+  'employeeRegistrationPage.employeeRegistrationForm.passwordControl.label':
+    'Password',
+  'employeeRegistrationPage.employeeRegistrationForm.submitButton.text':
+    'Sign up',
+
   'loginPage.title': 'Login',
   'loginPage.loginForm.title': 'Login',
   'loginPage.loginForm.loginInput.label': 'Login',

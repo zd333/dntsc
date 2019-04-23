@@ -5,7 +5,7 @@ import { Action as ReduxAction, AnyAction, Dispatch } from 'redux';
  */
 export type StateMapper<WrappedComponentProps, State, OwnProps = {}> = (
   state: State,
-  ownProps?: OwnProps,
+  ownProps: OwnProps,
 ) => Partial<WrappedComponentProps>;
 
 /**
@@ -13,8 +13,12 @@ export type StateMapper<WrappedComponentProps, State, OwnProps = {}> = (
  */
 export type DispatchMapper<
   WrappedComponentProps,
-  Action extends ReduxAction = AnyAction
-> = (dispatch: Dispatch<Action>) => FunctionProps<WrappedComponentProps>;
+  Action extends ReduxAction = AnyAction,
+  OwnProps = {}
+> = (
+  dispatch: Dispatch<Action>,
+  ownProps: OwnProps,
+) => FunctionProps<WrappedComponentProps>;
 
 type FilterFlags<Base, Condition> = {
   [Key in keyof Base]: Base[Key] extends Condition ? Key : never

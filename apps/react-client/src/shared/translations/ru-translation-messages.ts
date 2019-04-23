@@ -36,6 +36,17 @@ export const ruTranslationMessages: AppTranslationMessages = {
   'mainMenu.EmployeesInvitationMenuItem.text': 'Приглашение',
   'mainMenu.EmployeesManagementMenuItem.text': 'Управление',
 
+  'employeeRegistrationPage.title': 'Регистрация сотрудника',
+  'employeeRegistrationPage.employeeRegistrationForm.title':
+    'Регистрация сотрудника',
+  'employeeRegistrationPage.employeeRegistrationForm.nameControl.label': 'Имя',
+  'employeeRegistrationPage.employeeRegistrationForm.loginControl.label':
+    'Логин',
+  'employeeRegistrationPage.employeeRegistrationForm.passwordControl.label':
+    'Пароль',
+  'employeeRegistrationPage.employeeRegistrationForm.submitButton.text':
+    'Зарегистрироваться',
+
   'loginPage.title': 'Вход',
   'loginPage.loginForm.title': 'Вход',
   'loginPage.loginForm.loginInput.label': 'Логин',

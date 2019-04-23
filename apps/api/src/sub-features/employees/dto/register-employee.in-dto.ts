@@ -1,4 +1,3 @@
-import { allAppAccessRoles, AppAccessRoles } from '../../../app-access-roles';
 import { EmployeeRegistrationTokenOutDto } from './employee-registration-token.out-dto';
 import { InDtoWithClinicContext } from '../../../middlewares/add-clinic-context.middleware';
 import { IsNotExpiredJwtTokenValidator } from '../../shared/validators/is-not-expired-jwt-token.validator';

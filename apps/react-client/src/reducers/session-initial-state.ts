@@ -8,6 +8,6 @@ export const sessionInitialState: SessionState = {
   userName: undefined,
   authApiCommunicationIsInProgress: false,
   // English is default, make sure to update `selectCurrentTranslationsDictionary` if you change this
-  currentLanguage: AppLanguages.en,
+  currentLanguage: AppLanguages.ua,
   availableFeatures: undefined,
 };

@@ -28,6 +28,7 @@ interface EmployeeInvitationPageState {
   readonly selectedRoles: Array<AppAccessRoles>;
 }
 
+// TODO: refactor with `useState` hook
 export class StyledEmployeeInvitationPage extends React.PureComponent<
   StyledEmployeeInvitationPageProps,
   EmployeeInvitationPageState
@@ -55,6 +56,7 @@ export class StyledEmployeeInvitationPage extends React.PureComponent<
   };
 
   public getRegistrationLink = () =>
+    // TODO: refactor with `AppRouePaths.registerEmployee`
     `/register-employee/${this.props.createdRegistrationToken}`;
 
   public render(): JSX.Element {

@@ -35,6 +35,17 @@ export const uaTranslationMessages: AppTranslationMessages = {
   'mainMenu.EmployeesInvitationMenuItem.text': 'Запрошення',
   'mainMenu.EmployeesManagementMenuItem.text': 'Керування',
 
+  'employeeRegistrationPage.title': 'Реєстрація працівника',
+  'employeeRegistrationPage.employeeRegistrationForm.title':
+    'Реєстрація працівника',
+  'employeeRegistrationPage.employeeRegistrationForm.nameControl.label': `Ім'я`,
+  'employeeRegistrationPage.employeeRegistrationForm.loginControl.label':
+    'Логін',
+  'employeeRegistrationPage.employeeRegistrationForm.passwordControl.label':
+    'Пароль',
+  'employeeRegistrationPage.employeeRegistrationForm.submitButton.text':
+    'Зареєструватися',
+
   'loginPage.title': 'Вхід',
   'loginPage.loginForm.title': 'Вхід',
   'loginPage.loginForm.loginInput.label': 'Логін',

@@ -30,6 +30,7 @@ interface MainMenuGroupState {
   readonly isOpened: boolean;
 }
 
+// TODO: refactor with `useState` hook
 class StyledMainMenuGroup extends React.PureComponent<
   StyledMainMenuGroupProps,
   MainMenuGroupState

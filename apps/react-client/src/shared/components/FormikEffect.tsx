@@ -20,6 +20,7 @@ interface ConnectedFormikEffectsProps<T> extends FormikEffectsProps<T> {
   readonly formik: FormikContext<T>;
 }
 
+// TODO: refactor with hook
 class ConnectedFormikEffects<T> extends React.PureComponent<
   ConnectedFormikEffectsProps<T>
 > {
