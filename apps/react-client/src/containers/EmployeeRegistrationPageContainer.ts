@@ -1,6 +1,6 @@
 import { AllAppActions, RootState } from '../../src';
 import { connect } from 'react-redux';
-import { RegisterEmployeeRouteParams } from '../components/app-routes';
+import { RegisterEmployeeRouteParams } from '../components/AppRoutes';
 import { RouteComponentProps } from 'react-router';
 import { selectAuthApiCommunicationIsInProgress } from '../selectors/auth-api-communication-is-in-progress.selector';
 import { selectEmployeeRegistrationTokenIsAlreadyUsedOrExpired } from '../selectors/employee-registration-token-is-already-used-or-expired.selector';

@@ -4,10 +4,6 @@ import { deleteSavedSessionFromLocalStorageOnLogoutEpic } from './delete-saved-s
 import { Epic } from 'redux-observable';
 import { getFeaturesApiCallEpic } from './get-features-api-call.epic';
 import { getFeaturesOnStartupEpic } from './get-features-on-startup.epic';
-import { redirectAuthenticatedFromLoginPageEpic } from './redirect-authenticated-from-login-page.epic';
-import { redirectOnLoginEpic } from './redirect-on-login.epic';
-import { redirectOnLogoutEpic } from './redirect-on-logout.epic';
-import { redirectUnauthenticatedToLoginPageEpic } from './redirect-unauthenticated-to-login-page.epic';
 import { refreshEmployeeSessionApiCallEpic } from './refresh-employee-session-api-call.epic';
 import { registerEmployeeApiCallEpic } from './register-employee-api-call.epic';
 import { reloadRouteOnSessionRefreshEpic } from './reload-route-on-session-refresh.epic';
@@ -24,10 +20,6 @@ export const appRootEpics: Array<Epic> = [
   signInEmployeeApiCallEpic,
   getFeaturesApiCallEpic,
   getFeaturesOnStartupEpic,
-  redirectAuthenticatedFromLoginPageEpic,
-  redirectOnLoginEpic,
-  redirectOnLogoutEpic,
-  redirectUnauthenticatedToLoginPageEpic,
   saveSessionToLocalStorageOnLoginEpic,
   syncAppSessionWithSavedInLocalStorageSessionEpic,
   refreshEmployeeSessionApiCallEpic,

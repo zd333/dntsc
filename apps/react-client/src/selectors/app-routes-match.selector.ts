@@ -3,7 +3,7 @@ import { RootState } from '..';
 import {
   RegisterEmployeeRouteParams,
   AppRouePaths,
-} from '../components/app-routes';
+} from '../components/AppRoutes';
 
 const selectRegisterEmployeeRouteMatch = createMatchSelector<
   RootState,

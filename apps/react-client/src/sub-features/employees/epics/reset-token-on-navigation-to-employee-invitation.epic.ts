@@ -1,5 +1,5 @@
 import { AllAppActions } from '../../..';
-import { AppRouePaths } from '../../../components/app-routes';
+import { AppRouePaths } from '../../../components/AppRoutes';
 import { appRoutesMatchSelectors } from '../../../selectors/app-routes-match.selector';
 import { EmployeesActions } from '../actions/employees.actions';
 import { Epic, ofType } from 'redux-observable';

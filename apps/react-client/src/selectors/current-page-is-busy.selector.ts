@@ -1,4 +1,4 @@
-import { AppRouePaths } from '../components/app-routes';
+import { AppRouePaths } from '../components/AppRoutes';
 import { createSelector } from 'reselect';
 import { selectAuthApiCommunicationIsInProgress } from './auth-api-communication-is-in-progress.selector';
 import { selectEmployeeInvitationPageIsBusy } from '../sub-features/employees/selectors/employee-invitation-page-is-busy.selector';

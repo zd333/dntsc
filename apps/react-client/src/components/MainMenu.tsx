@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AppRouePaths } from './app-routes';
+import { AppRouePaths } from './AppRoutes';
 import { createLinkComponent } from '../shared/helpers/create-link-component';
 import { Dashboard, Group, ShoppingCart } from '@material-ui/icons';
 import { FormattedMessage } from 'react-intl';
