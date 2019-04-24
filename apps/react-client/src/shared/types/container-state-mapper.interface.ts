@@ -1,20 +1,29 @@
 import { Action as ReduxAction, AnyAction, Dispatch } from 'redux';
+import { Omitted } from './omitted.type';
 
 /**
  * Use this to type `mapStateToProps` when creating smart container component.
  */
-export type StateMapper<WrappedComponentProps, State, OwnProps = {}> = (
+export type StateToComponentNonFunctionPropsMapper<
+  WrappedComponentProps,
+  State,
+  OwnProps = {}
+> = (
   state: State,
-  ownProps?: OwnProps,
-) => Partial<WrappedComponentProps>;
+  ownProps: OwnProps,
+) => NonFunctionProps<WrappedComponentProps>;
 
 /**
  * Use this to type `mapDispatchToProps` when creating smart container component.
  */
-export type DispatchMapper<
+export type DispatchToComponentFunctionPropsMapper<
   WrappedComponentProps,
-  Action extends ReduxAction = AnyAction
-> = (dispatch: Dispatch<Action>) => FunctionProps<WrappedComponentProps>;
+  Action extends ReduxAction = AnyAction,
+  OwnProps = {}
+> = (
+  dispatch: Dispatch<Action>,
+  ownProps: OwnProps,
+) => FunctionProps<WrappedComponentProps>;
 
 type FilterFlags<Base, Condition> = {
   [Key in keyof Base]: Base[Key] extends Condition ? Key : never
@@ -29,3 +38,4 @@ type FunctionProps<Base> = PartialConditionalSubType<
   /* tslint:disable-next-line:no-any */
   (...args: any) => any
 >;
+type NonFunctionProps<Base> = Omitted<Base, keyof FunctionProps<Base>>;

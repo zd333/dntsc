@@ -17,12 +17,12 @@ const schemaDefinition: SchemaDefinition = {
    * See `passwordHashingHook`.
    */
   password: String,
-  hasToChangePassword: { type: Boolean, required: false },
   clinics: {
     type: [{ type: Schema.Types.ObjectId, ref: CLINIC_SCHEMA_COLLECTION_NAME }],
     required: false,
   },
   roles: [{ type: String, enum: allAppAccessRoles, required: false }],
+  registrationToken: { type: String, required: false },
 };
 
 const schema = new Schema(schemaDefinition);
@@ -33,9 +33,9 @@ export type EmployeeDocument = Readonly<Document> & {
   readonly isActive: boolean;
   readonly login: string;
   readonly password: string;
-  readonly hasToChangePassword?: boolean;
   readonly clinics: Array<Types.ObjectId>;
-  readonly roles: Array<AppAccessRoles>;
+  readonly roles?: Array<AppAccessRoles>;
+  readonly registrationToken?: string;
 };
 
 export const EmployeeSchema = schema;

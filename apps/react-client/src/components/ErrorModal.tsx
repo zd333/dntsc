@@ -15,7 +15,9 @@ export interface ErrorModalProps {
   readonly onClose: () => void;
 }
 
-const StyledErrorModal: React.SFC<StyledErrorModalProps> = props => {
+const StyledErrorModal: React.FunctionComponent<
+  StyledErrorModalProps
+> = props => {
   const { classes, isOpened, onClose, message } = props;
   const messageToShow = message || (
     <FormattedMessage id="errorModal.defaultErrorMessage" />
@@ -58,4 +60,6 @@ const errorModalStyles = ({ palette, spacing, shadows }: Theme) =>
 type StyledErrorModalProps = ErrorModalProps &
   WithStyles<typeof errorModalStyles>;
 
-export const ErrorModal = withStyles(errorModalStyles)(StyledErrorModal);
+export const ErrorModal = withStyles(errorModalStyles)(
+  React.memo(StyledErrorModal),
+);

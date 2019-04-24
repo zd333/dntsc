@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core';
 
 // This value is used in main menu (drawer) and in header (app bar)
-export const MAIN_MENU_WIDTH = 300;
+export const MAIN_MENU_WIDTH = 350;
 // Default value from material ui lib
 const SPINNER_WIDTH = 40;
 const BUSY_ANIMATION_TIMEOUT = 1000;
@@ -36,7 +36,11 @@ interface ShellState {
   readonly savedPath: string;
 }
 
-export class StyledShell extends React.Component<StyledShellProps, ShellState> {
+// TODO: refactor with `useState` hook
+export class StyledShell extends React.PureComponent<
+  StyledShellProps,
+  ShellState
+> {
   public state = {
     mobileOpened: false,
     savedPath: this.props.routePath,
@@ -67,6 +71,7 @@ export class StyledShell extends React.Component<StyledShellProps, ShellState> {
       onLanguageChange,
       onLogout,
       isInventoryEnabled,
+      isEmployeesEnabled,
       children,
     } = this.props;
 
@@ -84,6 +89,7 @@ export class StyledShell extends React.Component<StyledShellProps, ShellState> {
         <MainMenu
           mobileOpened={this.state.mobileOpened}
           isInventoryEnabled={isInventoryEnabled}
+          isEmployeesEnabled={isEmployeesEnabled}
           onClose={this.toggleMenu}
         />
 

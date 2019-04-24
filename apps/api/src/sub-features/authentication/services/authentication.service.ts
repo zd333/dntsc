@@ -2,14 +2,19 @@ import { AppAccessRoles } from '../../../app-access-roles';
 import { EmployeeDocument } from '../../../sub-features/employees/db-schemas/employee.db-schema';
 import { EmployeesDbConnectorService } from '../../../../src/sub-features/employees/services/employees-db-connector.service';
 import { hasRoles } from '../../../sub-features/shared/helpers/has-roles';
+import { isInDtoWithClinicContext } from '../../../middlewares/add-clinic-context.middleware';
 import { JwtService } from '@nestjs/jwt';
+import { RefreshAuthInDtoWithClinicContext } from '../dto/refresh-auth.in-dto';
 import { SignedInEmployeeOutDto } from '../dto/signed-in-employee.out-dto';
-import { SignInEmployeeInDtoWithClinicContext } from '../dto/sign-in-employee.in-dto';
-import { SignInPlatformOwnerInDto } from '../dto/sign-in-platform-owner.in-dto';
+import {
+  SignInEmployeeInDtoWithClinicContext,
+  SignInPlatformOwnerInDto,
+} from '../dto/sign-in-employee.in-dto';
 import {
   Injectable,
   UnauthorizedException,
   ForbiddenException,
+  Inject,
 } from '@nestjs/common';
 
 @Injectable()
@@ -17,10 +22,12 @@ export class AuthenticationService {
   constructor(
     private readonly jwt: JwtService,
     private readonly employeesDbConnector: EmployeesDbConnectorService,
+    @Inject('USER_SESSION_EXPIRATION_IN_SECONDS')
+    private readonly sessionExpirationTimeout: number,
   ) {}
 
   /**
-   * This is used by auth controller to login employee.
+   * This is used by auth controller to login employee (including platform owners).
    * Does some employee verifications and returns JWT token if so.
    * Verifications:
    * * passed credentials are valid
@@ -30,10 +37,9 @@ export class AuthenticationService {
    * because it is most important functionality of this service.
    */
   public async signInEmployee(
-    dto: SignInEmployeeInDtoWithClinicContext,
+    dto: SignInEmployeeInDtoWithClinicContext | SignInPlatformOwnerInDto,
   ): Promise<SignedInEmployeeOutDto> {
     const employee = await this.employeesDbConnector.getByCredentials({
-      clinicId: dto.targetClinicId,
       login: dto.login,
       password: dto.password,
     });
@@ -43,45 +49,33 @@ export class AuthenticationService {
       throw new UnauthorizedException();
     }
 
-    if (!employee.isActive) {
+    if (
+      // Credentials do not match and thus employee is not found
+      !employee ||
+      // This is not platform owner and request is done from clinic context which does not belong to clinics of target user
+      (!hasRoles({
+        target: employee,
+        roles: ['_PLATFORM_OWNER'],
+      }) &&
+        (!isInDtoWithClinicContext(dto) ||
+          !employee.clinics.find(
+            employeeClinic =>
+              employeeClinic.toHexString() === dto.targetClinicId,
+          ))) ||
+      !employee.isActive
+    ) {
       throw new ForbiddenException();
     }
 
-    const payload: JwtPayload = { employeeId: employee._id };
+    const payload: JwtAuthTokenPayload = { employeeId: employee._id };
     const authToken = this.jwt.sign(payload);
-    const { hasToChangePassword, roles, name } = employee;
-
-    return { authToken, hasToChangePassword, roles, name };
-  }
-
-  /**
-   * Almost same as `signInEmployee` but requires no clinic id
-   * (platform owners can sign in without clinic context).
-   */
-  public async signInPlatformOwner(
-    dto: SignInPlatformOwnerInDto,
-  ): Promise<SignedInEmployeeOutDto> {
-    const employee = await this.employeesDbConnector.getByCredentials({
-      login: dto.login,
-      password: dto.password,
+    const refreshToken = this.jwt.sign(payload, {
+      // Use exact timeout value, auth token will expire earlier, see `AuthenticationModule`
+      expiresIn: this.sessionExpirationTimeout,
     });
-    if (!employee) {
-      // Credentials do not match
-      throw new UnauthorizedException();
-    }
-
-    const isActivePlatformOwner =
-      employee.isActive &&
-      hasRoles({ target: employee, roles: ['_PLATFORM_OWNER'] });
-    if (!isActivePlatformOwner) {
-      throw new ForbiddenException();
-    }
-
-    const payload: JwtPayload = { employeeId: employee._id };
-    const authToken = this.jwt.sign(payload);
     const { roles, name } = employee;
 
-    return { authToken, roles, name };
+    return { authToken, refreshToken, roles, name };
   }
 
   /**
@@ -89,7 +83,7 @@ export class AuthenticationService {
    * Currently supports only employee users.
    */
   public async validateUserByJwtPayload(
-    payload: JwtPayload,
+    payload: JwtAuthTokenPayload,
   ): Promise<AuthenticatedUser | undefined> {
     if (!payload || !payload.employeeId) {
       return undefined;
@@ -104,9 +98,50 @@ export class AuthenticationService {
 
     return convertEmployeeDocumentToAuthenticatedUser(employee);
   }
+
+  public async refreshEmployeeAuthToken(
+    dto: RefreshAuthInDtoWithClinicContext,
+  ): Promise<SignedInEmployeeOutDto> {
+    if (!dto || !dto.refreshToken) {
+      throw new UnauthorizedException();
+    }
+
+    let dtoPayload: JwtAuthTokenPayload;
+    try {
+      dtoPayload = this.jwt.verify<JwtAuthTokenPayload>(dto.refreshToken);
+    } catch(e) {
+      throw new UnauthorizedException();
+    }
+
+    const { employeeId } = dtoPayload;
+    const employee = await this.employeesDbConnector.getById(employeeId);
+
+    if (!employee) {
+      throw new UnauthorizedException();
+    }
+    if (!employee.isActive) {
+      throw new ForbiddenException();
+    }
+
+    // Do not use dtoPayload due to it contains props added by jwt service
+    const resultPayload = { employeeId };
+    const authToken = this.jwt.sign(resultPayload);
+    const refreshToken = this.jwt.sign(resultPayload, {
+      // Use exact timeout value, auth token will expire earlier, see `AuthenticationModule`
+      expiresIn: this.sessionExpirationTimeout,
+    });
+    const { roles, name } = employee;
+
+    return {
+      authToken,
+      refreshToken,
+      roles,
+      name,
+    };
+  }
 }
 
-export interface JwtPayload {
+export interface JwtAuthTokenPayload {
   readonly employeeId: string;
 }
 

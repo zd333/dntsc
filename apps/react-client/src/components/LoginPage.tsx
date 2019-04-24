@@ -15,12 +15,14 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 
+const LOGIN_MIN_LENGTH = 3;
+
 /**
  * Value should be ids from translation files.
  */
-enum emailValidationErrors {
-  EMPTY = 'loginPage.loginForm.emailInput.validationErrorMessages.empty',
-  INVALID = 'loginPage.loginForm.emailInput.validationErrorMessages.invalid',
+enum loginValidationErrors {
+  EMPTY = 'loginPage.loginForm.loginInput.validationErrorMessages.empty',
+  SHORT = 'loginPage.loginForm.loginInput.validationErrorMessages.short',
 }
 /**
  * Values should be ids from translation files.
@@ -31,71 +33,69 @@ enum passwordValidationErrors {
 
 export interface LoginPageProps {
   readonly isDisabled: boolean;
-  readonly onEmailLogin: (params: {
-    readonly email: string;
+  readonly onLogin: (params: {
+    readonly login: string;
     readonly password: string;
   }) => void;
 }
 
 interface LoginPageState {
-  readonly email: string;
+  readonly login: string;
   readonly password: string;
-  readonly emailIsDirty: boolean;
+  readonly loginIsDirty: boolean;
   readonly passwordIsDirty: boolean;
-  readonly emailIsFocused: boolean;
+  readonly loginIsFocused: boolean;
   readonly passwordIsFocused: boolean;
 }
 
 // TODO: refactor with formik
-class StyledLoginPage extends React.Component<
+// TODO: refactor with `useState` hook
+class StyledLoginPage extends React.PureComponent<
   StyledLoginPageProps,
   LoginPageState
 > {
   public state = {
-    email: '',
+    login: '',
     password: '',
-    emailIsDirty: false,
+    loginIsDirty: false,
     passwordIsDirty: false,
-    emailIsFocused: false,
+    loginIsFocused: false,
     passwordIsFocused: false,
   };
 
-  public handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  public handleLoginChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      email: event.target.value,
-      emailIsDirty: true,
+      login: event.target.value,
+      loginIsDirty: true,
     });
   };
 
-  public handleEmailFocus = () => {
+  public handleLoginFocus = () => {
     this.setState({
-      emailIsFocused: true,
+      loginIsFocused: true,
     });
   };
 
-  public handleEmailBlur = () => {
+  public handleLoginBlur = () => {
     this.setState({
-      emailIsFocused: false,
+      loginIsFocused: false,
     });
   };
 
-  public getEmailValidationError = () => {
-    if (!this.state.email) {
-      return emailValidationErrors.EMPTY;
+  public getLoginValidationError = () => {
+    if (!this.state.login) {
+      return loginValidationErrors.EMPTY;
     }
-    // No way to make it shorter :)
-    /* tslint:disable-next-line:max-line-length */
-    const emailValidationRegexp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    return emailValidationRegexp.test(String(this.state.email).toLowerCase())
-      ? ''
-      : emailValidationErrors.INVALID;
+    return this.state.login.length < LOGIN_MIN_LENGTH
+      ? loginValidationErrors.SHORT
+      : '';
   };
 
-  public showEmailValidationError = () =>
-    (this.state.emailIsDirty || !!this.state.email) &&
-    !this.state.emailIsFocused &&
-    !!this.getEmailValidationError();
+  public showLoginValidationError = () =>
+    (this.state.loginIsDirty || !!this.state.login) &&
+    !this.state.loginIsFocused &&
+    !!this.getLoginValidationError();
 
   public handlePasswordChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -128,7 +128,7 @@ class StyledLoginPage extends React.Component<
 
   public getFormCanBeSubmitted = () =>
     !this.props.isDisabled &&
-    !this.getEmailValidationError() &&
+    !this.getLoginValidationError() &&
     !this.getPasswordValidationError();
 
   public handleSubmit = (event: React.FormEvent) => {
@@ -137,9 +137,9 @@ class StyledLoginPage extends React.Component<
       return;
     }
 
-    const { email, password } = this.state;
+    const { login, password } = this.state;
 
-    this.props.onEmailLogin({ email, password });
+    this.props.onLogin({ login, password });
   };
 
   public render(): JSX.Element {
@@ -154,28 +154,28 @@ class StyledLoginPage extends React.Component<
             onSubmit={this.handleSubmit}
           >
             <FormControl
-              error={this.showEmailValidationError()}
+              error={this.showLoginValidationError()}
               margin="normal"
               required
               fullWidth
             >
-              <InputLabel htmlFor="email">
-                <FormattedMessage id="loginPage.loginForm.emailInput.label" />
+              <InputLabel htmlFor="login">
+                <FormattedMessage id="loginPage.loginForm.loginInput.label" />
               </InputLabel>
               <Input
-                value={this.state.email}
+                value={this.state.login}
                 disabled={this.props.isDisabled}
-                onChange={this.handleEmailChange}
-                onFocus={this.handleEmailFocus}
-                onBlur={this.handleEmailBlur}
+                onChange={this.handleLoginChange}
+                onFocus={this.handleLoginFocus}
+                onBlur={this.handleLoginBlur}
                 required
-                name="email"
-                autoComplete="email"
+                name="login"
+                autoComplete="login"
                 autoFocus
               />
-              {this.showEmailValidationError() && (
+              {this.showLoginValidationError() && (
                 <FormHelperText>
-                  <FormattedMessage id={this.getEmailValidationError()} />
+                  <FormattedMessage id={this.getLoginValidationError()} />
                 </FormHelperText>
               )}
             </FormControl>

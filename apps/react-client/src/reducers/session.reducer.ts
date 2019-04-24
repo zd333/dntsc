@@ -10,29 +10,32 @@ export function sessionReducer(
   action: AllSessionActions,
 ): SessionState {
   switch (action.type) {
-    case SessionActionTypes.EMAIL_LOGIN_START: {
+    case SessionActionTypes.LOGIN_START: {
       return {
         ...state,
         authApiCommunicationIsInProgress: true,
       };
     }
-    case SessionActionTypes.EMAIL_LOGIN_SUCCESS: {
+    case SessionActionTypes.LOGIN_SUCCESS:
+    case SessionActionTypes.REFRESH_SESSION_SUCCESS: {
       const {
         userRoles,
         userName,
-        emailAccessToken: authToken,
+        accessToken: authToken,
+        refreshToken,
       } = action.payload;
 
       return {
         ...state,
         authToken,
+        refreshToken,
         userRoles,
         userName,
         userIsLoggedIn: true,
         authApiCommunicationIsInProgress: false,
       };
     }
-    case SessionActionTypes.EMAIL_LOGIN_ERROR: {
+    case SessionActionTypes.LOGIN_ERROR: {
       return {
         ...state,
         authApiCommunicationIsInProgress: false,
@@ -43,6 +46,7 @@ export function sessionReducer(
       return {
         ...state,
         authToken: undefined,
+        refreshToken: undefined,
         userRoles: [],
         userName: undefined,
         userIsLoggedIn: false,
@@ -64,6 +68,40 @@ export function sessionReducer(
       return {
         ...state,
         currentLanguage,
+      };
+    }
+
+    case SessionActionTypes.CHECK_EMPLOYEE_REGISTRATION_TOKEN_START: {
+      return {
+        ...state,
+        employeeRegistrationTokenIsValid: undefined,
+      };
+    }
+    case SessionActionTypes.CHECK_EMPLOYEE_REGISTRATION_TOKEN_SUCCESS: {
+      return {
+        ...state,
+        employeeRegistrationTokenIsValid: true,
+      };
+    }
+    case SessionActionTypes.CHECK_EMPLOYEE_REGISTRATION_TOKEN_ERROR: {
+      return {
+        ...state,
+        employeeRegistrationTokenIsValid: false,
+      };
+    }
+
+    case SessionActionTypes.REGISTER_EMPLOYEE_START: {
+      return {
+        ...state,
+        authApiCommunicationIsInProgress: true,
+        employeeRegistrationTokenIsValid: false,
+      };
+    }
+    case SessionActionTypes.REGISTER_EMPLOYEE_SUCCESS:
+    case SessionActionTypes.REGISTER_EMPLOYEE_ERROR: {
+      return {
+        ...state,
+        authApiCommunicationIsInProgress: false,
       };
     }
 

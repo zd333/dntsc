@@ -2,12 +2,12 @@ import { createSelector } from 'reselect';
 import { InventoryItemDetailsFormProps } from '../components/InventoryItemDetailsForm';
 import { selectAllItems } from './all-items.selector';
 import {
-  InventoryItem,
+  InventoryItemVM,
   allInventoryItemUnits,
 } from './items-dictionary.selector';
 
 const getAlternatesSuggestions = (
-  allItems: Array<InventoryItem>,
+  allItems: Array<InventoryItemVM>,
 ): InventoryItemDetailsFormProps['alternatesSuggestions'] =>
   allInventoryItemUnits.reduce(
     (accumulator, current) => ({

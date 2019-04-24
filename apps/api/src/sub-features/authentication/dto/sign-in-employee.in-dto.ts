@@ -18,3 +18,8 @@ export type SignInEmployeeInDto = Pick<
   SignInEmployeeInDtoWithClinicContext,
   Exclude<keyof SignInEmployeeInDtoWithClinicContext, 'targetClinicId'>
 >;
+
+/**
+ * Platform owners have no clinic context.
+ */
+export type SignInPlatformOwnerInDto = SignInEmployeeInDto;

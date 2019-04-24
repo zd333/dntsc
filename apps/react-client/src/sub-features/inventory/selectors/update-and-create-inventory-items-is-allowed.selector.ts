@@ -7,9 +7,6 @@ export const selectUpdateAndCreateInventoryItemsIsAllowed = createSelector(
   (isInventoryFeatureEnabled, userRoles) =>
     isInventoryFeatureEnabled &&
     userRoles.some(
-      role =>
-        role === '_INVENTORY_MASTER' ||
-        role === '_CLINIC_OWNER' ||
-        role === '_PLATFORM_OWNER',
+      role => role === '_INVENTORY_MASTER' || role === '_CLINIC_OWNER',
     ),
 );

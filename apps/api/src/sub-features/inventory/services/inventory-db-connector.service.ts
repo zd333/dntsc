@@ -16,6 +16,7 @@ import {
 import {
   INVENTORY_ITEM_SCHEMA_COLLECTION_NAME,
   InventoryItemDocument,
+  InventoryItemUnits,
 } from '../db-schemas/inventory-item.db-schema';
 
 @Injectable()
@@ -48,8 +49,8 @@ export class InventoryDbConnectorService {
     readonly dto: UpdateInventoryItemInDtoWithClinicContext;
   }): Promise<void> {
     const { id, dto } = params;
-    const { targetClinicId, id: idToStrip, ...dtoWithStrippedId } = dto;
-    // `alternates` and/or `tags` are optional thus need custom unset code to be deleted
+    const { id: _, targetClinicId, ...dtoWithStrippedId } = dto;
+    // Unset statement for optional fields to delete them
     const unsetStatement =
       !!dtoWithStrippedId.alternates && !!dtoWithStrippedId.tags
         ? // Nothing to unset/delete
@@ -83,15 +84,16 @@ export class InventoryDbConnectorService {
     readonly paginationParams?: QueryParamsForSearchablePaginatedListInDto;
     readonly filterTags?: Array<string>;
     readonly filterAlternatesOfItemId?: string;
+    readonly filterUnit?: InventoryItemUnits;
   }): Promise<MongoFindResults<InventoryItemDocument>> {
     const {
       clinicId,
       paginationParams,
       filterTags,
       filterAlternatesOfItemId,
+      filterUnit,
     } = params;
     const findOptions = getPaginationMongoFindOptionsFromDto(paginationParams);
-    // Add search condition only if search string is present
     const findConditions = {
       clinics: clinicId,
       ...(filterTags
@@ -104,6 +106,12 @@ export class InventoryDbConnectorService {
             alternates: filterAlternatesOfItemId,
           }
         : {}),
+      ...(filterUnit
+        ? {
+            unit: filterUnit,
+          }
+        : {}),
+      // Add search condition only if search string is present
       ...(paginationParams && paginationParams.searchString
         ? getMongoFindConditionForFieldSearch({
             fieldName: 'name',

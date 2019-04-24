@@ -7,7 +7,7 @@ import { SessionActions } from '../../actions/session.actions';
  * Kind of substitution of global API error interceptor.
  * !Always use this helper to create error actions in all error handlings statements of all epics
  * (instead of `observableOf(someErrorAction)` statements).
- * Returns logout action if error code is 401 or passed error action in all other cases.
+ * Returns refresh  action if error code is 401 or passed error action in all other cases.
  * Add here any error handling logic that must be provided globally.
  */
 export function createAppEpicErrorAction(
@@ -15,6 +15,6 @@ export function createAppEpicErrorAction(
   errorAction: AllAppActions,
 ): Observable<AllAppActions> {
   return error && error.status === 401
-    ? observableOf(SessionActions.logout())
+    ? observableOf(SessionActions.refreshSessionStart())
     : observableOf(errorAction);
 }

@@ -80,9 +80,11 @@ export class InventoryController {
     const { targetClinicId } = req;
     const filterTags = (dto && dto.tags && dto.tags.split(',')) || undefined;
     const filterAlternatesOfItemId = dto && dto.alternates_of;
+    const filterUnit = dto && dto.unit;
     const findResults = await this.inventoryDbConnector.getClinicItems({
       filterTags,
       filterAlternatesOfItemId,
+      filterUnit,
       clinicId: targetClinicId,
       paginationParams: dto,
     });

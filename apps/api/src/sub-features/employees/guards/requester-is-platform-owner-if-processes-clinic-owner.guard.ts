@@ -1,5 +1,6 @@
 import { AppRequest } from '../../../app.module';
-import { hasRoles } from '../../../sub-features/shared/helpers/has-roles';
+import { CreateEmployeeRegistrationTokenInDtoWithClinicContext } from '../dto/create-employee-registration-token.in-dto';
+import { hasRoles } from '../../shared/helpers/has-roles';
 import {
   CanActivate,
   ExecutionContext,
@@ -8,19 +9,19 @@ import {
 } from '@nestjs/common';
 
 /**
- * Checks that user is trying to create platform or clinic owner employee
+ * Checks that user is trying to update or create registration token for clinic owner employee
  * and verifies if he is platform owner if so.
- * Makes sense only for create employee endpoint.
+ * Makes sense only for create employee update and create registration employee token endpoints.
  */
 @Injectable()
-export class RequesterIsPlatformOwnerIfCreatesClinicOwnerGuard
+export class RequesterIsPlatformOwnerIfProcessesClinicOwnerGuard
   implements CanActivate {
   public canActivate(context: ExecutionContext): boolean {
     const req: AppRequest = context.switchToHttp().getRequest();
     const { body: dto, user: requestUser } = req;
 
     const isCreatingClinicOwner = hasRoles({
-      target: dto,
+      target: dto as CreateEmployeeRegistrationTokenInDtoWithClinicContext,
       roles: ['_CLINIC_OWNER'],
     });
 

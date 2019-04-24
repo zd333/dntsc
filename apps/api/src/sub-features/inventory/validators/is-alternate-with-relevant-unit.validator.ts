@@ -8,7 +8,6 @@ import {
   ValidationArguments,
 } from 'class-validator';
 
-// TODO: test
 @ValidatorConstraint({
   name: 'isAlternateWithRelevantUnit',
   async: true,
