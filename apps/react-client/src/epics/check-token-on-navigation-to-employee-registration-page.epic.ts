@@ -1,22 +1,11 @@
 import { AllAppActions, RootState } from '..';
+import { appRoutesMatchSelectors } from '../selectors/app-routes-match.selector';
 import { Epic, ofType } from 'redux-observable';
 import { filter, map, withLatestFrom } from 'rxjs/operators';
+import { LOCATION_CHANGE, LocationChangeAction } from 'connected-react-router';
 import { match } from 'react-router';
+import { RegisterEmployeeRouteParams } from '../components/app-routes';
 import { SessionActions } from '../actions/session.actions';
-import {
-  AppRouePaths,
-  RegisterEmployeeRouteParams,
-} from '../components/app-routes';
-import {
-  LOCATION_CHANGE,
-  LocationChangeAction,
-  createMatchSelector,
-} from 'connected-react-router';
-
-const registerEmployeeRouteMatchSelector = createMatchSelector<
-  RootState,
-  RegisterEmployeeRouteParams
->(AppRouePaths.registerEmployee);
 
 export const checkTokenOnNavigationToEmployeeRegistrationPageEpic: Epic<
   AllAppActions,
@@ -24,7 +13,7 @@ export const checkTokenOnNavigationToEmployeeRegistrationPageEpic: Epic<
   RootState
 > = (action$, state$) => {
   const registerEmployeeRouteMatch$ = state$.pipe(
-    map(registerEmployeeRouteMatchSelector),
+    map(appRoutesMatchSelectors.selectRegisterEmployeeRouteMatch),
   );
 
   return action$.pipe(

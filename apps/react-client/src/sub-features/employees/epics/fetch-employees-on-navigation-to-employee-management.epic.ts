@@ -1,5 +1,5 @@
 import { AllAppActions } from '../../..';
-import { AppRouePaths } from '../../../components/app-routes';
+import { appRoutesMatchSelectors } from '../../../selectors/app-routes-match.selector';
 import { EmployeesActions } from '../actions/employees.actions';
 import { Epic, ofType } from 'redux-observable';
 import { filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
@@ -14,16 +14,17 @@ export const fetchEmployeesOnNvaigationToInventoryManagement: Epic<
   AllAppActions
 > = (action$, state$) => {
   const allIEmployees$ = state$.pipe(map(selectAllEmployees));
+  const employeeManagementRouteMatch$ = state$.pipe(
+    map(appRoutesMatchSelectors.selectEmployeeManagementRouteMatch),
+  );
 
   return action$.pipe(
     ofType<LocationChangeAction>(LOCATION_CHANGE),
-    withLatestFrom(allIEmployees$),
+    withLatestFrom(allIEmployees$, employeeManagementRouteMatch$),
     filter(
-      ([action, allIEmployees]) =>
+      ([, allIEmployees, employeeManagementRouteMatch]) =>
         (!allIEmployees || allIEmployees.length === 0) &&
-        action.payload.location.pathname
-          .toLowerCase()
-          .startsWith(AppRouePaths.employeeManagement),
+        !!employeeManagementRouteMatch,
     ),
     mapTo(EmployeesActions.fetchEmployeesStart()),
   );

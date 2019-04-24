@@ -1,4 +1,3 @@
-import { AppRouePaths } from '../components/app-routes';
 import { Epic } from 'redux-observable';
 import { map, mapTo, withLatestFrom } from 'rxjs/operators';
 import { ofType } from '@martin_hotell/rex-tils';

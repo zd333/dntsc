@@ -13,7 +13,6 @@ export interface RegisterEmployeeRouteParams {
 }
 
 export enum AppRouePaths {
-  // TODO: add pendingApproval = '/pending-approval',
   registerEmployee = '/register-employee/:registrationToken',
   login = '/login',
   dashboard = '/dashboard',
@@ -42,7 +41,7 @@ const employeesRoutesMappings: RoutePathComponentMappings = [
     component: EmployeeListPageContainer,
   },
 ];
-const allRoutesMappings = [
+const insideShellRoutesMappings = [
   {
     path: AppRouePaths.dashboard,
     component: DashboardPage,
@@ -69,7 +68,7 @@ export const appRoutes = (
     <Route path={AppRouePaths.login} component={LoginPageContainer} />
     <ShellContainer>
       <Switch>
-        {allRoutesMappings.map(mapping => (
+        {insideShellRoutesMappings.map(mapping => (
           <Route
             key={mapping.path}
             path={mapping.path}

@@ -1,4 +1,5 @@
 import { AppRouePaths } from '../components/app-routes';
+import { appRoutesMatchSelectors } from '../selectors/app-routes-match.selector';
 import { Epic, ofType } from 'redux-observable';
 import { filter, map, mapTo, withLatestFrom } from 'rxjs/operators';
 import { selectUserIsLoggedIn } from '../../src/selectors/user-is-logged-in.selector';
@@ -17,19 +18,27 @@ export const redirectUnauthenticatedToLoginPageEpic: Epic = (
   action$,
   state$,
 ) => {
-  const userIsLoggedIn$ = state$.pipe(
-    map(selectUserIsLoggedIn),
-    // Undefined means still unknown, wait for it is known if logged in or not
-    filter(userIsLoggedIn => typeof userIsLoggedIn !== 'undefined'),
+  const userIsLoggedIn$ = state$.pipe(map(selectUserIsLoggedIn));
+  const loginRouteMatch$ = state$.pipe(
+    map(appRoutesMatchSelectors.selectLoginRouteMatch),
+  );
+  const registerEmployeeRouteMatch$ = state$.pipe(
+    map(appRoutesMatchSelectors.selectRegisterEmployeeRouteMatch),
   );
 
   return action$.pipe(
     ofType<LocationChangeAction>(LOCATION_CHANGE),
-    withLatestFrom(userIsLoggedIn$),
+    withLatestFrom(
+      loginRouteMatch$,
+      registerEmployeeRouteMatch$,
+      userIsLoggedIn$,
+    ),
     filter(
-      ([action, userIsLoggedIn]) =>
-        !userIsLoggedIn &&
-        !action.payload.location.pathname.startsWith(AppRouePaths.login),
+      ([, loginRouteMatch, registerEmployeeRouteMatch, userIsLoggedIn]) =>
+        !loginRouteMatch &&
+        !registerEmployeeRouteMatch &&
+        // Ignore undefined (it means still unknown if logged in or not)
+        userIsLoggedIn === false,
     ),
     mapTo(routerActions.push(AppRouePaths.login)),
   );
