@@ -10,27 +10,27 @@ import {
   EmployeeRegistrationPageProps,
 } from '../../src/components/EmployeeRegistrationPage';
 import {
-  StateMapper,
-  DispatchMapper,
+  StateToComponentNonFunctionPropsMapper,
+  DispatchToComponentFunctionPropsMapper,
 } from '../../src/shared/types/container-state-mapper.interface';
 
 type EmployeeRegistrationPageContainerRouterProps = RouteComponentProps<
   RegisterEmployeeRouteParams
 >;
 
-const mapStateToProps: StateMapper<
+const mapStateToProps: StateToComponentNonFunctionPropsMapper<
   EmployeeRegistrationPageProps,
   RootState
 > = state => {
   return {
     isBusy: selectAuthApiCommunicationIsInProgress(state),
-    isAlreadyRegisteredOrTokenIsExpired: selectEmployeeRegistrationTokenIsAlreadyUsedOrExpired(
+    isAlreadyRegistered: selectEmployeeRegistrationTokenIsAlreadyUsedOrExpired(
       state,
     ),
   };
 };
 
-const mapDispatchToProps: DispatchMapper<
+const mapDispatchToProps: DispatchToComponentFunctionPropsMapper<
   EmployeeRegistrationPageProps,
   AllAppActions,
   EmployeeRegistrationPageContainerRouterProps

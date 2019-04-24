@@ -42,6 +42,7 @@ export const enTranslationMessages = {
     If you have not registered yet, but see this message - then it is also possible
     that your invitation is expired - in this case responsible person should create new invitation for you.
   `,
+  'employeeRegistrationPage.toMainLink.text': 'To Main Page',
   'employeeRegistrationPage.employeeRegistrationForm.title': 'Employee Sign Up',
   'employeeRegistrationPage.employeeRegistrationForm.nameControl.label': 'Name',
   'employeeRegistrationPage.employeeRegistrationForm.loginControl.label':

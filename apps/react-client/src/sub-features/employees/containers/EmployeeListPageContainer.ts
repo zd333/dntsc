@@ -10,11 +10,11 @@ import {
 } from '../components/EmployeeListPage';
 
 import {
-  StateMapper,
-  DispatchMapper,
+  StateToComponentNonFunctionPropsMapper,
+  DispatchToComponentFunctionPropsMapper,
 } from '../../../shared/types/container-state-mapper.interface';
 
-const mapStateToProps: StateMapper<
+const mapStateToProps: StateToComponentNonFunctionPropsMapper<
   EmployeeListPageProps,
   RootState
 > = state => {
@@ -25,7 +25,9 @@ const mapStateToProps: StateMapper<
   };
 };
 
-const mapDispatchToProps: DispatchMapper<EmployeeListPageProps> = dispatch => {
+const mapDispatchToProps: DispatchToComponentFunctionPropsMapper<
+  EmployeeListPageProps
+> = dispatch => {
   return {
     onEmployeeChanges: params => {
       dispatch(
