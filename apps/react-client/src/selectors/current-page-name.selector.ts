@@ -1,4 +1,4 @@
-import { AppRouePaths } from '../components/app-routes';
+import { AppRouePaths } from '../components/AppRoutes';
 import { AppTranslationMessages } from '../shared/translations/en-translation-messages';
 import { createSelector } from 'reselect';
 import { selectCurrentTranslationsDictionary } from './current-translations-dictionary.selector';

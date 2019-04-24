@@ -4,7 +4,7 @@ import { Epic, ofType } from 'redux-observable';
 import { filter, map, withLatestFrom } from 'rxjs/operators';
 import { LOCATION_CHANGE, LocationChangeAction } from 'connected-react-router';
 import { match } from 'react-router';
-import { RegisterEmployeeRouteParams } from '../components/app-routes';
+import { RegisterEmployeeRouteParams } from '../components/AppRoutes';
 import { SessionActions } from '../actions/session.actions';
 
 export const checkTokenOnNavigationToEmployeeRegistrationPageEpic: Epic<
