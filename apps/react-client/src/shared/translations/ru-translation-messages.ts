@@ -37,6 +37,14 @@ export const ruTranslationMessages: AppTranslationMessages = {
   'mainMenu.EmployeesManagementMenuItem.text': 'Управление',
 
   'employeeRegistrationPage.title': 'Регистрация сотрудника',
+  'employeeRegistrationPage.alreadyRegisteredMessage': `
+    Вы зарегистрировались, теперь обратитесь к ответсвенному лицу для активации Вашего аккаунта.
+  `,
+  'employeeRegistrationPage.tokenCanBeExpiredMessage': `
+    Если Вы не регистрировались, но все же видите это сообщение - то возможно,
+    что Ваше приглашение устарело (ссылка имеет ограниченный срок действия).
+    В таком случае ответсвенное лицо должно создать для Вас новое приглашение.
+  `,
   'employeeRegistrationPage.employeeRegistrationForm.title':
     'Регистрация сотрудника',
   'employeeRegistrationPage.employeeRegistrationForm.nameControl.label': 'Имя',

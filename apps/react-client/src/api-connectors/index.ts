@@ -1,3 +1,4 @@
+import { checkEmployeeRegistrationTokenApiConnector } from './check-employee-registration-token.api-connector';
 import { getTenantOfCurrentClinicApiConnector } from './get-tenant-of-current-clinic.api-connector';
 import { refreshSessionApiConnector } from './refresh-session.api-connector';
 import { registerEmployeeApiConnector } from './register-employee.api-connector';
@@ -8,4 +9,5 @@ export const rootApiConnectors = {
   getTenantOfCurrentClinicApiConnector,
   refreshSessionApiConnector,
   registerEmployeeApiConnector,
+  checkEmployeeRegistrationTokenApiConnector,
 };

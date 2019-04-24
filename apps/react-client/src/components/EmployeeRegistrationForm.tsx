@@ -9,11 +9,11 @@ import {
   withStyles,
   WithStyles,
   Button,
-  Theme,
   Grid,
 } from '@material-ui/core';
 
 export interface EmployeeRegistrationFormProps {
+  readonly isDisabled: boolean;
   readonly onSubmit: (params: {
     readonly employeeData: EmployeeRegistrationFormValues;
   }) => void;
@@ -32,7 +32,7 @@ export type EmployeeRegistrationFormValues = Pick<
 const StyledEmployeeRegistrationForm: React.FunctionComponent<
   StyledTranslatedEmployeeRegistrationFormProps
 > = props => {
-  const { classes, intl, onSubmit } = props;
+  const { classes, intl, isDisabled, onSubmit } = props;
 
   const nameFieldName = intl.formatMessage({
     id: 'employeeRegistrationPage.employeeRegistrationForm.nameControl.label',
@@ -137,6 +137,7 @@ const StyledEmployeeRegistrationForm: React.FunctionComponent<
               <Field
                 component={TextField}
                 name="name"
+                disabled={isDisabled}
                 label={nameFieldName}
                 fullWidth={true}
               />
@@ -147,6 +148,7 @@ const StyledEmployeeRegistrationForm: React.FunctionComponent<
               <Field
                 component={TextField}
                 name="login"
+                disabled={isDisabled}
                 label={loginFieldName}
                 fullWidth={true}
               />
@@ -157,6 +159,7 @@ const StyledEmployeeRegistrationForm: React.FunctionComponent<
               <Field
                 component={TextField}
                 name="password"
+                disabled={isDisabled}
                 type="password"
                 label={passwordFieldName}
                 fullWidth={true}
@@ -168,7 +171,7 @@ const StyledEmployeeRegistrationForm: React.FunctionComponent<
                 variant="contained"
                 color="primary"
                 fullWidth
-                disabled={!isValid}
+                disabled={isDisabled || !isValid}
                 onClick={submitForm}
               >
                 <FormattedMessage id="employeeRegistrationPage.employeeRegistrationForm.submitButton.text" />
@@ -181,7 +184,7 @@ const StyledEmployeeRegistrationForm: React.FunctionComponent<
   );
 };
 
-const EmployeeRegistrationFormStyles = ({ spacing }: Theme) =>
+const EmployeeRegistrationFormStyles = () =>
   createStyles({
     buttonsRow: {
       display: 'flex',

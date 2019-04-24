@@ -8,6 +8,10 @@ import { LoginPageContainer } from '../containers/LoginPageContainer';
 import { Redirect, Route, Switch } from 'react-router';
 import { ShellContainer } from '../containers/ShellContainer';
 
+export interface RegisterEmployeeRouteParams {
+  readonly registrationToken: string;
+}
+
 export enum AppRouePaths {
   // TODO: add pendingApproval = '/pending-approval',
   registerEmployee = '/register-employee/:registrationToken',

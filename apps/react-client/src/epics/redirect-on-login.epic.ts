@@ -9,6 +9,7 @@ import { SessionActionTypes } from '../actions/session.actions';
 /**
  * Redirects user after login.
  * Currently redirection target is always default route.
+ * TODO: refactor with `crateMatchSelector`.
  */
 export const redirectOnLoginEpic: Epic = (action$, state$) => {
   const currentRoutePath$ = state$.pipe(map(selectRoutePath));

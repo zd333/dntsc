@@ -10,4 +10,5 @@ export const sessionInitialState: SessionState = {
   // English is default, make sure to update `selectCurrentTranslationsDictionary` if you change this
   currentLanguage: AppLanguages.ua,
   availableFeatures: undefined,
+  employeeRegistrationTokenIsValid: undefined,
 };

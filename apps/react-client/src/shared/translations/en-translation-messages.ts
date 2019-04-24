@@ -35,6 +35,13 @@ export const enTranslationMessages = {
   'mainMenu.EmployeesManagementMenuItem.text': 'Management',
 
   'employeeRegistrationPage.title': 'Employee Sign Up',
+  'employeeRegistrationPage.alreadyRegisteredMessage': `
+    Your have registered, now ask responsible person to activate your account.
+  `,
+  'employeeRegistrationPage.tokenCanBeExpiredMessage': `
+    If you have not registered yet, but see this message - then it is also possible
+    that your invitation is expired - in this case responsible person should create new invitation for you.
+  `,
   'employeeRegistrationPage.employeeRegistrationForm.title': 'Employee Sign Up',
   'employeeRegistrationPage.employeeRegistrationForm.nameControl.label': 'Name',
   'employeeRegistrationPage.employeeRegistrationForm.loginControl.label':

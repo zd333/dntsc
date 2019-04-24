@@ -1,6 +1,9 @@
 import { AllAppActions, RootState } from '../../src';
 import { connect } from 'react-redux';
+import { RegisterEmployeeRouteParams } from '../components/app-routes';
 import { RouteComponentProps } from 'react-router';
+import { selectAuthApiCommunicationIsInProgress } from '../selectors/auth-api-communication-is-in-progress.selector';
+import { selectEmployeeRegistrationTokenIsAlreadyUsedOrExpired } from '../selectors/employee-registration-token-is-already-used-or-expired.selector';
 import { SessionActions } from '../../src/actions/session.actions';
 import {
   EmployeeRegistrationPage,
@@ -11,9 +14,21 @@ import {
   DispatchMapper,
 } from '../../src/shared/types/container-state-mapper.interface';
 
-type EmployeeRegistrationPageContainerRouterProps = RouteComponentProps<{
-  readonly registrationToken: string;
-}>;
+type EmployeeRegistrationPageContainerRouterProps = RouteComponentProps<
+  RegisterEmployeeRouteParams
+>;
+
+const mapStateToProps: StateMapper<
+  EmployeeRegistrationPageProps,
+  RootState
+> = state => {
+  return {
+    isBusy: selectAuthApiCommunicationIsInProgress(state),
+    isAlreadyRegisteredOrTokenIsExpired: selectEmployeeRegistrationTokenIsAlreadyUsedOrExpired(
+      state,
+    ),
+  };
+};
 
 const mapDispatchToProps: DispatchMapper<
   EmployeeRegistrationPageProps,
@@ -35,6 +50,6 @@ const mapDispatchToProps: DispatchMapper<
 };
 
 export const EmployeeRegistrationPageContainer = connect(
-  undefined,
+  mapStateToProps,
   mapDispatchToProps,
 )(EmployeeRegistrationPage);
