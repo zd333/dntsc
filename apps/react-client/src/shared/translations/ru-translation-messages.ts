@@ -45,6 +45,7 @@ export const ruTranslationMessages: AppTranslationMessages = {
     что Ваше приглашение устарело (ссылка имеет ограниченный срок действия).
     В таком случае ответсвенное лицо должно создать для Вас новое приглашение.
   `,
+  'employeeRegistrationPage.toMainLink.text': 'На главную',
   'employeeRegistrationPage.employeeRegistrationForm.title':
     'Регистрация сотрудника',
   'employeeRegistrationPage.employeeRegistrationForm.nameControl.label': 'Имя',

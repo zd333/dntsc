@@ -7,12 +7,15 @@ import { enTranslationMessages } from '../../src/shared/translations/en-translat
 import { RootState } from '../../src';
 import { ruTranslationMessages } from '../../src/shared/translations/ru-translation-messages';
 import { selectCurrentLanguage } from '../../src/selectors/current-language.selector';
-import { StateMapper } from '../../src/shared/types/container-state-mapper.interface';
+import { StateToComponentNonFunctionPropsMapper } from '../../src/shared/types/container-state-mapper.interface';
 import { uaTranslationMessages } from '../../src/shared/translations/ua-translation-messages';
 
 addLocaleData([...en, ...ru]);
 
-const mapStateToProps: StateMapper<IntlProvider.Props, RootState> = state => {
+const mapStateToProps: StateToComponentNonFunctionPropsMapper<
+  IntlProvider.Props,
+  RootState
+> = state => {
   const currentLanguage = selectCurrentLanguage(state);
 
   switch (currentLanguage) {

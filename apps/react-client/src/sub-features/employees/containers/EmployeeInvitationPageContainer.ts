@@ -9,11 +9,11 @@ import {
 } from '../components/EmployeeInvitationPage';
 
 import {
-  StateMapper,
-  DispatchMapper,
+  StateToComponentNonFunctionPropsMapper,
+  DispatchToComponentFunctionPropsMapper,
 } from '../../../shared/types/container-state-mapper.interface';
 
-const mapStateToProps: StateMapper<
+const mapStateToProps: StateToComponentNonFunctionPropsMapper<
   EmployeeInvitationPageProps,
   RootState
 > = state => {
@@ -23,7 +23,7 @@ const mapStateToProps: StateMapper<
   };
 };
 
-const mapDispatchToProps: DispatchMapper<
+const mapDispatchToProps: DispatchToComponentFunctionPropsMapper<
   EmployeeInvitationPageProps
 > = dispatch => {
   return {

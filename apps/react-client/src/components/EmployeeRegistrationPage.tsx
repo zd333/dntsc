@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { Link } from 'react-router-dom';
 import {
   EmployeeRegistrationForm,
   EmployeeRegistrationFormValues,
@@ -64,6 +65,11 @@ const StyledEmployeeRegistrationPage: React.FunctionComponent<
             *
             <FormattedMessage id="employeeRegistrationPage.tokenCanBeExpiredMessage" />
           </Typography>
+          <div className={classes.linkWrapper}>
+            <Link to="/">
+              <FormattedMessage id="employeeRegistrationPage.toMainLink.text" />
+            </Link>
+          </div>
         </div>
       )}
     </React.Fragment>
@@ -112,6 +118,9 @@ const EmployeeRegistrationPageStyles = ({ spacing, breakpoints }: Theme) =>
     form: {
       width: '100%',
       marginTop: spacing.unit,
+    },
+    linkWrapper: {
+      marginTop: spacing.unit * 3,
     },
   });
 

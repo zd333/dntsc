@@ -5,7 +5,7 @@ import { selectUserRoles } from './user-roles.selector';
 export const selectIsEmployeesManagementAllowedToCurrentUser = createSelector(
   [selectUserIsLoggedIn, selectUserRoles],
   (userIsLoggedIn, userRoles) =>
-    userIsLoggedIn &&
+    !!userIsLoggedIn &&
     userRoles.some(
       role =>
         role === '_HR' ||

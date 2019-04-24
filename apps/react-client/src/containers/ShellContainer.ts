@@ -10,11 +10,14 @@ import { selectRoutePath } from '../selectors/route-path.selector';
 import { SessionActions } from '../actions/session.actions';
 import { Shell, ShellProps } from '../components/Shell';
 import {
-  DispatchMapper,
-  StateMapper,
+  DispatchToComponentFunctionPropsMapper,
+  StateToComponentNonFunctionPropsMapper,
 } from '../shared/types/container-state-mapper.interface';
 
-const mapStateToProps: StateMapper<ShellProps, RootState> = state => {
+const mapStateToProps: StateToComponentNonFunctionPropsMapper<
+  ShellProps,
+  RootState
+> = state => {
   return {
     title: `${selectCurrentPageName(state)} (${selectCurrentUserName(state)})`,
     currentLanguage: selectCurrentLanguage(state),
@@ -25,7 +28,9 @@ const mapStateToProps: StateMapper<ShellProps, RootState> = state => {
   };
 };
 
-const mapDispatchToProps: DispatchMapper<ShellProps> = dispatch => {
+const mapDispatchToProps: DispatchToComponentFunctionPropsMapper<
+  ShellProps
+> = dispatch => {
   return {
     onLanguageChange: params => {
       dispatch(SessionActions.changeLanguage({ language: params.language }));

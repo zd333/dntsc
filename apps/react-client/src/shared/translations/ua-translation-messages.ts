@@ -44,7 +44,7 @@ export const uaTranslationMessages: AppTranslationMessages = {
     що Ваше запрошення застаріло (посилання має обмежений термін дії).
     У такому випадку відповідальна особа повинна створити для Вас нове запрошення.
   `,
-
+  'employeeRegistrationPage.toMainLink.text': 'На головну',
   'employeeRegistrationPage.employeeRegistrationForm.title':
     'Реєстрація працівника',
   'employeeRegistrationPage.employeeRegistrationForm.nameControl.label': `Ім'я`,

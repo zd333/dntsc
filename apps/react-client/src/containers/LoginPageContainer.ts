@@ -4,17 +4,22 @@ import { RootState } from '../../src';
 import { selectAuthApiCommunicationIsInProgress } from '../selectors/auth-api-communication-is-in-progress.selector';
 import { SessionActions } from '../../src/actions/session.actions';
 import {
-  StateMapper,
-  DispatchMapper,
+  StateToComponentNonFunctionPropsMapper,
+  DispatchToComponentFunctionPropsMapper,
 } from '../../src/shared/types/container-state-mapper.interface';
 
-const mapStateToProps: StateMapper<LoginPageProps, RootState> = state => {
+const mapStateToProps: StateToComponentNonFunctionPropsMapper<
+  LoginPageProps,
+  RootState
+> = state => {
   return {
     isDisabled: selectAuthApiCommunicationIsInProgress(state),
   };
 };
 
-const mapDispatchToProps: DispatchMapper<LoginPageProps> = dispatch => {
+const mapDispatchToProps: DispatchToComponentFunctionPropsMapper<
+  LoginPageProps
+> = dispatch => {
   return {
     onLogin: params => {
       dispatch(
