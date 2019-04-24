@@ -24,17 +24,47 @@ export const ruTranslationMessages: AppTranslationMessages = {
   'inventoryItemUnit.LT.full': 'литр',
   'inventoryItemUnit.ML.full': 'миллилитр',
 
+  'appAccessRole._CLINIC_OWNER': 'Владелец клиники',
+  'appAccessRole._HR': 'Менеджер персонала',
+  'appAccessRole._INVENTORY_MASTER': 'Менеджер склада',
+  'appAccessRole._INVENTORY_BALANCE_KEEPER': 'Оператор склада',
+
   'mainMenu.InventoryMenuItem.text': 'Склад',
   'mainMenu.InventoryCatalogMenuItem.text': 'Каталог',
 
+  'mainMenu.EmployeesMenuItem.text': 'Персонал',
+  'mainMenu.EmployeesInvitationMenuItem.text': 'Приглашение',
+  'mainMenu.EmployeesManagementMenuItem.text': 'Управление',
+
+  'employeeRegistrationPage.title': 'Регистрация сотрудника',
+  'employeeRegistrationPage.alreadyRegisteredMessage': `
+    Вы зарегистрировались, теперь обратитесь к ответсвенному лицу для активации Вашего аккаунта.
+  `,
+  'employeeRegistrationPage.tokenCanBeExpiredMessage': `
+    Если Вы не регистрировались, но все же видите это сообщение - то возможно,
+    что Ваше приглашение устарело (ссылка имеет ограниченный срок действия).
+    В таком случае ответсвенное лицо должно создать для Вас новое приглашение.
+  `,
+  'employeeRegistrationPage.toMainLink.text': 'На главную',
+  'employeeRegistrationPage.employeeRegistrationForm.title':
+    'Регистрация сотрудника',
+  'employeeRegistrationPage.employeeRegistrationForm.nameControl.label': 'Имя',
+  'employeeRegistrationPage.employeeRegistrationForm.loginControl.label':
+    'Логин',
+  'employeeRegistrationPage.employeeRegistrationForm.passwordControl.label':
+    'Пароль',
+  'employeeRegistrationPage.employeeRegistrationForm.submitButton.text':
+    'Зарегистрироваться',
+
   'loginPage.title': 'Вход',
   'loginPage.loginForm.title': 'Вход',
-  'loginPage.loginForm.emailInput.label': 'Email',
+  'loginPage.loginForm.loginInput.label': 'Логин',
   'loginPage.loginForm.passwordInput.label': 'Пароль',
   'loginPage.loginForm.submitButton.text': 'Войти',
-  'loginPage.loginForm.emailInput.validationErrorMessages.empty':
+  'loginPage.loginForm.loginInput.validationErrorMessages.empty':
     'обязательное',
-  'loginPage.loginForm.emailInput.validationErrorMessages.invalid': 'не email',
+  'loginPage.loginForm.loginInput.validationErrorMessages.short':
+    'слишком короткий',
   'loginPage.loginForm.passwordInput.validationErrorMessages.empty':
     'обязательное',
 
@@ -57,6 +87,22 @@ export const ruTranslationMessages: AppTranslationMessages = {
   'inventoryCatalogPage.inventoryItemDetailsForm.tagsControl.label': 'Теги',
   'inventoryCatalogPage.inventoryItemDetailsForm.alternatesControl.label':
     'Аналоги',
+
+  'employeeInvitationPage.title': 'Приглашение сотрудников',
+  'employeeInvitationPage.invitationForm.rolesSelect.label':
+    'Выберите роли для нового сотрудника',
+  'employeeInvitationPage.invitationForm.submitButton.text':
+    'Сгенерировать приглашение',
+  'employeeInvitationPage.invitationLink.text':
+    'Скопируйте эту ссылку и предоставьте ее новому сотруднику для завершения его регистрации',
+
+  'employeeManagementPage.title': 'Управление персоналом',
+  'employeeManagementPage.employeeList.item.noRolesMessage': 'Права отсутсвуют',
+  'employeeManagementPage.employeeDetailsForm.nameControl.label': 'Имя',
+  'employeeManagementPage.employeeDetailsForm.rolesControl.label': 'Права',
+
+  'employeeManagementPage.editEmployeeDialog.title':
+    'Редактирование сотрудника',
 
   'errorModal.title': 'Ошибка',
   'errorModal.defaultErrorMessage': 'Извините, возникла ошибка.',

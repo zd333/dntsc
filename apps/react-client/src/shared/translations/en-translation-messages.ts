@@ -22,16 +22,43 @@ export const enTranslationMessages = {
   'inventoryItemUnit.LT.full': 'liter',
   'inventoryItemUnit.ML.full': 'milliliter',
 
+  'appAccessRole._CLINIC_OWNER': 'Clinic Owner',
+  'appAccessRole._HR': 'HR',
+  'appAccessRole._INVENTORY_MASTER': 'Inventory Master',
+  'appAccessRole._INVENTORY_BALANCE_KEEPER': 'Inventory Balance Operator',
+
   'mainMenu.InventoryMenuItem.text': 'Inventory',
   'mainMenu.InventoryCatalogMenuItem.text': 'Catalog',
 
+  'mainMenu.EmployeesMenuItem.text': 'Employees',
+  'mainMenu.EmployeesInvitationMenuItem.text': 'Invitation',
+  'mainMenu.EmployeesManagementMenuItem.text': 'Management',
+
+  'employeeRegistrationPage.title': 'Employee Sign Up',
+  'employeeRegistrationPage.alreadyRegisteredMessage': `
+    Your have registered, now ask responsible person to activate your account.
+  `,
+  'employeeRegistrationPage.tokenCanBeExpiredMessage': `
+    If you have not registered yet, but see this message - then it is also possible
+    that your invitation is expired - in this case responsible person should create new invitation for you.
+  `,
+  'employeeRegistrationPage.toMainLink.text': 'To Main Page',
+  'employeeRegistrationPage.employeeRegistrationForm.title': 'Employee Sign Up',
+  'employeeRegistrationPage.employeeRegistrationForm.nameControl.label': 'Name',
+  'employeeRegistrationPage.employeeRegistrationForm.loginControl.label':
+    'Login',
+  'employeeRegistrationPage.employeeRegistrationForm.passwordControl.label':
+    'Password',
+  'employeeRegistrationPage.employeeRegistrationForm.submitButton.text':
+    'Sign up',
+
   'loginPage.title': 'Login',
   'loginPage.loginForm.title': 'Login',
-  'loginPage.loginForm.emailInput.label': 'Email',
+  'loginPage.loginForm.loginInput.label': 'Login',
   'loginPage.loginForm.passwordInput.label': 'Password',
-  'loginPage.loginForm.submitButton.text': 'Login',
-  'loginPage.loginForm.emailInput.validationErrorMessages.empty': 'is required',
-  'loginPage.loginForm.emailInput.validationErrorMessages.invalid': 'not email',
+  'loginPage.loginForm.submitButton.text': 'Sign in',
+  'loginPage.loginForm.loginInput.validationErrorMessages.empty': 'is required',
+  'loginPage.loginForm.loginInput.validationErrorMessages.short': 'too short',
   'loginPage.loginForm.passwordInput.validationErrorMessages.empty':
     'is required',
 
@@ -52,6 +79,22 @@ export const enTranslationMessages = {
   'inventoryCatalogPage.inventoryItemDetailsForm.tagsControl.label': 'Tags',
   'inventoryCatalogPage.inventoryItemDetailsForm.alternatesControl.label':
     'Alternates',
+
+  'employeeInvitationPage.title': 'Employee Invitation',
+  'employeeInvitationPage.invitationForm.rolesSelect.label':
+    'Select roles for new employee',
+  'employeeInvitationPage.invitationForm.submitButton.text':
+    'Generate invitation link',
+  'employeeInvitationPage.invitationLink.text':
+    'Copy this link and share it with new employee to finish registration',
+
+  'employeeManagementPage.title': 'Employee Management',
+  'employeeManagementPage.employeeList.item.noRolesMessage':
+    'No roles (permissions)',
+  'employeeManagementPage.employeeDetailsForm.nameControl.label': 'Name',
+  'employeeManagementPage.employeeDetailsForm.rolesControl.label': 'Roles',
+
+  'employeeManagementPage.editEmployeeDialog.title': 'Edit Employee',
 
   'errorModal.title': 'Error',
   'errorModal.defaultErrorMessage':

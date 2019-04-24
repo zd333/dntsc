@@ -28,7 +28,7 @@ export const selectItemsDict = createSelector(
       }),
       {},
     ) as {
-      readonly [id: string]: InventoryItem;
+      readonly [id: string]: InventoryItemVM;
     },
 );
 
@@ -48,7 +48,7 @@ export const allInventoryItemUnits: Array<InventoryItemUnits> = [
 /**
  * View model.
  */
-export type InventoryItem = Omitted<
+export type InventoryItemVM = Omitted<
   InventoryItemDetailsOutDto,
   'alternates'
-> & { readonly alternates?: Array<Pick<InventoryItem, 'id' | 'name'>> };
+> & { readonly alternates?: Array<Pick<InventoryItemVM, 'id' | 'name'>> };

@@ -6,14 +6,13 @@ import { selectUserRoles } from './user-roles.selector';
 export const selectIsInventoryFeatureEnabled = createSelector(
   [selectUserIsLoggedIn, selectUserRoles, selectAvailableFeatures],
   (userIsLoggedIn, userRoles, availableFeatures) =>
-    userIsLoggedIn &&
+    !!userIsLoggedIn &&
     Array.isArray(availableFeatures) &&
     availableFeatures.some(feature => feature === 'INVENTORY') &&
     userRoles.some(
       role =>
         role === '_INVENTORY_BALANCE_KEEPER' ||
         role === '_INVENTORY_MASTER' ||
-        role === '_CLINIC_OWNER' ||
-        role === '_PLATFORM_OWNER',
+        role === '_CLINIC_OWNER',
     ),
 );

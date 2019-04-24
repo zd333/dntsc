@@ -1,9 +1,12 @@
 import { AppRequest } from '../../../../src/app.module';
 import { AuthenticationService } from '../services/authentication.service';
+import { RefreshAuthInDtoWithClinicContext } from '../dto/refresh-auth.in-dto';
 import { RequestIsInClinicContextGuard } from '../../../../src/sub-features/shared/guards/request-is-in-clinic-context.guard';
 import { SignedInEmployeeOutDto } from '../dto/signed-in-employee.out-dto';
-import { SignInEmployeeInDtoWithClinicContext } from '../dto/sign-in-employee.in-dto';
-import { SignInPlatformOwnerInDto } from '../dto/sign-in-platform-owner.in-dto';
+import {
+  SignInEmployeeInDtoWithClinicContext,
+  SignInPlatformOwnerInDto,
+} from '../dto/sign-in-employee.in-dto';
 import {
   Body,
   Controller,
@@ -21,9 +24,9 @@ export class AuthenticationController {
    * Endpoint to sign in employee with login and password.
    */
   @Post('sign-in-employee')
-  @UseGuards(RequestIsInClinicContextGuard)
   public async signInEmployee(
-    @Body() dto: SignInEmployeeInDtoWithClinicContext,
+    @Body()
+    dto: SignInEmployeeInDtoWithClinicContext | SignInPlatformOwnerInDto,
     @Request() req: AppRequest,
   ): Promise<SignedInEmployeeOutDto> {
     if (req.user) {
@@ -35,12 +38,15 @@ export class AuthenticationController {
   }
 
   /**
-   * Endpoint to sign in employee with login and password.
+   * Returns new fresh auth token.
+   * Checks refresh token which lives longer than regular auth token.
+   * Is implemented for regular employee (not for platform owners).
    */
-  @Post('sign-in-platform-owner')
-  public async signInPlatformOwner(
-    @Body() dto: SignInPlatformOwnerInDto,
+  @UseGuards(RequestIsInClinicContextGuard)
+  @Post('refresh-employee-session')
+  public async refreshAuth(
+    @Body() dto: RefreshAuthInDtoWithClinicContext,
   ): Promise<SignedInEmployeeOutDto> {
-    return await this.authenticationService.signInPlatformOwner(dto);
+    return await this.authenticationService.refreshEmployeeAuthToken(dto);
   }
 }

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Autocomplete } from '../../../shared/components/Autocomplete';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
-import { InventoryItem } from '../selectors/items-dictionary.selector';
 import { InventoryItemsList } from './InventoryItemsList';
+import { InventoryItemVM } from '../selectors/items-dictionary.selector';
 import { Omitted } from '../../../shared/types/omitted.type';
 import { TranslatedInventoryItemUnit } from '../selectors/translated-inventory-item-units.selector';
 import {
@@ -25,7 +25,7 @@ import {
 } from '@material-ui/core';
 
 export interface InventoryCatalogPageProps {
-  readonly items: Array<InventoryItem>;
+  readonly items: Array<InventoryItemVM>;
   readonly itemUnits: Array<TranslatedInventoryItemUnit>;
   readonly existingTags: Array<string>;
   readonly updateAndCreateAreAllowed: boolean;
@@ -34,27 +34,28 @@ export interface InventoryCatalogPageProps {
     readonly searchString?: string;
     readonly tagsToFilterBy?: Array<string>;
   }) => void;
-  readonly onSearchAlternatesForGivenUnit: (params: {
-    readonly unit: InventoryItem['unit'];
+  readonly onNeedAlternatesForGivenUnit: (params: {
+    readonly unit: InventoryItemVM['unit'];
   }) => void;
   readonly onCreate: (params: {
-    readonly newItemData: Omitted<InventoryItem, 'id'>;
+    readonly newItemData: Omitted<InventoryItemVM, 'id'>;
   }) => void;
   readonly onUpdate: (params: {
-    readonly id: InventoryItem['id'];
-    readonly itemUpdates: Omitted<InventoryItem, 'id'>;
+    readonly id: InventoryItemVM['id'];
+    readonly itemUpdates: Omitted<InventoryItemVM, 'id'>;
   }) => void;
 }
 
 interface InventoryCatalogPageState {
-  readonly idOfSelectedItem?: InventoryItem['id'];
+  readonly idOfSelectedItem?: InventoryItemVM['id'];
   readonly selectedItemIsInEditMode: boolean;
   readonly addNewItemModalIsOpened: boolean;
   readonly currentSearchString: string;
   readonly currentTagsToFilterBy?: Array<string>;
 }
 
-export class StyledInventoryCatalogPage extends React.Component<
+// TODO: refactor with `useState` hook
+export class StyledInventoryCatalogPage extends React.PureComponent<
   StyledInventoryCatalogProps,
   InventoryCatalogPageState
 > {
@@ -67,7 +68,7 @@ export class StyledInventoryCatalogPage extends React.Component<
   };
 
   public handleItemSelect = (params: {
-    readonly idOfItemToSelect: InventoryItem['id'];
+    readonly idOfItemToSelect: InventoryItemVM['id'];
   }) => {
     if (this.state.selectedItemIsInEditMode) {
       // Do not allow switching to another item when in edit mode
@@ -79,7 +80,7 @@ export class StyledInventoryCatalogPage extends React.Component<
   };
 
   public handleItemStartUpdateModeClick = (params: {
-    readonly idOfUpdateClickedItem: InventoryItem['id'];
+    readonly idOfUpdateClickedItem: InventoryItemVM['id'];
   }) => {
     if (this.state.selectedItemIsInEditMode) {
       // Do not allow switching to another item when in edit mode
@@ -92,7 +93,7 @@ export class StyledInventoryCatalogPage extends React.Component<
   };
 
   public handleUpdateItemSubmit = (params: {
-    readonly item: Omitted<InventoryItem, 'id'>;
+    readonly item: Omitted<InventoryItemVM, 'id'>;
   }) => {
     const selectedItem = this.getSelectedItem();
 
@@ -113,13 +114,13 @@ export class StyledInventoryCatalogPage extends React.Component<
   };
 
   public handleUnitChange = (params: {
-    readonly unit: InventoryItem['unit'];
+    readonly unit: InventoryItemVM['unit'];
   }) => {
-    this.props.onSearchAlternatesForGivenUnit(params);
+    this.props.onNeedAlternatesForGivenUnit(params);
   };
 
   public handleCreateNewItemSubmit = (params: {
-    readonly item: Omitted<InventoryItem, 'id'>;
+    readonly item: Omitted<InventoryItemVM, 'id'>;
   }) => {
     if (!this.props.updateAndCreateAreAllowed) {
       return;
@@ -182,7 +183,7 @@ export class StyledInventoryCatalogPage extends React.Component<
     });
   };
 
-  public getSelectedItem(): InventoryItem | undefined {
+  public getSelectedItem(): InventoryItemVM | undefined {
     return (
       this.props.items &&
       this.props.items.find(item => item.id === this.state.idOfSelectedItem)

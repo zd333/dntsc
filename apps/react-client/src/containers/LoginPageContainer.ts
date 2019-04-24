@@ -1,25 +1,30 @@
 import { connect } from 'react-redux';
 import { LoginPage, LoginPageProps } from '../../src/components/LoginPage';
 import { RootState } from '../../src';
-import { selectLoginPageIsBusy } from '../selectors/login-page-is-busy.selector';
+import { selectAuthApiCommunicationIsInProgress } from '../selectors/auth-api-communication-is-in-progress.selector';
 import { SessionActions } from '../../src/actions/session.actions';
 import {
-  StateMapper,
-  DispatchMapper,
+  StateToComponentNonFunctionPropsMapper,
+  DispatchToComponentFunctionPropsMapper,
 } from '../../src/shared/types/container-state-mapper.interface';
 
-const mapStateToProps: StateMapper<LoginPageProps, RootState> = state => {
+const mapStateToProps: StateToComponentNonFunctionPropsMapper<
+  LoginPageProps,
+  RootState
+> = state => {
   return {
-    isDisabled: selectLoginPageIsBusy(state),
+    isDisabled: selectAuthApiCommunicationIsInProgress(state),
   };
 };
 
-const mapDispatchToProps: DispatchMapper<LoginPageProps> = dispatch => {
+const mapDispatchToProps: DispatchToComponentFunctionPropsMapper<
+  LoginPageProps
+> = dispatch => {
   return {
-    onEmailLogin: params => {
+    onLogin: params => {
       dispatch(
-        SessionActions.emailLoginStart({
-          email: params.email,
+        SessionActions.loginStart({
+          login: params.login,
           password: params.password,
         }),
       );

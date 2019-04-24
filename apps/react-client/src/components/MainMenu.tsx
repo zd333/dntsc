@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { AppRouePaths } from './app-routes';
+import { AppRouePaths } from './AppRoutes';
 import { createLinkComponent } from '../shared/helpers/create-link-component';
-import { Dashboard, ShoppingCart } from '@material-ui/icons';
+import { Dashboard, Group, ShoppingCart } from '@material-ui/icons';
 import { FormattedMessage } from 'react-intl';
 import { MAIN_MENU_WIDTH } from './Shell';
 import { MainMenuGroup } from './MainMenuGroup';
@@ -22,11 +22,21 @@ import {
 export interface MainMenuProps {
   readonly mobileOpened: boolean;
   readonly isInventoryEnabled: boolean;
+  readonly isEmployeesEnabled: boolean;
   readonly onClose: () => void;
 }
 
-export const StyledMainMenu: React.SFC<StyledMainMenuProps> = props => {
-  const { mobileOpened, isInventoryEnabled, onClose, classes, theme } = props;
+export const StyledMainMenu: React.FunctionComponent<
+  StyledMainMenuProps
+> = props => {
+  const {
+    mobileOpened,
+    isInventoryEnabled,
+    isEmployeesEnabled,
+    onClose,
+    classes,
+    theme,
+  } = props;
   const dashboardMenuContent = (
     <React.Fragment>
       <List>
@@ -63,6 +73,27 @@ export const StyledMainMenu: React.SFC<StyledMainMenuProps> = props => {
       <Divider />
     </React.Fragment>
   );
+  const employeesMenuContent = isEmployeesEnabled && (
+    <React.Fragment>
+      <List>
+        <MainMenuGroup
+          textId="mainMenu.EmployeesMenuItem.text"
+          icon={<Group />}
+          subItems={[
+            {
+              textId: 'mainMenu.EmployeesInvitationMenuItem.text',
+              linkPath: AppRouePaths.employeeInvitation,
+            },
+            {
+              textId: 'mainMenu.EmployeesManagementMenuItem.text',
+              linkPath: AppRouePaths.employeeManagement,
+            },
+          ]}
+        />
+      </List>
+      <Divider />
+    </React.Fragment>
+  );
 
   const drawer = (
     <div>
@@ -73,6 +104,8 @@ export const StyledMainMenu: React.SFC<StyledMainMenuProps> = props => {
       {dashboardMenuContent}
 
       {inventoryMenuContent}
+
+      {employeesMenuContent}
     </div>
   );
 
@@ -123,6 +156,6 @@ const mainMenuStyles = ({ breakpoints, mixins }: Theme) =>
 type StyledMainMenuProps = MainMenuProps &
   WithStyles<typeof mainMenuStyles, true>;
 
-export const MainMenu = withStyles(mainMenuStyles, { withTheme: true })(
-  StyledMainMenu,
+export const MainMenu = React.memo(
+  withStyles(mainMenuStyles, { withTheme: true })(StyledMainMenu),
 );

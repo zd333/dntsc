@@ -9,7 +9,8 @@ import { switchMapTo, tap } from 'rxjs/operators';
 export const SAVED_SESSION_LOCAL_STORAGE_KEY = 'svd_ssn';
 
 /**
- * Saves session (auth token for now - add more data if needed) to local storage after login success.
+ * Saves session (auth token for now - add more data if needed) to local storage
+ * after login or session refresh.
  */
 export const saveSessionToLocalStorageOnLoginEpic: Epic<
   AllAppActions,
@@ -18,10 +19,14 @@ export const saveSessionToLocalStorageOnLoginEpic: Epic<
   AppEpicsDependencies
 > = (action$, state$, { localStorageService }) =>
   action$.pipe(
-    ofType(SessionActionTypes.EMAIL_LOGIN_SUCCESS),
+    ofType(
+      SessionActionTypes.LOGIN_SUCCESS,
+      SessionActionTypes.REFRESH_SESSION_SUCCESS,
+    ),
     tap(action => {
       const sessionDataToSave: SavedSession = {
-        authToken: action.payload.emailAccessToken,
+        authToken: action.payload.accessToken,
+        refreshToken: action.payload.refreshToken,
         userRoles: action.payload.userRoles,
         userName: action.payload.userName,
       };
@@ -38,5 +43,5 @@ export const saveSessionToLocalStorageOnLoginEpic: Epic<
  */
 export type SavedSession = Pick<
   SessionState,
-  'authToken' | 'userRoles' | 'userName'
+  'authToken' | 'refreshToken' | 'userRoles' | 'userName'
 >;

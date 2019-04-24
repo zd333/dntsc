@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { appRoutes } from './app-routes';
+import { AppRoutesContainer } from '../containers/AppRoutesContainer';
 import { CssBaseline } from '@material-ui/core';
 import { ErrorModalContainer } from '../../src/containers/ErrorModalContainer';
 
-export const App: React.SFC = () => (
+export const App: React.FunctionComponent = () => (
   <React.Fragment>
     <ErrorModalContainer />
     <CssBaseline />
-    {appRoutes}
+    <AppRoutesContainer />
   </React.Fragment>
 );

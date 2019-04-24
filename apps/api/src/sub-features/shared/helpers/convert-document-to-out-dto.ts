@@ -1,11 +1,9 @@
 import { classToPlain, plainToClass } from 'class-transformer';
 import { Document } from 'mongoose';
 
-export interface DtoConstructor<T> {
-  // This is generic, so really any :)
-  /* tslint:disable-next-line:no-any */
-  new (...args: Array<any>): T;
-}
+// This is generic, so really any :)
+/* tslint:disable-next-line:no-any */
+export type DtoConstructor<T> = new (...args: Array<any>) => T;
 
 /**
  * Takes MongoDB document and converts it to output DTO.

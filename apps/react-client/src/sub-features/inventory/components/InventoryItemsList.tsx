@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Edit } from '@material-ui/icons';
-import { InventoryItem } from '../selectors/items-dictionary.selector';
+import { InventoryItemVM } from '../selectors/items-dictionary.selector';
 import {
   createStyles,
   Theme,
@@ -14,18 +14,18 @@ import {
 } from '@material-ui/core';
 
 export interface InventoryItemsListProps {
-  readonly items: Array<InventoryItem>;
-  readonly idOfSelectedItem: InventoryItem['id'] | undefined;
+  readonly items: Array<InventoryItemVM>;
+  readonly idOfSelectedItem: InventoryItemVM['id'] | undefined;
   readonly updateIsAllowed: boolean;
   readonly onSelect: (params: {
-    readonly idOfItemToSelect: InventoryItem['id'];
+    readonly idOfItemToSelect: InventoryItemVM['id'];
   }) => void;
   readonly onUpdateClick: (params: {
-    readonly idOfUpdateClickedItem: InventoryItem['id'];
+    readonly idOfUpdateClickedItem: InventoryItemVM['id'];
   }) => void;
 }
 
-const StyledInventoryItemsList: React.SFC<
+const StyledInventoryItemsList: React.FunctionComponent<
   StyledInventoryItemsListProps
 > = props => {
   const {
@@ -36,10 +36,10 @@ const StyledInventoryItemsList: React.SFC<
     onSelect,
     onUpdateClick,
   } = props;
-  const handleItemSelect = (idOfItemToSelect: InventoryItem['id']) => {
+  const handleItemSelect = (idOfItemToSelect: InventoryItemVM['id']) => {
     onSelect({ idOfItemToSelect });
   };
-  const handleUpdateClick = (idOfUpdateClickedItem: InventoryItem['id']) => {
+  const handleUpdateClick = (idOfUpdateClickedItem: InventoryItemVM['id']) => {
     if (updateIsAllowed) {
       onUpdateClick({ idOfUpdateClickedItem });
     }
@@ -83,6 +83,6 @@ const inventoryItemsListStyles = ({ palette }: Theme) =>
 type StyledInventoryItemsListProps = InventoryItemsListProps &
   WithStyles<typeof inventoryItemsListStyles>;
 
-export const InventoryItemsList = withStyles(inventoryItemsListStyles)(
-  StyledInventoryItemsList,
+export const InventoryItemsList = React.memo(
+  withStyles(inventoryItemsListStyles)(StyledInventoryItemsList),
 );

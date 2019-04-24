@@ -7,15 +7,15 @@ import { selectTranslatedInventoryItemUnits } from '../selectors/translated-inve
 import { selectUpdateAndCreateInventoryItemsIsAllowed } from '../selectors/update-and-create-inventory-items-is-allowed.selector';
 import { selectUsedInventoryItemsTags } from '../selectors/used-inventory-items-tags.selector';
 import {
-  StateMapper,
-  DispatchMapper,
+  StateToComponentNonFunctionPropsMapper,
+  DispatchToComponentFunctionPropsMapper,
 } from '../../../shared/types/container-state-mapper.interface';
 import {
   InventoryCatalogPageProps,
   InventoryCatalogPage,
 } from '../components/InventoryCatalogPage';
 
-const mapStateToProps: StateMapper<
+const mapStateToProps: StateToComponentNonFunctionPropsMapper<
   InventoryCatalogPageProps,
   RootState
 > = state => {
@@ -30,7 +30,7 @@ const mapStateToProps: StateMapper<
   };
 };
 
-const mapDispatchToProps: DispatchMapper<
+const mapDispatchToProps: DispatchToComponentFunctionPropsMapper<
   InventoryCatalogPageProps
 > = dispatch => {
   return {
@@ -51,8 +51,10 @@ const mapDispatchToProps: DispatchMapper<
       const { id, itemUpdates } = params;
       dispatch(InventoryActions.updateItemStart({ id, itemUpdates }));
     },
-    // TODO: implement search with given unit functionality
-    onSearchAlternatesForGivenUnit: () => void 0,
+    onNeedAlternatesForGivenUnit: params => {
+      const { unit } = params;
+      dispatch(InventoryActions.fetchItemsStart({ unitToFilterBy: unit }));
+    },
   };
 };
 

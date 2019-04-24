@@ -5,18 +5,23 @@ import { RootState } from '../../src';
 import { selectErrorModalIsShown } from '../../src/selectors/error-modal-is-shown.selector';
 import { selectErrorModalMessage } from '../../src/selectors/error-modal-message.selector';
 import {
-  StateMapper,
-  DispatchMapper,
+  StateToComponentNonFunctionPropsMapper,
+  DispatchToComponentFunctionPropsMapper,
 } from '../../src/shared/types/container-state-mapper.interface';
 
-const mapStateToProps: StateMapper<ErrorModalProps, RootState> = state => {
+const mapStateToProps: StateToComponentNonFunctionPropsMapper<
+  ErrorModalProps,
+  RootState
+> = state => {
   return {
     isOpened: selectErrorModalIsShown(state),
     message: selectErrorModalMessage(state),
   };
 };
 
-const mapDispatchToProps: DispatchMapper<ErrorModalProps> = dispatch => {
+const mapDispatchToProps: DispatchToComponentFunctionPropsMapper<
+  ErrorModalProps
+> = dispatch => {
   return {
     onClose: () => {
       dispatch(closeErrorNotificationModalAction());

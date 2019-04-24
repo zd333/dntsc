@@ -35,7 +35,7 @@ export class UpdateInventoryItemInDtoWithClinicContext extends InDtoWithClinicCo
   @ArrayNotEmpty()
   @ArrayUnique()
   @IsLowercase({ each: true })
-  public readonly tags?: Array<string>;
+  public readonly tags?: Array<string> | null;
 
   @IsOptional()
   @ArrayNotEmpty()
@@ -54,7 +54,7 @@ export class UpdateInventoryItemInDtoWithClinicContext extends InDtoWithClinicCo
   // @Validate(IsAlternateWithRelevantUnit, {
   //   each: true,
   // })
-  public readonly alternates?: Array<string>;
+  public readonly alternates?: Array<string> | null;
 }
 
 /**

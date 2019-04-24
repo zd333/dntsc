@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { AllEmployeesActions } from './sub-features/employees/actions/employees.actions';
 import { AllInventoryActions } from './sub-features/inventory/actions/inventory.actions';
 import { AllSessionActions } from './actions/session.actions';
 import { App } from './components/App';
@@ -10,15 +11,19 @@ import { CommonErrorAction } from './actions/error-modal.actions';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createBrowserHistory } from 'history';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core';
+import { employeesApiConnectors } from './sub-features/employees/api-connectors';
+import { employeesEpics } from './sub-features/employees/epics';
+import { employeesReducer } from './sub-features/employees/reducers/employees.reducer';
+import { EmployeesState } from './sub-features/employees/reducers/employees-state.interface';
 import { errorModalReducer } from './reducers/error-modal.reducer';
 import { ErrorModalState } from './reducers/error-modal-state.interface';
-import { green, purple } from '@material-ui/core/colors';
 import { IntlProviderContainer } from './containers/IntlProviderContainer';
 import { inventoryApiConnectors } from './sub-features/inventory/api-connectors';
 import { inventoryEpics } from './sub-features/inventory/epics';
 import { inventoryReducer } from './sub-features/inventory/reducers/inventory.reducer';
 import { InventoryState } from './sub-features/inventory/reducers/inventory-state.interface';
 import { Provider } from 'react-redux';
+import { purple, red } from '@material-ui/core/colors';
 import { rootApiConnectors } from './api-connectors';
 import { sessionReducer } from './reducers/session.reducer';
 import { SessionState } from './reducers/session-state.interface';
@@ -38,11 +43,17 @@ const rootReducer = combineReducers({
   session: sessionReducer,
   errorModal: errorModalReducer,
   inventory: inventoryReducer,
+  employees: employeesReducer,
 });
-const rootEpic = combineEpics(...appRootEpics, ...inventoryEpics);
+const rootEpic = combineEpics(
+  ...appRootEpics,
+  ...inventoryEpics,
+  ...employeesEpics,
+);
 const rootEpicMiddlewareDependencies = {
   ...rootApiConnectors,
   ...inventoryApiConnectors,
+  ...employeesApiConnectors,
   // DI local storage into epics to make testing easier (hope there will be tests someday :) )
   localStorageService: window.localStorage,
 };
@@ -59,7 +70,7 @@ const store = createStore(
 const theme = createMuiTheme({
   palette: {
     primary: purple,
-    secondary: green,
+    secondary: red,
   },
   typography: {
     useNextVariants: true,
@@ -89,6 +100,7 @@ export interface RootState {
   readonly router: RouterState;
   readonly errorModal: ErrorModalState;
   readonly inventory: InventoryState;
+  readonly employees: EmployeesState;
 }
 /**
  * Type of object that collects all injected into epic middleware dependencies of the App.
@@ -105,6 +117,5 @@ export type AllAppActions =
   | RouterAction
   | AllSessionActions
   | CommonErrorAction
-  | AllInventoryActions;
-
-// TODO: refactor all components with recompose and pure
+  | AllInventoryActions
+  | AllEmployeesActions;

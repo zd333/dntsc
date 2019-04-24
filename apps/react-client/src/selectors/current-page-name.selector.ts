@@ -1,4 +1,4 @@
-import { AppRouePaths } from '../components/app-routes';
+import { AppRouePaths } from '../components/AppRoutes';
 import { AppTranslationMessages } from '../shared/translations/en-translation-messages';
 import { createSelector } from 'reselect';
 import { selectCurrentTranslationsDictionary } from './current-translations-dictionary.selector';
@@ -18,6 +18,10 @@ export const selectCurrentPageName = createSelector(
         ? 'dashboardPage.title'
         : routePath === AppRouePaths.inventoryCatalog
         ? 'inventoryCatalogPage.title'
+        : routePath === AppRouePaths.employeeInvitation
+        ? 'employeeInvitationPage.title'
+        : routePath === AppRouePaths.employeeManagement
+        ? 'employeeManagementPage.title'
         : 'defaultPageTitle';
 
     return currentTranslationsDictionary[translationsDictionaryKey];
