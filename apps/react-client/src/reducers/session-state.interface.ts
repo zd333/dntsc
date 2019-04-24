@@ -11,6 +11,7 @@ export interface SessionState {
   readonly authApiCommunicationIsInProgress: boolean;
   readonly currentLanguage: AppLanguages;
   readonly availableFeatures: Array<PlatformFeatures> | undefined;
+  readonly employeeRegistrationTokenIsValid?: boolean;
 }
 
 // ! Note, enum values are important and must match intl lib locale values, see `IntlProviderContainer`

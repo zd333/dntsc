@@ -1,3 +1,5 @@
+import { checkEmployeeRegistrationTokenApiCallEpic } from './check-employee-registration-token-api-call.epic';
+import { checkTokenOnNavigationToEmployeeRegistrationPageEpic } from './check-token-on-navigation-to-employee-registration-page.epic';
 import { deleteSavedSessionFromLocalStorageOnLogoutEpic } from './delete-saved-session-from-localstorage-on-logout.epic';
 import { Epic } from 'redux-observable';
 import { getFeaturesApiCallEpic } from './get-features-api-call.epic';
@@ -34,4 +36,6 @@ export const appRootEpics: Array<Epic> = [
   restoreSavedLastUserLanguageOnLoginEpic,
   syncLanguageWithSavedInLocalStorageEpic,
   registerEmployeeApiCallEpic,
+  checkEmployeeRegistrationTokenApiCallEpic,
+  checkTokenOnNavigationToEmployeeRegistrationPageEpic,
 ];

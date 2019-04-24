@@ -21,9 +21,13 @@ export enum SessionActionTypes {
 
   CHANGE_LANGUAGE = '[Session] change language',
 
-  REGISTER_EMPLOYEE_START = '[Session] Register via token start',
-  REGISTER_EMPLOYEE_SUCCESS = '[Session] Register via token success',
-  REGISTER_EMPLOYEE_ERROR = '[Session] Register via token error',
+  CHECK_EMPLOYEE_REGISTRATION_TOKEN_START = '[Session] Check employee registration token start',
+  CHECK_EMPLOYEE_REGISTRATION_TOKEN_SUCCESS = '[Session] Check employee registration token success',
+  CHECK_EMPLOYEE_REGISTRATION_TOKEN_ERROR = '[Session] Check employee registration token error',
+
+  REGISTER_EMPLOYEE_START = '[Session] Register employee start',
+  REGISTER_EMPLOYEE_SUCCESS = '[Session] Register employee success',
+  REGISTER_EMPLOYEE_ERROR = '[Session] Register employee error',
 }
 
 export const SessionActions = {
@@ -71,6 +75,19 @@ export const SessionActions = {
 
   changeLanguage: (payload: { readonly language: AppLanguages }) =>
     createAction(SessionActionTypes.CHANGE_LANGUAGE, payload),
+
+  checkEmployeeRegistrationTokenStart: (payload: {
+    readonly registrationToken: string;
+  }) =>
+    createAction(
+      SessionActionTypes.CHECK_EMPLOYEE_REGISTRATION_TOKEN_START,
+      payload,
+    ),
+  checkEmployeeRegistrationTokenSuccess: () =>
+    createAction(SessionActionTypes.CHECK_EMPLOYEE_REGISTRATION_TOKEN_SUCCESS),
+  // This is not common error action, you don't need error modal on it
+  checkEmployeeRegistrationTokenError: () =>
+    createAction(SessionActionTypes.CHECK_EMPLOYEE_REGISTRATION_TOKEN_ERROR),
 
   registerEmployeeStart: (payload: {
     readonly login: string;

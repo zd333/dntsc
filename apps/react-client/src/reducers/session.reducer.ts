@@ -71,6 +71,40 @@ export function sessionReducer(
       };
     }
 
+    case SessionActionTypes.CHECK_EMPLOYEE_REGISTRATION_TOKEN_START: {
+      return {
+        ...state,
+        employeeRegistrationTokenIsValid: undefined,
+      };
+    }
+    case SessionActionTypes.CHECK_EMPLOYEE_REGISTRATION_TOKEN_SUCCESS: {
+      return {
+        ...state,
+        employeeRegistrationTokenIsValid: true,
+      };
+    }
+    case SessionActionTypes.CHECK_EMPLOYEE_REGISTRATION_TOKEN_ERROR: {
+      return {
+        ...state,
+        employeeRegistrationTokenIsValid: false,
+      };
+    }
+
+    case SessionActionTypes.REGISTER_EMPLOYEE_START: {
+      return {
+        ...state,
+        authApiCommunicationIsInProgress: true,
+        employeeRegistrationTokenIsValid: false,
+      };
+    }
+    case SessionActionTypes.REGISTER_EMPLOYEE_SUCCESS:
+    case SessionActionTypes.REGISTER_EMPLOYEE_ERROR: {
+      return {
+        ...state,
+        authApiCommunicationIsInProgress: false,
+      };
+    }
+
     default:
       return state;
   }

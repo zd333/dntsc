@@ -12,6 +12,7 @@ import {
   InventoryActionTypes,
 } from '../actions/inventory.actions';
 
+// TODO: refactor with `crateMatchSelector`
 export const startGettingUsedInventoryItemsTagsEpic: Epic<AllAppActions> = (
   action$,
   state$,

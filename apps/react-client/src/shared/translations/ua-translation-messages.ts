@@ -36,6 +36,15 @@ export const uaTranslationMessages: AppTranslationMessages = {
   'mainMenu.EmployeesManagementMenuItem.text': 'Керування',
 
   'employeeRegistrationPage.title': 'Реєстрація працівника',
+  'employeeRegistrationPage.alreadyRegisteredMessage': `
+    Ви зареєструвалися, тепер зверніться до відповідальної особи для активації Вашого акаунта.
+  `,
+  'employeeRegistrationPage.tokenCanBeExpiredMessage': `
+    Якщо Ви не реєструвалися, але все ж бачите це повідомлення - то можливо
+    що Ваше запрошення застаріло (посилання має обмежений термін дії).
+    У такому випадку відповідальна особа повинна створити для Вас нове запрошення.
+  `,
+
   'employeeRegistrationPage.employeeRegistrationForm.title':
     'Реєстрація працівника',
   'employeeRegistrationPage.employeeRegistrationForm.nameControl.label': `Ім'я`,
