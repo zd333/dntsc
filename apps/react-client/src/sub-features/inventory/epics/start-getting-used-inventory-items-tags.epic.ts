@@ -22,6 +22,9 @@ export const startGettingUsedInventoryItemsTagsEpic: Epic<AllAppActions> = (
   const InventoryCatalogRouteMatch$ = state$.pipe(
     map(appRoutesMatchSelectors.selectInventoryCatalogRouteMatch),
   );
+  const inventoryBalanceRouteMatch$ = state$.pipe(
+    map(appRoutesMatchSelectors.selectInventoryBalanceRouteMatch),
+  );
 
   return action$.pipe(
     ofType(
@@ -34,6 +37,7 @@ export const startGettingUsedInventoryItemsTagsEpic: Epic<AllAppActions> = (
       userIsLoggedIn$,
       usedInventoryItemsTags$,
       InventoryCatalogRouteMatch$,
+      inventoryBalanceRouteMatch$,
     ),
     filter(
       ([
@@ -41,6 +45,7 @@ export const startGettingUsedInventoryItemsTagsEpic: Epic<AllAppActions> = (
         userIsLoggedIn,
         usedInventoryItemsTags,
         InventoryCatalogRouteMatch,
+        inventoryBalanceRouteMatch,
       ]) => {
         if (!userIsLoggedIn) {
           // No need to fetch used tags for logged out user
@@ -50,9 +55,8 @@ export const startGettingUsedInventoryItemsTagsEpic: Epic<AllAppActions> = (
         if (action.type === LOCATION_CHANGE) {
           // If it is navigation - then fetch used tags only when destination is relevant page and there are no loaded ones in the state
           return (
-            usedInventoryItemsTags.length === 0 &&
-            // Add here all routes that need used tags data
-            !!InventoryCatalogRouteMatch
+            (!!InventoryCatalogRouteMatch || !!inventoryBalanceRouteMatch) &&
+            usedInventoryItemsTags.length === 0
           );
         }
 

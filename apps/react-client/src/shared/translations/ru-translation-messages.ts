@@ -87,6 +87,10 @@ export const ruTranslationMessages: AppTranslationMessages = {
     'Аналоги',
 
   'inventoryBalancePage.title': 'Складской баланс',
+  'inventoryBalancePage.inventoryItemsBalancesList.searchItemsControl.label':
+    'Поиск',
+  'inventoryBalancePage.inventoryItemsBalancesList..filterByTagsControl.label':
+    'Отфильтровать по меткам',
 
   'employeeInvitationPage.title': 'Приглашение сотрудников',
   'employeeInvitationPage.invitationForm.rolesSelect.label':

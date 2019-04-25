@@ -25,8 +25,8 @@ export enum AppRouePaths {
 
 export interface AppRoutesProps {
   readonly isUserLoggedIn?: boolean;
-  readonly areInventoryPagesEnabled: boolean;
-  readonly isEmployeeManagementPageEnabled: boolean;
+  readonly areInventoryPagesEnabled?: boolean;
+  readonly isEmployeeManagementPageEnabled?: boolean;
 }
 
 const NotMemoizedAppRoutes: React.FunctionComponent<AppRoutesProps> = props => {
@@ -39,6 +39,9 @@ const NotMemoizedAppRoutes: React.FunctionComponent<AppRoutesProps> = props => {
     // Wait until we know logged in status to avoid redirections
     return <div />;
   }
+  const conditionsForAllConditionalShellRoutesIsDefined =
+    typeof areInventoryPagesEnabled !== 'undefined' &&
+    typeof isEmployeeManagementPageEnabled !== 'undefined';
 
   if (!isUserLoggedIn) {
     return (
@@ -89,7 +92,10 @@ const NotMemoizedAppRoutes: React.FunctionComponent<AppRoutesProps> = props => {
             />
           )}
 
-          <Redirect to="/" />
+          {/* Redirect only after all conditions are defined (to prevent redirection before we fetched conditions data from API) */}
+          {conditionsForAllConditionalShellRoutesIsDefined && (
+            <Redirect to="/" />
+          )}
         </Switch>
       </ShellContainer>
     </Switch>

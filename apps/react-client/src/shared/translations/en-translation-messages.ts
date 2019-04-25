@@ -78,6 +78,10 @@ export const enTranslationMessages = {
     'Alternates',
 
   'inventoryBalancePage.title': 'Inventory Balance',
+  'inventoryBalancePage.inventoryItemsBalancesList.searchItemsControl.label':
+    'Search',
+  'inventoryBalancePage.inventoryItemsBalancesList..filterByTagsControl.label':
+    'Filter by tags',
 
   'employeeInvitationPage.title': 'Employee Invitation',
   'employeeInvitationPage.invitationForm.rolesSelect.label':
