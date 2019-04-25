@@ -7,7 +7,7 @@ import { LOCATION_CHANGE, LocationChangeAction } from 'connected-react-router';
 import { selectAllItems } from '../selectors/all-items.selector';
 
 /**
- * Fires fetch inventory items action when user navigates to inventory route,
+ * Fires fetch inventory items action when user navigates to inventory,
  * but only if there are no loaded inventory items yet.
  */
 export const searchInventoryItemsOnNavigationToInventoryEpic: Epic<
@@ -17,13 +17,21 @@ export const searchInventoryItemsOnNavigationToInventoryEpic: Epic<
   const inventoryCatalogRouteMatch$ = state$.pipe(
     map(appRoutesMatchSelectors.selectInventoryCatalogRouteMatch),
   );
+  const inventoryBalanceRouteMatch$ = state$.pipe(
+    map(appRoutesMatchSelectors.selectInventoryBalanceRouteMatch),
+  );
 
   return action$.pipe(
     ofType<LocationChangeAction>(LOCATION_CHANGE),
-    withLatestFrom(inventoryCatalogRouteMatch$, allItems$),
+    withLatestFrom(
+      inventoryCatalogRouteMatch$,
+      inventoryBalanceRouteMatch$,
+      allItems$,
+    ),
     filter(
-      ([, inventoryCatalogRouteMatch, allItems]) =>
-        !!inventoryCatalogRouteMatch && (!allItems || allItems.length === 0),
+      ([, inventoryCatalogRouteMatch, inventoryBalanceRouteMatch, allItems]) =>
+        (!!inventoryCatalogRouteMatch || !!inventoryBalanceRouteMatch) &&
+        (!allItems || allItems.length === 0),
     ),
     mapTo(InventoryActions.fetchItemsStart({})),
   );

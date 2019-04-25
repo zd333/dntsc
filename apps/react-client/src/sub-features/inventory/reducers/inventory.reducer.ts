@@ -12,8 +12,7 @@ export function inventoryReducer(
   action: AllInventoryActions,
 ): InventoryState {
   switch (action.type) {
-    case InventoryActionTypes.FETCH_ITEMS_START:
-    case InventoryActionTypes.FETCH_AND_FILTER_ITEMS_START: {
+    case InventoryActionTypes.FETCH_ITEMS_START: {
       return {
         ...state,
         searchItemsApiRequestInProgress: true,
@@ -51,7 +50,13 @@ export function inventoryReducer(
         matchingSearchCriteriaItemIds,
       };
     }
-
+    case InventoryActionTypes.FETCH_AND_FILTER_ITEMS_START: {
+      return {
+        ...state,
+        searchItemsApiRequestInProgress: true,
+        matchingSearchCriteriaItemIds: [],
+      };
+    }
     case InventoryActionTypes.FETCH_AND_FILTER_ITEMS_SUCCESS: {
       // Do same what we do with `FETCH_ITEMS_SUCCESS`, but also save `matchingSearchCriteriaItemIds`
       const {

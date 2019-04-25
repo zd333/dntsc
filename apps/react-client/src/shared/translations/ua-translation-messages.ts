@@ -83,6 +83,10 @@ export const uaTranslationMessages: AppTranslationMessages = {
     'Аналоги',
 
   'inventoryBalancePage.title': 'Складський баланс',
+  'inventoryBalancePage.inventoryItemsBalancesList.searchItemsControl.label':
+    'Пошук',
+  'inventoryBalancePage.inventoryItemsBalancesList..filterByTagsControl.label':
+    'Відфільтрувати по мітках',
 
   'employeeInvitationPage.title': 'Запрошення працівників',
   'employeeInvitationPage.invitationForm.rolesSelect.label':

@@ -21,8 +21,8 @@ import {
 
 export interface MainMenuProps {
   readonly mobileOpened: boolean;
-  readonly areInventoryPagesEnabled: boolean;
-  readonly isEmployeeManagementPageEnabled: boolean;
+  readonly areInventoryPagesEnabled?: boolean;
+  readonly isEmployeeManagementPageEnabled?: boolean;
   readonly onClose: () => void;
 }
 
