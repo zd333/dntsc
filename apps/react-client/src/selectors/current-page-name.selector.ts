@@ -18,6 +18,8 @@ export const selectCurrentPageName = createSelector(
         ? 'dashboardPage.title'
         : routePath === AppRouePaths.inventoryCatalog
         ? 'inventoryCatalogPage.title'
+        : routePath === AppRouePaths.inventoryBalance
+        ? 'inventoryBalancePage.title'
         : routePath === AppRouePaths.employeeInvitation
         ? 'employeeInvitationPage.title'
         : routePath === AppRouePaths.employeeManagement

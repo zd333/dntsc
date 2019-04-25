@@ -14,6 +14,9 @@ const selectDashboardRouteMatch = createMatchSelector(AppRouePaths.dashboard);
 const selectInventoryCatalogRouteMatch = createMatchSelector(
   AppRouePaths.inventoryCatalog,
 );
+const selectInventoryBalanceRouteMatch = createMatchSelector(
+  AppRouePaths.inventoryBalance,
+);
 const selectEmployeeInvitationRouteMatch = createMatchSelector(
   AppRouePaths.employeeInvitation,
 );
@@ -26,6 +29,7 @@ export const appRoutesMatchSelectors = {
   selectLoginRouteMatch,
   selectDashboardRouteMatch,
   selectInventoryCatalogRouteMatch,
+  selectInventoryBalanceRouteMatch,
   selectEmployeeInvitationRouteMatch,
   selectEmployeeManagementRouteMatch,
 };
