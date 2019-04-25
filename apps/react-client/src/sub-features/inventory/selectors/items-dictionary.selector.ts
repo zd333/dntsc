@@ -2,27 +2,34 @@ import { createSelector } from 'reselect';
 import { InventoryItemDetailsOutDto } from '@api/sub-features/inventory/dto/inventory-item-details.out-dto';
 import { InventoryItemUnits } from '@api/sub-features/inventory/db-schemas/inventory-item.db-schema';
 import { Omitted } from '../../../shared/types/omitted.type';
+import { selectInventoryState } from './inventory-state.selector';
 import { selectRawItemsDict } from './raw-items-dictionary.selector';
+
+const selectItemsBalancesDict = createSelector(
+  [selectInventoryState],
+  inventoryState => (inventoryState && inventoryState.itemsBalancesDict) || {},
+);
 
 /**
  * Returns dictionary of view model inventory items.
  * Use results of this selector in all other selector which produce data for UI.
  */
 export const selectItemsDict = createSelector(
-  [selectRawItemsDict],
-  rawItemsDict =>
+  [selectRawItemsDict, selectItemsBalancesDict],
+  (rawItemsDict, itemsBalancesDict) =>
     Object.getOwnPropertyNames(rawItemsDict || {}).reduce(
-      (accumulator, current) => ({
+      (accumulator, currentId) => ({
         ...accumulator,
-        [current]: rawItemsDict[current]
+        [currentId]: rawItemsDict[currentId]
           ? {
-              ...rawItemsDict[current],
-              alternates: (rawItemsDict[current].alternates || []).map(
+              ...rawItemsDict[currentId],
+              alternates: (rawItemsDict[currentId].alternates || []).map(
                 alternateId => ({
                   id: alternateId,
                   name: rawItemsDict[alternateId].name,
                 }),
               ),
+              balance: itemsBalancesDict[currentId],
             }
           : undefined,
       }),
@@ -51,4 +58,8 @@ export const allInventoryItemUnits: Array<InventoryItemUnits> = [
 export type InventoryItemVM = Omitted<
   InventoryItemDetailsOutDto,
   'alternates'
-> & { readonly alternates?: Array<Pick<InventoryItemVM, 'id' | 'name'>> };
+  // TODO: add balance
+> & {
+  readonly alternates?: Array<Pick<InventoryItemVM, 'id' | 'name'>>;
+  readonly balance?: number;
+};

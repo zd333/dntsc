@@ -30,7 +30,7 @@ export const uaTranslationMessages: AppTranslationMessages = {
 
   'mainMenu.InventoryMenuItem.text': 'Склад',
   'mainMenu.InventoryCatalogMenuItem.text': 'Каталог',
-
+  'mainMenu.InventoryBalanceMenuItem.text': 'Баланс',
   'mainMenu.EmployeesMenuItem.text': 'Персонал',
   'mainMenu.EmployeesInvitationMenuItem.text': 'Запрошення',
   'mainMenu.EmployeesManagementMenuItem.text': 'Керування',
@@ -68,22 +68,21 @@ export const uaTranslationMessages: AppTranslationMessages = {
   'dashboardPage.title': 'Головне меню',
 
   'inventoryCatalogPage.title': 'Каталог складу',
-
   'inventoryCatalogPage.inventoryItemsList.AddNewItemButton.label':
     'Додати новий',
   'inventoryCatalogPage.inventoryItemsList.searchItemsControl.label': 'Пошук',
   'inventoryCatalogPage.inventoryItemsList.filterByTagsControl.label':
-    'Відфільтрувати за тегами',
-
+    'Відфільтрувати по мітках',
   'inventoryCatalogPage.addNewInventoryItemDialog.title':
     'Додати нову позицію складу',
-
   'inventoryCatalogPage.inventoryItemDetailsForm.nameControl.label': 'Назва',
   'inventoryCatalogPage.inventoryItemDetailsForm.unitsControl.label':
     'Одиниці виміру',
-  'inventoryCatalogPage.inventoryItemDetailsForm.tagsControl.label': 'Теги',
+  'inventoryCatalogPage.inventoryItemDetailsForm.tagsControl.label': 'Мітки',
   'inventoryCatalogPage.inventoryItemDetailsForm.alternatesControl.label':
     'Аналоги',
+
+  'inventoryBalancePage.title': 'Складський баланс',
 
   'employeeInvitationPage.title': 'Запрошення працівників',
   'employeeInvitationPage.invitationForm.rolesSelect.label':

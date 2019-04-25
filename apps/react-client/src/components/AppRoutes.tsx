@@ -3,6 +3,7 @@ import { DashboardPage } from '../sub-features/dashboard/components/DashboardPag
 import { EmployeeInvitationPageContainer } from '../sub-features/employees/containers/EmployeeInvitationPageContainer';
 import { EmployeeListPageContainer } from '../sub-features/employees/containers/EmployeeListPageContainer';
 import { EmployeeRegistrationPageContainer } from '../containers/EmployeeRegistrationPageContainer';
+import { InventoryBalancePageContainer } from '../sub-features/inventory/containers/InventoryBalancePageContainer';
 import { InventoryCatalogPageContainer } from '../sub-features/inventory/containers/InventoryCatalogPageContainer';
 import { LoginPageContainer } from '../containers/LoginPageContainer';
 import { Redirect, Route, Switch } from 'react-router';
@@ -17,18 +18,23 @@ export enum AppRouePaths {
   login = '/login',
   dashboard = '/dashboard',
   inventoryCatalog = '/inventory/catalog',
+  inventoryBalance = '/inventory/balance',
   employeeInvitation = '/employees/invite',
   employeeManagement = '/employees/manage',
 }
 
 export interface AppRoutesProps {
   readonly isUserLoggedIn?: boolean;
-  readonly isInventoryEnabled: boolean;
-  readonly isEmployeesEnabled: boolean;
+  readonly areInventoryPagesEnabled: boolean;
+  readonly isEmployeeManagementPageEnabled: boolean;
 }
 
 const NotMemoizedAppRoutes: React.FunctionComponent<AppRoutesProps> = props => {
-  const { isUserLoggedIn, isInventoryEnabled, isEmployeesEnabled } = props;
+  const {
+    isUserLoggedIn,
+    areInventoryPagesEnabled,
+    isEmployeeManagementPageEnabled,
+  } = props;
   if (typeof isUserLoggedIn === 'undefined') {
     // Wait until we know logged in status to avoid redirections
     return <div />;
@@ -57,19 +63,26 @@ const NotMemoizedAppRoutes: React.FunctionComponent<AppRoutesProps> = props => {
       <ShellContainer>
         <Switch>
           <Route path={AppRouePaths.dashboard} component={DashboardPage} />
-          {isInventoryEnabled && (
+          {areInventoryPagesEnabled && (
             <Route
               path={AppRouePaths.inventoryCatalog}
               component={InventoryCatalogPageContainer}
             />
           )}
-          {isEmployeesEnabled && (
+          {areInventoryPagesEnabled && (
+            <Route
+              path={AppRouePaths.inventoryBalance}
+              component={InventoryBalancePageContainer}
+            />
+          )}
+
+          {isEmployeeManagementPageEnabled && (
             <Route
               path={AppRouePaths.employeeInvitation}
               component={EmployeeInvitationPageContainer}
             />
           )}
-          {isEmployeesEnabled && (
+          {isEmployeeManagementPageEnabled && (
             <Route
               path={AppRouePaths.employeeManagement}
               component={EmployeeListPageContainer}

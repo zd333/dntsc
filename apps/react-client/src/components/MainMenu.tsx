@@ -21,8 +21,8 @@ import {
 
 export interface MainMenuProps {
   readonly mobileOpened: boolean;
-  readonly isInventoryEnabled: boolean;
-  readonly isEmployeesEnabled: boolean;
+  readonly areInventoryPagesEnabled: boolean;
+  readonly isEmployeeManagementPageEnabled: boolean;
   readonly onClose: () => void;
 }
 
@@ -31,8 +31,8 @@ export const StyledMainMenu: React.FunctionComponent<
 > = props => {
   const {
     mobileOpened,
-    isInventoryEnabled,
-    isEmployeesEnabled,
+    areInventoryPagesEnabled,
+    isEmployeeManagementPageEnabled,
     onClose,
     classes,
     theme,
@@ -56,7 +56,7 @@ export const StyledMainMenu: React.FunctionComponent<
       <Divider />
     </React.Fragment>
   );
-  const inventoryMenuContent = isInventoryEnabled && (
+  const inventoryMenuContent = areInventoryPagesEnabled && (
     <React.Fragment>
       <List>
         <MainMenuGroup
@@ -67,13 +67,17 @@ export const StyledMainMenu: React.FunctionComponent<
               textId: 'mainMenu.InventoryCatalogMenuItem.text',
               linkPath: AppRouePaths.inventoryCatalog,
             },
+            {
+              textId: 'mainMenu.InventoryBalanceMenuItem.text',
+              linkPath: AppRouePaths.inventoryBalance,
+            },
           ]}
         />
       </List>
       <Divider />
     </React.Fragment>
   );
-  const employeesMenuContent = isEmployeesEnabled && (
+  const employeesMenuContent = isEmployeeManagementPageEnabled && (
     <React.Fragment>
       <List>
         <MainMenuGroup

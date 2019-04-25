@@ -1,6 +1,7 @@
 import { ActionsUnion, createAction } from '@martin_hotell/rex-tils';
-import { InventoryItemVM } from '../selectors/items-dictionary.selector';
+import { InventoryItemBalanceOutDto } from '@api/sub-features/inventory/dto/inventory-item-balance.out-dto';
 import { InventoryItemDetailsOutDto } from '@api/sub-features/inventory/dto/inventory-item-details.out-dto';
+import { InventoryItemVM } from '../selectors/items-dictionary.selector';
 import { Omitted } from '../../../shared/types/omitted.type';
 import { PaginatedListOutDto } from '@api/sub-features/shared/dto/paginated-list-out-dto.interface';
 import {
@@ -29,6 +30,10 @@ export enum InventoryActionTypes {
   GET_USED_TAGS_START = '[Inventory] Get used tags start',
   GET_USED_TAGS_SUCCESS = '[Inventory] Get used tags success',
   GET_USED_TAGS_ERROR = '[Inventory] Get used tags error',
+
+  FETCH_ITEM_BALANCE_START = '[Inventory] Fetch item balance start',
+  FETCH_ITEM_BALANCE_SUCCESS = '[Inventory] Fetch item balance success',
+  FETCH_ITEM_BALANCE_ERROR = '[Inventory] Fetch item balance error',
 }
 
 export const InventoryActions = {
@@ -110,6 +115,16 @@ export const InventoryActions = {
       isCommonErrorAction: true,
       error: payload.error,
     }),
+
+  fetchItemBalanceStart: (payload: { readonly id: InventoryItemVM['id'] }) =>
+    createAction(InventoryActionTypes.FETCH_ITEM_BALANCE_START, payload),
+  fetchItemBalanceSuccess: (payload: {
+    readonly id: InventoryItemVM['id'];
+    readonly fetchResults: InventoryItemBalanceOutDto;
+  }) => createAction(InventoryActionTypes.FETCH_ITEM_BALANCE_SUCCESS, payload),
+  fetchItemBalanceError: (payload: { readonly error?: ApiError }) =>
+    // Do not use `createCommonErrorAction`, simply ignore error for now
+    createAction(InventoryActionTypes.FETCH_ITEM_BALANCE_ERROR, payload),
 };
 
 export type AllInventoryActions = ActionsUnion<typeof InventoryActions>;

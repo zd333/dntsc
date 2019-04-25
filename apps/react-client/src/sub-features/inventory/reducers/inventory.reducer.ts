@@ -160,6 +160,22 @@ export function inventoryReducer(
       };
     }
 
+    case InventoryActionTypes.FETCH_ITEM_BALANCE_SUCCESS: {
+      const {
+        id,
+        fetchResults: { balance },
+      } = action.payload;
+      const itemsBalancesDict = {
+        ...state.itemsBalancesDict,
+        [id]: balance,
+      };
+
+      return {
+        ...state,
+        itemsBalancesDict,
+      };
+    }
+
     default:
       return state;
   }

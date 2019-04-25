@@ -29,7 +29,7 @@ export const enTranslationMessages = {
 
   'mainMenu.InventoryMenuItem.text': 'Inventory',
   'mainMenu.InventoryCatalogMenuItem.text': 'Catalog',
-
+  'mainMenu.InventoryBalanceMenuItem.text': 'Balance',
   'mainMenu.EmployeesMenuItem.text': 'Employees',
   'mainMenu.EmployeesInvitationMenuItem.text': 'Invitation',
   'mainMenu.EmployeesManagementMenuItem.text': 'Management',
@@ -65,20 +65,19 @@ export const enTranslationMessages = {
   'dashboardPage.title': 'Dashboard',
 
   'inventoryCatalogPage.title': 'Inventory Catalog',
-
   'inventoryCatalogPage.inventoryItemsList.AddNewItemButton.label': 'Add',
   'inventoryCatalogPage.inventoryItemsList.searchItemsControl.label': 'Search',
   'inventoryCatalogPage.inventoryItemsList.filterByTagsControl.label':
     'Filter by tags',
-
   'inventoryCatalogPage.addNewInventoryItemDialog.title':
     'Add new inventory item',
-
   'inventoryCatalogPage.inventoryItemDetailsForm.nameControl.label': 'Name',
   'inventoryCatalogPage.inventoryItemDetailsForm.unitsControl.label': 'Units',
   'inventoryCatalogPage.inventoryItemDetailsForm.tagsControl.label': 'Tags',
   'inventoryCatalogPage.inventoryItemDetailsForm.alternatesControl.label':
     'Alternates',
+
+  'inventoryBalancePage.title': 'Inventory Balance',
 
   'employeeInvitationPage.title': 'Employee Invitation',
   'employeeInvitationPage.invitationForm.rolesSelect.label':

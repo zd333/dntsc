@@ -31,7 +31,7 @@ export const ruTranslationMessages: AppTranslationMessages = {
 
   'mainMenu.InventoryMenuItem.text': 'Склад',
   'mainMenu.InventoryCatalogMenuItem.text': 'Каталог',
-
+  'mainMenu.InventoryBalanceMenuItem.text': 'Баланс',
   'mainMenu.EmployeesMenuItem.text': 'Персонал',
   'mainMenu.EmployeesInvitationMenuItem.text': 'Приглашение',
   'mainMenu.EmployeesManagementMenuItem.text': 'Управление',
@@ -76,17 +76,17 @@ export const ruTranslationMessages: AppTranslationMessages = {
     'Добавить новый',
   'inventoryCatalogPage.inventoryItemsList.searchItemsControl.label': 'Поиск',
   'inventoryCatalogPage.inventoryItemsList.filterByTagsControl.label':
-    'Отфильтровать по тегам',
-
+    'Отфильтровать по меткам',
   'inventoryCatalogPage.addNewInventoryItemDialog.title':
     'Добавить новую позицию склада',
-
   'inventoryCatalogPage.inventoryItemDetailsForm.nameControl.label': 'Название',
   'inventoryCatalogPage.inventoryItemDetailsForm.unitsControl.label':
     'Единицы измерения',
-  'inventoryCatalogPage.inventoryItemDetailsForm.tagsControl.label': 'Теги',
+  'inventoryCatalogPage.inventoryItemDetailsForm.tagsControl.label': 'Метки',
   'inventoryCatalogPage.inventoryItemDetailsForm.alternatesControl.label':
     'Аналоги',
+
+  'inventoryBalancePage.title': 'Складской баланс',
 
   'employeeInvitationPage.title': 'Приглашение сотрудников',
   'employeeInvitationPage.invitationForm.rolesSelect.label':
