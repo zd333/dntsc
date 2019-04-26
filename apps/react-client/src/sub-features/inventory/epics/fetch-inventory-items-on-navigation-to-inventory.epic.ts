@@ -10,7 +10,7 @@ import { selectAllItems } from '../selectors/all-items.selector';
  * Fires fetch inventory items action when user navigates to inventory,
  * but only if there are no loaded inventory items yet.
  */
-export const searchInventoryItemsOnNavigationToInventoryEpic: Epic<
+export const fetchInventoryItemsOnNavigationToInventoryEpic: Epic<
   AllAppActions
 > = (action$, state$) => {
   const allItems$ = state$.pipe(map(selectAllItems));
