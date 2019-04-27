@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Add, PlaylistAdd, Remove } from '@material-ui/icons';
 import { Autocomplete } from '../../../shared/components/Autocomplete';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { InventoryItemsList } from './InventoryItemsList';
@@ -25,6 +26,9 @@ import {
   List,
   ListItem,
   ListItemText,
+  ListItemSecondaryAction,
+  IconButton,
+  Typography,
 } from '@material-ui/core';
 
 export interface InventoryBalancePageProps {
@@ -57,6 +61,9 @@ const StyledInventoryBalancePage: React.FunctionComponent<
     id:
       'inventoryBalancePage.inventoryItemsBalancesList..filterByTagsControl.label',
   });
+  // TODO: translate units
+  const getItemsBalanceText = (item: InventoryItemVM) =>
+    typeof item.balance === 'undefined' ? '' : `${item.balance} ${item.unit}`;
   const handleSearchInputChange = (
     event: React.SyntheticEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -112,9 +119,23 @@ const StyledInventoryBalancePage: React.FunctionComponent<
       {/* Items list */}
       <List>
         {(items || []).map(item => (
-          <ListItem key={item.id} dense>
-            <ListItemText primary={item.name} />
-            {/* TODO: add balance value, units and +/- balance change buttons */}
+          <ListItem key={item.id} dense className={classes.listItem}>
+            <ListItemText
+              primary={item.name}
+              secondary={Array.isArray(item.tags) ? item.tags.join(', ') : ''}
+            />
+            <ListItemSecondaryAction>
+              <Typography inline={true} component="h6" variant="subtitle1">
+                {getItemsBalanceText(item)}
+              </Typography>
+              {/* TODO: implement balance change modal logic*/}
+              <IconButton aria-label="Add">
+                <Add />
+              </IconButton>
+              <IconButton aria-label="Remove">
+                <Remove />
+              </IconButton>
+            </ListItemSecondaryAction>
           </ListItem>
         ))}
       </List>
@@ -132,6 +153,10 @@ const inventoryBalancePageStyles = ({ palette, spacing }: Theme) =>
     },
     filterTagsBar: {
       marginBottom: spacing.unit * 4,
+    },
+    listItem: {
+      display: 'flex',
+      justifyContent: 'flex-end',
     },
   });
 
