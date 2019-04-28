@@ -91,6 +91,18 @@ export const ruTranslationMessages: AppTranslationMessages = {
     'Поиск',
   'inventoryBalancePage.inventoryItemsBalancesList..filterByTagsControl.label':
     'Отфильтровать по меткам',
+  'inventoryBalancePage.addNewInventoryBalanceChangeDialog.addPositiveMode.title':
+    'Поступление на склад',
+  'inventoryBalancePage.addNewInventoryBalanceChangeDialog.addNegativeMode.title':
+    'Списание со склада',
+  'inventoryBalancePage.addNewInventoryBalanceChangeDialog.amountControl.label':
+    'Количество',
+  'inventoryBalancePage.addNewInventoryBalanceChangeDialog.commentControl.label':
+    'Комментарий',
+  'inventoryBalancePage.addNewInventoryBalanceChangeDialog.submitButton.addPositiveMode.label':
+    'Додавить',
+  'inventoryBalancePage.addNewInventoryBalanceChangeDialog.submitButton.addNegativeMode.label':
+    'Списать',
 
   'employeeInvitationPage.title': 'Приглашение сотрудников',
   'employeeInvitationPage.invitationForm.rolesSelect.label':
