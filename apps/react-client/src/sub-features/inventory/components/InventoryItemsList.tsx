@@ -16,7 +16,7 @@ import {
 export interface InventoryItemsListProps {
   readonly items: Array<InventoryItemVM>;
   readonly idOfSelectedItem: InventoryItemVM['id'] | undefined;
-  readonly updateIsAllowed: boolean;
+  readonly updateIsAllowed?: boolean;
   readonly onSelect: (params: {
     readonly idOfItemToSelect: InventoryItemVM['id'];
   }) => void;
@@ -47,7 +47,7 @@ const StyledInventoryItemsList: React.FunctionComponent<
 
   return (
     <List className={classes.root}>
-      {(items || []).map((item, index) => (
+      {(items || []).map(item => (
         <ListItem
           key={item.id}
           selected={item.id === idOfSelectedItem}

@@ -28,7 +28,7 @@ export interface InventoryCatalogPageProps {
   readonly items: Array<InventoryItemVM>;
   readonly itemUnits: Array<TranslatedInventoryItemUnit>;
   readonly existingTags: Array<string>;
-  readonly updateAndCreateAreAllowed: boolean;
+  readonly updateAndCreateAreAllowed?: boolean;
   readonly alternatesSuggestions: InventoryItemDetailsFormProps['alternatesSuggestions'];
   readonly onSearch: (params: {
     readonly searchString?: string;
@@ -54,6 +54,7 @@ interface InventoryCatalogPageState {
   readonly currentTagsToFilterBy?: Array<string>;
 }
 
+// TODO: split into several components
 // TODO: refactor with `useState` hook
 export class StyledInventoryCatalogPage extends React.PureComponent<
   StyledInventoryCatalogProps,
@@ -221,6 +222,7 @@ export class StyledInventoryCatalogPage extends React.PureComponent<
 
     return (
       <React.Fragment>
+        {/* Search bar with add button */}
         <div className={classes.searchBar}>
           {updateAndCreateAreAllowed && (
             <Button
@@ -253,6 +255,7 @@ export class StyledInventoryCatalogPage extends React.PureComponent<
           />
         </div>
 
+        {/* Items list */}
         <Grid container className={classes.itemsListAndDetails} spacing={8}>
           <Grid item sm={12} md={6}>
             <InventoryItemsList

@@ -8,6 +8,9 @@ export interface InventoryState {
   readonly matchingSearchCriteriaItemIds: Array<
     InventoryItemDetailsOutDto['id']
   >;
+  readonly itemsBalancesDict: {
+    readonly [id: string]: number;
+  };
   readonly searchItemsApiRequestInProgress: boolean;
   readonly saveNewItemApiRequestInProgress: boolean;
   /**

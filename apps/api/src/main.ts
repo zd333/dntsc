@@ -5,11 +5,12 @@ import { NestFactory } from '@nestjs/core';
 import { useContainer } from 'class-validator';
 import { ValidationPipe } from '@nestjs/common';
 
+// TODO:consider moving this to env vars
 // Hard-code rate limit values (no need to have them flexible and pass via env variables)
-// 15 minutes
-const RATE_LIMIT_WINDOW = 15 * 60 * 1000;
+// 1 minute
+const RATE_LIMIT_WINDOW = 1 * 60 * 1000;
 // Limit each IP to 100 requests per windowMs
-const RATE_LIMIT_MAX_REQUESTS = 100;
+const RATE_LIMIT_MAX_REQUESTS = 1000;
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
