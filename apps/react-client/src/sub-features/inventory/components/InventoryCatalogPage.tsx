@@ -54,6 +54,7 @@ interface InventoryCatalogPageState {
   readonly currentTagsToFilterBy?: Array<string>;
 }
 
+// TODO: split into several components
 // TODO: refactor with `useState` hook
 export class StyledInventoryCatalogPage extends React.PureComponent<
   StyledInventoryCatalogProps,

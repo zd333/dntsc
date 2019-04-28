@@ -82,6 +82,18 @@ export const enTranslationMessages = {
     'Search',
   'inventoryBalancePage.inventoryItemsBalancesList..filterByTagsControl.label':
     'Filter by tags',
+  'inventoryBalancePage.addNewInventoryBalanceChangeDialog.addPositiveMode.title':
+    'Receipt to warehouse',
+  'inventoryBalancePage.addNewInventoryBalanceChangeDialog.addNegativeMode.title':
+    'Withdrawal from the Warehouse',
+  'inventoryBalancePage.addNewInventoryBalanceChangeDialog.amountControl.label':
+    'Amount',
+  'inventoryBalancePage.addNewInventoryBalanceChangeDialog.commentControl.label':
+    'Comment',
+  'inventoryBalancePage.addNewInventoryBalanceChangeDialog.submitButton.addPositiveMode.label':
+    'Add (receipt)',
+  'inventoryBalancePage.addNewInventoryBalanceChangeDialog.submitButton.addNegativeMode.label':
+    'Withdraw',
 
   'employeeInvitationPage.title': 'Employee Invitation',
   'employeeInvitationPage.invitationForm.rolesSelect.label':

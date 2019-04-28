@@ -87,6 +87,18 @@ export const uaTranslationMessages: AppTranslationMessages = {
     'Пошук',
   'inventoryBalancePage.inventoryItemsBalancesList..filterByTagsControl.label':
     'Відфільтрувати по мітках',
+  'inventoryBalancePage.addNewInventoryBalanceChangeDialog.addPositiveMode.title':
+    'Надходження на склад',
+  'inventoryBalancePage.addNewInventoryBalanceChangeDialog.addNegativeMode.title':
+    'Списання зі складу',
+  'inventoryBalancePage.addNewInventoryBalanceChangeDialog.amountControl.label':
+    'Кількість',
+  'inventoryBalancePage.addNewInventoryBalanceChangeDialog.commentControl.label':
+    'Коментар',
+  'inventoryBalancePage.addNewInventoryBalanceChangeDialog.submitButton.addPositiveMode.label':
+    'Додати',
+  'inventoryBalancePage.addNewInventoryBalanceChangeDialog.submitButton.addNegativeMode.label':
+    'Списати',
 
   'employeeInvitationPage.title': 'Запрошення працівників',
   'employeeInvitationPage.invitationForm.rolesSelect.label':

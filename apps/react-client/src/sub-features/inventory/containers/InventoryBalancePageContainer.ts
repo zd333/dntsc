@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { InventoryActions } from '../actions/inventory.actions';
 import { RootState } from '../../..';
 import { selectItemsToShow } from '../selectors/items-to-show.selector';
+import { selectTranslatedInventoryItemUnits } from '../selectors/translated-inventory-item-units.selector';
 import { selectUsedInventoryItemsTags } from '../selectors/used-inventory-items-tags.selector';
 import {
   StateToComponentNonFunctionPropsMapper,
@@ -18,6 +19,7 @@ const mapStateToProps: StateToComponentNonFunctionPropsMapper<
 > = state => {
   return {
     items: selectItemsToShow(state),
+    itemUnits: selectTranslatedInventoryItemUnits(state),
     existingTags: selectUsedInventoryItemsTags(state),
   };
 };
@@ -34,8 +36,14 @@ const mapDispatchToProps: DispatchToComponentFunctionPropsMapper<
         }),
       );
     },
-    // TODO: implement
-    onCreateBalanceChange: () => void 0,
+    onCreateBalanceChange: params =>
+      dispatch(
+        InventoryActions.changeItemBalanceStart({
+          id: params.itemId,
+          balanceChangeValue: params.balanceChangeValue,
+          comment: params.balanceChangeComment,
+        }),
+      ),
   };
 };
 
