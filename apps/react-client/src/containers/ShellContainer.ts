@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 import { RootState } from '..';
+import { selectAreInventoryPagesAvailableForCurrentUser } from '../selectors/are-inventory-pages-awailable-to-current-user.selector';
 import { selectCurrentLanguage } from '../selectors/current-language.selector';
 import { selectCurrentPageIsBusy } from '../selectors/current-page-is-busy.selector';
 import { selectCurrentPageName } from '../selectors/current-page-name.selector';
 import { selectCurrentUserName } from '../selectors/current-user-name.selector';
 import { selectIsEmployeesManagementAllowedToCurrentUser } from '../selectors/is-employees-management-allowed-to-current-user.selector';
-import { selectIsInventoryFeatureEnabled } from '../selectors/is-inventory-feature-enabled.selector';
 import { selectRoutePath } from '../selectors/route-path.selector';
 import { SessionActions } from '../actions/session.actions';
 import { Shell, ShellProps } from '../components/Shell';
@@ -21,8 +21,12 @@ const mapStateToProps: StateToComponentNonFunctionPropsMapper<
   return {
     title: `${selectCurrentPageName(state)} (${selectCurrentUserName(state)})`,
     currentLanguage: selectCurrentLanguage(state),
-    isInventoryEnabled: selectIsInventoryFeatureEnabled(state),
-    isEmployeesEnabled: selectIsEmployeesManagementAllowedToCurrentUser(state),
+    areInventoryPagesEnabled: selectAreInventoryPagesAvailableForCurrentUser(
+      state,
+    ),
+    isEmployeeManagementPageEnabled: selectIsEmployeesManagementAllowedToCurrentUser(
+      state,
+    ),
     routePath: selectRoutePath(state),
     isBusy: selectCurrentPageIsBusy(state),
   };

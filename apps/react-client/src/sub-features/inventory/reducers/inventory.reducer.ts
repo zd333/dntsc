@@ -12,8 +12,7 @@ export function inventoryReducer(
   action: AllInventoryActions,
 ): InventoryState {
   switch (action.type) {
-    case InventoryActionTypes.FETCH_ITEMS_START:
-    case InventoryActionTypes.FETCH_AND_FILTER_ITEMS_START: {
+    case InventoryActionTypes.FETCH_ITEMS_START: {
       return {
         ...state,
         searchItemsApiRequestInProgress: true,
@@ -51,7 +50,13 @@ export function inventoryReducer(
         matchingSearchCriteriaItemIds,
       };
     }
-
+    case InventoryActionTypes.FETCH_AND_FILTER_ITEMS_START: {
+      return {
+        ...state,
+        searchItemsApiRequestInProgress: true,
+        matchingSearchCriteriaItemIds: [],
+      };
+    }
     case InventoryActionTypes.FETCH_AND_FILTER_ITEMS_SUCCESS: {
       // Do same what we do with `FETCH_ITEMS_SUCCESS`, but also save `matchingSearchCriteriaItemIds`
       const {
@@ -100,7 +105,10 @@ export function inventoryReducer(
         ...state.itemsDict,
         [id]: inventoryItemViewModelToDto(newItem),
       };
-      // Put new item to the top of the list (even if it doesn't match search)
+      const itemsBalancesDict = {
+        ...state.itemsBalancesDict,
+        [id]: 0,
+      }; // Put new item to the top of the list (even if it doesn't match search)
       const matchingSearchCriteriaItemIds = [
         id,
         ...state.matchingSearchCriteriaItemIds,
@@ -110,6 +118,7 @@ export function inventoryReducer(
         ...state,
         itemsDict,
         matchingSearchCriteriaItemIds,
+        itemsBalancesDict,
         saveNewItemApiRequestInProgress: false,
       };
     }
@@ -157,6 +166,56 @@ export function inventoryReducer(
       return {
         ...state,
         usedTags,
+      };
+    }
+
+    case InventoryActionTypes.FETCH_ITEM_BALANCE_SUCCESS: {
+      const { id, itemBalance } = action.payload;
+      const itemsBalancesDict = {
+        ...state.itemsBalancesDict,
+        [id]: itemBalance,
+      };
+
+      return {
+        ...state,
+        itemsBalancesDict,
+      };
+    }
+
+    case InventoryActionTypes.CHANGE_ITEM_BALANCE_START: {
+      const { id, balanceChangeValue } = action.payload;
+      const previousItemBalance = state.itemsBalancesDict[id] || 0;
+      const updatedItemBalance = previousItemBalance + balanceChangeValue;
+      const itemsBalancesDict = {
+        ...state.itemsBalancesDict,
+        [id]: updatedItemBalance,
+      };
+
+      return {
+        ...state,
+        itemsBalancesDict,
+      };
+    }
+
+    case InventoryActionTypes.CHANGE_ITEM_BALANCE_ERROR: {
+      const { id, failedToProcessBalanceChangeValue } = action.payload;
+      const optimisticallyUpdatedBalance = state.itemsBalancesDict[id];
+
+      if (typeof optimisticallyUpdatedBalance !== 'number') {
+        // Something is definitely wrong here :(
+        return state;
+      }
+
+      const restoredItemBalance =
+        optimisticallyUpdatedBalance - failedToProcessBalanceChangeValue;
+      const itemsBalancesDict = {
+        ...state.itemsBalancesDict,
+        [id]: restoredItemBalance,
+      };
+
+      return {
+        ...state,
+        itemsBalancesDict,
       };
     }
 

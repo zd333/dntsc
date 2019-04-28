@@ -1,6 +1,6 @@
 import { ActionsUnion, createAction } from '@martin_hotell/rex-tils';
-import { InventoryItemVM } from '../selectors/items-dictionary.selector';
 import { InventoryItemDetailsOutDto } from '@api/sub-features/inventory/dto/inventory-item-details.out-dto';
+import { InventoryItemVM } from '../selectors/items-dictionary.selector';
 import { Omitted } from '../../../shared/types/omitted.type';
 import { PaginatedListOutDto } from '@api/sub-features/shared/dto/paginated-list-out-dto.interface';
 import {
@@ -29,6 +29,13 @@ export enum InventoryActionTypes {
   GET_USED_TAGS_START = '[Inventory] Get used tags start',
   GET_USED_TAGS_SUCCESS = '[Inventory] Get used tags success',
   GET_USED_TAGS_ERROR = '[Inventory] Get used tags error',
+
+  FETCH_ITEM_BALANCE_START = '[Inventory] Fetch item balance start',
+  FETCH_ITEM_BALANCE_SUCCESS = '[Inventory] Fetch item balance success',
+  FETCH_ITEM_BALANCE_ERROR = '[Inventory] Fetch item balance error',
+
+  CHANGE_ITEM_BALANCE_START = '[Inventory] Change item balance start',
+  CHANGE_ITEM_BALANCE_ERROR = '[Inventory] Change item balance error',
 }
 
 export const InventoryActions = {
@@ -109,6 +116,38 @@ export const InventoryActions = {
     createCommonErrorAction(InventoryActionTypes.GET_USED_TAGS_ERROR, {
       isCommonErrorAction: true,
       error: payload.error,
+    }),
+
+  fetchItemBalanceStart: (payload: { readonly id: InventoryItemVM['id'] }) =>
+    createAction(InventoryActionTypes.FETCH_ITEM_BALANCE_START, payload),
+  fetchItemBalanceSuccess: (payload: {
+    readonly id: InventoryItemVM['id'];
+    readonly itemBalance: number;
+  }) => createAction(InventoryActionTypes.FETCH_ITEM_BALANCE_SUCCESS, payload),
+  fetchItemBalanceError: (payload: { readonly error?: ApiError }) =>
+    // Do not use `createCommonErrorAction`, simply ignore error for now
+    createAction(InventoryActionTypes.FETCH_ITEM_BALANCE_ERROR, payload),
+
+  changeItemBalanceStart: (payload: {
+    readonly id: InventoryItemVM['id'];
+    /**
+     * Note this should be change (how much to add or subtract)
+     */
+    readonly balanceChangeValue: number;
+    readonly comment?: string;
+  }) => createAction(InventoryActionTypes.CHANGE_ITEM_BALANCE_START, payload),
+
+  changeItemBalanceError: (payload: {
+    readonly id: InventoryItemVM['id'];
+    readonly failedToProcessBalanceChangeValue: number;
+    readonly error?: ApiError;
+  }) =>
+    createCommonErrorAction(InventoryActionTypes.CHANGE_ITEM_BALANCE_ERROR, {
+      isCommonErrorAction: true,
+      error: payload.error,
+      id: payload.id,
+      failedToProcessBalanceChangeValue:
+        payload.failedToProcessBalanceChangeValue,
     }),
 };
 

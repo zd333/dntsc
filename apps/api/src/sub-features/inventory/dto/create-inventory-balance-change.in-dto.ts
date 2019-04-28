@@ -21,7 +21,7 @@ export class CreateInventoryBalanceChangeInDtoWithClinicContext extends InDtoWit
 
   @IsOptional()
   @IsString()
-  public readonly comment: string;
+  public readonly comment?: string;
 }
 
 /**

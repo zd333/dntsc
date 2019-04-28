@@ -30,7 +30,7 @@ export const uaTranslationMessages: AppTranslationMessages = {
 
   'mainMenu.InventoryMenuItem.text': 'Склад',
   'mainMenu.InventoryCatalogMenuItem.text': 'Каталог',
-
+  'mainMenu.InventoryBalanceMenuItem.text': 'Баланс',
   'mainMenu.EmployeesMenuItem.text': 'Персонал',
   'mainMenu.EmployeesInvitationMenuItem.text': 'Запрошення',
   'mainMenu.EmployeesManagementMenuItem.text': 'Керування',
@@ -68,22 +68,37 @@ export const uaTranslationMessages: AppTranslationMessages = {
   'dashboardPage.title': 'Головне меню',
 
   'inventoryCatalogPage.title': 'Каталог складу',
-
   'inventoryCatalogPage.inventoryItemsList.AddNewItemButton.label':
     'Додати новий',
   'inventoryCatalogPage.inventoryItemsList.searchItemsControl.label': 'Пошук',
   'inventoryCatalogPage.inventoryItemsList.filterByTagsControl.label':
-    'Відфільтрувати за тегами',
-
+    'Відфільтрувати по мітках',
   'inventoryCatalogPage.addNewInventoryItemDialog.title':
     'Додати нову позицію складу',
-
   'inventoryCatalogPage.inventoryItemDetailsForm.nameControl.label': 'Назва',
   'inventoryCatalogPage.inventoryItemDetailsForm.unitsControl.label':
     'Одиниці виміру',
-  'inventoryCatalogPage.inventoryItemDetailsForm.tagsControl.label': 'Теги',
+  'inventoryCatalogPage.inventoryItemDetailsForm.tagsControl.label': 'Мітки',
   'inventoryCatalogPage.inventoryItemDetailsForm.alternatesControl.label':
     'Аналоги',
+
+  'inventoryBalancePage.title': 'Складський баланс',
+  'inventoryBalancePage.inventoryItemsBalancesList.searchItemsControl.label':
+    'Пошук',
+  'inventoryBalancePage.inventoryItemsBalancesList..filterByTagsControl.label':
+    'Відфільтрувати по мітках',
+  'inventoryBalancePage.addNewInventoryBalanceChangeDialog.addPositiveMode.title':
+    'Надходження на склад',
+  'inventoryBalancePage.addNewInventoryBalanceChangeDialog.addNegativeMode.title':
+    'Списання зі складу',
+  'inventoryBalancePage.addNewInventoryBalanceChangeDialog.amountControl.label':
+    'Кількість',
+  'inventoryBalancePage.addNewInventoryBalanceChangeDialog.commentControl.label':
+    'Коментар',
+  'inventoryBalancePage.addNewInventoryBalanceChangeDialog.submitButton.addPositiveMode.label':
+    'Додати',
+  'inventoryBalancePage.addNewInventoryBalanceChangeDialog.submitButton.addNegativeMode.label':
+    'Списати',
 
   'employeeInvitationPage.title': 'Запрошення працівників',
   'employeeInvitationPage.invitationForm.rolesSelect.label':

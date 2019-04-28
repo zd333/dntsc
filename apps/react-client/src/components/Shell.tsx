@@ -70,8 +70,8 @@ export class StyledShell extends React.PureComponent<
       currentLanguage,
       onLanguageChange,
       onLogout,
-      isInventoryEnabled,
-      isEmployeesEnabled,
+      areInventoryPagesEnabled,
+      isEmployeeManagementPageEnabled,
       children,
     } = this.props;
 
@@ -88,8 +88,8 @@ export class StyledShell extends React.PureComponent<
 
         <MainMenu
           mobileOpened={this.state.mobileOpened}
-          isInventoryEnabled={isInventoryEnabled}
-          isEmployeesEnabled={isEmployeesEnabled}
+          areInventoryPagesEnabled={areInventoryPagesEnabled}
+          isEmployeeManagementPageEnabled={isEmployeeManagementPageEnabled}
           onClose={this.toggleMenu}
         />
 
