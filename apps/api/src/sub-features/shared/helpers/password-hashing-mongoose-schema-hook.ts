@@ -1,5 +1,5 @@
 import { Document, HookNextFunction } from 'mongoose';
-import { hash } from 'bcrypt';
+import { hash } from 'bcryptjs';
 
 const BCRYPT_SALT_ROUNDS = 10;
 

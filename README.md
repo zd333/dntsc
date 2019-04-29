@@ -32,14 +32,42 @@ MongoDB files will be stored in `~/dntsc_dev_mongo_db_data` folder.
 
 ### Building and deploying API app
 
-1. prepare `/apps/api/.env.prod` file with production configuration values; this file is gitignored, use `/apps/api/.env-example` as example
-2. go to `/apps/api`
-3. run `now`
-4. remember app deployment URL (each deployment is unique and does not affect previous deployment of the same app)
+TODO: get rid of env-related tmp shit when hosting issue is resolved
+
+1. go to `/apps/api`
+1. run `heroku container:push web -a dntsc-api`
+1. run `heroku container:release web -a dntsc-api`
 
 ### Building and deploying react client app
 
 1. go to `/apps/react-client`
+1. run `yarn run build`
+1. go to `build` folder and create `now.json` file with next contents
+
+```json
+{
+  "version": 2,
+  "name": "react-client",
+  "routes": [
+    { "src": "/static/(.*)", "dest": "/static/$1" },
+    { "src": "/favicon.ico", "dest": "/favicon.ico" },
+    { "src": "/asset-manifest.json", "dest": "/asset-manifest.json" },
+    { "src": "/manifest.json", "dest": "/manifest.json" },
+    { "src": "/precache-manifest.(.*)", "dest": "/precache-manifest.$1" },
+    {
+      "src": "/service-worker.js",
+      "headers": { "cache-control": "s-maxage=0" },
+      "dest": "/service-worker.js"
+    },
+    {
+      "src": "/(.*)",
+      "headers": { "cache-control": "s-maxage=0" },
+      "dest": "/index.html"
+    }
+  ]
+}
+```
+
 1. run `now`
 1. remember app deployment URL (each deployment is unique and does not affect previous deployment of the same app)
 

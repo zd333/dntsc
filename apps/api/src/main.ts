@@ -15,6 +15,9 @@ const RATE_LIMIT_MAX_REQUESTS = 1000;
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
 
+  // TODO:get rid of this when hosting issue is resolved
+  app.enableCors();
+
   // Helmet adds some good for security headers
   app.use(helmet());
   app.use(
@@ -24,7 +27,9 @@ async function bootstrap(): Promise<void> {
     }),
   );
 
-  app.setGlobalPrefix('api/v1');
+  if (process.env.PATH_PREFIX) {
+    app.setGlobalPrefix(process.env.PATH_PREFIX);
+  }
 
   // This is needed for DI in custom validators (constraints)
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
@@ -39,7 +44,7 @@ async function bootstrap(): Promise<void> {
     }),
   );
 
-  const port = Number(process.env.API_SERVING_PORT);
+  const port = Number(process.env.PORT);
 
   await app.listen(port);
 }
