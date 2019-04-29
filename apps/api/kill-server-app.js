@@ -9,7 +9,7 @@ const kill = require('kill-port');
 
 require('dotenv').config();
 
-serverAppKiller(process.env.API_SERVING_PORT);
+serverAppKiller(process.env.PORT);
 
 async function serverAppKiller(port) {
   await kill(port);

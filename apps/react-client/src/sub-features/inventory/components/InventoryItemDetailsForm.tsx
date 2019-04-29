@@ -56,10 +56,14 @@ export interface InventoryItemDetailsFormProps {
 /**
  * Formik typings.
  */
-type InventoryItemDetailsFormValues = Omitted<InventoryItemVM, 'id' | 'unit'> & {
+type InventoryItemDetailsFormValues = Omitted<
+  InventoryItemVM,
+  'id' | 'unit'
+> & {
   readonly unit: InventoryItemVM['unit'] | '';
 };
 
+// TODO: lowercase new tags
 const StyledInventoryItemDetailsForm: React.FunctionComponent<
   StyledTranslatedInventoryItemDetailsFormProps
 > = props => {

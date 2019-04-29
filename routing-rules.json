@@ -1,6 +1,0 @@
-{
-  "rules": [
-    { "pathname": "/api/**", "dest": "api-muqlduirek.now.sh" },
-    { "dest": "react-client-wsxuokjupr.now.sh" }
-  ]
-}

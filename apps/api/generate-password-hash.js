@@ -11,7 +11,7 @@
  * See `passwordHashingHook` for details
  * !Make sure value of `BCRYPT_SALT_ROUNDS` equals to the one in `passwordHashingHook`!
  */
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const BCRYPT_SALT_ROUNDS = 10;
 const args = process.argv.slice(2);
