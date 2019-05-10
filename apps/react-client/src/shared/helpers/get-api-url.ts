@@ -1,6 +1,4 @@
-// TODO:get rid of this tmp shit when hosting issue is resolved
-// const API_PREFIX = '/api/v1';
-const API_PREFIX = 'https://dntsc-api.herokuapp.com/api/v1';
+const API_PREFIX = '/api/v1';
 
 /**
  * Use this helper in API connectors to get full/complete URL path of the resource.

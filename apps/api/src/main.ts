@@ -5,31 +5,34 @@ import { NestFactory } from '@nestjs/core';
 import { useContainer } from 'class-validator';
 import { ValidationPipe } from '@nestjs/common';
 
-// TODO:consider moving this to env vars
-// Hard-code rate limit values (no need to have them flexible and pass via env variables)
-// 1 minute
-const RATE_LIMIT_WINDOW = 1 * 60 * 1000;
-// Limit each IP to 100 requests per windowMs
-const RATE_LIMIT_MAX_REQUESTS = 1000;
+// TODO: add Swagger
+
+export const PATH_PREFIX = process.env.PATH_PREFIX || '/api/v1';
+
+const API_MAX_RATE_LIMIT_WINDOW = isNaN(
+  Number(process.env.API_MAX_RATE_LIMIT_WINDOW),
+)
+  ? 60000
+  : Number(process.env.API_MAX_RATE_LIMIT_WINDOW);
+const API_MAX_RATE_LIMIT_MAX_REQUESTS_PER_WINDOW = isNaN(
+  Number(process.env.API_MAX_RATE_LIMIT_MAX_REQUESTS_PER_WINDOW),
+)
+  ? 1000
+  : Number(process.env.API_MAX_RATE_LIMIT_MAX_REQUESTS_PER_WINDOW);
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
-
-  // TODO:get rid of this when hosting issue is resolved
-  app.enableCors();
 
   // Helmet adds some good for security headers
   app.use(helmet());
   app.use(
     new rateLimit({
-      windowMs: RATE_LIMIT_WINDOW,
-      max: RATE_LIMIT_MAX_REQUESTS,
+      windowMs: API_MAX_RATE_LIMIT_WINDOW,
+      max: API_MAX_RATE_LIMIT_MAX_REQUESTS_PER_WINDOW,
     }),
   );
 
-  if (process.env.PATH_PREFIX) {
-    app.setGlobalPrefix(process.env.PATH_PREFIX);
-  }
+  app.setGlobalPrefix(PATH_PREFIX);
 
   // This is needed for DI in custom validators (constraints)
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
