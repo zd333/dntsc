@@ -1,6 +1,6 @@
 import { allAppAccessRoles, AppAccessRoles } from '../../../app-access-roles';
 import { ArrayUnique, IsIn, IsOptional, NotEquals } from 'class-validator';
-import { InDtoWithClinicContext } from '../../../../src/middlewares/add-clinic-context.middleware';
+import { InDtoWithClinicContext } from '../../../middlewares/add-clinic-context.middleware';
 
 export class CreateEmployeeRegistrationTokenInDtoWithClinicContext extends InDtoWithClinicContext {
   /**

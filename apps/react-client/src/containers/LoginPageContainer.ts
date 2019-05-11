@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
-import { LoginPage, LoginPageProps } from '../../src/components/LoginPage';
+import { LoginPage, LoginPageProps } from '../components/LoginPage';
 import { RootState } from '../../src';
 import { selectAuthApiCommunicationIsInProgress } from '../selectors/auth-api-communication-is-in-progress.selector';
-import { SessionActions } from '../../src/actions/session.actions';
+import { SessionActions } from '../actions/session.actions';
 import {
   StateToComponentNonFunctionPropsMapper,
   DispatchToComponentFunctionPropsMapper,
-} from '../../src/shared/types/container-state-mapper.interface';
+} from '../shared/types/container-state-mapper.interface';
 
 const mapStateToProps: StateToComponentNonFunctionPropsMapper<
   LoginPageProps,

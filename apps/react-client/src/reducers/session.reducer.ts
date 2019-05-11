@@ -3,7 +3,7 @@ import { SessionState } from './session-state.interface';
 import {
   AllSessionActions,
   SessionActionTypes,
-} from '../../src/actions/session.actions';
+} from '../actions/session.actions';
 
 export function sessionReducer(
   state: SessionState = sessionInitialState,

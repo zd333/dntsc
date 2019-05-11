@@ -1,7 +1,7 @@
 import { ActionsUnion, createAction } from '@martin_hotell/rex-tils';
 import { ApiError, createCommonErrorAction } from './error-modal.actions';
 import { AppAccessRoles } from '@api/app-access-roles';
-import { AppLanguages } from '../../src/reducers/session-state.interface';
+import { AppLanguages } from '../reducers/session-state.interface';
 import { PlatformFeatures } from '@api/sub-features/tenants/db-schemas/tenant.db-schema';
 
 export enum SessionActionTypes {
