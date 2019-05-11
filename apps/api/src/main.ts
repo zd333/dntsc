@@ -1,13 +1,16 @@
 import * as helmet from 'helmet';
 import * as rateLimit from 'express-rate-limit';
 import { AppModule } from './app.module';
+import { ClientAssetsResponderFilter } from './filters/client-assets-responder.filter';
 import { NestFactory } from '@nestjs/core';
 import { useContainer } from 'class-validator';
 import { ValidationPipe } from '@nestjs/common';
 
+// Add linting and testing git hooks via Husky
 // TODO: add Swagger
+// TODO: add Sentry
 
-export const PATH_PREFIX = process.env.PATH_PREFIX || '/api/v1';
+export const PATH_PREFIX = process.env.PATH_PREFIX || 'api/v1';
 
 const API_MAX_RATE_LIMIT_WINDOW = isNaN(
   Number(process.env.API_MAX_RATE_LIMIT_WINDOW),
@@ -46,6 +49,9 @@ async function bootstrap(): Promise<void> {
       validationError: { target: false, value: false },
     }),
   );
+
+  // Needed for serving (reverse proxying) client React app assets (files)
+  app.useGlobalFilters(new ClientAssetsResponderFilter());
 
   const port = Number(process.env.PORT);
 
