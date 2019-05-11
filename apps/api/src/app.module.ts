@@ -41,7 +41,7 @@ export class AppModule {
  * Do not use original Express typing of request object due to it is not strict.
  * Add only those fields which are used in the app (add more as we go).
  */
-export type AppRequest = Pick<Request, 'header' | 'body'> & {
+export type AppRequest = Pick<Request, 'header' | 'body' | 'url'> & {
   /**
    * User that performs request (if request is authenticated).
    */

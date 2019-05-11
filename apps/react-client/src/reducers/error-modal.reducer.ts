@@ -5,7 +5,7 @@ import {
   CLOSE_ERROR_NOTIFICATION_MODAL_ACTION_TYPE,
   isCommonErrorAction,
   ApiError,
-} from '../../src/actions/error-modal.actions';
+} from '../actions/error-modal.actions';
 
 export function errorModalReducer(
   state: ErrorModalState = errorModalInitialState,

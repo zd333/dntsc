@@ -1,4 +1,4 @@
-import { compare } from 'bcrypt';
+import { compare } from 'bcryptjs';
 import { Document } from 'mongoose';
 
 export async function isMongooseDocumentPasswordHashValid<

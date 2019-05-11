@@ -1,4 +1,4 @@
-import { AppAccessRoles } from '../../../../src/app-access-roles';
+import { AppAccessRoles } from '../../../app-access-roles';
 
 /**
  * Checks that passed target (employee model or DTO) contains all passed roles.

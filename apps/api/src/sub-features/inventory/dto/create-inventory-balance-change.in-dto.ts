@@ -1,6 +1,6 @@
-import { InDtoWithClinicContext } from '../../../../src/middlewares/add-clinic-context.middleware';
+import { InDtoWithClinicContext } from '../../../middlewares/add-clinic-context.middleware';
 import { INVENTORY_ITEM_SCHEMA_COLLECTION_NAME } from '../db-schemas/inventory-item.db-schema';
-import { IsIdOfExistingDbEntityValidator } from '../../../../src/sub-features/shared/validators/is-id-of-existing-db-entity.validator';
+import { IsIdOfExistingDbEntityValidator } from '../../../sub-features/shared/validators/is-id-of-existing-db-entity.validator';
 import { IsNumber, IsOptional, IsString, Validate } from 'class-validator';
 
 export class CreateInventoryBalanceChangeInDtoWithClinicContext extends InDtoWithClinicContext {
