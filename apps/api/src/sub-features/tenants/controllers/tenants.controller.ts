@@ -1,7 +1,7 @@
 import { ACGuard, UseRoles } from 'nest-access-control';
 import { AppRequest } from '../../../app.module';
 import { AuthGuard } from '@nestjs/passport';
-import { convertDocumentToOutDto } from '../../../../src/sub-features/shared/helpers/convert-document-to-out-dto';
+import { convertDocumentToOutDto } from '../../../sub-features/shared/helpers/convert-document-to-out-dto';
 import { CreatedTenantOutDto } from '../dto/created-tenant.out-dto';
 import { CreateTenantInDto } from '../dto/create-tenant.in-dto';
 import { RequestIsInClinicContextGuard } from '../../shared/guards/request-is-in-clinic-context.guard';

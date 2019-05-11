@@ -3,7 +3,7 @@ import { getMongoFindConditionForFieldSearch } from '../../shared/helpers/get-mo
 import { getPaginationMongoFindOptionsFromDto } from '../../shared/helpers/get-pagination-mongo-find-options-from-in-dto';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { isMongooseDocumentPasswordHashValid } from '../../../../src/sub-features/shared/helpers/is-mongoose-document-password-hash-valid';
+import { isMongooseDocumentPasswordHashValid } from '../../../sub-features/shared/helpers/is-mongoose-document-password-hash-valid';
 import { Model } from 'mongoose';
 import { MongoFindResults } from '../../shared/helpers/convert-documents-to-paginated-list-out-dto';
 import { QueryParamsForSearchablePaginatedListInDto } from '../../shared/dto/query-params-for-paginated-list.in-dto';

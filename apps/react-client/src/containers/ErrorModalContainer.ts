@@ -1,13 +1,13 @@
-import { closeErrorNotificationModalAction } from '../../src/actions/error-modal.actions';
+import { closeErrorNotificationModalAction } from '../actions/error-modal.actions';
 import { connect } from 'react-redux';
-import { ErrorModal, ErrorModalProps } from '../../src/components/ErrorModal';
+import { ErrorModal, ErrorModalProps } from '../components/ErrorModal';
 import { RootState } from '../../src';
-import { selectErrorModalIsShown } from '../../src/selectors/error-modal-is-shown.selector';
-import { selectErrorModalMessage } from '../../src/selectors/error-modal-message.selector';
+import { selectErrorModalIsShown } from '../selectors/error-modal-is-shown.selector';
+import { selectErrorModalMessage } from '../selectors/error-modal-message.selector';
 import {
   StateToComponentNonFunctionPropsMapper,
   DispatchToComponentFunctionPropsMapper,
-} from '../../src/shared/types/container-state-mapper.interface';
+} from '../shared/types/container-state-mapper.interface';
 
 const mapStateToProps: StateToComponentNonFunctionPropsMapper<
   ErrorModalProps,
