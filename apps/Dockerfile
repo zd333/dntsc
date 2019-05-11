@@ -12,7 +12,7 @@ RUN yarn
 RUN yarn build
 WORKDIR /usr/src/api
 RUN yarn
-RUN yarn run build
+RUN yarn build
 
 
 FROM mhart/alpine-node:10
@@ -20,7 +20,6 @@ FROM mhart/alpine-node:10
 # Copy builds of apps
 WORKDIR /usr/src
 COPY --from=base /usr/src/react-client/build ./react-client/build
-COPY --from=base /usr/src/react-client/node_modules ./react-client/node_modules
 COPY --from=base /usr/src/api/dist ./api/dist
 COPY --from=base /usr/src/api/node_modules ./api/node_modules
 
