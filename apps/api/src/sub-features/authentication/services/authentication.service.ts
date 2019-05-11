@@ -1,6 +1,6 @@
 import { AppAccessRoles } from '../../../app-access-roles';
 import { EmployeeDocument } from '../../../sub-features/employees/db-schemas/employee.db-schema';
-import { EmployeesDbConnectorService } from '../../../../src/sub-features/employees/services/employees-db-connector.service';
+import { EmployeesDbConnectorService } from '../../../sub-features/employees/services/employees-db-connector.service';
 import { hasRoles } from '../../../sub-features/shared/helpers/has-roles';
 import { isInDtoWithClinicContext } from '../../../middlewares/add-clinic-context.middleware';
 import { JwtService } from '@nestjs/jwt';
@@ -109,7 +109,7 @@ export class AuthenticationService {
     let dtoPayload: JwtAuthTokenPayload;
     try {
       dtoPayload = this.jwt.verify<JwtAuthTokenPayload>(dto.refreshToken);
-    } catch(e) {
+    } catch (e) {
       throw new UnauthorizedException();
     }
 

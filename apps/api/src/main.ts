@@ -1,16 +1,27 @@
 import * as helmet from 'helmet';
 import * as rateLimit from 'express-rate-limit';
 import { AppModule } from './app.module';
+import { ClientAssetsResponderFilter } from './filters/client-assets-responder.filter';
 import { NestFactory } from '@nestjs/core';
 import { useContainer } from 'class-validator';
 import { ValidationPipe } from '@nestjs/common';
 
-// TODO:consider moving this to env vars
-// Hard-code rate limit values (no need to have them flexible and pass via env variables)
-// 1 minute
-const RATE_LIMIT_WINDOW = 1 * 60 * 1000;
-// Limit each IP to 100 requests per windowMs
-const RATE_LIMIT_MAX_REQUESTS = 1000;
+// Add linting and testing git hooks via Husky
+// TODO: add Swagger
+// TODO: add Sentry
+
+export const PATH_PREFIX = process.env.PATH_PREFIX || 'api/v1';
+
+const API_MAX_RATE_LIMIT_WINDOW = isNaN(
+  Number(process.env.API_MAX_RATE_LIMIT_WINDOW),
+)
+  ? 60000
+  : Number(process.env.API_MAX_RATE_LIMIT_WINDOW);
+const API_MAX_RATE_LIMIT_MAX_REQUESTS_PER_WINDOW = isNaN(
+  Number(process.env.API_MAX_RATE_LIMIT_MAX_REQUESTS_PER_WINDOW),
+)
+  ? 1000
+  : Number(process.env.API_MAX_RATE_LIMIT_MAX_REQUESTS_PER_WINDOW);
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
@@ -19,12 +30,12 @@ async function bootstrap(): Promise<void> {
   app.use(helmet());
   app.use(
     new rateLimit({
-      windowMs: RATE_LIMIT_WINDOW,
-      max: RATE_LIMIT_MAX_REQUESTS,
+      windowMs: API_MAX_RATE_LIMIT_WINDOW,
+      max: API_MAX_RATE_LIMIT_MAX_REQUESTS_PER_WINDOW,
     }),
   );
 
-  app.setGlobalPrefix('api/v1');
+  app.setGlobalPrefix(PATH_PREFIX);
 
   // This is needed for DI in custom validators (constraints)
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
@@ -39,7 +50,10 @@ async function bootstrap(): Promise<void> {
     }),
   );
 
-  const port = Number(process.env.API_SERVING_PORT);
+  // Needed for serving (reverse proxying) client React app assets (files)
+  app.useGlobalFilters(new ClientAssetsResponderFilter());
+
+  const port = Number(process.env.PORT);
 
   await app.listen(port);
 }

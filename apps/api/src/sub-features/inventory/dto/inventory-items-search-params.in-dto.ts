@@ -18,7 +18,8 @@ export class InventoryItemsSearchParams extends QueryParamsForSearchablePaginate
    * Comma-separated list of tags.
    */
   @IsOptional()
-  @Matches(/^\w+(,\w+)*$/)
+  // TODO: this does not work with ru, ua words, fix
+  // @Matches(/^\w+(,\w+)*$/)
   @IsLowercase()
   public tags?: string;
 

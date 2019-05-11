@@ -4,15 +4,15 @@ import { RegisterEmployeeRouteParams } from '../components/AppRoutes';
 import { RouteComponentProps } from 'react-router';
 import { selectAuthApiCommunicationIsInProgress } from '../selectors/auth-api-communication-is-in-progress.selector';
 import { selectEmployeeRegistrationTokenIsAlreadyUsedOrExpired } from '../selectors/employee-registration-token-is-already-used-or-expired.selector';
-import { SessionActions } from '../../src/actions/session.actions';
+import { SessionActions } from '../actions/session.actions';
 import {
   EmployeeRegistrationPage,
   EmployeeRegistrationPageProps,
-} from '../../src/components/EmployeeRegistrationPage';
+} from '../components/EmployeeRegistrationPage';
 import {
   StateToComponentNonFunctionPropsMapper,
   DispatchToComponentFunctionPropsMapper,
-} from '../../src/shared/types/container-state-mapper.interface';
+} from '../shared/types/container-state-mapper.interface';
 
 type EmployeeRegistrationPageContainerRouterProps = RouteComponentProps<
   RegisterEmployeeRouteParams

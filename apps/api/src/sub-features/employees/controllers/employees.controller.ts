@@ -3,8 +3,8 @@ import { AppRequest } from '../../../app.module';
 import { AuthGuard } from '@nestjs/passport';
 import { CheckEmployeeRegistrationTokenInDtoWithClinicContext } from '../dto/check-employee-registration-token.in-dto';
 import { convertDocumentsToPaginatedListOutDto } from '../../shared/helpers/convert-documents-to-paginated-list-out-dto';
-import { convertDocumentToOutDto } from '../../../../src/sub-features/shared/helpers/convert-document-to-out-dto';
-import { CreatedTenantOutDto } from '../../../../src/sub-features/tenants/dto/created-tenant.out-dto';
+import { convertDocumentToOutDto } from '../../../sub-features/shared/helpers/convert-document-to-out-dto';
+import { CreatedTenantOutDto } from '../../../sub-features/tenants/dto/created-tenant.out-dto';
 import { EmployeeDetailsOutDto } from '../dto/employee-details.out-dto';
 import { EmployeeRegistrationTokenOutDto } from '../dto/employee-registration-token.out-dto';
 import { EmployeesDbConnectorService } from '../services/employees-db-connector.service';
@@ -13,11 +13,11 @@ import { PaginatedListOutDto } from '../../shared/dto/paginated-list-out-dto.int
 import { QueryParamsForSearchablePaginatedListInDto } from '../../shared/dto/query-params-for-paginated-list.in-dto';
 import { RegisteredEmployeeOutDto } from '../dto/registered-employee.out-dto';
 import { RegisterEmployeeInDtoWithClinicContext } from '../dto/register-employee.in-dto';
-import { RequesterIsEmployeeOfTargetClinicGuard } from '../../../../src/sub-features/shared/guards/requester-is-employee-of-target-clinic.guard';
+import { RequesterIsEmployeeOfTargetClinicGuard } from '../../../sub-features/shared/guards/requester-is-employee-of-target-clinic.guard';
 import { RequesterIsPlatformOwnerIfProcessesClinicOwnerGuard } from '../guards/requester-is-platform-owner-if-processes-clinic-owner.guard';
-import { RequestIsInClinicContextGuard } from '../../../../src/sub-features/shared/guards/request-is-in-clinic-context.guard';
+import { RequestIsInClinicContextGuard } from '../../../sub-features/shared/guards/request-is-in-clinic-context.guard';
 import { UpdateEmployeeInDtoWithClinicContext } from '../dto/update-employee.in-dto';
-import { WithMongoIdInDto } from '../../../../src/sub-features/shared/dto/with-mongo-id.in-dto';
+import { WithMongoIdInDto } from '../../../sub-features/shared/dto/with-mongo-id.in-dto';
 import {
   CreateEmployeeRegistrationTokenInDtoWithClinicContext,
   CreateEmployeeRegistrationTokenInDto,

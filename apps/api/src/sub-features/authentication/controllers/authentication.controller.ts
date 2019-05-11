@@ -1,7 +1,7 @@
-import { AppRequest } from '../../../../src/app.module';
+import { AppRequest } from '../../../app.module';
 import { AuthenticationService } from '../services/authentication.service';
 import { RefreshAuthInDtoWithClinicContext } from '../dto/refresh-auth.in-dto';
-import { RequestIsInClinicContextGuard } from '../../../../src/sub-features/shared/guards/request-is-in-clinic-context.guard';
+import { RequestIsInClinicContextGuard } from '../../../sub-features/shared/guards/request-is-in-clinic-context.guard';
 import { SignedInEmployeeOutDto } from '../dto/signed-in-employee.out-dto';
 import {
   SignInEmployeeInDtoWithClinicContext,

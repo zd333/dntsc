@@ -3,10 +3,7 @@ import { catchError, map, switchMap } from 'rxjs/operators';
 import { createAppEpicErrorAction } from '../shared/helpers/create-app-epic-error-action';
 import { Epic } from 'redux-observable';
 import { ofType } from '@martin_hotell/rex-tils';
-import {
-  SessionActionTypes,
-  SessionActions,
-} from '../../src/actions/session.actions';
+import { SessionActions, SessionActionTypes } from '../actions/session.actions';
 
 export const getFeaturesApiCallEpic: Epic<
   AllAppActions,
