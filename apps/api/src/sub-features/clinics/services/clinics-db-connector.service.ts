@@ -40,6 +40,10 @@ export class ClinicsDbConnectorService {
     readonly hostName: string;
   }): Promise<string | undefined> {
     const { hostName } = params;
+    const loweredHostName = hostName.toLowerCase();
+    const normalizedHostName = loweredHostName.startsWith('www.')
+      ? loweredHostName.substr(4)
+      : loweredHostName;
 
     if (!hostName) {
       return undefined;
@@ -47,7 +51,7 @@ export class ClinicsDbConnectorService {
 
     const found = await this.clinicModel
       .find(
-        { hostNames: hostName },
+        { hostNames: normalizedHostName },
         // Expected to be unique, thus get only one
         { limit: 1 },
       )
