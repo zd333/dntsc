@@ -1,3 +1,4 @@
+import { ApiModelProperty } from '@nestjs/swagger';
 import { IsIdOfExistingDbEntityValidator } from '../../../sub-features/shared/validators/is-id-of-existing-db-entity.validator';
 import { NotUsedClinicHostNames } from '../validators/not-used-clinic-host-names.validator';
 import { TENANT_SCHEMA_COLLECTION_NAME } from '../../../sub-features/tenants/db-schemas/tenant.db-schema';
@@ -15,13 +16,14 @@ import {
 export class CreateClinicInDto {
   @IsString()
   @MinLength(3)
+  @ApiModelProperty()
   public readonly name: string;
 
-  /**
-   * Tenant id.
-   */
   @IsNotEmpty()
   @Validate(IsIdOfExistingDbEntityValidator, [TENANT_SCHEMA_COLLECTION_NAME])
+  @ApiModelProperty({
+    description: 'Tenant id.',
+  })
   public readonly tenant: string;
 
   @ArrayNotEmpty()
@@ -36,5 +38,13 @@ export class CreateClinicInDto {
   @NotContains('?', { each: true })
   @NotContains('&', { each: true })
   @Validate(NotUsedClinicHostNames)
+  @ApiModelProperty({
+    description: `
+      Clinic hosts (addresses).
+      Should not contain www prefix, protocol or path.
+      Should be lowercase.
+      Should be unique.
+    `,
+  })
   public readonly hostNames: Array<string>;
 }

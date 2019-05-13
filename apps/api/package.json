@@ -16,6 +16,7 @@
     "@nestjs/jwt": "^0.2.0",
     "@nestjs/mongoose": "^5.2.2",
     "@nestjs/passport": "^5.1.0",
+    "@nestjs/swagger": "^3.0.2",
     "@types/bcryptjs": "^2.4.2",
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.2.0",
@@ -32,6 +33,7 @@
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.2",
     "rxjs": "^6.2.2",
+    "swagger-ui-express": "^4.0.2",
     "typescript": "^3.0.1"
   },
   "devDependencies": {

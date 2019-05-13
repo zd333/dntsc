@@ -1,3 +1,4 @@
+import { ApiModelPropertyOptional } from '@nestjs/swagger';
 import {
   IsNumberString,
   IsOptional,
@@ -15,6 +16,9 @@ export class QueryParamsForPaginatedListInDto {
   @NotContains('-')
   @NotContains('.')
   @NotContains(',')
+  @ApiModelPropertyOptional({
+    type: Number,
+  })
   public readonly skip?: string;
 
   @IsOptional()
@@ -23,15 +27,22 @@ export class QueryParamsForPaginatedListInDto {
   @NotContains('-')
   @NotContains('.')
   @NotContains(',')
+  @ApiModelPropertyOptional({
+    type: Number,
+  })
   public readonly limit?: string;
 
   @IsOptional()
   @IsString()
   @IsNotEmpty()
+  @ApiModelPropertyOptional()
   public readonly orderBy?: string;
 
   @IsOptional()
   @IsIn(['ASC', 'DESC'])
+  @ApiModelPropertyOptional({
+    enum: ['ASC', 'DESC'],
+  })
   public readonly orderDirection?: 'ASC' | 'DESC';
 }
 
@@ -39,5 +50,8 @@ export class QueryParamsForSearchablePaginatedListInDto extends QueryParamsForPa
   @IsOptional()
   @IsString()
   @MinLength(3)
+  @ApiModelPropertyOptional({
+    minLength: 3,
+  })
   public readonly searchString?: string;
 }
