@@ -1,4 +1,5 @@
 import { ACGuard, UseRoles } from 'nest-access-control';
+import { ApiResponse } from '@nestjs/swagger';
 import { AppRequest } from '../../../app.module';
 import { AuthGuard } from '@nestjs/passport';
 import { CheckEmployeeRegistrationTokenInDtoWithClinicContext } from '../dto/check-employee-registration-token.in-dto';
@@ -112,9 +113,16 @@ export class EmployeesController {
     });
   }
 
+  // TODO: add ApiResponse to each controller that returns payload and set decorators in out DTOs
+  // TODO: add roles info to swagger
+
   @Get(':id')
   // Not sure if only employees are allowed to see details of employees, remove `IsEmployeeGuard` guard if so
   @UseGuards(AuthGuard(), RequesterIsEmployeeOfTargetClinicGuard)
+  @ApiResponse({
+    status: 200,
+    type: EmployeeDetailsOutDto,
+  })
   public async getById(@Param() { id }: WithMongoIdInDto): Promise<
     EmployeeDetailsOutDto
   > {

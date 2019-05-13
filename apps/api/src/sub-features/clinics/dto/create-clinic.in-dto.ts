@@ -16,7 +16,9 @@ import {
 export class CreateClinicInDto {
   @IsString()
   @MinLength(3)
-  @ApiModelProperty()
+  @ApiModelProperty({
+    minLength: 3,
+  })
   public readonly name: string;
 
   @IsNotEmpty()
@@ -45,6 +47,9 @@ export class CreateClinicInDto {
       Should be lowercase.
       Should be unique.
     `,
+    isArray: true,
+    minItems: 1,
+    uniqueItems: true,
   })
   public readonly hostNames: Array<string>;
 }
