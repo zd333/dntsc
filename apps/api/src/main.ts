@@ -2,6 +2,7 @@ import * as helmet from 'helmet';
 import * as rateLimit from 'express-rate-limit';
 import { AppModule } from './app.module';
 import { ClientAssetsResponderFilter } from './filters/client-assets-responder.filter';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NestFactory } from '@nestjs/core';
 import { useContainer } from 'class-validator';
 import { ValidationPipe } from '@nestjs/common';
@@ -52,6 +53,12 @@ async function bootstrap(): Promise<void> {
 
   // Needed for serving (reverse proxying) client React app assets (files)
   app.useGlobalFilters(new ClientAssetsResponderFilter());
+
+  // Setup Swagger
+  const options = new DocumentBuilder().setTitle('DNTSC API').build();
+  const document = SwaggerModule.createDocument(app, options);
+
+  SwaggerModule.setup('api-docs', app, document);
 
   const port = Number(process.env.PORT);
 
