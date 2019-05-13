@@ -14,7 +14,7 @@ export class InventoryItemsSearchParams extends QueryParamsForSearchablePaginate
   // @Matches(/^\w+(,\w+)*$/)
   @IsLowercase()
   @ApiModelPropertyOptional({
-    description: 'Comma-separated list of tags.',
+    description: 'Comma-separated list of tags. Should be lowercase.',
   })
   public tags?: string;
 

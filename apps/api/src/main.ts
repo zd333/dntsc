@@ -55,10 +55,11 @@ async function bootstrap(): Promise<void> {
   app.useGlobalFilters(new ClientAssetsResponderFilter());
 
   // Setup Swagger
+  // TODO: add auth restrictions
   const options = new DocumentBuilder().setTitle('DNTSC API').build();
   const document = SwaggerModule.createDocument(app, options);
 
-  SwaggerModule.setup('api-docs', app, document);
+  SwaggerModule.setup(`${PATH_PREFIX}/api-docs`, app, document);
 
   const port = Number(process.env.PORT);
 
