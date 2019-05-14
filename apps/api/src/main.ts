@@ -7,8 +7,7 @@ import { NestFactory } from '@nestjs/core';
 import { useContainer } from 'class-validator';
 import { ValidationPipe } from '@nestjs/common';
 
-// Add linting and testing git hooks via Husky
-// TODO: add Swagger
+// TODO: add linting and testing git hooks via Husky
 // TODO: add Sentry
 
 export const PATH_PREFIX = process.env.PATH_PREFIX || 'api/v1';
@@ -55,7 +54,7 @@ async function bootstrap(): Promise<void> {
   app.useGlobalFilters(new ClientAssetsResponderFilter());
 
   // Setup Swagger
-  // TODO: add auth restrictions
+  // TODO: add auth restrictions to Swagger
   const options = new DocumentBuilder().setTitle('DNTSC API').build();
   const document = SwaggerModule.createDocument(app, options);
 

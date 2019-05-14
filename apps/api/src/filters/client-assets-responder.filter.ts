@@ -7,6 +7,7 @@ import {
   ExceptionFilter,
   HttpException,
   NotFoundException,
+  HttpStatus,
 } from '@nestjs/common';
 
 /**
@@ -35,7 +36,7 @@ export class ClientAssetsResponderFilter implements ExceptionFilter {
       }
     } catch (e) {}
     // Asset (file) does not exist
-    response.status(404).json({ message: exception.message });
+    response.status(HttpStatus.NOT_FOUND).json({ message: exception.message });
   }
 }
 

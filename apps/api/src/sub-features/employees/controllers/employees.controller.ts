@@ -35,6 +35,7 @@ import {
   UnprocessableEntityException,
   Req,
   Query,
+  HttpStatus,
 } from '@nestjs/common';
 
 const EMPLOYEE_REGISTRATION_TOKEN_EXPIRATION_TIMEOUT_IN_SECONDS = 10800;
@@ -46,6 +47,10 @@ export class EmployeesController {
     private readonly jwt: JwtService,
   ) {}
 
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: EmployeeRegistrationTokenOutDto,
+  })
   @UseGuards(
     AuthGuard(),
     ACGuard,
@@ -70,10 +75,13 @@ export class EmployeesController {
     return { registrationToken };
   }
 
-  /**
-   * Client can use this endpoint to ensure that employee registration token is valid.
-   * No payload in response, only response status code makes sense (OK or error).
-   */
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: `
+      Use this endpoint to ensure that employee registration token is valid.
+      No payload in response, only response status code makes sense (error or not).
+    `,
+  })
   @UseGuards(RequestIsInClinicContextGuard)
   @Post('check-registration-token')
   public async checkEmployeeRegistrationToken(
@@ -83,13 +91,16 @@ export class EmployeesController {
     @Body() _dto: CheckEmployeeRegistrationTokenInDtoWithClinicContext,
   ): Promise<void> {}
 
-  /**
-   * Unauthenticated users can use this endpoint to register as employee.
-   * No need for access-roles protection because this endpoint requires
-   * valid registration token (protected by `IsNotExpiredJwtTokenValidator`)
-   * which can be generated only by authorized employees,
-   * see `createRegistrationToken`.
-   */
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: `
+      Unauthenticated users can use this endpoint to register as employee.
+      No need for access-roles protection because this endpoint requires
+      valid registration token (protected by IsNotExpiredJwtTokenValidator)
+      which can be generated only by authorized employees, see createRegistrationToken.
+    `,
+    type: RegisteredEmployeeOutDto,
+  })
   @UseGuards(RequestIsInClinicContextGuard)
   @Post('register')
   public async register(
@@ -113,16 +124,13 @@ export class EmployeesController {
     });
   }
 
-  // TODO: add ApiResponse to each controller that returns payload and set decorators in out DTOs
-  // TODO: add roles info to swagger
-
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: EmployeeDetailsOutDto,
+  })
   @Get(':id')
   // Not sure if only employees are allowed to see details of employees, remove `IsEmployeeGuard` guard if so
   @UseGuards(AuthGuard(), RequesterIsEmployeeOfTargetClinicGuard)
-  @ApiResponse({
-    status: 200,
-    type: EmployeeDetailsOutDto,
-  })
   public async getById(@Param() { id }: WithMongoIdInDto): Promise<
     EmployeeDetailsOutDto
   > {
@@ -137,6 +145,9 @@ export class EmployeesController {
     });
   }
 
+  @ApiResponse({
+    status: HttpStatus.ACCEPTED,
+  })
   @UseGuards(
     AuthGuard(),
     ACGuard,
@@ -164,6 +175,14 @@ export class EmployeesController {
     });
   }
 
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: EmployeeDetailsOutDto,
+    description: `
+      Note, results are array are wrapped in PaginatedListOutDto,
+      can not document due to lack of generics support in NestJS Swagger.
+    `,
+  })
   @UseGuards(
     AuthGuard(),
     RequestIsInClinicContextGuard,

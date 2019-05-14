@@ -1,13 +1,24 @@
+import { ApiModelProperty } from '@nestjs/swagger';
 import { InDtoWithClinicContext } from '../../../middlewares/add-clinic-context.middleware';
 import { IsString, MinLength } from 'class-validator';
+import {
+  EMPLOYEE_LOGIN_MIN_LENGTH,
+  EMPLOYEE_PASSWORD_MIN_LENGTH,
+} from '../../employees/dto/register-employee.in-dto';
 
 export class SignInEmployeeInDtoWithClinicContext extends InDtoWithClinicContext {
-  @MinLength(3)
+  @MinLength(EMPLOYEE_LOGIN_MIN_LENGTH)
   @IsString()
+  @ApiModelProperty({
+    minLength: EMPLOYEE_LOGIN_MIN_LENGTH,
+  })
   public readonly login: string;
 
   @IsString()
-  @MinLength(4)
+  @MinLength(EMPLOYEE_PASSWORD_MIN_LENGTH)
+  @ApiModelProperty({
+    minLength: EMPLOYEE_PASSWORD_MIN_LENGTH,
+  })
   public readonly password: string;
 }
 

@@ -13,13 +13,15 @@ import {
   IsIn,
 } from 'class-validator';
 
+const TENANT_NAME_MIN_LENGTH = 3;
+
 export class CreateTenantInDto {
-  @MinLength(3)
+  @MinLength(TENANT_NAME_MIN_LENGTH)
   @IsString()
   @Validate(IsUniqueTenantNameValidator)
   @ApiModelProperty({
     description: 'Tenant name, should be unique.',
-    minLength: 3,
+    minLength: TENANT_NAME_MIN_LENGTH,
   })
   public readonly name: string;
 
