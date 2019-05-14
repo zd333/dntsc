@@ -2,12 +2,12 @@ import * as helmet from 'helmet';
 import * as rateLimit from 'express-rate-limit';
 import { AppModule } from './app.module';
 import { ClientAssetsResponderFilter } from './filters/client-assets-responder.filter';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { NestFactory } from '@nestjs/core';
 import { useContainer } from 'class-validator';
 import { ValidationPipe } from '@nestjs/common';
 
-// Add linting and testing git hooks via Husky
-// TODO: add Swagger
+// TODO: add linting and testing git hooks via Husky
 // TODO: add Sentry
 
 export const PATH_PREFIX = process.env.PATH_PREFIX || 'api/v1';
@@ -52,6 +52,13 @@ async function bootstrap(): Promise<void> {
 
   // Needed for serving (reverse proxying) client React app assets (files)
   app.useGlobalFilters(new ClientAssetsResponderFilter());
+
+  // Setup Swagger
+  // TODO: add auth restrictions to Swagger
+  const options = new DocumentBuilder().setTitle('DNTSC API').build();
+  const document = SwaggerModule.createDocument(app, options);
+
+  SwaggerModule.setup(`${PATH_PREFIX}/api-docs`, app, document);
 
   const port = Number(process.env.PORT);
 

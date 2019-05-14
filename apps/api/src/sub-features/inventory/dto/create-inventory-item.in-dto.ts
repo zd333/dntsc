@@ -1,3 +1,4 @@
+import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
 import { InDtoWithClinicContext } from '../../../middlewares/add-clinic-context.middleware';
 import { IsUniqueInventoryItemNameForGivenClinic } from '../validators/is-unique-inventory-item-name-for-given-clinic.validator';
 import {
@@ -15,27 +16,38 @@ import {
   IsLowercase,
 } from 'class-validator';
 
+export const INVENTORY_ITEM_NAME_MIN_LENGTH = 3;
+
 export class CreateInventoryItemInDtoWithClinicContext extends InDtoWithClinicContext {
-  @MinLength(3)
+  @MinLength(INVENTORY_ITEM_NAME_MIN_LENGTH)
   @IsString()
   @Validate(IsUniqueInventoryItemNameForGivenClinic)
+  @ApiModelProperty({
+    minLength: INVENTORY_ITEM_NAME_MIN_LENGTH,
+  })
   public readonly name: string;
 
   @IsIn(allInventoryItemUnits)
+  @ApiModelProperty({
+    enum: allInventoryItemUnits,
+  })
   public readonly unit: InventoryItemUnits;
 
-  /**
-   * Use tags to categorize items.
-   */
   @IsOptional()
   @ArrayNotEmpty()
   @ArrayUnique()
   @IsLowercase({ each: true })
+  @ApiModelPropertyOptional({
+    isArray: true,
+    uniqueItems: true,
+    minLength: 1,
+    description: `
+      Use tags to categorize and group items.
+      Tags should be lower case.
+    `,
+  })
   public readonly tags?: Array<string>;
 
-  /**
-   * Array of ids of other inventory items that can be used as substitution.
-   */
   @IsOptional()
   @ArrayNotEmpty()
   @ArrayUnique()
@@ -53,6 +65,13 @@ export class CreateInventoryItemInDtoWithClinicContext extends InDtoWithClinicCo
   // @Validate(IsAlternateWithRelevantUnit, {
   //   each: true,
   // })
+  @ApiModelPropertyOptional({
+    isArray: true,
+    uniqueItems: true,
+    minLength: 1,
+    description:
+      'Array of ids of other inventory items that can be used as substitution.',
+  })
   public readonly alternates?: Array<string>;
 }
 
