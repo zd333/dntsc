@@ -1,4 +1,6 @@
+import { ApiModelProperty, ApiModelPropertyOptional } from '@nestjs/swagger';
 import { InDtoWithClinicContext } from '../../../middlewares/add-clinic-context.middleware';
+import { INVENTORY_ITEM_NAME_MIN_LENGTH } from './create-inventory-item.in-dto';
 import { IsIdOfExistingDbEntityValidator } from '../../shared/validators/is-id-of-existing-db-entity.validator';
 import { IsUniqueExistingInventoryItemNameForGivenClinic } from '../validators/is-unique-existing-inventory-item-name-for-given-clinic.validator';
 import {
@@ -21,20 +23,32 @@ export class UpdateInventoryItemInDtoWithClinicContext extends InDtoWithClinicCo
   @Validate(IsIdOfExistingDbEntityValidator, [
     INVENTORY_ITEM_SCHEMA_COLLECTION_NAME,
   ])
+  @ApiModelProperty()
   public readonly id: string;
 
-  @MinLength(3)
+  @MinLength(INVENTORY_ITEM_NAME_MIN_LENGTH)
   @IsString()
   @Validate(IsUniqueExistingInventoryItemNameForGivenClinic)
+  @ApiModelProperty({
+    minLength: INVENTORY_ITEM_NAME_MIN_LENGTH,
+  })
   public readonly name: string;
 
   @IsIn(allInventoryItemUnits)
+  @ApiModelProperty({
+    enum: allInventoryItemUnits,
+  })
   public readonly unit: InventoryItemUnits;
 
   @IsOptional()
   @ArrayNotEmpty()
   @ArrayUnique()
   @IsLowercase({ each: true })
+  @ApiModelPropertyOptional({
+    isArray: true,
+    uniqueItems: true,
+    minLength: 1,
+  })
   public readonly tags?: Array<string> | null;
 
   @IsOptional()
@@ -54,6 +68,11 @@ export class UpdateInventoryItemInDtoWithClinicContext extends InDtoWithClinicCo
   // @Validate(IsAlternateWithRelevantUnit, {
   //   each: true,
   // })
+  @ApiModelPropertyOptional({
+    isArray: true,
+    uniqueItems: true,
+    minLength: 1,
+  })
   public readonly alternates?: Array<string> | null;
 }
 

@@ -1,6 +1,7 @@
 import { ACGuard, UseRoles } from 'nest-access-control';
+import { ApiResponse } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { ClinicsDbConnectorService } from '../services/clinics-db-connector.service';
 import { convertDocumentToOutDto } from '../../../sub-features/shared/helpers/convert-document-to-out-dto';
 import { CreateClinicInDto } from '../dto/create-clinic.in-dto';
@@ -12,6 +13,10 @@ import { CreatedClinicOutDto } from '../dto/created-clinic.out-dto';
 export class ClinicsController {
   constructor(private readonly clinicsDbConnector: ClinicsDbConnectorService) {}
 
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: CreatedClinicOutDto,
+  })
   @UseGuards(AuthGuard(), ACGuard)
   @UseRoles({
     resource: 'clinic',

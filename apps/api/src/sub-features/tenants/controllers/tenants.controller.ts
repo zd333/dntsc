@@ -1,4 +1,5 @@
 import { ACGuard, UseRoles } from 'nest-access-control';
+import { ApiResponse } from '@nestjs/swagger';
 import { AppRequest } from '../../../app.module';
 import { AuthGuard } from '@nestjs/passport';
 import { convertDocumentToOutDto } from '../../../sub-features/shared/helpers/convert-document-to-out-dto';
@@ -15,12 +16,17 @@ import {
   Req,
   UseGuards,
   NotFoundException,
+  HttpStatus,
 } from '@nestjs/common';
 
 @Controller('tenants')
 export class TenantsController {
   constructor(private readonly tenantsDbConnector: TenantsDbConnectorService) {}
 
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: CreatedTenantOutDto,
+  })
   @UseGuards(AuthGuard(), ACGuard)
   @UseRoles({
     resource: 'tenant',
@@ -39,6 +45,11 @@ export class TenantsController {
     });
   }
 
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Tenant is resolved via clinic host.',
+    type: TenantDetailsOutDto,
+  })
   @UseGuards(RequestIsInClinicContextGuard)
   @Get('clinic_tenant')
   public async getItems(@Req() req: AppRequest): Promise<TenantDetailsOutDto> {

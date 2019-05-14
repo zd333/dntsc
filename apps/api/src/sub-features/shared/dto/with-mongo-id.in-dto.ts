@@ -1,3 +1,4 @@
+import { ApiModelProperty } from '@nestjs/swagger';
 import { IsMongoId } from 'class-validator';
 
 /**
@@ -7,5 +8,6 @@ import { IsMongoId } from 'class-validator';
  */
 export class WithMongoIdInDto {
   @IsMongoId({ message: 'URL path param must be valid id' })
+  @ApiModelProperty()
   public readonly id: string;
 }
