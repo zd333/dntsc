@@ -1,4 +1,5 @@
 import { ACGuard, UseRoles } from 'nest-access-control';
+import { ApiResponse } from '@nestjs/swagger';
 import { AppRequest } from '../../../app.module';
 import { AuthGuard } from '@nestjs/passport';
 import { convertDocumentsToPaginatedListOutDto } from '../../../sub-features/shared/helpers/convert-documents-to-paginated-list-out-dto';
@@ -34,6 +35,7 @@ import {
   NotFoundException,
   Put,
   UnprocessableEntityException,
+  HttpStatus,
 } from '@nestjs/common';
 
 @UseGuards(TenantFeaturesGuard)
@@ -44,6 +46,10 @@ export class InventoryController {
     private readonly inventoryDbConnector: InventoryDbConnectorService,
   ) {}
 
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    type: CreatedInventoryItemOutDto,
+  })
   @UseGuards(
     AuthGuard(),
     ACGuard,
@@ -67,6 +73,14 @@ export class InventoryController {
     });
   }
 
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: InventoryItemDetailsOutDto,
+    description: `
+      Note, results are array are wrapped in PaginatedListOutDto,
+      can not document due to lack of generics support in NestJS Swagger.
+    `,
+  })
   @UseGuards(
     AuthGuard(),
     RequestIsInClinicContextGuard,
@@ -95,6 +109,10 @@ export class InventoryController {
     });
   }
 
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: InventoryItemsTagsOutDto,
+  })
   @UseGuards(
     AuthGuard(),
     RequestIsInClinicContextGuard,
@@ -116,6 +134,10 @@ export class InventoryController {
     return { usedTags: uniqueTags };
   }
 
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: InventoryItemDetailsOutDto,
+  })
   @UseGuards(
     AuthGuard(),
     RequestIsInClinicContextGuard,
@@ -137,6 +159,9 @@ export class InventoryController {
     });
   }
 
+  @ApiResponse({
+    status: HttpStatus.ACCEPTED,
+  })
   @UseGuards(
     AuthGuard(),
     ACGuard,
@@ -163,6 +188,10 @@ export class InventoryController {
     });
   }
 
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: InventoryItemBalanceOutDto,
+  })
   @UseGuards(
     AuthGuard(),
     RequestIsInClinicContextGuard,
@@ -177,6 +206,14 @@ export class InventoryController {
     return { balance };
   }
 
+  @ApiResponse({
+    status: HttpStatus.OK,
+    type: InventoryBalanceChangeDetailsOutDto,
+    description: `
+      Note, results are array are wrapped in PaginatedListOutDto,
+      can not document due to lack of generics support in NestJS Swagger.
+    `,
+  })
   @UseGuards(
     AuthGuard(),
     RequestIsInClinicContextGuard,
@@ -200,6 +237,9 @@ export class InventoryController {
     });
   }
 
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+  })
   @UseGuards(
     AuthGuard(),
     ACGuard,

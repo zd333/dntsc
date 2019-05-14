@@ -1,12 +1,10 @@
+import { ApiResponse } from '@nestjs/swagger';
 import { AppRequest } from '../../../app.module';
 import { AuthenticationService } from '../services/authentication.service';
 import { RefreshAuthInDtoWithClinicContext } from '../dto/refresh-auth.in-dto';
 import { RequestIsInClinicContextGuard } from '../../../sub-features/shared/guards/request-is-in-clinic-context.guard';
 import { SignedInEmployeeOutDto } from '../dto/signed-in-employee.out-dto';
-import {
-  SignInEmployeeInDtoWithClinicContext,
-  SignInPlatformOwnerInDto,
-} from '../dto/sign-in-employee.in-dto';
+import { SignInEmployeeInDtoWithClinicContext } from '../dto/sign-in-employee.in-dto';
 import {
   Body,
   Controller,
@@ -14,19 +12,26 @@ import {
   Request,
   UseGuards,
   ForbiddenException,
+  HttpStatus,
 } from '@nestjs/common';
 
 @Controller('auth')
 export class AuthenticationController {
   constructor(private readonly authenticationService: AuthenticationService) {}
 
-  /**
-   * Endpoint to sign in employee with login and password.
-   */
+  @ApiResponse({
+    description: 'Endpoint to sign in employee with login and password.',
+    status: HttpStatus.CREATED,
+    type: SignedInEmployeeOutDto,
+  })
   @Post('sign-in-employee')
   public async signInEmployee(
+    /**
+     * DTO can also be `SignInPlatformOwnerInDto`.
+     * Do not specify type union because Swagger will not understand :(
+     */
     @Body()
-    dto: SignInEmployeeInDtoWithClinicContext | SignInPlatformOwnerInDto,
+    dto: SignInEmployeeInDtoWithClinicContext,
     @Request() req: AppRequest,
   ): Promise<SignedInEmployeeOutDto> {
     if (req.user) {
@@ -37,11 +42,15 @@ export class AuthenticationController {
     return await this.authenticationService.signInEmployee(dto);
   }
 
-  /**
-   * Returns new fresh auth token.
-   * Checks refresh token which lives longer than regular auth token.
-   * Is implemented for regular employee (not for platform owners).
-   */
+  @ApiResponse({
+    description: `
+      Returns new fresh auth token.
+      Checks refresh token which lives longer than regular auth token.
+      Checks refresh token which lives longer than regular auth token.
+    `,
+    type: SignedInEmployeeOutDto,
+    status: HttpStatus.CREATED,
+  })
   @UseGuards(RequestIsInClinicContextGuard)
   @Post('refresh-employee-session')
   public async refreshAuth(

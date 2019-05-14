@@ -9,6 +9,8 @@ import {
   MinLength,
 } from 'class-validator';
 
+const SEARCH_STRING_MIN_LENGTH = 3;
+
 export class QueryParamsForPaginatedListInDto {
   @IsOptional()
   // TODO: create custom validator IsPositiveIntegerString
@@ -49,9 +51,9 @@ export class QueryParamsForPaginatedListInDto {
 export class QueryParamsForSearchablePaginatedListInDto extends QueryParamsForPaginatedListInDto {
   @IsOptional()
   @IsString()
-  @MinLength(3)
+  @MinLength(SEARCH_STRING_MIN_LENGTH)
   @ApiModelPropertyOptional({
-    minLength: 3,
+    minLength: SEARCH_STRING_MIN_LENGTH,
   })
   public readonly searchString?: string;
 }

@@ -13,11 +13,13 @@ import {
   NotContains,
 } from 'class-validator';
 
+const CLINIC_NAME_MIN_LENGTH = 3;
+
 export class CreateClinicInDto {
   @IsString()
-  @MinLength(3)
+  @MinLength(CLINIC_NAME_MIN_LENGTH)
   @ApiModelProperty({
-    minLength: 3,
+    minLength: CLINIC_NAME_MIN_LENGTH,
   })
   public readonly name: string;
 
