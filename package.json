@@ -1,0 +1,16 @@
+{
+  "name": "dntsc-apps",
+  "version": "0.0.0",
+  "description": "Needed only for Husky (convenient Git hooks)",
+  "author": "Alexandr Changli",
+  "license": "MIT",
+  "private": true,
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn --cwd ./apps/api run lint && yarn --cwd ./apps/react-client run lint"
+    }
+  },
+  "devDependencies": {
+    "husky": "^2.2.0"
+  }
+}
