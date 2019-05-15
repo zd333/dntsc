@@ -36,6 +36,8 @@ import {
   RouterAction,
 } from 'connected-react-router';
 
+// TODO: add Sentry
+
 const history = createBrowserHistory();
 
 const rootReducer = combineReducers({

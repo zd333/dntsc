@@ -1,14 +1,13 @@
 import * as helmet from 'helmet';
 import * as rateLimit from 'express-rate-limit';
+import * as Sentry from '@sentry/node';
 import { AppModule } from './app.module';
 import { ClientAssetsResponderFilter } from './filters/client-assets-responder.filter';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { HttpException, HttpStatus, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { RavenInterceptor } from 'nest-raven';
 import { useContainer } from 'class-validator';
-import { ValidationPipe } from '@nestjs/common';
-
-// TODO: add linting and testing git hooks via Husky
-// TODO: add Sentry
 
 export const PATH_PREFIX = process.env.PATH_PREFIX || 'api/v1';
 
@@ -22,6 +21,8 @@ const API_MAX_RATE_LIMIT_MAX_REQUESTS_PER_WINDOW = isNaN(
 )
   ? 1000
   : Number(process.env.API_MAX_RATE_LIMIT_MAX_REQUESTS_PER_WINDOW);
+
+const SENTRY_KEY = process.env.SENTRY_KEY;
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule);
@@ -53,8 +54,26 @@ async function bootstrap(): Promise<void> {
   // Needed for serving (reverse proxying) client React app assets (files)
   app.useGlobalFilters(new ClientAssetsResponderFilter());
 
+  // If no key - then do not use Sentry (dev mode)
+  if (SENTRY_KEY) {
+    // Init Sentry SDK
+    Sentry.init({ dsn: SENTRY_KEY });
+
+    app.useGlobalInterceptors(
+      new RavenInterceptor({
+        filters: [
+          // Filter exceptions of type HttpException, ignore those that have status code of less than 500
+          {
+            type: HttpException,
+            filter: (exception: HttpException) =>
+              exception.getStatus() >= HttpStatus.INTERNAL_SERVER_ERROR,
+          },
+        ],
+      }),
+    );
+  }
+
   // Setup Swagger
-  // TODO: add auth restrictions to Swagger
   const options = new DocumentBuilder().setTitle('DNTSC API').build();
   const document = SwaggerModule.createDocument(app, options);
 
