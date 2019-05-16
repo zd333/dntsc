@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import * as Sentry from '@sentry/browser';
 import { AllEmployeesActions } from './sub-features/employees/actions/employees.actions';
 import { AllInventoryActions } from './sub-features/inventory/actions/inventory.actions';
 import { AllSessionActions } from './actions/session.actions';
@@ -36,7 +37,18 @@ import {
   RouterAction,
 } from 'connected-react-router';
 
-// TODO: add Sentry
+const APP_VERSION_GLOBAL_VAR_NAME = 'APP_VERSION';
+window[APP_VERSION_GLOBAL_VAR_NAME] = process.env.REACT_APP_VERSION;
+// This is for investigating on bugs, etc
+/* tslint:disable:no-console */
+console.info(`App version: ${process.env.REACT_APP_VERSION}`);
+
+if (process.env.NODE_ENV === 'production' && process.env.REACT_APP_SENTRY_KEY) {
+  Sentry.init({
+    dsn: process.env.REACT_APP_SENTRY_KEY,
+    release: process.env.REACT_APP_VERSION,
+  });
+}
 
 const history = createBrowserHistory();
 

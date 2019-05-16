@@ -15,7 +15,7 @@ Install Node, Yarn, Docker, Heroku CLI.
 
 1. add your user to `docker` group by running `sudo usermod -a -G docker $USER` (this gives ability to access docker engine without `sudo`)
 1. completely log out from your account and log back in (if in doubt, reboot!)
-1. prepare `.env` file with development configuration values; this file is git-ignored and thus is missing after you pulled the repo, use `.env-example` as reference (most example values are for dev mode)
+1. go to `/apps/api` and prepare `.env` file with development configuration values for API app; this file is git-ignored and thus is missing after you pulled the repo, use `.env-example` as reference (most example values are for dev mode)
 1. Create platform owner - follow steps [Creating platform owner](#creating-platform-owner)
 
 ### Launching project in dev mode
@@ -36,6 +36,7 @@ For now project is to be deployed/run on Heroku.
 Due to this, it is configured to work as single Node app (including serving/reverse proxying static assets of React client app).
 This works fine for MVP.
 
+1. go to `/apps/react-client` and prepare `.env` file with prod configuration values for client app; this file is git-ignored and thus is missing after you pulled the repo, use `.env-example` as reference
 1. go to Heroku WEB console, select the app, switch to settings tab and set all env vars (Config Vars), do not set `PORT` (Heroku will set own one)
 1. go to `/apps`
 1. run `heroku login`
