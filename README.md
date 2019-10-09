@@ -11,7 +11,7 @@ Install Node, Yarn, Docker, Heroku CLI.
 
 ## Running locally (in dev mode)
 
-### On-time needed actions
+### One-time needed actions
 
 1. add your user to `docker` group by running `sudo usermod -a -G docker $USER` (this gives ability to access docker engine without `sudo`)
 1. completely log out from your account and log back in (if in doubt, reboot!)
