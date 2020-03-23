@@ -1,7 +1,6 @@
 # dntsc
 
-Nothing interesting. Pet project for friends.
-Contains API and client apps (NestJS, React).
+API and client apps (NestJS, React).
 Swagger API docs are available under _/api/v1/api-docs_ URL
 ([http://localhost:4000/api/v1/api-docs](http://localhost:4000/api/v1/api-docs) in dev mode).
 
