@@ -20,7 +20,7 @@
     "@sentry/node": "^5.2.0",
     "@types/bcryptjs": "^2.4.2",
     "bcryptjs": "^2.4.3",
-    "class-transformer": "^0.2.0",
+    "class-transformer": "^0.3.1",
     "class-validator": "^0.9.1",
     "date-fns": "^1.30.1",
     "dotenv": "^6.1.0",
